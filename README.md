@@ -1,20 +1,9 @@
 SimpleSelectBox
 ===============
-
-A lightweight select box which is not depended on any external library.
-
-Demo
-==============
-
-<a href="http://janikoskela.github.io/SimpleSelectBox/">Demo</a>
-
+A lightweight select box which is not depended on any external library. See the <a href="http://janikoskela.github.io/SimpleSelectBox/">demo</a>.
 Usage
 ==============
-
 Using is simple: Just determine a root element for the select box. Select box fills the root element according to its size.
-
-Usage example
-==============
 
 Below is a simple usage example. A more comprehensive example can be found from index.html
 
@@ -25,10 +14,8 @@ var obj = new Urhola.SelectBox({
       defaultValue: "bar"
 }).render();
 ```
-
 Public methods
 ===============
-
  - render()
  - show()
  - hide()
@@ -38,7 +25,6 @@ Public methods
  - getOptions()
  - setOrientation(orientation)
  - setOptions(arrayObject)
-
-Tested successfully with the following browsers
+Tested browsers
 ==============
  - Safari: Version 7.0.1 (9537.73.11)
