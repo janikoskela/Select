@@ -29,3 +29,7 @@ Public methods
 Tested browsers
 ==============
  - Safari: Version 7.0.1 (9537.73.11)
+
+Licence
+=============
+See the <a href="https://github.com/janikoskela/SimpleSelectBox/blob/master/LICENSE">LICENCE</a>
