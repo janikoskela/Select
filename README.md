@@ -1,6 +1,6 @@
 SimpleSelectBox
 ===============
-A lightweight select box which is not depended on any external library. See the <a href="http://janikoskela.github.io/SimpleSelectBox/">demo</a>.
+A lightweight select box which is not depended on any external library. See the <a href="http://knaitti.org/SimpleSelectBox/">demo</a>.
 Usage
 ==============
 Using is simple: Just determine a root element for the select box. Select box fills the root element according to its size.
