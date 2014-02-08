@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Simple Select Box</title>
+  <meta charset="utf-8">
+  <script src="SimpleSelectBox.js"></script>
+  <style>
+  #wrapper { background: red; height: 2em; width: 40em;}
+  .exampleClass { cursor: pointer; height: 100%; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; font-size: 14px; font-family: Verdana; }
+  .exampleClass .valueContainer { background: #96FFAF; display: table-cell; vertical-align: middle; }
+  .exampleClass .valueContainer span { margin-left: .4em; }
+  .exampleClass .selector { background: #96FFAF; width: 2em; text-align: center; display: table-cell; vertical-align: middle; }
+  .exampleClass .container { display: table; list-style: none; width: 100%; margin: 0; padding: 0; height: 100%; }
+  .exampleClass .optionsContainer { display: none; list-style: none; margin: 0; padding: 0; }
+  .exampleClass .optionsContainer li { background: #BAFFCA; padding: .5em; }
+  .exampleClass .optionsContainer li:hover { background: yellow; }
+  .exampleClass .arrow { width: 0px; height: 0px; border-style: solid; margin: auto;  }
+  .exampleClass .arrowUp { border-width: 0 5px 10px 5px; border-color: transparent transparent #6E6E6E transparent; }
+  .exampleClass .arrowDown { border-width: 10px 5px 0 5px; border-color: #6E6E6E transparent transparent transparent; }
+  </style>
+</head>
+<body>
+  <div id="wrapper"></div>
+
+  <script>
+
+    //select box initializing and rendering
+    var obj = new Urhola.SelectBox({
+      parentElement: document.getElementById("wrapper"), //rendered select box will fill the parent element. Required!
+      wrapperClass: "exampleClass", //select boxes wrapper class. Multiple classes can be assigned
+      options: [{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }], //options, must be in this format. Required!
+      defaultValue: "bar", //default value can assigned. If not found first option is selected as default
+      orientation: "right", //arrow points to right
+      onChange: (function() { // callback function which is called upon option change
+        return function(label, value, selectBox) {
+          selectBox.setOrientation("left"); // change select boxes orientation
+          selectBox.setOptions([{ label: "heh", value: "hoh" }, { label: "muu", value: "möö" }]); //example of setting new options
+        }
+      })()
+    }).render();
+
+
+  </script>
+
+</body>
+</html>
