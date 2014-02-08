@@ -8,7 +8,7 @@ Using is simple: Just determine a root element for the select box. Select box fi
 Below is a simple usage example. A more comprehensive example can be found from index.html
 
 ```javascript
-var obj = new Urhola.SelectBox({
+var selectBox = new Urhola.SelectBox({
       parentElement: document.getElementById("wrapper"),
       options: [{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }],
       defaultValue: "bar"
