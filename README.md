@@ -25,6 +25,7 @@ Public methods
  - getOptions()
  - setOrientation(orientation)
  - setOptions(arrayObject)
+
 Tested browsers
 ==============
  - Safari: Version 7.0.1 (9537.73.11)
