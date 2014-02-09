@@ -20,7 +20,8 @@ var Urhola = {
 			parentElement: undefined,
 			defaultValue: undefined,
 			orientation: "right",
-			onChange: undefined
+			onChange: undefined,
+			optionLimit: 5
 		};
 
 		init();
@@ -59,6 +60,8 @@ var Urhola = {
 		this.openOptionList = function() {
 			Urhola.Utils.addStyleToElement(optionsContainer, "display", "block");
 			Urhola.Utils.addClassToElement(arrow, "arrow arrowUp");
+			var height = optionsContainer.firstChild.offsetHeight;
+			adjustOptionsContainerHeight(height);
 		}
 
 		this.getSelectedValue = function() {
@@ -119,6 +122,13 @@ var Urhola = {
 				Urhola.Utils.appendChildToElement(li, parent);
 			}
 			return parent;
+		}
+
+		function adjustOptionsContainerHeight(listItemOffsetHeight) {
+			var limit = getOptionLimit();
+			var height = limit * listItemOffsetHeight;
+			height += "px"
+			Urhola.Utils.addStyleToElement(optionsContainer, "height", height);
 		}
 
 		function getOptionByValue(value) {
@@ -202,6 +212,10 @@ var Urhola = {
 
 		function getOrientation() {
 			return settings.orientation;
+		}
+
+		function getOptionLimit() {
+			return settings.optionLimit;
 		}
 
 		function getOptions() {
