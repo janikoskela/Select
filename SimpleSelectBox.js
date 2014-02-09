@@ -43,6 +43,12 @@ var Urhola = {
 			updateValueContainerText();
 		}
 
+		this.setOptionLimit = function(limit) {
+			self.closeOptionList();
+			settings.optionLimit = limit;
+			self.openOptionList();
+		}
+
 		this.setOrientation = function(orientation) {
 			settings.orientation = orientation;
 			self.render();
