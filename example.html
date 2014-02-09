@@ -15,13 +15,14 @@
     var obj = new Urhola.SelectBox({
       parentElement: document.getElementById("wrapper"), //rendered select box will fill the parent element. Required!
       wrapperClass: "exampleClass", //select boxes wrapper class. Multiple classes can be assigned
-      options: [{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }], //options, must be in this format. Required!
+      options: [{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }], //options, must be in this format. Required!
       defaultValue: "bar", //default value can assigned. If not found first option is selected as default
       orientation: "right", //arrow points to right
       onChange: (function() { // callback function which is called upon option change
         return function(label, value, selectBox) {
           selectBox.setOrientation("left"); // change select boxes orientation
-          selectBox.setOptions([{ label: "heh", value: "hoh" }, { label: "muu", value: "möö" }]); //example of setting new options
+          selectBox.setOptionLimit(2);
+          //selectBox.setOptions([{ label: "heh", value: "hoh" }, { label: "muu", value: "möö" }]); //example of setting new options
         }
       })()
     }).render();
