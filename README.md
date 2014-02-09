@@ -25,6 +25,7 @@ Public methods
  - getOptions()
  - setOrientation(orientation)
  - setOptions(arrayObject)
+ - setOptionLimit(limit)
 
 Browser compatibility
 ==============
