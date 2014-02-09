@@ -29,7 +29,11 @@ Public methods
 
 Browser compatibility
 ==============
- - Safari 7 (Haven't tested other versions)
+ - IE 8+
+ - Chrome 8+
+ - Safari 3+
+ - Firefox 10+
+ - Opera 10.6+
 
 Licence
 =============
