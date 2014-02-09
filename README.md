@@ -5,7 +5,7 @@ Usage
 ==============
 Using is simple: Just determine a root element for the select box. Select box fills the root element according to its size.
 
-Below is a simple usage example. A more comprehensive example can be found from index.html
+Below is a simple usage example. A more comprehensive example can be found from <a href="https://github.com/janikoskela/SimpleSelectBox.js/blob/master/example.html">example.html</a>
 
 ```javascript
 var selectBox = new Urhola.SelectBox({
