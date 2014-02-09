@@ -3,7 +3,7 @@ SimpleSelectBox
 A lightweight select box which is not depended on any external library and is easily configurable. See the <a href="http://knaitti.org/SimpleSelectBox/">demo</a>.
 Usage
 ==============
-Using is simple: Just determine a root element for the select box. Select box fills the root element according to its size.
+Using is simple: Just determine a root element for the select box and add an array with option objects. Option objects must contain label and value attributes. The root element defines select boxes size since select box fills it. Styles can be altered from <a href="https://github.com/janikoskela/SimpleSelectBox.js/blob/master/SimpleSelectBox.css">SimpleSelectBox.css</a>
 
 Below is a simple usage example. A more comprehensive example can be found from <a href="https://github.com/janikoskela/SimpleSelectBox.js/blob/master/example.html">example.html</a>
 
