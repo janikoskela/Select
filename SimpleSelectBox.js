@@ -168,7 +168,6 @@ var Urhola = {
 			var onChange = getOnChange();
 			selectedValue = Urhola.Utils.getElementAttribute(target, "value");
 			selectedLabel = Urhola.Utils.getElementAttribute(target, "label");
-			console.log(selectedLabel)
 			valueContainerText.innerHTML = selectedLabel;
 			if (typeof onChange === "function")
 				onChange(selectedLabel, selectedValue, self);		
