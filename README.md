@@ -24,6 +24,7 @@ Public methods
  - show()
  - hide()
  - getSelectedLabel()
+ - getSelectedValue()
  - openOptionList()
  - closeOptionList()
  - getOptions()
