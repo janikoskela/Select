@@ -68,6 +68,7 @@ var Urhola = {
 			Urhola.Utils.addClassToElement(arrow, "arrow arrowUp");
 			var height = optionsContainer.firstChild.offsetHeight;
 			adjustOptionsContainerHeight(height);
+			adjustOptionsContainerWidth();
 		}
 
 		this.getSelectedValue = function() {
@@ -107,11 +108,22 @@ var Urhola = {
 			return this;
 		}
 
-		function updateValueContainerText() {
-			var option = getOptionByValue(selectedValue);
+		function setDefaultOption() {
+			var defaultValue = getDefaultValue();
+			var option = getOptionByValue(defaultValue);
+			setSelectedOption(option);
+		}
+
+		function setSelectedOption(option) {
 			selectedLabel = option.label;
+			selectedValue = option.value;
 			valueContainerText.innerHTML = "";
 			Urhola.Utils.appendTextToElement(selectedLabel, valueContainerText);
+		}
+
+		function updateValueContainerText() {
+			var option = getOptionByValue(selectedValue);
+			setSelectedOption(option);
 		}
 
 		function addOptionsToContainer(parent) {
@@ -128,6 +140,11 @@ var Urhola = {
 				Urhola.Utils.appendChildToElement(li, parent);
 			}
 			return parent;
+		}
+
+		function adjustOptionsContainerWidth() {
+			var width =  wrapper.offsetWidth + "px";
+			Urhola.Utils.addStyleToElement(optionsContainer, "width", width);
 		}
 
 		function adjustOptionsContainerHeight(listItemOffsetHeight) {
@@ -151,6 +168,7 @@ var Urhola = {
 			var onChange = getOnChange();
 			selectedValue = Urhola.Utils.getElementAttribute(target, "value");
 			selectedLabel = Urhola.Utils.getElementAttribute(target, "label");
+			console.log(selectedLabel)
 			valueContainerText.innerHTML = selectedLabel;
 			if (typeof onChange === "function")
 				onChange(selectedLabel, selectedValue, self);		
@@ -174,7 +192,7 @@ var Urhola = {
 			valueContainerText = Urhola.Utils.createElement("span");
 			Urhola.Utils.appendChildToElement(valueContainerText, valueContainer);
 			Urhola.Utils.addClassToElement(valueContainer, className);
-			updateValueContainerText();
+			setDefaultOption();
 			return valueContainer;
 		}
 
