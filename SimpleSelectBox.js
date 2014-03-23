@@ -59,13 +59,13 @@ var Urhola = {
 		}
 
 		this.closeOptionList = function() {
-			Urhola.Utils.addStyleToElement(optionsContainer, "display", "none");
-			Urhola.Utils.addClassToElement(arrow, "arrow arrowDown");
+			Urhola.Dom.addStyleToElement(optionsContainer, "display", "none");
+			Urhola.Dom.addClassToElement(arrow, "arrow arrowDown");
 		}
 
 		this.openOptionList = function() {
-			Urhola.Utils.addStyleToElement(optionsContainer, "display", "block");
-			Urhola.Utils.addClassToElement(arrow, "arrow arrowUp");
+			Urhola.Dom.addStyleToElement(optionsContainer, "display", "block");
+			Urhola.Dom.addClassToElement(arrow, "arrow arrowUp");
 			var height = optionsContainer.firstChild.offsetHeight;
 			adjustOptionsContainerHeight(height);
 			adjustOptionsContainerWidth();
@@ -92,18 +92,18 @@ var Urhola = {
 		this.render = function() {
 			var rootElement = getParentElement();
 			rootElement.innerHTML = "";
-			Urhola.Utils.appendChildToElement(wrapper, rootElement);
-			Urhola.Utils.appendChildToElement(container, wrapper);
+			Urhola.Dom.appendChildToElement(wrapper, rootElement);
+			Urhola.Dom.appendChildToElement(container, wrapper);
 			var orientation = getOrientation();
 			if (orientation === "right") {
-				Urhola.Utils.appendChildToElement(valueContainer, container);
-				Urhola.Utils.appendChildToElement(selector, container);
+				Urhola.Dom.appendChildToElement(valueContainer, container);
+				Urhola.Dom.appendChildToElement(selector, container);
 			}
 			else {
-				Urhola.Utils.appendChildToElement(selector, container);
-				Urhola.Utils.appendChildToElement(valueContainer, container);
+				Urhola.Dom.appendChildToElement(selector, container);
+				Urhola.Dom.appendChildToElement(valueContainer, container);
 			}
-			Urhola.Utils.appendChildToElement(optionsContainer, wrapper);
+			Urhola.Dom.appendChildToElement(optionsContainer, wrapper);
 			addOptionsToContainer(optionsContainer);
 			return this;
 		}
@@ -118,7 +118,7 @@ var Urhola = {
 			selectedLabel = option.label;
 			selectedValue = option.value;
 			valueContainerText.innerHTML = "";
-			Urhola.Utils.appendTextToElement(selectedLabel, valueContainerText);
+			Urhola.Dom.appendTextToElement(selectedLabel, valueContainerText);
 		}
 
 		function updateValueContainerText() {
@@ -132,26 +132,26 @@ var Urhola = {
 			for (var i = 0; i < options.length; i++) {
 				var label = options[i].label;
 				var value = options[i].value;
-				var li = Urhola.Utils.createElement("li");
-				Urhola.Utils.addPropertyToElement(li, "label", label);
-				Urhola.Utils.addPropertyToElement(li, "value", value);
-				Urhola.Utils.appendTextToElement(label, li);
+				var li = Urhola.Dom.createElement("li");
+				Urhola.Dom.addPropertyToElement(li, "label", label);
+				Urhola.Dom.addPropertyToElement(li, "value", value);
+				Urhola.Dom.appendTextToElement(label, li);
 				li.addEventListener("click", optionClicked);
-				Urhola.Utils.appendChildToElement(li, parent);
+				Urhola.Dom.appendChildToElement(li, parent);
 			}
 			return parent;
 		}
 
 		function adjustOptionsContainerWidth() {
 			var width =  wrapper.offsetWidth + "px";
-			Urhola.Utils.addStyleToElement(optionsContainer, "width", width);
+			Urhola.Dom.addStyleToElement(optionsContainer, "width", width);
 		}
 
 		function adjustOptionsContainerHeight(listItemOffsetHeight) {
 			var limit = getOptionLimit();
 			var height = limit * listItemOffsetHeight;
 			height += "px"
-			Urhola.Utils.addStyleToElement(optionsContainer, "height", height);
+			Urhola.Dom.addStyleToElement(optionsContainer, "height", height);
 		}
 
 		function getOptionByValue(value) {
@@ -166,47 +166,47 @@ var Urhola = {
 		function optionClicked(e) {
 			var target = e.target;
 			var onChange = getOnChange();
-			selectedValue = Urhola.Utils.getElementAttribute(target, "value");
-			selectedLabel = Urhola.Utils.getElementAttribute(target, "label");
+			selectedValue = Urhola.Dom.getElementAttribute(target, "value");
+			selectedLabel = Urhola.Dom.getElementAttribute(target, "label");
 			valueContainerText.innerHTML = selectedLabel;
 			if (typeof onChange === "function")
 				onChange(selectedLabel, selectedValue, self);		
 		}
 
 		function createValueContainerText(text) {
-			var textNode = Urhola.Utils.createTextNode(text);
+			var textNode = Urhola.Dom.createTextNode(text);
 			return textNode;
 		}
 
 		function createOptionsContainer() {
 			var className = "optionsContainer";
-			var container = Urhola.Utils.createElement("ul");
-			Urhola.Utils.addClassToElement(container, className);
+			var container = Urhola.Dom.createElement("ul");
+			Urhola.Dom.addClassToElement(container, className);
 			return container;
 		}
 
 		function createValueContainer() {
 			var className = "valueContainer";
-			var valueContainer = Urhola.Utils.createElement("li");
-			valueContainerText = Urhola.Utils.createElement("span");
-			Urhola.Utils.appendChildToElement(valueContainerText, valueContainer);
-			Urhola.Utils.addClassToElement(valueContainer, className);
+			var valueContainer = Urhola.Dom.createElement("li");
+			valueContainerText = Urhola.Dom.createElement("span");
+			Urhola.Dom.appendChildToElement(valueContainerText, valueContainer);
+			Urhola.Dom.addClassToElement(valueContainer, className);
 			setDefaultOption();
 			return valueContainer;
 		}
 
 		function createSelector() {
 			var className = "selector";
-			var selector = Urhola.Utils.createElement("li");
-			Urhola.Utils.addClassToElement(selector, className);
-			arrow = Urhola.Utils.createElement("div");
-			Urhola.Utils.addClassToElement(arrow, "arrow arrowDown");
-			Urhola.Utils.appendChildToElement(arrow, selector);
+			var selector = Urhola.Dom.createElement("li");
+			Urhola.Dom.addClassToElement(selector, className);
+			arrow = Urhola.Dom.createElement("div");
+			Urhola.Dom.addClassToElement(arrow, "arrow arrowDown");
+			Urhola.Dom.appendChildToElement(arrow, selector);
 			return selector;
 		}
 
 		function toggleOptionList(e) {
-			var optionsContainerDisplayValue = Urhola.Utils.getElementStyleValue(optionsContainer, "display");
+			var optionsContainerDisplayValue = Urhola.Dom.getElementStyleValue(optionsContainer, "display");
 			if (optionsContainerDisplayValue === "block")
 				self.closeOptionList();
 			else
@@ -215,10 +215,10 @@ var Urhola = {
 
 		function createWrapper() {
 			var className = getWrapperClass();
-			var wrapper = Urhola.Utils.createElement("div");
+			var wrapper = Urhola.Dom.createElement("div");
 			wrapper.addEventListener("click", toggleOptionList);
 			wrapper.addEventListener("mouseleave", mouseLeave);
-			Urhola.Utils.addClassToElement(wrapper, className);
+			Urhola.Dom.addClassToElement(wrapper, className);
 			return wrapper;
 		}
 
@@ -228,8 +228,8 @@ var Urhola = {
 
 		function createContainer() {
 			var className = "container";
-			var container = Urhola.Utils.createElement("ul");
-			Urhola.Utils.addClassToElement(container, className);
+			var container = Urhola.Dom.createElement("ul");
+			Urhola.Dom.addClassToElement(container, className);
 			return container;
 		}
 
@@ -262,20 +262,7 @@ var Urhola = {
 		}
 	},
 
-	Utils: {
-		mergeSettings: function(a, b) {
-			for (var key in b) {
-				if (a[key] !== undefined)
-					b[key] = a[key];
-			}
-			return b;
-		},
-
-		isArray: function(arr) {
-			if (Array.isArray)
-				return Array.isArray(arr);
-			return false;
-		},
+	Dom: {
 
 		getElementById: function(id) {
 			return document.getElementById(id);
@@ -332,9 +319,25 @@ var Urhola = {
 		},
 
 		appendTextToElement: function(text, elem) {
-			var node = Urhola.Utils.createTextNode(text);
-			Urhola.Utils.appendChildToElement(node, elem);
+			var node = Urhola.Dom.createTextNode(text);
+			Urhola.Dom.appendChildToElement(node, elem);
 			return node;
+		}
+	},
+
+	Utils: {
+		mergeSettings: function(a, b) {
+			for (var key in b) {
+				if (a[key] !== undefined)
+					b[key] = a[key];
+			}
+			return b;
+		},
+
+		isArray: function(arr) {
+			if (Array.isArray)
+				return Array.isArray(arr);
+			return false;
 		}
 	}
 }
