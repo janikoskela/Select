@@ -1,5 +1,5 @@
-#limeWrapper { 
-	height: 2em; 
+#lime-wrapper { 
+	height: 1.5em; 
 	width: 10em; 
 }
 .lime { 
@@ -58,7 +58,7 @@ border-bottom-right-radius: 2px;
 }
 .lime .optionsContainer li { 
 	background: #C2F7A1; 
-	padding: .5em; 
+	padding: .3em; 
 }
 .lime .optionsContainer li:hover { 
 	background: #A8F777; 
