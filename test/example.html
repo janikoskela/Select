@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Simple Select Box</title>
+  <meta charset="utf-8">
+  <script src="../lib/SimpleSelectBox.js"></script>
+  <link rel="stylesheet" type="text/css" href="../themes/lime.css">
+</head>
+<body>
+  <div id="limeWrapper" ></div>
+
+  <script>
+
+    //select box initializing and rendering
+    var obj = new Urhola.SelectBox({
+      parentElement: document.getElementById("limeWrapper"), //rendered select box will fill the parent element. Required!
+      theme: "lime",
+      wrapperClass: "exampleClass", //select boxes wrapper class. Multiple classes can be assigned
+      options: [{ label: "test option 1", value: "foo" }, { label: "test option 2", value: "bar" },{ label: "test option 3", value: "foo" }, { label: "test option 4", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }], //options, must be in this format. Required!
+      defaultValue: "bar", //default value can assigned. If not found first option is selected as default
+      orientation: "right", //arrow points to right
+      /*onChange: (function() { // callback function which is called upon option change
+        return function(label, value, selectBox) {
+          selectBox.setOrientation("left"); // change select boxes orientation
+          selectBox.setOptionLimit(2);
+          //selectBox.setOptions([{ label: "heh", value: "hoh" }, { label: "muu", value: "möö" }]); //example of setting new options
+        }
+      })()*/
+    }).render();
+
+  </script>
+
+</body>
+</html>
