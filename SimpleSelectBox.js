@@ -130,17 +130,7 @@ var Urhola = {
 		function addOptionsToContainer(parent) {
 			parent.innerHTML = "";
 			var options = getOptions();
-			var sort = getSort();
-			switch(sort) {
-				case "desc":
-					options.sort(sortByDesc);
-					break;
-				case "asc":
-					options.sort(sortByAsc);
-					break;
-				default:
-					throw Error("Unsupported sort type \"" + sort + "\"");
-			}
+			options = sortOptions();
 			for (var i = 0; i < options.length; i++) {
 				var label = options[i].label;
 				var value = options[i].value;
@@ -152,6 +142,21 @@ var Urhola = {
 				Urhola.Dom.appendChildToElement(li, parent);
 			}
 			return parent;
+		}
+
+		function sortOptions(options) {
+			var sortType = getSort();
+			switch(sortType) {
+				case "desc":
+					options.sort(sortByDesc);
+					break;
+				case "asc":
+					options.sort(sortByAsc);
+					break;
+				default:
+					throw Error("Unsupported sort type \"" + sortType + "\"");
+			}
+			return options;
 		}
 
 		function sortByDesc(optionA, optionB) {
