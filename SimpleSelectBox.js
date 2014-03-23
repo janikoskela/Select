@@ -21,7 +21,8 @@ var Urhola = {
 			defaultValue: undefined,
 			orientation: "right",
 			onChange: undefined,
-			optionLimit: 5
+			optionLimit: 5,
+			sort: "desc"
 		};
 
 		init();
@@ -129,6 +130,17 @@ var Urhola = {
 		function addOptionsToContainer(parent) {
 			parent.innerHTML = "";
 			var options = getOptions();
+			var sort = getSort();
+			switch(sort) {
+				case "desc":
+					options.sort(sortByDesc);
+					break;
+				case "asc":
+					options.sort(sortByAsc);
+					break;
+				default:
+					throw Error("Unsupported sort type \"" + sort + "\"");
+			}
 			for (var i = 0; i < options.length; i++) {
 				var label = options[i].label;
 				var value = options[i].value;
@@ -140,6 +152,26 @@ var Urhola = {
 				Urhola.Dom.appendChildToElement(li, parent);
 			}
 			return parent;
+		}
+
+		function sortByDesc(optionA, optionB) {
+			var a = optionA.label;
+			var b = optionB.label;
+			if (a > b)
+				return 1;
+			if (a < b)
+				return -1;
+			return 0;
+		}
+
+		function sortByAsc(optionA, optionB) {
+			var a = optionA.label;
+			var b = optionB.label;
+			if (a > b)
+				return -1;
+			if (a < b)
+				return 1;
+			return 0;
 		}
 
 		function adjustOptionsContainerWidth() {
@@ -259,6 +291,10 @@ var Urhola = {
 
 		function getOnChange() {
 			return settings.onChange;
+		}
+
+		function getSort() {
+			return settings.sort;
 		}
 	},
 
