@@ -11,22 +11,14 @@
 	-moz-user-select: none; 
 	-ms-user-select: none; 
 	user-select: none; 
-	font-size: 14px; 
+	font-size: 12px; 
 	font-family: Verdana; 
+	text-transform: uppercase;
 }
 .ocean .valueContainer { 
 	background: #63BBF2; 
 	display: table-cell; 
 	vertical-align: middle; 
-	-webkit-border-top-left-radius: 2px;
-	-webkit-border-bottom-left-radius: 2px;
-	-moz-border-radius-topleft: 2px;
-	-moz-border-radius-bottomleft: 2px;
-	border-top-left-radius: 2px;
-	border-bottom-left-radius: 2px;
-	border-top: 1px solid #4B8EB8;
-	border-bottom: 1px solid #4B8EB8;
-	border-left: 1px solid #4B8EB8;
 
 }
 .ocean .valueContainer span { 
@@ -39,15 +31,6 @@
 	text-align: center; 
 	display: table-cell; 
 	vertical-align: middle; 
-	-webkit-border-top-right-radius: 2px;
-	-webkit-border-bottom-right-radius: 2px;
-	-moz-border-radius-topright: 2px;
-	-moz-border-radius-bottomright: 2px;
-	border-top-right-radius: 2px;
-	border-bottom-right-radius: 2px;
-	border-top: 1px solid #4B8EB8;
-	border-bottom: 1px solid #4B8EB8;
-	border-right: 1px solid #4B8EB8;
 }
 .ocean .container { 
 	display: table; 
@@ -56,6 +39,12 @@
 	margin: 0; 
 	padding: 0; 
 	height: 100%; 
+	border: 1px solid #4B8EB8;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+}
+.ocean:focus .container { 
+	border: 1px solid red;
 }
 .ocean .optionsContainer { 
 	display: none; 
@@ -81,8 +70,12 @@
 	padding: .5em; 
 	color: #000;
 }
-.ocean .optionsContainer li:hover { 
+.ocean .optionsContainer li:hover, .ocean .optionsContainer li[hovered="true"] { 
 	background: #A3D7F7; 
+	color: red;
+}
+.ocean:focus {
+	outline-width: 0;
 }
 .ocean .arrow { 
 	width: 32px;

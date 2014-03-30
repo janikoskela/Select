@@ -5,22 +5,43 @@
   <meta charset="utf-8">
   <script src="../lib/SimpleSelectBox.js"></script>
   <link rel="stylesheet" type="text/css" href="../themes/lime.css">
-  <link rel="stylesheet" type="text/css" href="../themes/dark-blue.css">
+  <link rel="stylesheet" type="text/css" href="../themes/ocean.css">
 </head>
 <body>
-  <div id="lime-wrapper"></div>
-  <br />
-  <div id="ocean-wrapper" ></div>
+  <h1>Themes</h1>
+  <ul>
+    <li>
+      <h2>Lime:</h2>
+      <div id="lime-wrapper"></div>
+    </li>
+    <li>
+      <h2>Ocean:</h2>
+      <div id="ocean-wrapper" ></div>
+    </li>
 
   <script>
 
+    var self = this;
+
     //select box initializing and rendering
-    var obj = new Urhola.SelectBox({
+    var lime = new Urhola.SelectBox({
       parentElement: document.getElementById("lime-wrapper"), //rendered select box will fill the parent element. Required!
       theme: "lime",
       options: [{ label: "test option 1", value: "foo" }, { label: "test option 2", value: "bar" },{ label: "test option 3", value: "foo" }, { label: "test option 4", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }], //options, must be in this format. Required!
       defaultValue: "bar", //default value can assigned. If not found first option is selected as default
       orientation: "right", //arrow points to right
+      tabIndex: 1,
+      onFocus: (function() {
+        return function() {
+          self.close();
+          console.log("in")
+        }
+      })(self),
+      onFocusOut: (function() {
+        return function() {
+          console.log("out")
+        }
+      })()
       /*onChange: (function() { // callback function which is called upon option change
         return function(label, value, selectBox) {
           selectBox.setOrientation("left"); // change select boxes orientation
@@ -30,12 +51,24 @@
       })()*/
     }).render();
 
-    var obj = new Urhola.SelectBox({
+    var ocean = new Urhola.SelectBox({
       parentElement: document.getElementById("ocean-wrapper"), //rendered select box will fill the parent element. Required!
       theme: "ocean",
+      tabIndex: 2,
       options: [{ label: "test option 1", value: "foo" }, { label: "test option 2", value: "bar" },{ label: "test option 3", value: "foo" }, { label: "test option 4", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }], //options, must be in this format. Required!
       defaultValue: "bar", //default value can assigned. If not found first option is selected as default
       orientation: "right", //arrow points to right
+      onFocus: (function() {
+        return function() {
+          self.close();
+          console.log("in")
+        }
+      })(self),
+      onFocusOut: (function() {
+        return function() {
+          self.close();
+        }
+      })(self)
       /*onChange: (function() { // callback function which is called upon option change
         return function(label, value, selectBox) {
           selectBox.setOrientation("left"); // change select boxes orientation
@@ -44,6 +77,12 @@
         }
       })()*/
     }).render();
+
+  function close() {
+    console.log("close")
+    lime.closeOptionList();
+    ocean.closeOptionList();
+  }
 
   </script>
 
