@@ -1,6 +1,6 @@
-var Selex = {
+var Urhola = {
 
-	Core: function(userDefinedSettings) {
+	Selex: function(userDefinedSettings) {
 
 		var wrapper = undefined;
 		var container = undefined;
@@ -31,9 +31,9 @@ var Selex = {
 		init();
 
 		function init() {
-			settings = Selex.Utils.mergeSettings(userDefinedSettings, settings);
-			Selex.Validations.validateOptionList(settings.options);
-			Selex.Validations.validateElement(settings.parentElement);
+			settings = Urhola.Utils.mergeSettings(userDefinedSettings, settings);
+			Urhola.Validations.validateOptionList(settings.options);
+			Urhola.Validations.validateElement(settings.parentElement);
 			wrapper = createWrapper();
 			container = createContainer();
 			selector = createSelector();
@@ -42,7 +42,7 @@ var Selex = {
 		}
 
 		this.setOptions = function(options) {
-			Selex.validateOptionList(options);
+			Urhola.validateOptionList(options);
 			settings.options = options;
 			addOptionsToContainer(optionsContainer);
 			updateValueContainerText();
@@ -64,20 +64,20 @@ var Selex = {
 		}
 
 		this.closeOptionList = function() {
-			Selex.Dom.addStyleToElement(optionsContainer, "display", "none");
-			Selex.Dom.addClassToElement(arrow, "arrow arrowDown");
+			Urhola.Dom.addStyleToElement(optionsContainer, "display", "none");
+			Urhola.Dom.addClassToElement(arrow, "arrow arrowDown");
 		}
 
 		this.openOptionList = function() {
-			Selex.Dom.addStyleToElement(optionsContainer, "display", "block");
-			Selex.Dom.addClassToElement(arrow, "arrow arrowUp");
+			Urhola.Dom.addStyleToElement(optionsContainer, "display", "block");
+			Urhola.Dom.addClassToElement(arrow, "arrow arrowUp");
 			var height = optionsContainer.firstChild.offsetHeight;
 			adjustOptionsContainerHeight(height);
 			adjustOptionsContainerWidth();
 		}
 
 		this.isOptionListDisplayed = function() {
-			return (Selex.Dom.getElementStyleValue(optionsContainer, "display") == "none") ? false : true;
+			return (Urhola.Dom.getElementStyleValue(optionsContainer, "display") == "none") ? false : true;
 		}
 
 		this.getSelectedValue = function() {
@@ -101,18 +101,18 @@ var Selex = {
 		this.render = function() {
 			var rootElement = getParentElement();
 			rootElement.innerHTML = "";
-			Selex.Dom.appendChildToElement(wrapper, rootElement);
-			Selex.Dom.appendChildToElement(container, wrapper);
+			Urhola.Dom.appendChildToElement(wrapper, rootElement);
+			Urhola.Dom.appendChildToElement(container, wrapper);
 			var orientation = getOrientation();
 			if (orientation === "right") {
-				Selex.Dom.appendChildToElement(valueContainer, container);
-				Selex.Dom.appendChildToElement(selector, container);
+				Urhola.Dom.appendChildToElement(valueContainer, container);
+				Urhola.Dom.appendChildToElement(selector, container);
 			}
 			else {
-				Selex.Dom.appendChildToElement(selector, container);
-				Selex.Dom.appendChildToElement(valueContainer, container);
+				Urhola.Dom.appendChildToElement(selector, container);
+				Urhola.Dom.appendChildToElement(valueContainer, container);
 			}
-			Selex.Dom.appendChildToElement(optionsContainer, wrapper);
+			Urhola.Dom.appendChildToElement(optionsContainer, wrapper);
 			addOptionsToContainer(optionsContainer);
 			setDefaultOption();
 			return this;
@@ -125,16 +125,16 @@ var Selex = {
 		}
 
 		function getValuesFromOptionElement(li) {
-			var value = Selex.Dom.getElementAttribute(li, "value");
-			var label = Selex.Dom.getElementAttribute(li, "label");
+			var value = Urhola.Dom.getElementAttribute(li, "value");
+			var label = Urhola.Dom.getElementAttribute(li, "label");
 			return { value: value, label: label };
 		}
 
 		function setSelectedOption(option) {
-			selectedLabel = Selex.Dom.getElementAttribute(option, "label");
-			selectedValue = Selex.Dom.getElementAttribute(option, "value");
+			selectedLabel = Urhola.Dom.getElementAttribute(option, "label");
+			selectedValue = Urhola.Dom.getElementAttribute(option, "value");
 			valueContainerText.innerHTML = "";
-			Selex.Dom.appendTextToElement(selectedLabel, valueContainerText);
+			Urhola.Dom.appendTextToElement(selectedLabel, valueContainerText);
 		}
 
 		function updateValueContainerText() {
@@ -149,7 +149,7 @@ var Selex = {
 			for (var i = 0; i < options.length; i++) {
 				var option = options[i];
 				var label, value; 
-				var li = Selex.Dom.createElement("li");
+				var li = Urhola.Dom.createElement("li");
 				switch(typeof option) {
 					case "string":
 						value = option;
@@ -162,12 +162,12 @@ var Selex = {
 					default:
 						throw Error("Unsupported option data format!");
 				}
-				Selex.Dom.addPropertyToElement(li, "label", label);
-				Selex.Dom.addPropertyToElement(li, "value", value);
-				Selex.Dom.addPropertyToElement(li, "index", i);
-				Selex.Dom.appendTextToElement(label, li);
+				Urhola.Dom.addPropertyToElement(li, "label", label);
+				Urhola.Dom.addPropertyToElement(li, "value", value);
+				Urhola.Dom.addPropertyToElement(li, "index", i);
+				Urhola.Dom.appendTextToElement(label, li);
 				li.addEventListener("click", optionClicked);
-				Selex.Dom.appendChildToElement(li, parent);
+				Urhola.Dom.appendChildToElement(li, parent);
 			}
 			return parent;
 		}
@@ -208,14 +208,14 @@ var Selex = {
 		}
 
 		function adjustOptionsContainerWidth() {
-			Selex.Dom.addStyleToElement(optionsContainer, "width", "100%");
+			Urhola.Dom.addStyleToElement(optionsContainer, "width", "100%");
 		}
 
 		function adjustOptionsContainerHeight(listItemOffsetHeight) {
 			var limit = getOptionLimit();
 			var height = limit * listItemOffsetHeight;
 			height += "px"
-			Selex.Dom.addStyleToElement(optionsContainer, "height", height);
+			Urhola.Dom.addStyleToElement(optionsContainer, "height", height);
 		}
 
 		function getOptionByValue(value) {
@@ -231,46 +231,46 @@ var Selex = {
 		function optionClicked(e) {
 			var target = e.target;
 			var onChange = getOnChange();
-			selectedValue = Selex.Dom.getElementAttribute(target, "value");
-			selectedLabel = Selex.Dom.getElementAttribute(target, "label");
+			selectedValue = Urhola.Dom.getElementAttribute(target, "value");
+			selectedLabel = Urhola.Dom.getElementAttribute(target, "label");
 			valueContainerText.innerHTML = selectedLabel;
 			if (typeof onChange === "function")
 				onChange(selectedLabel, selectedValue, self);		
 		}
 
 		function createValueContainerText(text) {
-			var textNode = Selex.Dom.createTextNode(text);
+			var textNode = Urhola.Dom.createTextNode(text);
 			return textNode;
 		}
 
 		function createOptionsContainer() {
 			var className = "optionsContainer";
-			var container = Selex.Dom.createElement("ul");
-			Selex.Dom.addClassToElement(container, className);
+			var container = Urhola.Dom.createElement("ul");
+			Urhola.Dom.addClassToElement(container, className);
 			return container;
 		}
 
 		function createValueContainer() {
 			var className = "valueContainer";
-			var valueContainer = Selex.Dom.createElement("li");
-			valueContainerText = Selex.Dom.createElement("span");
-			Selex.Dom.appendChildToElement(valueContainerText, valueContainer);
-			Selex.Dom.addClassToElement(valueContainer, className);
+			var valueContainer = Urhola.Dom.createElement("li");
+			valueContainerText = Urhola.Dom.createElement("span");
+			Urhola.Dom.appendChildToElement(valueContainerText, valueContainer);
+			Urhola.Dom.addClassToElement(valueContainer, className);
 			return valueContainer;
 		}
 
 		function createSelector() {
 			var className = "selector";
-			var selector = Selex.Dom.createElement("li");
-			Selex.Dom.addClassToElement(selector, className);
-			arrow = Selex.Dom.createElement("div");
-			Selex.Dom.addClassToElement(arrow, "arrow arrowDown");
-			Selex.Dom.appendChildToElement(arrow, selector);
+			var selector = Urhola.Dom.createElement("li");
+			Urhola.Dom.addClassToElement(selector, className);
+			arrow = Urhola.Dom.createElement("div");
+			Urhola.Dom.addClassToElement(arrow, "arrow arrowDown");
+			Urhola.Dom.appendChildToElement(arrow, selector);
 			return selector;
 		}
 
 		function toggleOptionList(e) {
-			var optionsContainerDisplayValue = Selex.Dom.getElementStyleValue(optionsContainer, "display");
+			var optionsContainerDisplayValue = Urhola.Dom.getElementStyleValue(optionsContainer, "display");
 			if (optionsContainerDisplayValue === "block")
 				self.closeOptionList();
 			else
@@ -307,11 +307,11 @@ var Selex = {
 		}
 
 		function setListElementHovered(li) {
-			Selex.Dom.addPropertyToElement(li, "hovered", true);
+			Urhola.Dom.addPropertyToElement(li, "hovered", true);
 		}
 
 		function setListElementNotHovered(li) {
-			Selex.Dom.addPropertyToElement(li, "hovered", false);
+			Urhola.Dom.addPropertyToElement(li, "hovered", false);
 		}
 
 		function searchByFirstChar(query) {
@@ -320,7 +320,7 @@ var Selex = {
 			var hovered = getHoveredOption();
 			for (var i = 0; i < listElements.length; i++) {
 				var li = listElements[i];
-				var label = Selex.Dom.getElementAttribute(li, "label");
+				var label = Urhola.Dom.getElementAttribute(li, "label");
 				if (typeof hovered === "object") {
 					if (getValuesFromOptionElement(hovered).label[0].toLowerCase() === query) {
 						var next = hovered.nextSibling;
@@ -377,7 +377,7 @@ var Selex = {
 				if (target === undefined || target === null) {
 					target = firstListElement;
 				}
-				var index = Selex.Dom.getElementAttribute(target, "index");
+				var index = Urhola.Dom.getElementAttribute(target, "index");
 				var optionLimit = getOptionLimit();
 				if (index >= optionLimit)
 					prevSibling(target, optionLimit - 1).scrollIntoView();
@@ -419,14 +419,14 @@ var Selex = {
 		function createWrapper() {
 			var className = getTheme();
 			var tabIndex = getTabIndex();
-			var wrapper = Selex.Dom.createElement("div");
-			Selex.Dom.addPropertyToElement(wrapper, "tabindex", tabIndex);
+			var wrapper = Urhola.Dom.createElement("div");
+			Urhola.Dom.addPropertyToElement(wrapper, "tabindex", tabIndex);
 			wrapper.addEventListener("click", toggleOptionList);
 			wrapper.addEventListener("mouseleave", mouseLeave);
 			wrapper.addEventListener("focus", focusHandler, true);
 			wrapper.addEventListener("blur", focusOutHandler, true);
 			wrapper.addEventListener("keyup", onKeyPress);
-			Selex.Dom.addClassToElement(wrapper, className);
+			Urhola.Dom.addClassToElement(wrapper, className);
 			return wrapper;
 		}
 
@@ -436,8 +436,8 @@ var Selex = {
 
 		function createContainer() {
 			var className = "container";
-			var container = Selex.Dom.createElement("ul");
-			Selex.Dom.addClassToElement(container, className);
+			var container = Urhola.Dom.createElement("ul");
+			Urhola.Dom.addClassToElement(container, className);
 			return container;
 		}
 
@@ -496,7 +496,7 @@ var Selex = {
 			var elem = document.createElement(tagName);
 			if (id !== undefined)
 				elem.id = id;
-			if (Selex.Utils.isArray(classNames)) {
+			if (Urhola.Utils.isArray(classNames)) {
 				for (var i = 0; i < classNames.length; i++)
 					elem.className = classNames[i];
 			}
@@ -543,8 +543,8 @@ var Selex = {
 		},
 
 		appendTextToElement: function(text, elem) {
-			var node = Selex.Dom.createTextNode(text);
-			Selex.Dom.appendChildToElement(node, elem);
+			var node = Urhola.Dom.createTextNode(text);
+			Urhola.Dom.appendChildToElement(node, elem);
 			return node;
 		}
 	},
@@ -576,4 +576,8 @@ var Selex = {
 				throw new Error("Parent element must be an element!");
 		}
 	}
+};
+
+var Selex = function(userDefinedSettings) {
+	return new Urhola.Selex(userDefinedSettings);
 };
