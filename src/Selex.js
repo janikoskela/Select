@@ -100,6 +100,8 @@ var Urhola = {
 
 		this.render = function() {
 			var rootElement = getTargetElement();
+			if (rootElement.jquery !== undefined)
+				rootElement = rootElement[0];
 			rootElement.innerHTML = "";
 			Urhola.Dom.appendChildToElement(wrapper, rootElement);
 			Urhola.Dom.appendChildToElement(container, wrapper);
