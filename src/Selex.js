@@ -17,7 +17,7 @@ var Urhola = {
 		var settings = {
 			options: [],
 			theme: undefined,
-			parentElement: undefined,
+			targetElement: undefined,
 			defaultValue: undefined,
 			orientation: "right",
 			onChange: undefined,
@@ -33,7 +33,7 @@ var Urhola = {
 		function init() {
 			settings = Urhola.Utils.mergeSettings(userDefinedSettings, settings);
 			Urhola.Validations.validateOptionList(settings.options);
-			Urhola.Validations.validateElement(settings.parentElement);
+			Urhola.Validations.validateElement(settings.targetElement);
 			wrapper = createWrapper();
 			container = createContainer();
 			selector = createSelector();
@@ -99,7 +99,7 @@ var Urhola = {
 		}
 
 		this.render = function() {
-			var rootElement = getParentElement();
+			var rootElement = getTargetElement();
 			rootElement.innerHTML = "";
 			Urhola.Dom.appendChildToElement(wrapper, rootElement);
 			Urhola.Dom.appendChildToElement(container, wrapper);
@@ -157,7 +157,7 @@ var Urhola = {
 						break;
 					case "object":
 						value = option.value;
-						label = (option.label === undefined) ? value : option.label;
+						label = (option.label === undefined) ? ((option.name === undefined) ? value : option.name) : option.label;
 						break;
 					default:
 						throw Error("Unsupported option data format!");
@@ -457,8 +457,8 @@ var Urhola = {
 			return settings.theme;
 		}
 
-		function getParentElement() {
-			return settings.parentElement;
+		function getTargetElement() {
+			return settings.targetElement;
 		}
 
 		function getDefaultValue() {

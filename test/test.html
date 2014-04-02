@@ -25,7 +25,7 @@
 
     //select box initializing and rendering
     var lime = new Selex({
-      parentElement: document.getElementById("lime-wrapper"), //rendered select box will fill the parent element. Required!
+      targetElement: document.getElementById("lime-wrapper"), //rendered select box will fill the parent element. Required!
       theme: "lime",
       options: ["koasmdkoasd", "amsd", "qweasd", "asdqwqw", "asdqwzxc", "qweqwe"], //options, must be in this format. Required!
       defaultValue: "bar", //default value can assigned. If not found first option is selected as default
@@ -52,7 +52,7 @@
     }).render();
 
     var ocean = new Selex({
-      parentElement: document.getElementById("ocean-wrapper"), //rendered select box will fill the parent element. Required!
+      targetElement: document.getElementById("ocean-wrapper"), //rendered select box will fill the parent element. Required!
       theme: "ocean",
       tabIndex: 2,
       optionLimit: 9,
