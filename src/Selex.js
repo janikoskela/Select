@@ -18,7 +18,7 @@ var Urhola = {
 			options: [],
 			theme: undefined,
 			targetElement: undefined,
-			defaultValue: undefined,
+			defaultOption: undefined,
 			orientation: "right",
 			onChange: undefined,
 			optionLimit: 5,
@@ -119,8 +119,18 @@ var Urhola = {
 		}
 
 		function setDefaultOption() {
-			var defaultValue = getDefaultValue();
-			var option = getOptionByValue(defaultValue);
+			var defaultOption = getDefaultOption();
+			var option;
+			switch(typeof defaultOption) {
+				case "string":
+					option = getOptionByValue(defaultOption);
+					break;
+				case "object":
+					var label = (defaultOption.label === undefined) ? defaultOption.name : defaultOption.label;
+					var value = defaultOption.value;
+					option = getOptionByValueAndLabel(value, label);
+					break;
+			}
 			setSelectedOption(option);
 		}
 
@@ -222,7 +232,20 @@ var Urhola = {
 			var listItems = optionsContainer.childNodes;
 			for (var i = 0; i < listItems.length; i++) {
 				var listItem = listItems[i];
-				if (listItem.value === value)
+				var listItemValue = Urhola.Dom.getElementAttribute(listItem, "value");
+				if (listItemValue === value)
+					return listItem;
+			}
+			return listItems[0];
+		}
+
+		function getOptionByValueAndLabel(value, label) {
+			var listItems = optionsContainer.childNodes;
+			for (var i = 0; i < listItems.length; i++) {
+				var listItem = listItems[i];
+				var listItemValue = Urhola.Dom.getElementAttribute(listItem, "value");
+				var listItemLabel = listItem.innerHTML;
+				if (listItemValue === value && listItemLabel === label)
 					return listItem;
 			}
 			return listItems[0];
@@ -461,8 +484,8 @@ var Urhola = {
 			return settings.targetElement;
 		}
 
-		function getDefaultValue() {
-			return settings.defaultValue;
+		function getDefaultOption() {
+			return settings.defaultOption;
 		}
 
 		function getOnChange() {
@@ -573,7 +596,7 @@ var Urhola = {
 
 		validateElement: function(element) {
 			if (typeof element !== "object")
-				throw new Error("Parent element must be an element!");
+				throw new Error("Invalid element!");
 		}
 	}
 };

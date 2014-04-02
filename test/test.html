@@ -28,7 +28,7 @@
       targetElement: document.getElementById("lime-wrapper"), //rendered select box will fill the parent element. Required!
       theme: "lime",
       options: ["koasmdkoasd", "amsd", "qweasd", "asdqwqw", "asdqwzxc", "qweqwe"], //options, must be in this format. Required!
-      defaultValue: "bar", //default value can assigned. If not found first option is selected as default
+      defaultOption: "amsd", //default value can assigned. If not found first option is selected as default
       orientation: "right", //arrow points to right
       tabIndex: 1,
       onFocus: (function() {
@@ -56,8 +56,8 @@
       theme: "ocean",
       tabIndex: 2,
       optionLimit: 9,
-      options: [{ label: "test option 1", value: "foo" }, { label: "test option 2", value: "bar" },{ label: "test option 3", value: "foo" }, { label: "test option 4", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }], //options, must be in this format. Required!
-      defaultValue: "bar", //default value can assigned. If not found first option is selected as default
+      options: [{ label: "test option 1", value: "foo" }, { label: "test option 2", value: "bar" },{ label: "test option 3", value: "foo" }, { label: "test option 4", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }, { label: "humbajampa", value: "huhuu"}],
+      defaultOption: { value: "huhuu", label: "humbajampa" }, //default value can assigned. If not found first option is selected as default
       orientation: "right", //arrow points to right
       onFocus: (function() {
         return function() {
