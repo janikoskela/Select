@@ -20,17 +20,18 @@ var selectBox = new Urhola.SelectBox({
 ```
 Public methods
 ===============
- - render()
- - show()
- - hide()
- - getSelectedLabel()
- - getSelectedValue()
- - openOptionList()
- - closeOptionList()
- - getOptions()
- - setOrientation(orientation)
- - setOptions(arrayObject)
- - setOptionLimit(limit)
+Name|Parameters|Description
+----|----------|------|-----------
+render|-|Renders the select box
+show|-|Shows select box
+hide|-|Hides select box
+getSelectedLabel|-|Gets selected label
+getSelectedValue|-|Gets selected value
+closeOptionList|-|Closes the option list
+getOptions|-|Gets the current options
+setOrientation|String|Sets 
+setOptions|object or array|Sets new options
+setOptionLimit|integer|Sets the maximum count of options to be displayed
 
 Browser compatibility
 ==============
