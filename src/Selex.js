@@ -30,7 +30,8 @@ var Urhola = {
 			width: undefined,
 			fontSize: undefined,
 			valueContainerName: undefined,
-			attributes: undefined
+			attributes: undefined,
+			placeHolder: undefined
 		};
 
 		init();
@@ -101,6 +102,14 @@ var Urhola = {
 			return this;
 		}
 
+		this.setTabIndex = function(index) {
+			Urhola.Dom.addPropertyToElement(wrapper, "tabIndex", index);
+		}
+
+		this.getTabIndex = function() {
+			return Urhola.Dom.getElementAttribute(wrapper, "tabIndex");
+		}
+
 		this.show = function() {
 			Urhola.Dom.addStyleToElement(wrapper, "display", "block");
 			return this;
@@ -136,7 +145,6 @@ var Urhola = {
 			var option;
 			switch(typeof defaultOption) {
 				case "string":
-				default:
 					option = getOptionByValue(defaultOption);
 					break;
 				case "object":
@@ -144,9 +152,24 @@ var Urhola = {
 					var value = defaultOption.value;
 					option = getOptionByValueAndLabel(value, label);
 					break;
+				default:
+					var placeHolderText = getPlaceHolderText();
+					if (placeHolderText !== undefined)
+						setPlaceHolderText(placeHolderText);
+					else
+						option = getFirstOption();
+					break;
 			}
 			if (option !== undefined)
 				setSelectedOption(option);
+		}
+
+		function getFirstOption() {
+			return optionsContainer.childNodes[0];
+		}
+
+		function setPlaceHolderText(text) {
+			valueContainerText.innerHTML = text;
 		}
 
 		function getValuesFromOptionElement(li) {
@@ -266,16 +289,12 @@ var Urhola = {
 
 		function getOptionByValue(value) {
 			var listItems = optionsContainer.childNodes;
-			var firstListElement = listItems[0];
-			if (value === undefined)
-				return firstListElement;
 			for (var i = 0; i < listItems.length; i++) {
 				var listItem = listItems[i];
 				var listItemValue = Urhola.Dom.getElementAttribute(listItem, "value");
 				if (listItemValue == value)
 					return listItem;
 			}
-			return firstListElement;
 		}
 
 		function getOptionByValueAndLabel(value, label) {
@@ -616,6 +635,10 @@ var Urhola = {
 
 		function getWrapperAttributes() {
 			return settings.attributes;
+		}
+
+		function getPlaceHolderText() {
+			return settings.placeHolder;
 		}
 	},
 

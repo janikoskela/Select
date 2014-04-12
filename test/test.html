@@ -59,8 +59,9 @@
       optionLimit: 9,
       attributes: { "asd": "asokmds" },
       options: [{ label: "test option 1", value: "foo" }, { label: "test option 2", value: "bar" },{ label: "test option 3", value: "foo" }, { label: "test option 4", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }, { label: "humbajampa", value: "huhuu"}],
-      defaultOption: { value: "huhuu", label: "humbajampa" }, //default value can assigned. If not found first option is selected as default
+      //defaultOption: { value: "huhuu", label: "humbajampa" }, //default value can assigned. If not found first option is selected as default
       orientation: "left", //arrow points to right
+      placeHolder: " - Please select -",
       onFocus: (function() {
         return function() {
           self.close();
