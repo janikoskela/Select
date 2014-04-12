@@ -160,8 +160,10 @@ var Urhola = {
 					break;
 				default:
 					var placeHolderText = getPlaceHolderText();
-					if (placeHolderText !== undefined)
+					if (placeHolderText !== undefined) {
 						setPlaceHolderText(placeHolderText);
+						return;
+					}
 					else
 						option = getFirstOption();
 					break;
