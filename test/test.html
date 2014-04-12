@@ -3,7 +3,7 @@
 <head>
   <title>Simple Select Box</title>
   <meta charset="utf-8">
-  <script src="../dist/Selex.min.js"></script>
+  <script src="../src/Selex.js"></script>
   <link rel="stylesheet" type="text/css" href="../themes/lime/lime.css">
   <link rel="stylesheet" type="text/css" href="../themes/ocean/ocean.css">
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -27,9 +27,8 @@
     //select box initializing and rendering
     var lime = new Selex({
       targetElement: $('#lime-wrapper'),
-      //targetElement: document.getElementById("lime-wrapper"), //rendered select box will fill the parent element. Required!
-      theme: "lime",
-      options: ["koasmdkoasd", "amsd", "qweasd", "asdqwqw", "asdqwzxc", "qweqwe"], //options, must be in this format. Required!
+      classes: "lime",
+      options: ["koasmdkoasd", "amsd", "qweasd", "asdqwqw", "asdqwzxc", "qweqwe"],
       defaultOption: "amsd", //default value can assigned. If not found first option is selected as default
       orientation: "right", //arrow points to right
       tabIndex: 1,
@@ -55,12 +54,13 @@
 
     var ocean = new Selex({
       targetElement: document.getElementById("ocean-wrapper"), //rendered select box will fill the parent element. Required!
-      theme: "ocean",
+      classes: "ocean",
       tabIndex: 2,
       optionLimit: 9,
+      attributes: { "asd": "asokmds" },
       options: [{ label: "test option 1", value: "foo" }, { label: "test option 2", value: "bar" },{ label: "test option 3", value: "foo" }, { label: "test option 4", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" },{ label: "foo", value: "foo" }, { label: "bar", value: "bar" }, { label: "humbajampa", value: "huhuu"}],
       defaultOption: { value: "huhuu", label: "humbajampa" }, //default value can assigned. If not found first option is selected as default
-      orientation: "right", //arrow points to right
+      orientation: "left", //arrow points to right
       onFocus: (function() {
         return function() {
           self.close();

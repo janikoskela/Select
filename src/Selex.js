@@ -16,16 +16,21 @@ var Urhola = {
 		// Allowed settings which can be overriden by the user
 		var settings = {
 			options: [],
-			theme: undefined,
+			classes: undefined,
 			targetElement: undefined,
 			defaultOption: undefined,
-			orientation: "right",
-			onChange: undefined,
+			orientation: "left",
+			onOptionChange: undefined,
 			optionLimit: 5,
-			sort: "desc",
+			sort: undefined,
 			onFocus: undefined,
 			onFocusOut: undefined,
-			tabIndex: 1
+			tabIndex: 0,
+			height: undefined,
+			width: undefined,
+			fontSize: undefined,
+			valueContainerName: undefined,
+			attributes: undefined
 		};
 
 		init();
@@ -42,10 +47,10 @@ var Urhola = {
 		}
 
 		this.setOptions = function(options) {
-			Urhola.validateOptionList(options);
+			Urhola.Validations.validateOptionList(options);
 			settings.options = options;
 			addOptionsToContainer(optionsContainer);
-			updateValueContainerText();
+			setDefaultOption();
 		}
 
 		this.setOptionLimit = function(limit) {
@@ -71,9 +76,12 @@ var Urhola = {
 		this.openOptionList = function() {
 			Urhola.Dom.addStyleToElement(optionsContainer, "display", "block");
 			Urhola.Dom.addClassToElement(arrow, "arrow arrowUp");
-			var height = optionsContainer.firstChild.offsetHeight;
-			adjustOptionsContainerHeight(height);
-			adjustOptionsContainerWidth();
+			var firstChild = optionsContainer.firstChild;
+			if (firstChild !== null) {
+				var height = optionsContainer.firstChild.offsetHeight;
+				adjustOptionsContainerHeight(height);
+				adjustOptionsContainerWidth();
+			}
 		}
 
 		this.isOptionListDisplayed = function() {
@@ -89,19 +97,22 @@ var Urhola = {
 		}
 
 		this.hide = function() {
-			wrapper.addStyleToElement("display", "none");
+			Urhola.Dom.addStyleToElement(wrapper, "display", "none");
 			return this;
 		}
 
 		this.show = function() {
-			wrapper.addStyleToElement("display", "block");
+			Urhola.Dom.addStyleToElement(wrapper, "display", "block");
 			return this;
 		}
 
 		this.render = function() {
 			var rootElement = getTargetElement();
-			if (rootElement.jquery !== undefined)
+			if (rootElement.jquery !== undefined) {
 				rootElement = rootElement[0];
+				if (rootElement === undefined || rootElement.length === 0)
+					return;
+			}
 			rootElement.innerHTML = "";
 			Urhola.Dom.appendChildToElement(wrapper, rootElement);
 			Urhola.Dom.appendChildToElement(container, wrapper);
@@ -125,6 +136,7 @@ var Urhola = {
 			var option;
 			switch(typeof defaultOption) {
 				case "string":
+				default:
 					option = getOptionByValue(defaultOption);
 					break;
 				case "object":
@@ -133,7 +145,8 @@ var Urhola = {
 					option = getOptionByValueAndLabel(value, label);
 					break;
 			}
-			setSelectedOption(option);
+			if (option !== undefined)
+				setSelectedOption(option);
 		}
 
 		function getValuesFromOptionElement(li) {
@@ -176,7 +189,6 @@ var Urhola = {
 				}
 				Urhola.Dom.addPropertyToElement(li, "label", label);
 				Urhola.Dom.addPropertyToElement(li, "value", value);
-				Urhola.Dom.addPropertyToElement(li, "index", i);
 				Urhola.Dom.appendTextToElement(label, li);
 				li.addEventListener("click", optionClicked);
 				Urhola.Dom.appendChildToElement(li, parent);
@@ -193,15 +205,32 @@ var Urhola = {
 				case "asc":
 					options.sort(sortByAsc);
 					break;
+				case undefined:
+					return options;
+					break;
 				default:
 					throw Error("Unsupported sort type \"" + sortType + "\"");
 			}
 			return options;
 		}
 
+		function getOptionLabel(option) {
+			switch(typeof option) {
+				case "string":
+					return option.toLowerCase();
+					break;
+				case "object":
+					var label = (option.label === undefined) ? option.name : option.label;
+					if (label === undefined)
+						label = option.value;
+					return label.toLowerCase();
+					break;
+			}
+		}
+
 		function sortByDesc(optionA, optionB) {
-			var a = optionA.label;
-			var b = optionB.label;
+			var a = getOptionLabel(optionA);
+			var b = getOptionLabel(optionB);
 			if (a > b)
 				return 1;
 			if (a < b)
@@ -210,8 +239,8 @@ var Urhola = {
 		}
 
 		function sortByAsc(optionA, optionB) {
-			var a = optionA.label;
-			var b = optionB.label;
+			var a = getOptionLabel(optionA);
+			var b = getOptionLabel(optionB);			
 			if (a > b)
 				return -1;
 			if (a < b)
@@ -220,25 +249,33 @@ var Urhola = {
 		}
 
 		function adjustOptionsContainerWidth() {
-			Urhola.Dom.addStyleToElement(optionsContainer, "width", "100%");
+			var width = wrapper.offsetWidth + "px";
+			Urhola.Dom.addStyleToElement(optionsContainer, "width", width);
 		}
 
 		function adjustOptionsContainerHeight(listItemOffsetHeight) {
+			var listItemCount = optionsContainer.childNodes.length;
 			var limit = getOptionLimit();
-			var height = limit * listItemOffsetHeight;
+			var count = limit;
+			if (listItemCount < limit)
+				count = listItemCount;
+			var height = count * listItemOffsetHeight;
 			height += "px"
 			Urhola.Dom.addStyleToElement(optionsContainer, "height", height);
 		}
 
 		function getOptionByValue(value) {
 			var listItems = optionsContainer.childNodes;
+			var firstListElement = listItems[0];
+			if (value === undefined)
+				return firstListElement;
 			for (var i = 0; i < listItems.length; i++) {
 				var listItem = listItems[i];
 				var listItemValue = Urhola.Dom.getElementAttribute(listItem, "value");
-				if (listItemValue === value)
+				if (listItemValue == value)
 					return listItem;
 			}
-			return listItems[0];
+			return firstListElement;
 		}
 
 		function getOptionByValueAndLabel(value, label) {
@@ -258,9 +295,10 @@ var Urhola = {
 			var onChange = getOnChange();
 			selectedValue = Urhola.Dom.getElementAttribute(target, "value");
 			selectedLabel = Urhola.Dom.getElementAttribute(target, "label");
+			Urhola.Dom.addPropertyToElement(valueContainer, "value", selectedValue);
 			valueContainerText.innerHTML = selectedLabel;
 			if (typeof onChange === "function")
-				onChange(selectedLabel, selectedValue, self);		
+				onChange(selectedLabel, selectedValue, e);		
 		}
 
 		function createValueContainerText(text) {
@@ -278,7 +316,13 @@ var Urhola = {
 		function createValueContainer() {
 			var className = "valueContainer";
 			var valueContainer = Urhola.Dom.createElement("li");
-			valueContainerText = Urhola.Dom.createElement("span");
+			valueContainerText = Urhola.Dom.createElement("div");
+			var name = getValueContainerName();
+			if (name !== undefined)
+				Urhola.Dom.addPropertyToElement(valueContainer, "name", name);
+			var fontSize = getFontSize();
+			if (fontSize !== undefined)
+				Urhola.Dom.addStyleToElement(valueContainerText, "fontSize", fontSize);
 			Urhola.Dom.appendChildToElement(valueContainerText, valueContainer);
 			Urhola.Dom.addClassToElement(valueContainer, className);
 			return valueContainer;
@@ -314,14 +358,14 @@ var Urhola = {
 				callback();
 		}
 
-		function onKeyPress(e) {
+		function onKeyUp(e) {
 			var keyCode = e.keyCode;
 			switch(keyCode) {
 				case 38:
-					onKeyUp(e);
+					onArrowKeyUp(e);
 					break;
 				case 40:
-					onKeyDown(e);
+					onArrowKeyDown(e);
 					break;
 				case 13:
 					onEnter(e);
@@ -353,7 +397,7 @@ var Urhola = {
 							if (getValuesFromOptionElement(next).label[0].toLowerCase() === query) {
 								setListElementNotHovered(hovered);
 								setListElementHovered(next);
-								next.scrollIntoView();
+								optionsContainer.scrollTop = next.offsetTop;
 								return;
 							}
 						}
@@ -363,13 +407,13 @@ var Urhola = {
 					if (hovered !== undefined)
 						setListElementNotHovered(hovered);
 					setListElementHovered(li);
-					li.scrollIntoView();
+					optionsContainer.scrollTop = li.offsetTop;
 					return;
 				}
 			}
 		}
 
-		function onKeyUp(e) {
+		function onArrowKeyUp(e) {
 			if (!self.isOptionListDisplayed())
 				self.openOptionList();
 			var hovered = getHoveredOption();
@@ -383,33 +427,29 @@ var Urhola = {
 				if (target === undefined || target === null) {
 					target = lastListElement;
 				}
-				target.scrollIntoView();
+				optionsContainer.scrollTop = target.offsetTop;
 				setListElementHovered(target);
 			}
 		}
 
-		function onKeyDown(e) {
+		function onArrowKeyDown(e) {
 			if (!self.isOptionListDisplayed())
 				self.openOptionList();
 			var hovered = getHoveredOption();
 			var firstListElement = optionsContainer.childNodes[0];
-			if (hovered === undefined || hovered === null) {
-				setListElementHovered(firstListElement);
-			}
+			var target = hovered;
+			if (target === undefined || target === null)
+				target = firstListElement;
 			else {
 				setListElementNotHovered(hovered);
-				var target = hovered.nextSibling;
+				target = hovered.nextSibling;
 				if (target === undefined || target === null) {
 					target = firstListElement;
 				}
-				var index = Urhola.Dom.getElementAttribute(target, "index");
-				var optionLimit = getOptionLimit();
-				if (index >= optionLimit)
-					prevSibling(target, optionLimit - 1).scrollIntoView();
-				if (index == 0)
-					target.scrollIntoView();
-				setListElementHovered(target);
+				optionsContainer.scrollTop = target.offsetTop;
 			}
+			setListElementHovered(target);
+			return false;
 		}
 
 		function prevSibling(elem, count) {
@@ -435,24 +475,72 @@ var Urhola = {
 		function onEnter(e) {
 			var hoveredElem = getHoveredOption();
 			if (hoveredElem !== null && typeof hoveredElem === "object") {
-				var option = getValuesFromOptionElement(hoveredElem);
-				setSelectedOption(option);
+				setSelectedOption(hoveredElem);
+				var onChange = getOnChange();
+				if (typeof onChange === "function")
+					onChange(selectedLabel, selectedValue, e);
 				self.closeOptionList();
 			}
 		}
 
 		function createWrapper() {
-			var className = getTheme();
+			var classNames = getClasses();
 			var tabIndex = getTabIndex();
 			var wrapper = Urhola.Dom.createElement("div");
+			var height = getHeight();
+			var attributes = getWrapperAttributes();
+			if (height !== undefined)
+				Urhola.Dom.addStyleToElement(wrapper, "height", height);
+			var width = getWidth();
+			if (width !== undefined) {
+				if (typeof width === "number")
+					width = width + "px";
+				Urhola.Dom.addStyleToElement(wrapper, "width", width);
+			}
 			Urhola.Dom.addPropertyToElement(wrapper, "tabindex", tabIndex);
 			wrapper.addEventListener("click", toggleOptionList);
 			wrapper.addEventListener("mouseleave", mouseLeave);
 			wrapper.addEventListener("focus", focusHandler, true);
 			wrapper.addEventListener("blur", focusOutHandler, true);
-			wrapper.addEventListener("keyup", onKeyPress);
-			Urhola.Dom.addClassToElement(wrapper, className);
+			wrapper.addEventListener("keyup", onKeyUp);
+			wrapper.addEventListener("keydown", onKeyDown);
+			Urhola.Dom.addClassToElement(wrapper, classNames);
+			setWrapperAttributes(wrapper, attributes);
 			return wrapper;
+		}
+
+		function setWrapperAttributes(wrapper, attributes) {
+			switch(typeof attributes) {
+				case "object":
+					if (attributes.length > 0) {
+						for (var i = 0; i < attributes.length; i++) {
+							var name = attributes[i].name;
+							var value = attributes[i].value;
+							Urhola.Dom.addPropertyToElement(wrapper, name, value);
+						}
+					}
+					else {
+						if (attributes.name !== undefined && attributes.value !== undefined)
+							Urhola.Dom.addPropertyToElement(wrapper, attributes.name, attributes.value);
+						else {
+							for (var name in attributes) {
+								var value = attributes[name];
+								Urhola.Dom.addPropertyToElement(wrapper, name, value);
+							}
+						}
+					}
+					break;
+				case "string":
+				case "number":
+					Urhola.Dom.addPropertyToElement(wrapper, attributes, "");
+					break;
+			}
+		}
+
+		function onKeyDown(e) {
+			/* to prevent window to be scrolled down */
+			e.preventDefault();
+			return false;
 		}
 
 		function mouseLeave(e) {
@@ -478,8 +566,8 @@ var Urhola = {
 			return settings.options;
 		}
 
-		function getTheme() {
-			return settings.theme;
+		function getClasses() {
+			return settings.classes;
 		}
 
 		function getTargetElement() {
@@ -490,8 +578,12 @@ var Urhola = {
 			return settings.defaultOption;
 		}
 
+		function getHeight() {
+			return settings.height;
+		}
+
 		function getOnChange() {
-			return settings.onChange;
+			return settings.onOptionChange;
 		}
 
 		function getSort() {
@@ -508,6 +600,22 @@ var Urhola = {
 
 		function getTabIndex() {
 			return settings.tabIndex;
+		}
+
+		function getFontSize() {
+			return settings.fontSize;
+		}
+
+		function getWidth() {
+			return settings.width;
+		}
+
+		function getValueContainerName() {
+			return settings.valueContainerName;
+		}
+
+		function getWrapperAttributes() {
+			return settings.attributes;
 		}
 	},
 
@@ -592,7 +700,7 @@ var Urhola = {
 
 	Validations: {
 		validateOptionList: function(options) {
-			if (typeof options !== "object")
+			if (typeof options !== "object" || options === undefined)
 				throw new Error("Invalid options format!");
 		},
 
