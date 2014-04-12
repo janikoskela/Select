@@ -38,8 +38,8 @@ var Urhola = {
 
 		function init() {
 			settings = Urhola.Utils.mergeSettings(userDefinedSettings, settings);
-			Urhola.Validations.validateOptionList(settings.options);
-			Urhola.Validations.validateElement(settings.targetElement);
+			Urhola.Validations.validateOptionList(getOptions());
+			Urhola.Validations.validateElement(getTargetElement());
 			wrapper = createWrapper();
 			container = createContainer();
 			selector = createSelector();
@@ -49,19 +49,19 @@ var Urhola = {
 
 		this.setOptions = function(options) {
 			Urhola.Validations.validateOptionList(options);
-			settings.options = options;
+			setOptions(options);
 			addOptionsToContainer(optionsContainer);
 			setDefaultOption();
 		}
 
 		this.setOptionLimit = function(limit) {
 			self.closeOptionList();
-			settings.optionLimit = limit;
+			setOptionLimit(limit);
 			self.openOptionList();
 		}
 
 		this.setOrientation = function(orientation) {
-			settings.orientation = orientation;
+			setOrientation(orientation);
 			self.render();
 		}
 
@@ -121,6 +121,12 @@ var Urhola = {
 				rootElement = rootElement[0];
 				if (rootElement === undefined || rootElement.length === 0)
 					return;
+			}
+			if (getTabIndex === undefined) {
+				var rootTabIndex = Urhola.Dom.getElementAttribute(rootElement, "tabIndex");
+				if (rootTabIndex !== undefined) {
+					setTabIndex(tabIndex);
+				}
 			}
 			rootElement.innerHTML = "";
 			Urhola.Dom.appendChildToElement(wrapper, rootElement);
@@ -577,12 +583,24 @@ var Urhola = {
 			return settings.orientation;
 		}
 
+		function setOrientation(orientation) {
+			settings.orientation = orientation;
+		}
+
 		function getOptionLimit() {
 			return settings.optionLimit;
 		}
 
+		function setOptionLimit(limit) {
+			settings.optionLimit = limit;
+		}
+
 		function getOptions() {
 			return settings.options;
+		}
+
+		function setOptions(options) {
+			settings.options = options;
 		}
 
 		function getClasses() {
@@ -619,6 +637,10 @@ var Urhola = {
 
 		function getTabIndex() {
 			return settings.tabIndex;
+		}
+
+		function setTabIndex(index) {
+			settings.tabIndex = index;
 		}
 
 		function getFontSize() {
