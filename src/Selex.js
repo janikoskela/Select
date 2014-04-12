@@ -151,6 +151,7 @@ var Urhola = {
 			var option;
 			switch(typeof defaultOption) {
 				case "string":
+				case "number":
 					option = getOptionByValue(defaultOption);
 					break;
 				case "object":
@@ -311,7 +312,7 @@ var Urhola = {
 				var listItem = listItems[i];
 				var listItemValue = Urhola.Dom.getElementAttribute(listItem, "value");
 				var listItemLabel = listItem.innerHTML;
-				if (listItemValue === value && listItemLabel === label)
+				if (listItemValue == value && listItemLabel == label)
 					return listItem;
 			}
 			return listItems[0];
