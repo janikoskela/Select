@@ -33,6 +33,10 @@ setOrientation|String|Sets
 setOptions|object or array|Sets new options
 setOptionLimit|integer|Sets the maximum count of options to be displayed
 
+Implementations
+=============
+ - https://pilvi.com
+
 Browser compatibility
 ==============
  - IE 8+
