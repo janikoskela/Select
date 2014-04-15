@@ -103,7 +103,7 @@ var Urhola = {
 		}
 
 		this.setTabIndex = function(index) {
-			Urhola.Dom.addPropertyToElement(wrapper, "tabIndex", index);
+			Urhola.Dom.addElementAttribute(wrapper, "tabIndex", index);
 		}
 
 		this.getTabIndex = function() {
@@ -113,6 +113,18 @@ var Urhola = {
 		this.show = function() {
 			Urhola.Dom.addStyleToElement(wrapper, "display", "block");
 			return this;
+		}
+
+		this.getAttribute = function(name) {
+			return Urhola.Dom.getElementAttribute(wrapper, name);
+		}
+
+		this.removeAttribute = function(name) {
+			Urhola.Dom.removeElementAttribute(wrapper, name);
+		}
+
+		this.addAttributes = function(attributes) {
+			addWrapperAttributes(wrapper, attributes);
 		}
 
 		this.render = function() {
@@ -219,8 +231,8 @@ var Urhola = {
 					default:
 						throw Error("Unsupported option data format!");
 				}
-				Urhola.Dom.addPropertyToElement(li, "label", label);
-				Urhola.Dom.addPropertyToElement(li, "value", value);
+				Urhola.Dom.addElementAttribute(li, "label", label);
+				Urhola.Dom.addElementAttribute(li, "value", value);
 				Urhola.Dom.appendTextToElement(label, li);
 				li.addEventListener("click", optionClicked);
 				Urhola.Dom.appendChildToElement(li, parent);
@@ -323,7 +335,7 @@ var Urhola = {
 			var onChange = getOnChange();
 			selectedValue = Urhola.Dom.getElementAttribute(target, "value");
 			selectedLabel = Urhola.Dom.getElementAttribute(target, "label");
-			Urhola.Dom.addPropertyToElement(valueContainer, "value", selectedValue);
+			Urhola.Dom.addElementAttribute(valueContainer, "value", selectedValue);
 			valueContainerText.innerHTML = selectedLabel;
 			if (typeof onChange === "function")
 				onChange(selectedLabel, selectedValue, e);		
@@ -347,7 +359,7 @@ var Urhola = {
 			valueContainerText = Urhola.Dom.createElement("div");
 			var name = getValueContainerName();
 			if (name !== undefined)
-				Urhola.Dom.addPropertyToElement(valueContainer, "name", name);
+				Urhola.Dom.addElementAttribute(valueContainer, "name", name);
 			var fontSize = getFontSize();
 			if (fontSize !== undefined)
 				Urhola.Dom.addStyleToElement(valueContainerText, "fontSize", fontSize);
@@ -404,11 +416,11 @@ var Urhola = {
 		}
 
 		function setListElementHovered(li) {
-			Urhola.Dom.addPropertyToElement(li, "hovered", true);
+			Urhola.Dom.addElementAttribute(li, "hovered", true);
 		}
 
 		function setListElementNotHovered(li) {
-			Urhola.Dom.addPropertyToElement(li, "hovered", false);
+			Urhola.Dom.addElementAttribute(li, "hovered", false);
 		}
 
 		function searchByFirstChar(query) {
@@ -525,7 +537,7 @@ var Urhola = {
 					width = width + "px";
 				Urhola.Dom.addStyleToElement(wrapper, "width", width);
 			}
-			Urhola.Dom.addPropertyToElement(wrapper, "tabindex", tabIndex);
+			Urhola.Dom.addElementAttribute(wrapper, "tabindex", tabIndex);
 			wrapper.addEventListener("click", toggleOptionList);
 			wrapper.addEventListener("mouseleave", mouseLeave);
 			wrapper.addEventListener("focus", focusHandler, true);
@@ -533,34 +545,34 @@ var Urhola = {
 			wrapper.addEventListener("keyup", onKeyUp);
 			wrapper.addEventListener("keydown", onKeyDown);
 			Urhola.Dom.addClassToElement(wrapper, classNames);
-			setWrapperAttributes(wrapper, attributes);
+			addWrapperAttributes(wrapper, attributes);
 			return wrapper;
 		}
 
-		function setWrapperAttributes(wrapper, attributes) {
+		function addWrapperAttributes(wrapper, attributes) {
 			switch(typeof attributes) {
 				case "object":
 					if (attributes.length > 0) {
 						for (var i = 0; i < attributes.length; i++) {
 							var name = attributes[i].name;
 							var value = attributes[i].value;
-							Urhola.Dom.addPropertyToElement(wrapper, name, value);
+							Urhola.Dom.addElementAttribute(wrapper, name, value);
 						}
 					}
 					else {
 						if (attributes.name !== undefined && attributes.value !== undefined)
-							Urhola.Dom.addPropertyToElement(wrapper, attributes.name, attributes.value);
+							Urhola.Dom.addElementAttribute(wrapper, attributes.name, attributes.value);
 						else {
 							for (var name in attributes) {
 								var value = attributes[name];
-								Urhola.Dom.addPropertyToElement(wrapper, name, value);
+								Urhola.Dom.addElementAttribute(wrapper, name, value);
 							}
 						}
 					}
 					break;
 				case "string":
 				case "number":
-					Urhola.Dom.addPropertyToElement(wrapper, attributes, "");
+					Urhola.Dom.addElementAttribute(wrapper, attributes, "");
 					break;
 			}
 		}
@@ -709,9 +721,13 @@ var Urhola = {
 			return elem.getAttribute(name);
 		},
 
-		addPropertyToElement: function(elem, name, value) {
+		addElementAttribute: function(elem, name, value) {
 			elem.setAttribute(name, value);
 			return elem;
+		},
+
+		removeElementAttribute: function(elem, name) {
+			elem.removeAttribute(name);
 		},
 
 		appendChildToElement: function(child, elem) {
