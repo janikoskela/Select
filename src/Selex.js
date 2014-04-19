@@ -127,6 +127,12 @@ var Urhola = {
 			addWrapperAttributes(wrapper, attributes);
 		}
 
+		this.empty = function() {
+			while (optionsContainer.firstChild) {
+			    optionsContainer.removeChild(optionsContainer.firstChild);
+			}
+		}
+
 		this.render = function() {
 			var rootElement = getTargetElement();
 			if (rootElement.jquery !== undefined) {
