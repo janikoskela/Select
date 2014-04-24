@@ -12,6 +12,7 @@ var Urhola = {
 		var valueContainerText = undefined;
 		var arrow = undefined;
 		var self = this;
+		var disabled = false;
 
 		// Allowed settings which can be overriden by the user
 		var settings = {
@@ -31,7 +32,8 @@ var Urhola = {
 			fontSize: undefined,
 			valueContainerName: undefined,
 			attributes: undefined,
-			placeHolder: undefined
+			placeHolder: undefined,
+			disabled: false
 		};
 
 		init();
@@ -133,6 +135,19 @@ var Urhola = {
 			}
 		}
 
+		this.enable = function() {
+			disabled = false;
+			Urhola.Dom.removeCLassFromElement(wrapper, "disabled");
+			addWrapperEventListeners(wrapper);
+		}
+
+		this.disable = function() {
+			self.closeOptionList();
+			disabled = true;
+			Urhola.Dom.addClassToElement(wrapper, "disabled");
+			removeWrapperEventListeners(wrapper);
+		}
+
 		this.render = function() {
 			var rootElement = getTargetElement();
 			if (rootElement.jquery !== undefined) {
@@ -161,6 +176,10 @@ var Urhola = {
 			Urhola.Dom.appendChildToElement(optionsContainer, wrapper);
 			addOptionsToContainer(optionsContainer);
 			setDefaultOption();
+			var isDisabled = getDisabled();
+			if (isDisabled) {
+				Urhola.Dom.addStyleToElement(wrapper, "disabled");
+			}
 			return this;
 		}
 
@@ -338,13 +357,13 @@ var Urhola = {
 
 		function optionClicked(e) {
 			var target = e.target;
-			var onChange = getOnChange();
+			var callback = getOnChange();
 			selectedValue = Urhola.Dom.getElementAttribute(target, "value");
 			selectedLabel = Urhola.Dom.getElementAttribute(target, "label");
 			Urhola.Dom.addElementAttribute(valueContainer, "value", selectedValue);
 			valueContainerText.innerHTML = selectedLabel;
-			if (typeof onChange === "function")
-				onChange(selectedLabel, selectedValue, e);		
+			if (typeof callback === "function")
+				callback(selectedLabel, selectedValue, e, self);		
 		}
 
 		function createValueContainerText(text) {
@@ -385,6 +404,8 @@ var Urhola = {
 		}
 
 		function toggleOptionList(e) {
+			if (disabled === true)
+				return;
 			var optionsContainerDisplayValue = Urhola.Dom.getElementStyleValue(optionsContainer, "display");
 			if (optionsContainerDisplayValue === "block")
 				self.closeOptionList();
@@ -524,7 +545,7 @@ var Urhola = {
 				setSelectedOption(hoveredElem);
 				var onChange = getOnChange();
 				if (typeof onChange === "function")
-					onChange(selectedLabel, selectedValue, e);
+					onChange(selectedLabel, selectedValue, e, self);
 				self.closeOptionList();
 			}
 		}
@@ -544,15 +565,28 @@ var Urhola = {
 				Urhola.Dom.addStyleToElement(wrapper, "width", width);
 			}
 			Urhola.Dom.addElementAttribute(wrapper, "tabindex", tabIndex);
+			addWrapperEventListeners(wrapper);
+			Urhola.Dom.addClassToElement(wrapper, classNames);
+			addWrapperAttributes(wrapper, attributes);
+			return wrapper;
+		}
+
+		function addWrapperEventListeners(wrapper) {
 			wrapper.addEventListener("click", toggleOptionList);
 			wrapper.addEventListener("mouseleave", mouseLeave);
 			wrapper.addEventListener("focus", focusHandler, true);
 			wrapper.addEventListener("blur", focusOutHandler, true);
 			wrapper.addEventListener("keyup", onKeyUp);
 			wrapper.addEventListener("keydown", onKeyDown);
-			Urhola.Dom.addClassToElement(wrapper, classNames);
-			addWrapperAttributes(wrapper, attributes);
-			return wrapper;
+		}
+
+		function removeWrapperEventListeners(wrapper) {
+			wrapper.removeEventListener("click", toggleOptionList);
+			wrapper.removeEventListener("mouseleave", mouseLeave);
+			wrapper.removeEventListener("focus", focusHandler, true);
+			wrapper.removeEventListener("blur", focusOutHandler, true);
+			wrapper.removeEventListener("keyup", onKeyUp);
+			wrapper.removeEventListener("keydown", onKeyDown);
 		}
 
 		function addWrapperAttributes(wrapper, attributes) {
@@ -683,6 +717,10 @@ var Urhola = {
 		function getPlaceHolderText() {
 			return settings.placeHolder;
 		}
+
+		function getDisabled() {
+			return settings.disabled;
+		}
 	},
 
 	Dom: {
@@ -709,9 +747,29 @@ var Urhola = {
 			return elem;
 		},
 
-		addClassToElement: function(elem, className) {
+		setClassToElement: function(elem, className) {
 			elem.className = className;
 			return elem;
+		},
+
+		addClassToElement: function(elem, className) {
+			var classes = Urhola.Dom.getElementClasses(elem);
+			classes += " " + className;
+			Urhola.Dom.setClassToElement(elem, classes);
+			return elem;
+		},
+
+		getElementClasses: function(elem) {
+			return elem.className;
+		},
+
+		removeCLassFromElement: function(elem, className) {
+			if (Urhola.Dom.hasClass(elem, className))
+				elem.className = '';
+		},
+
+		hasClass: function(elem, className) {
+			return elem.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
 		},
 
 		addStyleToElement: function(elem, name, value) {

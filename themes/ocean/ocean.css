@@ -46,6 +46,9 @@
 .ocean:focus .container { 
 	border: 1px solid red;
 }
+.ocean:focus.disabled .container { 
+	border: 1px solid #4B8EB8;
+}
 .ocean .optionsContainer { 
 	display: none; 
 	list-style: none; 
