@@ -528,7 +528,7 @@
 		var defaultValue = userDefinedSettings.defaultValue || undefined;
 		var orientation = userDefinedSettings.orientation || "right";
 		var onOptionChange = userDefinedSettings.onOptionChange || undefined;
-		var optionLimit = userDefinedSettings.optionLimit || 5;
+		var optionLimit = userDefinedSettings.optionLimit;
 		var sort = userDefinedSettings.sort || undefined;
 		var tabIndex = userDefinedSettings.tabIndex || 0;
 		var height = userDefinedSettings.height || undefined;
