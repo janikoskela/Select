@@ -1,10 +1,7 @@
 SimpleSelectBox
 ===============
-A lightweight select box which is not depended on any external library and is easily configurable.
+The fundemental point of Selex is to offer a select box (with some extra functionality) which is lightweight and has customizable graphics. Lightweight is primarily achieved by having no external dependencies (i.e. jQuery). The appereance of Selex is controlled with <a href="https://github.com/janikoskela/Selex/tree/master/themes">themes</a> which are a set of CSS rules one can easily modify.
 
-Demo
-=============
-<a href="http://janikoskela.github.io/SimpleSelectBox.js/">Demo.</a>
 Usage
 ==============
 See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
@@ -19,11 +16,13 @@ getSelectedValue|-|Returns the selected options value
 
 Implementations
 =============
- - https://pilvi.com
+ - https://pilvi.com (old version)
 
 Browser compatibility
 ==============
-Tested with:
+A browser with CSS3 support is required.
+
+So far Selex is tested with:
  - Safari, Version 7.0.5 (9537.77.4)
 
 Licence
