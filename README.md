@@ -1,6 +1,8 @@
 Selex
 ===============
-The fundemental point of Selex is to offer a select box (with some extra functionality) which is lightweight and has customizable graphics. Lightweight is primarily achieved by having no external dependencies (i.e. jQuery). The appereance of Selex is controlled with <a href="https://github.com/janikoskela/Selex/tree/master/themes">themes</a> which are a set of CSS rules one can easily modify.
+The fundemental point of Selex is to offer a select box which is lightweight, contains common select box functionality and has customizable graphics. 
+
+Lightweight is primarily achieved by having no external dependencies (i.e. jQuery). The appereance of Selex is controlled with <a href="https://github.com/janikoskela/Selex/tree/master/themes">themes</a> which are a set of CSS rules one can easily modify.
 
 Usage
 ==============
