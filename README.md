@@ -8,6 +8,21 @@ Usage
 ==============
 See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
 
+Constructor parameters
+===============
+Name| Type | Example value | Description
+----|----------|------|-----------
+options|Array of object(s) |[{ text: "option", value: "optionValue"}]|Options
+defaultValue|String|"optionValue"|An option is searched with this value, first option that matches is picked
+width|String or number | "100%", "12px", "1em"|Width for the select box
+theme|String|"default"|Defines what theme is to be used. Basically this will define the class of the root element
+fontSize|String or number | "12px", "1em", "50%"|The font size which is to be defined to the root element. If number is given it will be in pixels
+fontFamily|String|"verdana"|The font family which is to be defined to the root element
+orientation|String|"right", "left"|Defines the side where arrow points
+onOptionChange|function| - |A callback which is called when option changes
+targetElement|Element| - |The element where Selex is rendered
+
+
 Public methods
 ===============
 Name|Parameters|Description
