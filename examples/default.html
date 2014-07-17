@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Simple Select Box</title>
+  <meta charset="utf-8">
+  <script src="../src/dist/Selex.js"></script>
+  <link rel="stylesheet" type="text/css" href="../themes/default/default.css">
+</head>
+
+<body>
+  <div id="default"></div>
+<script type="text/javascript">
+var options = [
+  {
+    value: "1",
+    text: "Loooooong asomdokmsadkoqkokmqw"
+  },
+  {
+    value: "2",
+    text: "asdasqwasx asdasd acasas "
+  },
+  {
+    value: "3",
+    text: "qweqwxazxc asdasd"
+  },
+  {
+    value: "4",
+    text: "qweqweasdzxcxzc"
+  },
+  {
+    value: "5",
+    text: "qweasd"
+  },
+  {
+    value: "6",
+    text: "fgegte"
+  },
+  {
+    value: "7",
+    text: "qwesdgxc"
+  },
+  {
+    value: "8",
+    text: "fooasdm"
+  },
+
+];
+var f = new Selex({
+  targetElement: document.getElementById("default"),
+  options: options,
+  defaultValue: "foo",
+  width: "20em",
+  theme: "default",
+  fontSize: ".8em",
+  orientation: "right",
+  fontFamily: "Verdana",
+  onOptionChange: (function(foo) {
+    return function(value, text) {
+      console.log("Chosen option: " + value, text);
+    }
+  })(f)
+});
+f.render();
+</script>
+</body>
+</html>
