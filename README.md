@@ -18,7 +18,7 @@ getSelectedValue|-|Returns the selected options value
 
 Implementations
 =============
- - https://pilvi.com (old version)
+ - https://pilvi.com
 
 Browser compatibility
 ==============
