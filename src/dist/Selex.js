@@ -156,7 +156,7 @@
 		}
 
 		this.createNativeSelectBox = function() {
-			this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox();
+			this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(this.onNativeOptionItemClick.bind(this));
 			return this.nativeSelectBox.render();
 		}
 
@@ -201,24 +201,32 @@
 			var optionsMenuElement = this.optionsMenu.getElement();
 			var onOptionChange = this.settings.getOnOptionChange();
 			var optionLimit = this.settings.getOptionLimit();
-			var onClick = (function() {
-				return function(value, text) {
-					self.valueContainerText.setValue(value);
-					self.valueContainerText.setText(text);
-					self.optionsMenu.close();
-					self.arrowContainerContent.toggleClass();
-					self.selectedValue = value;
-					self.selectedText = text;
-					if (typeof onOptionChange === "function")
-						onOptionChange(self.selectedValue, self.selectedText);
-				}
-			})();
 			for (var i = 0; i < options.length; i++) {
 				var value = options[i].value;
 				var text = options[i].text;
-				var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, onClick).render();
+				var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
 				optionsMenuElement.appendChild(elem);
 			}
+		}
+
+		this.onNativeOptionItemClick = function(value, text) {
+			var onOptionChange = this.settings.getOnOptionChange();
+			this.selectedValue = value;
+			this.selectedText = text;
+			if (typeof onOptionChange === "function")
+				onOptionChange(this.selectedValue, this.selectedText);
+		}
+
+		this.onOptionItemClick = function(value, text) {
+			var onOptionChange = this.settings.getOnOptionChange();
+			this.valueContainerText.setValue(value);
+			this.valueContainerText.setText(text);
+			this.optionsMenu.close();
+			this.arrowContainerContent.toggleClass();
+			this.selectedValue = value;
+			this.selectedText = text;
+			if (typeof onOptionChange === "function")
+				onOptionChange(this.selectedValue, this.selectedText);
 		}
 
 		this.createNativeOptionElements = function(options) {
@@ -371,14 +379,25 @@
 
 	}
 
-	SELEX.ELEMENTS.NativeSelectBox = function() {
+	SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 
+		var self = this;
 		this.type = "select";
 		this.width = "100%";
+		this.changeCallback = changeCallback;
 
 		this.render = function() {
 			this.element = document.createElement(this.type);
+			this.element.onchange = this.onOptionChange;
 			return this.element;
+		}
+
+		this.onOptionChange = function(e) {
+			var value = e.target.selectedOptions[0].value;
+			var text = e.target.selectedOptions[0].text;
+			if (typeof self.changeCallback === "function") {
+				self.changeCallback(value, text);
+			}
 		}
 
 		this.getElement = function() {
