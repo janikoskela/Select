@@ -75,6 +75,8 @@
 			if (width !== undefined)
 				this.wrapper.setWidth(width);
 			rootElement.appendChild(wrapperElement);
+			nativeSelectBoxElement = this.createNativeSelectBox();
+			wrapperElement.appendChild(nativeSelectBoxElement);
 
 			if (displayNativeSelectBox === false) {
 
@@ -119,14 +121,11 @@
 					this.wrapper.setWidth(width);
 				}
 				this.optionsMenu.setWidth(width);
-			}
-			nativeSelectBoxElement = this.createNativeSelectBox();
-			wrapperElement.appendChild(nativeSelectBoxElement);
-
-			this.createNativeOptionElements(options);
-
-			if (!this.displayNativeSelectBox)
 				this.nativeSelectBox.hide();
+			}
+			else
+				this.nativeSelectBox.show();
+			this.createNativeOptionElements(options);
 		}
 
 		this.createCustomGuiSubWrapper = function() {
@@ -202,12 +201,8 @@
 			var optionsMenuElement = this.optionsMenu.getElement();
 			var onOptionChange = this.settings.getOnOptionChange();
 			var optionLimit = this.settings.getOptionLimit();
-			for (var i = 0; i < options.length; i++) {
-				if (i === optionLimit)
-					return;
-				var value = options[i].value;
-				var text = options[i].text;
-				var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, function(value, text) {
+			var onClick = (function() {
+				return function(value, text) {
 					self.valueContainerText.setValue(value);
 					self.valueContainerText.setText(text);
 					self.optionsMenu.close();
@@ -216,7 +211,12 @@
 					self.selectedText = text;
 					if (typeof onOptionChange === "function")
 						onOptionChange(self.selectedValue, self.selectedText);
-				}).render();
+				}
+			})();
+			for (var i = 0; i < options.length; i++) {
+				var value = options[i].value;
+				var text = options[i].text;
+				var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, onClick).render();
 				optionsMenuElement.appendChild(elem);
 			}
 		}
@@ -266,11 +266,13 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function() {
+	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 		this.type = "ul";
 		this.className = "options-container";
 		this.element;
 		this.width = "100%";
+		this.height = "100%";
+		this.optionLimit = optionLimit || 5;
 
 		this.render = function() {
 	    	this.element = document.createElement(this.type);
@@ -288,16 +290,23 @@
 			this.element.setStyle("width", this.width);
 		}
 
+		this.setHeight = function(height) {
+			this.height = height;
+			this.element.setStyle("height", this.height);
+		}
+
 		this.close = function() {
 			this.element.hide();
 		}
 
 		this.open = function() {
 			this.element.show();
-		}
-
-		this.createOptionElements = function(options) {
-
+			if (this.element.children.length > 0) {
+				var h = this.element.children[0].offsetHeight;
+				h *= this.optionLimit;
+				h += "px";
+				this.setHeight(h);
+			}
 		}
 
 		this.toggleVisibility = function() {

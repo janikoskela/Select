@@ -21,7 +21,8 @@ fontFamily|String|"verdana"|The font family which is to be defined to the root e
 orientation|String|"right", "left"|Defines the side where arrow points
 onOptionChange|Function| - |A callback which is called when option changes
 targetElement|Element| - |The element where Selex is rendered
-
+optionLimit|Number|5|Specifies how many options will be displayed. If not specified all options will be displayed
+displayNativeSelectBox|Boolean|True|Hides customized GUI and displays native select box
 
 Public methods
 ===============

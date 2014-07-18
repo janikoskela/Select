@@ -54,6 +54,8 @@ var f = new Selex({
   fontSize: ".8em",
   orientation: "right",
   fontFamily: "Verdana",
+  optionLimit: 2,
+  displayNativeSelectBox: false,
   onOptionChange: (function(foo) {
     return function(value, text) {
       console.log("Chosen option: " + value, text);

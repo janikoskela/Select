@@ -98,7 +98,7 @@
 .default .options-container {
     position: absolute;
     left: 0;
-    top: 2em;
+    top: 2em; /* same as .custom-gui-sub-wrapper's height */
     z-index: 1;
 	padding: 0;
 	margin: 0;
@@ -108,7 +108,7 @@
 	border-left: 1px solid #DEDEDE;
 	border-right: 1px solid #DEDEDE;
 	border-bottom: 1px solid #DEDEDE;
-
+	overflow-y: auto;
 }
 
 .default .options-container li {
