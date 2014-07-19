@@ -50,7 +50,8 @@
 			var self = this;
 			var rootElement = this.settings.getRootElement();
 			var width = this.settings.getWidth();
-			var displayNativeSelectBox = this.settings.isNativeSelectEnabled();
+			var displayNativeSelectBox = this.settings.isNativeSelectBoxToBeDisplayed();
+			var renderNativeSelectBox = this.settings.isNativeSelectBoxToBeRendered();
 			var onOptionChange = this.settings.getOnOptionChange();
 			var tabIndex = this.settings.getTabIndex();
 			var options = this.settings.getOptions();
@@ -75,10 +76,17 @@
 			if (width !== undefined)
 				this.wrapper.setWidth(width);
 			rootElement.appendChild(wrapperElement);
-			nativeSelectBoxElement = this.createNativeSelectBox();
-			wrapperElement.appendChild(nativeSelectBoxElement);
+			if (renderNativeSelectBox === true) {
+				nativeSelectBoxElement = this.createNativeSelectBox();
+				wrapperElement.appendChild(nativeSelectBoxElement);		
+				this.createNativeOptionElements(options);
+				if (displayNativeSelectBox === true)
+					this.nativeSelectBox.show();
+				else
+					this.nativeSelectBox.hide();
+			}
 
-			if (displayNativeSelectBox === false) {
+			if (renderNativeSelectBox === false || (displayNativeSelectBox === false && renderNativeSelectBox === true)) {
 
 				customGuiWrapperElement = this.createCustomGuiWrapper();
 				this.customGuiWrapper.setTabIndex(tabIndex);
@@ -121,11 +129,7 @@
 					this.wrapper.setWidth(width);
 				}
 				this.optionsMenu.setWidth(width);
-				this.nativeSelectBox.hide();
 			}
-			else
-				this.nativeSelectBox.show();
-			this.createNativeOptionElements(options);
 		}
 
 		this.createCustomGuiSubWrapper = function() {
@@ -562,9 +566,19 @@
 		var height = userDefinedSettings.height || undefined;
 		var width = userDefinedSettings.width || undefined;
 		var fontSize = userDefinedSettings.fontSize || undefined;
-		var displayNativeSelectBox = userDefinedSettings.displayNativeSelectBox || false;
 		var theme = userDefinedSettings.theme || "default";
 		var fontFamily = userDefinedSettings.fontFamily;
+		var nativeSelectBox = userDefinedSettings.nativeSelectBox || undefined;
+		var nativeSelectBoxRender = nativeSelectBox.render || false;
+		var nativeSelectBoxDisplay = nativeSelectBox.display || false;
+
+		this.isNativeSelectBoxToBeRendered = function() {
+			return nativeSelectBoxRender;
+		}
+
+		this.isNativeSelectBoxToBeDisplayed = function() {
+			return nativeSelectBoxDisplay;
+		}
 
 		this.getFontFamily = function() {
 			return fontFamily;
@@ -572,10 +586,6 @@
 
 		this.getTheme = function() {
 			return theme;
-		}
-
-		this.isNativeSelectEnabled = function() {
-			return displayNativeSelectBox;
 		}
 
 		this.getFontSize = function() {

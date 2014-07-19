@@ -48,14 +48,17 @@ var options = [
 var f = new Selex({
   targetElement: document.getElementById("default"),
   options: options,
-  defaultValue: "foo",
+  defaultValue: "8",
   width: "20em",
   theme: "default",
   fontSize: ".8em",
   orientation: "right",
   fontFamily: "Verdana",
   optionLimit: 2,
-  displayNativeSelectBox: false,
+  nativeSelectBox: {
+    render: true,
+    display: true
+  },
   onOptionChange: (function(foo) {
     return function(value, text) {
       console.log("Chosen option: " + value, text);
@@ -63,6 +66,7 @@ var f = new Selex({
   })(f)
 });
 f.render();
+console.log(f.getSelectedValue() + " " + f.getSelectedText())
 </script>
 </body>
 </html>
