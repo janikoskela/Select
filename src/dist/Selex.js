@@ -56,6 +56,7 @@
 			var tabIndex = this.settings.getTabIndex();
 			var options = this.settings.getOptions();
 			var defaultValue = this.settings.getDefaultValue();
+			var optionLimit = this.settings.getOptionLimit();
 			var wrapperElement;
 			var customGuiWrapperElement;
 			var customGuiSubWrapperElement;
@@ -78,6 +79,7 @@
 			rootElement.appendChild(wrapperElement);
 			if (renderNativeSelectBox === true) {
 				nativeSelectBoxElement = this.createNativeSelectBox();
+				this.nativeSelectBox.setWidth(width);
 				wrapperElement.appendChild(nativeSelectBoxElement);		
 				this.createNativeOptionElements(options);
 				if (displayNativeSelectBox === true)
@@ -121,7 +123,7 @@
 				valueContainerTextElement = this.createValueContainerText(defaultOption);
 				valueContainerElement.appendChild(valueContainerTextElement);
 
-				optionsMenuElement = this.createOptionsMenu();
+				optionsMenuElement = this.createOptionsMenu(optionLimit);
 				customGuiWrapperElement.appendChild(optionsMenuElement);
 				this.createOptionElements(options);
 				if (width === undefined) {
@@ -154,8 +156,8 @@
 			return this.wrapper.render();
 		}
 
-		this.createOptionsMenu = function() {
-			this.optionsMenu = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu();
+		this.createOptionsMenu = function(optionLimit) {
+			this.optionsMenu = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu(optionLimit);
 			return this.optionsMenu.render();
 		}
 
@@ -284,7 +286,7 @@
 		this.element;
 		this.width = "100%";
 		this.height = "100%";
-		this.optionLimit = optionLimit || 5;
+		this.optionLimit = optionLimit;
 
 		this.render = function() {
 	    	this.element = document.createElement(this.type);
@@ -383,12 +385,14 @@
 
 	}
 
-	SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
+	SELEX.ELEMENTS.NativeSelectBox = function(changeCallback, optionLimit) {
 
 		var self = this;
 		this.type = "select";
 		this.width = "100%";
 		this.changeCallback = changeCallback;
+		this.optionLimit = optionLimit;
+		this.element = undefined;
 
 		this.render = function() {
 			this.element = document.createElement(this.type);
@@ -568,9 +572,8 @@
 		var fontSize = userDefinedSettings.fontSize || undefined;
 		var theme = userDefinedSettings.theme || "default";
 		var fontFamily = userDefinedSettings.fontFamily;
-		var nativeSelectBox = userDefinedSettings.nativeSelectBox || undefined;
-		var nativeSelectBoxRender = nativeSelectBox.render || false;
-		var nativeSelectBoxDisplay = nativeSelectBox.display || false;
+		var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
+		var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
 
 		this.isNativeSelectBoxToBeRendered = function() {
 			return nativeSelectBoxRender;
