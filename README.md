@@ -23,7 +23,7 @@ fontFamily|String|"verdana"|-|The font family which is to be defined to the root
 orientation|String|"right", "left"|"right"|Defines the side where arrow points
 onOptionChange|Function| - |-|A callback which is called when option changes
 targetElement|Element| - |-|The element where Selex is rendered
-optionLimit|Number|5|5|Specifies how many options will be displayed. If not specified all options will be displayed. This isn't applied to native select box
+optionLimit|Number|5|-|Specifies how many options will be displayed. If not specified all options will be displayed. This isn't applied to native select box
 displayNativeSelectBox|Boolean|True|False|Controls whether native select box is displayed. Cannot be displayed if renderNativeSelectBox is false. If this is true and renderNativeSelectBox is true then only native select box is rendered
 renderNativeSelectBox|Boolean|True|False|Controls whether native select box is rendered
 
