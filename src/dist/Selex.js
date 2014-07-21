@@ -73,13 +73,14 @@
 
 			rootElement.empty();
 
-			wrapperElement = this.createWrapper(theme, fontSize, fontFamily, tabIndex);
+			wrapperElement = this.createWrapper(theme, fontSize, fontFamily);
 			if (width !== undefined)
 				this.wrapper.setWidth(width);
 			rootElement.appendChild(wrapperElement);
 			if (renderNativeSelectBox === true) {
 				nativeSelectBoxElement = this.createNativeSelectBox();
 				this.nativeSelectBox.setWidth(width);
+				this.nativeSelectBox.setTabIndex(tabIndex);
 				wrapperElement.appendChild(nativeSelectBoxElement);		
 				this.createNativeOptionElements(options);
 				if (displayNativeSelectBox === true)
@@ -385,19 +386,24 @@
 
 	}
 
-	SELEX.ELEMENTS.NativeSelectBox = function(changeCallback, optionLimit) {
+	SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 
 		var self = this;
 		this.type = "select";
 		this.width = "100%";
 		this.changeCallback = changeCallback;
-		this.optionLimit = optionLimit;
 		this.element = undefined;
+		this.tabIndex = 0;
 
 		this.render = function() {
 			this.element = document.createElement(this.type);
 			this.element.onchange = this.onOptionChange;
 			return this.element;
+		}
+
+		this.setTabIndex = function(tabIndex) {
+			this.tabIndex = tabIndex;
+			this.element.setAttribute("tabindex", this.tabIndex);
 		}
 
 		this.onOptionChange = function(e) {
@@ -441,7 +447,7 @@
 		}
 	}
 
-	SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily, tabIndex) {
+	SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily) {
 
 	    this.type = "div";
 
@@ -453,8 +459,6 @@
 
 	    this.width = "100%";
 
-	    this.tabIndex = tabIndex || 0;
-
 	    this.element;
 
 	    this.render = function() {
@@ -462,7 +466,6 @@
 	    	this.element.setClass(this.className);
 	    	this.element.setStyle("fontSize", this.fontSize);
 	    	this.element.setStyle("fontFamily", this.fontFamily);
-	    	this.element.setAttribute("tabindex", this.tabIndex);
 	    	return this.element;
 	    }
 
