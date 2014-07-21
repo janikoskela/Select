@@ -10,9 +10,18 @@ SELEX.Settings = function(userDefinedSettings){
 	var height = userDefinedSettings.height || undefined;
 	var width = userDefinedSettings.width || undefined;
 	var fontSize = userDefinedSettings.fontSize || undefined;
-	var displayNativeSelectBox = userDefinedSettings.displayNativeSelectBox || false;
-	var theme = userDefinedSettings.theme || "default";
+	var theme = userDefinedSettings.theme || "basic";
 	var fontFamily = userDefinedSettings.fontFamily;
+	var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
+	var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
+
+	this.isNativeSelectBoxToBeRendered = function() {
+		return nativeSelectBoxRender;
+	}
+
+	this.isNativeSelectBoxToBeDisplayed = function() {
+		return nativeSelectBoxDisplay;
+	}
 
 	this.getFontFamily = function() {
 		return fontFamily;
@@ -20,10 +29,6 @@ SELEX.Settings = function(userDefinedSettings){
 
 	this.getTheme = function() {
 		return theme;
-	}
-
-	this.isNativeSelectEnabled = function() {
-		return displayNativeSelectBox;
 	}
 
 	this.getFontSize = function() {

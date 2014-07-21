@@ -1,8 +1,10 @@
-SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function() {
+SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 	this.type = "ul";
 	this.className = "options-container";
 	this.element;
 	this.width = "100%";
+	this.height = "100%";
+	this.optionLimit = optionLimit;
 
 	this.render = function() {
     	this.element = document.createElement(this.type);
@@ -20,16 +22,23 @@ SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function() {
 		this.element.setStyle("width", this.width);
 	}
 
+	this.setHeight = function(height) {
+		this.height = height;
+		this.element.setStyle("height", this.height);
+	}
+
 	this.close = function() {
 		this.element.hide();
 	}
 
 	this.open = function() {
 		this.element.show();
-	}
-
-	this.createOptionElements = function(options) {
-
+		if (this.element.children.length > 0) {
+			var h = this.element.children[0].offsetHeight;
+			h *= this.optionLimit;
+			h += "px";
+			this.setHeight(h);
+		}
 	}
 
 	this.toggleVisibility = function() {

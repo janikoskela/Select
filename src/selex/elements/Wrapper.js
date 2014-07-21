@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily, tabIndex) {
+SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily) {
 
     this.type = "div";
 
@@ -10,8 +10,6 @@ SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily, tabIndex) {
 
     this.width = "100%";
 
-    this.tabIndex = tabIndex || 0;
-
     this.element;
 
     this.render = function() {
@@ -19,7 +17,6 @@ SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily, tabIndex) {
         this.element.setClass(this.className);
         this.element.setStyle("fontSize", this.fontSize);
         this.element.setStyle("fontFamily", this.fontFamily);
-        this.element.setAttribute("tabindex", this.tabIndex);
         return this.element;
     }
 

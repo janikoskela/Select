@@ -21,11 +21,13 @@ SELEX.Mediator = function(settings) {
 		var self = this;
 		var rootElement = this.settings.getRootElement();
 		var width = this.settings.getWidth();
-		var displayNativeSelectBox = this.settings.isNativeSelectEnabled();
+		var displayNativeSelectBox = this.settings.isNativeSelectBoxToBeDisplayed();
+		var renderNativeSelectBox = this.settings.isNativeSelectBoxToBeRendered();
 		var onOptionChange = this.settings.getOnOptionChange();
 		var tabIndex = this.settings.getTabIndex();
 		var options = this.settings.getOptions();
 		var defaultValue = this.settings.getDefaultValue();
+		var optionLimit = this.settings.getOptionLimit();
 		var wrapperElement;
 		var customGuiWrapperElement;
 		var customGuiSubWrapperElement;
@@ -42,12 +44,25 @@ SELEX.Mediator = function(settings) {
 
 		rootElement.empty();
 
-		wrapperElement = this.createWrapper(theme, fontSize, fontFamily, tabIndex);
+		wrapperElement = this.createWrapper(theme, fontSize, fontFamily);
 		if (width !== undefined)
 			this.wrapper.setWidth(width);
 		rootElement.appendChild(wrapperElement);
+		if (renderNativeSelectBox === true) {
+			nativeSelectBoxElement = this.createNativeSelectBox();
+			this.nativeSelectBox.setWidth(width);
+			this.nativeSelectBox.setTabIndex(tabIndex);
+			wrapperElement.appendChild(nativeSelectBoxElement);		
+			this.createNativeOptionElements(options);
+			this.nativeSelectBox.setOption(defaultValue);
+			this.nativeSelectBox.setFontSize(fontSize);
+			if (displayNativeSelectBox === true)
+				this.nativeSelectBox.show();
+			else
+				this.nativeSelectBox.hide();
+		}
 
-		if (displayNativeSelectBox === false) {
+		if (renderNativeSelectBox === false || (displayNativeSelectBox === false && renderNativeSelectBox === true)) {
 
 			customGuiWrapperElement = this.createCustomGuiWrapper();
 			this.customGuiWrapper.setTabIndex(tabIndex);
@@ -82,7 +97,7 @@ SELEX.Mediator = function(settings) {
 			valueContainerTextElement = this.createValueContainerText(defaultOption);
 			valueContainerElement.appendChild(valueContainerTextElement);
 
-			optionsMenuElement = this.createOptionsMenu();
+			optionsMenuElement = this.createOptionsMenu(optionLimit);
 			customGuiWrapperElement.appendChild(optionsMenuElement);
 			this.createOptionElements(options);
 			if (width === undefined) {
@@ -91,13 +106,6 @@ SELEX.Mediator = function(settings) {
 			}
 			this.optionsMenu.setWidth(width);
 		}
-		nativeSelectBoxElement = this.createNativeSelectBox();
-		wrapperElement.appendChild(nativeSelectBoxElement);
-
-		this.createNativeOptionElements(options);
-
-		if (!this.displayNativeSelectBox)
-			this.nativeSelectBox.hide();
 	}
 
 	this.createCustomGuiSubWrapper = function() {
@@ -122,13 +130,13 @@ SELEX.Mediator = function(settings) {
 		return this.wrapper.render();
 	}
 
-	this.createOptionsMenu = function() {
-		this.optionsMenu = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu();
+	this.createOptionsMenu = function(optionLimit) {
+		this.optionsMenu = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu(optionLimit);
 		return this.optionsMenu.render();
 	}
 
 	this.createNativeSelectBox = function() {
-		this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox();
+		this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(this.onNativeOptionItemClick.bind(this));
 		return this.nativeSelectBox.render();
 	}
 
@@ -174,22 +182,31 @@ SELEX.Mediator = function(settings) {
 		var onOptionChange = this.settings.getOnOptionChange();
 		var optionLimit = this.settings.getOptionLimit();
 		for (var i = 0; i < options.length; i++) {
-			if (i === optionLimit)
-				return;
 			var value = options[i].value;
 			var text = options[i].text;
-			var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, function(value, text) {
-				self.valueContainerText.setValue(value);
-				self.valueContainerText.setText(text);
-				self.optionsMenu.close();
-				self.arrowContainerContent.toggleClass();
-				self.selectedValue = value;
-				self.selectedText = text;
-				if (typeof onOptionChange === "function")
-					onOptionChange(self.selectedValue, self.selectedText);
-			}).render();
+			var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
 			optionsMenuElement.appendChild(elem);
 		}
+	}
+
+	this.onNativeOptionItemClick = function(value, text) {
+		var onOptionChange = this.settings.getOnOptionChange();
+		this.selectedValue = value;
+		this.selectedText = text;
+		if (typeof onOptionChange === "function")
+			onOptionChange(this.selectedValue, this.selectedText);
+	}
+
+	this.onOptionItemClick = function(value, text) {
+		var onOptionChange = this.settings.getOnOptionChange();
+		this.valueContainerText.setValue(value);
+		this.valueContainerText.setText(text);
+		this.optionsMenu.close();
+		this.arrowContainerContent.toggleClass();
+		this.selectedValue = value;
+		this.selectedText = text;
+		if (typeof onOptionChange === "function")
+			onOptionChange(this.selectedValue, this.selectedText);
 	}
 
 	this.createNativeOptionElements = function(options) {

@@ -1,4 +1,4 @@
-.default {
+.basic {
 	-webkit-touch-callout: none; 
 	-webkit-user-select: none; 
 	-khtml-user-select: none; 
@@ -10,15 +10,15 @@
 	width: 100%;
 }
 
-.default .custom-gui-wrapper {
+.basic .custom-gui-wrapper {
 	position: relative;
 }
 
-.default .custom-gui-wrapper:focus {
+.basic .custom-gui-wrapper:focus {
 	outline-width: 0;	
 }
 
-.default .custom-gui-sub-wrapper {
+.basic .custom-gui-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
@@ -27,17 +27,17 @@
 	border: 1px solid #DEDEDE;
 }
 
-.default:focus {
+.basic:focus {
 	outline-width: 1px;
 }
 
-.default .custom-gui-sub-wrapper div {
+.basic .custom-gui-sub-wrapper div {
 	height: 100%;
 	margin: 0;
 	padding: 0;
 }
 
-.default .value-container {
+.basic .value-container {
 	float: left;
     width: -moz-calc(100% - 30px);
     width: -webkit-calc(100% - 30px);
@@ -58,11 +58,11 @@
 
 }
 
-.default .value-container span {
+.basic .value-container span {
 	margin-left: .5em;
 }
 
-.default .arrow-container {
+.basic .arrow-container {
 	float: left;
 	width: 30px;
 	height: 32px;
@@ -75,17 +75,17 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#efefef',GradientType=0 ); /* IE6-9 */
 }
 
-.default .arrow-container div {
+.basic .arrow-container div {
 	background-repeat: no-repeat;
   	background-size: 16px 16px;
   	background-position:center; 
 }
 
-.default .arrow-down {
+.basic .arrow-down {
 	background-image: url(arrow-down.png);
 }
 
-.default .arrow-up {
+.basic .arrow-up {
 	background-image: url(arrow-down.png);
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
@@ -95,7 +95,7 @@
     -ms-filter: "FlipV";
 }
 
-.default .options-container {
+.basic .options-container {
     position: absolute;
     left: 0;
     top: 2em; /* same as .custom-gui-sub-wrapper's height */
@@ -111,13 +111,13 @@
 	overflow-y: auto;
 }
 
-.default .options-container li {
+.basic .options-container li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: .4em;
 }
-.default .options-container li:hover { 
+.basic .options-container li:hover { 
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;

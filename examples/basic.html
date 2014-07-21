@@ -4,11 +4,11 @@
   <title>Simple Select Box</title>
   <meta charset="utf-8">
   <script src="../src/dist/Selex.js"></script>
-  <link rel="stylesheet" type="text/css" href="../themes/default/default.css">
+  <link rel="stylesheet" type="text/css" href="../themes/basic/basic.css">
 </head>
 
 <body>
-  <div id="default"></div>
+  <div id="basic"></div>
 <script type="text/javascript">
 var options = [
   {
@@ -46,16 +46,16 @@ var options = [
 
 ];
 var f = new Selex({
-  targetElement: document.getElementById("default"),
+  targetElement: document.getElementById("basic"),
   options: options,
   defaultValue: 8,
   width: "10em",
-  theme: "default",
+  theme: "basic",
   fontSize: ".8em",
   orientation: "right",
   fontFamily: "Verdana",
   optionLimit: 2,
-  renderNativeSelectBox: true,
+  renderNativeSelectBox: false,
   displayNativeSelectBox: true,
   onOptionChange: (function(foo) {
     return function(value, text) {
