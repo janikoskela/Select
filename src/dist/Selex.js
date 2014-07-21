@@ -84,6 +84,7 @@
 				wrapperElement.appendChild(nativeSelectBoxElement);		
 				this.createNativeOptionElements(options);
 				this.nativeSelectBox.setOption(defaultValue);
+				this.nativeSelectBox.setFontSize(fontSize);
 				if (displayNativeSelectBox === true)
 					this.nativeSelectBox.show();
 				else
@@ -395,6 +396,12 @@
 		this.changeCallback = changeCallback;
 		this.element = undefined;
 		this.tabIndex = 0;
+		this.fontSize = undefined;
+
+		this.setFontSize = function(fontSize) {
+			this.fontSize = fontSize;
+			this.element.setStyle("font-size", this.fontSize);
+		}
 
 		this.render = function() {
 			this.element = document.createElement(this.type);

@@ -18,7 +18,7 @@ options|Array of object(s) |[{ text: "option", value: "optionValue"}]| - | true 
 defaultValue|String|"optionValue"|-|True|An option is searched with this value, first option that matches is picked
 width|String | "100%", "12px", "1em"|"100%"|True|Width for the select box
 theme|String|"default"|-|True|Defines what theme is to be used. Basically this will define the class of the root element
-fontSize|String | "12px", "1em", "50%"|-|False|The font size which is to be defined to the root element
+fontSize|String | "12px", "1em", "50%"|-|True|The font size which is to be defined to the root element
 fontFamily|String|"verdana"|-|False|The font family which is to be defined to the root element
 orientation|String|"right", "left"|"right"|False|Defines the side where arrow points
 onOptionChange|Function| - |-|True|A callback which is called when option changes
