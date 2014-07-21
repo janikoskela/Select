@@ -13,7 +13,7 @@ See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">exam
 Constructor parameters
 ===============
 Name| Type | Example value | Default | Native select box support | Description
----|---|---------------|-----|------------
+---|---|---------------|-----|------------|------
 options|Array of object(s) |[{ text: "option", value: "optionValue"}]| - | true |Options
 defaultValue|String|"optionValue"|-|True|An option is searched with this value, first option that matches is picked
 width|String | "100%", "12px", "1em"|"100%"|True|Width for the select box
