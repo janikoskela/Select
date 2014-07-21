@@ -83,6 +83,7 @@
 				this.nativeSelectBox.setTabIndex(tabIndex);
 				wrapperElement.appendChild(nativeSelectBoxElement);		
 				this.createNativeOptionElements(options);
+				this.nativeSelectBox.setOption(defaultValue);
 				if (displayNativeSelectBox === true)
 					this.nativeSelectBox.show();
 				else
@@ -412,6 +413,10 @@
 			if (typeof self.changeCallback === "function") {
 				self.changeCallback(value, text);
 			}
+		}
+
+		this.setOption = function(value) {
+			this.element.value = value;
 		}
 
 		this.getElement = function() {

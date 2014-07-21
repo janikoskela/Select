@@ -12,20 +12,20 @@ See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">exam
 
 Constructor parameters
 ===============
-Name| Type | Example value | Default | Description
+Name| Type | Example value | Default | Native select box support | Description
 ---|---|---------------|-----|------------
-options|Array of object(s) |[{ text: "option", value: "optionValue"}]| - |Options
-defaultValue|String|"optionValue"|-|An option is searched with this value, first option that matches is picked
-width|String | "100%", "12px", "1em"|"100%"|Width for the select box
-theme|String|"default"|-|Defines what theme is to be used. Basically this will define the class of the root element
-fontSize|String | "12px", "1em", "50%"|-|The font size which is to be defined to the root element
-fontFamily|String|"verdana"|-|The font family which is to be defined to the root element
-orientation|String|"right", "left"|"right"|Defines the side where arrow points
-onOptionChange|Function| - |-|A callback which is called when option changes
-targetElement|Element| - |-|The element where Selex is rendered
-optionLimit|Number|5|-|Specifies how many options will be displayed. If not specified all options will be displayed. This isn't applied to native select box
-displayNativeSelectBox|Boolean|True|False|Controls whether native select box is displayed. Cannot be displayed if renderNativeSelectBox is false. If this is true and renderNativeSelectBox is true then only native select box is rendered
-renderNativeSelectBox|Boolean|True|False|Controls whether native select box is rendered
+options|Array of object(s) |[{ text: "option", value: "optionValue"}]| - | true |Options
+defaultValue|String|"optionValue"|-|True|An option is searched with this value, first option that matches is picked
+width|String | "100%", "12px", "1em"|"100%"|True|Width for the select box
+theme|String|"default"|-|True|Defines what theme is to be used. Basically this will define the class of the root element
+fontSize|String | "12px", "1em", "50%"|-|False|The font size which is to be defined to the root element
+fontFamily|String|"verdana"|-|False|The font family which is to be defined to the root element
+orientation|String|"right", "left"|"right"|False|Defines the side where arrow points
+onOptionChange|Function| - |-|True|A callback which is called when option changes
+targetElement|Element| - |-|True|The element where Selex is rendered
+optionLimit|Number|5|-|False |Specifies how many options will be displayed. If not specified all options will be displayed
+displayNativeSelectBox|Boolean|True|False|True|Controls whether native select box is displayed. Cannot be displayed if renderNativeSelectBox is false. If this is true and renderNativeSelectBox is true then only native select box is rendered
+renderNativeSelectBox|Boolean|True|False|True|Controls whether native select box is rendered
 
 Public methods
 ===============
