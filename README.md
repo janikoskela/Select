@@ -8,7 +8,7 @@ See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">exam
 
 Constructor parameters
 ===============
-Name| Type | Example value | Default | Native select box support | Description
+Name| Type | Example value | Default | Applies to native select | Description
 ---|---|---------------|-----|------------|------
 options|Array of object(s) |[{ text: "option", value: "optionValue"}]| - | true |Options
 theme|String|"default"|-|True|Defines what theme is to be used. Basically this will define the class of the root element

@@ -2,8 +2,8 @@
 
 	Selex = function(userDefinedSettings) {
 
-		var settings = new SELEX.Settings(userDefinedSettings);
-		var mediator = new SELEX.Mediator(settings);
+		var settings = new SELEX.SETTINGS.Settings(userDefinedSettings);
+		var mediator = new SELEX.MEDIATOR.Mediator(settings);
 
 		this.render = function() {
 			mediator.render();
@@ -21,13 +21,14 @@
 
 	var SELEX = {};
 	SELEX.SETTINGS = {};
+	SELEX.MEDIATOR = {};
 	SELEX.ELEMENTS = {};
 	SELEX.ELEMENTS.CUSTOM_GUI = {};
 	SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER = {};
 	SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER = {};
 	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU = {};
 
-	SELEX.Mediator = function(settings) {
+	SELEX.MEDIATOR.Mediator = function(settings) {
 
 		this.settings = settings;
 		this.selectedValue;
@@ -573,7 +574,7 @@
 		}
 	}
 
-	SELEX.Settings = function(userDefinedSettings){
+	SELEX.SETTINGS.Settings = function(userDefinedSettings){
 		var options = userDefinedSettings.options || [];
 		var rootElement = userDefinedSettings.targetElement || undefined;
 		var defaultValue = userDefinedSettings.defaultValue || undefined;
