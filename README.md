@@ -10,7 +10,7 @@ Constructor parameters
 ===============
 Name| Type | Example value | Default | Applies to native select | Description
 ---|---|---------------|-----|------------|------
-options|Array of object(s) |[{ text: "option", value: "optionValue"}]| - | true |Options
+options|Array of object(s) |[{ text: "option", value: "optionValue"}]| - | True |Options
 theme|String|"default"|-|True|Defines what theme is to be used. Basically this will define the class of the root element
 targetElement|Element| - |-|True|The element where Selex is rendered
 defaultValue|String|"optionValue"|-|True|An option is searched with this value, first option that matches is picked
