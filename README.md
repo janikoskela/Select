@@ -1,6 +1,6 @@
 Selex
 ===============
-Selex is a customizable and lightweight (No external library dependencies) widget made for select-element. By default the select-element will not be rendered but user may specify if it should be rendered and should it be displayed or hidden. The appearance of the widget is mainly controlled via themes which are just a bunch of CSS rules.
+Selex is a customizable and lightweight (No external library dependencies) widget made for <i>select</i>-element. By default the <i>select</i>-element will not be rendered but user may specify if it should be rendered and should it be displayed or hidden. The appearance of the widget is mainly controlled via themes which are just a bunch of CSS rules.
 
 Usage
 ==============
