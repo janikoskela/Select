@@ -30,6 +30,8 @@ Name|Parameters|Description
 render|-|Renders the select box
 getSelectedText|-|Returns the selected options text/label
 getSelectedValue|-|Returns the selected options value
+show|-|Shows the select box
+hide|-|Hides the select box
 
 Implementations
 =============
