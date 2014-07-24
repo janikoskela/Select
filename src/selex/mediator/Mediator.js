@@ -108,6 +108,14 @@ SELEX.Mediator = function(settings) {
 		}
 	}
 
+	this.hide = function() {
+		this.wrapper.hide();
+	}
+
+	this.show = function() {
+		this.wrapper.show();
+	}
+
 	this.createCustomGuiSubWrapper = function() {
 		var self = this;
 		this.customGuiSubWrapper = new SELEX.ELEMENTS.CUSTOM_GUI.SubWrapper(function() {

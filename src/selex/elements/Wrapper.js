@@ -20,6 +20,14 @@ SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily) {
         return this.element;
     }
 
+    this.show = function() {
+        this.element.show();
+    }
+
+    this.hide = function() {
+        this.element.hide();
+    }
+
     this.setWidth = function(width) {
         this.width = width;
         this.element.setStyle("width", this.width);
