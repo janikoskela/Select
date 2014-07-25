@@ -27,11 +27,13 @@ Public methods
 ===============
 Name|Parameters|Description
 ----|----------|------|-----------
-render|-|Renders the select box
+render|-|Renders the widget or native
 getSelectedText|-|Returns the selected options text/label
 getSelectedValue|-|Returns the selected options value
-show|-|Shows the select box
-hide|-|Hides the select box
+show|-|Shows widget or native
+hide|-|Hides widget or native
+enable|-|Enables widget or native
+disable|-|Disabled widget or native
 
 Implementations
 =============
