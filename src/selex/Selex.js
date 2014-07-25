@@ -18,11 +18,25 @@
 		}
 
 		this.getSelectedText = function() {
-			return mediator.selectedText;
+			return mediator.getSelectedText();
 		}
 
 		this.getSelectedValue = function() {
-			return mediator.selectedValue;
+			return mediator.getSelectedValue();
+		}
+
+		this.disable = function() {
+			if (settings.isNativeSelectBoxToBeRendered() === true && settings.isNativeSelectBoxToBeDisplayed() === true)
+				mediator.disableNative();
+			else
+				mediator.disableWidget();
+		}
+
+		this.enable = function() {
+			if (settings.isNativeSelectBoxToBeRendered() === true && settings.isNativeSelectBoxToBeDisplayed() === true)
+				mediator.enableNative();
+			else
+				mediator.enableWidget();
 		}
 
 	}

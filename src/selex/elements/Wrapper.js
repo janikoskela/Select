@@ -28,6 +28,14 @@ SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily) {
         this.element.hide();
     }
 
+    this.enable = function() {
+        this.element.removeAttribute("disabled");
+    }
+
+    this.disable = function() {
+        this.element.setAttribute("disabled", true);
+    }
+
     this.setWidth = function(width) {
         this.width = width;
         this.element.setStyle("width", this.width);

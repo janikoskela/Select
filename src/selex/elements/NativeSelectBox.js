@@ -19,6 +19,14 @@ SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 		return this.element;
 	}
 
+	this.enable = function() {
+		this.element.removeAttribute("disabled");
+	}
+
+	this.disable = function() {
+		this.element.setAttribute("disabled", true);
+	}
+
 	this.setTabIndex = function(tabIndex) {
 		this.tabIndex = tabIndex;
 		this.element.setAttribute("tabindex", this.tabIndex);

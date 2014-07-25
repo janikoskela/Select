@@ -27,6 +27,15 @@
 	border: 1px solid #DEDEDE;
 }
 
+.basic[disabled=true] .custom-gui-sub-wrapper {
+	background-color: #fff;
+	height: 2em;
+	line-height: 2em;
+	position: relative;
+	border: 1px solid #DEDEDE;
+	cursor: auto;
+}
+
 .basic:focus {
 	outline-width: 1px;
 }
@@ -62,6 +71,10 @@
 	margin-left: .5em;
 }
 
+.basic[disabled=true] .value-container span {
+	opacity: .4;
+}
+
 .basic .arrow-container {
 	float: left;
 	width: 30px;
@@ -83,6 +96,11 @@
 
 .basic .arrow-down {
 	background-image: url(arrow-down.png);
+}
+
+.basic[disabled=true] .arrow-down {
+	background-image: url(arrow-down.png);
+	opacity: .4;
 }
 
 .basic .arrow-up {

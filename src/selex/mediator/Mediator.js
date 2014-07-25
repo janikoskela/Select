@@ -1,8 +1,9 @@
-SELEX.Mediator = function(settings) {
+SELEX.MEDIATOR.Mediator = function(settings) {
 
 	this.settings = settings;
 	this.selectedValue;
 	this.selectedText;
+	this.enabled = true;
 
 	this.wrapper;
 	this.nativeSelectBox;
@@ -108,6 +109,32 @@ SELEX.Mediator = function(settings) {
 		}
 	}
 
+	this.disableWidget = function() {
+		this.enabled = false;
+		this.wrapper.disable();
+	}	
+
+	this.enableWidget = function() {
+		this.enabled = true;
+		this.wrapper.enable();
+	}
+
+	this.disableNative = function() {
+		this.nativeSelectBox.disable();
+	}
+
+	this.enableNative = function() {
+		this.nativeSelectBox.enable();
+	}
+
+	this.getSelectedValue = function() {
+		return this.selectedValue;
+	}
+
+	this.getSelectedText = function() {
+		return this.selectedText;
+	}
+
 	this.hide = function() {
 		this.wrapper.hide();
 	}
@@ -119,8 +146,10 @@ SELEX.Mediator = function(settings) {
 	this.createCustomGuiSubWrapper = function() {
 		var self = this;
 		this.customGuiSubWrapper = new SELEX.ELEMENTS.CUSTOM_GUI.SubWrapper(function() {
-			self.optionsMenu.toggleVisibility();
-			self.arrowContainerContent.toggleClass();
+			if (self.enabled === true) {
+				self.optionsMenu.toggleVisibility();
+				self.arrowContainerContent.toggleClass();
+			}
 		});
 		return this.customGuiSubWrapper.render();
 	}
