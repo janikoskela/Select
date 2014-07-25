@@ -33,7 +33,7 @@
 	line-height: 2em;
 	position: relative;
 	border: 1px solid #DEDEDE;
-	cursor: auto;
+	cursor: default;
 }
 
 .basic:focus {
