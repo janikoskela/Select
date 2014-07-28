@@ -22,7 +22,7 @@ onOptionChange|Function |-|True|A callback which is called when option changes
 optionLimit|Number|-|False |Specifies how many options will be displayed. If not specified all options will be displayed
 displayNativeSelectBox|Boolean|False|True|Controls whether native select box is displayed. Cannot be displayed if renderNativeSelectBox is false. If this is true and renderNativeSelectBox is true then only native select box is rendered
 renderNativeSelectBox|Boolean|False|True|Controls whether native select box is rendered
-placeholder|String|True|Sets a placeholder text
+placeholder|String|-|True|Sets a placeholder text
 
 Public methods
 ===============
