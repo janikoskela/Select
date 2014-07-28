@@ -44,7 +44,7 @@ Browser compatibility
 ==============
 A browser with CSS3 support is required.
 
-So far tested with:
+So far tested with (Any help on this would be greatly appreciated):
  - Safari, Version 7.0.5 (9537.77.4)
 
 Licence
