@@ -20,7 +20,6 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(value, text) {
 
 	this.setText = function(text) {
 		this.text = text;
-		console.log(this)
 		this.element.innerHTML = this.text;
 	}
 }

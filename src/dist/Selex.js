@@ -559,7 +559,6 @@
 
 		this.setText = function(text) {
 			this.text = text;
-			console.log(this)
 			this.element.innerHTML = this.text;
 		}
 	}
