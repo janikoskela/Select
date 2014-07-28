@@ -42,6 +42,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var fontSize = this.settings.getFontSize();
 		var fontFamily = this.settings.getFontFamily();
 		var orientation = this.settings.getOrientation();
+		var placeholder = this.settings.getPlaceholder();
 
 		rootElement.empty();
 
@@ -54,8 +55,11 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			this.nativeSelectBox.setWidth(width);
 			this.nativeSelectBox.setTabIndex(tabIndex);
 			wrapperElement.appendChild(nativeSelectBoxElement);		
+			if (defaultValue === undefined && placeholder !== undefined)
+				this.nativeSelectBox.setPlaceholder(placeholder);
+			else
+				this.nativeSelectBox.setOption(defaultValue);
 			this.createNativeOptionElements(options);
-			this.nativeSelectBox.setOption(defaultValue);
 			this.nativeSelectBox.setFontSize(fontSize);
 			if (displayNativeSelectBox === true)
 				this.nativeSelectBox.show();
@@ -73,9 +77,11 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			customGuiSubWrapperElement = this.createCustomGuiSubWrapper();
 			customGuiWrapperElement.appendChild(customGuiSubWrapperElement);
 
-			defaultOption = this.getDefaultOption(options, defaultValue);
-			this.selectedText = defaultOption.text;
-			this.selectedValue = defaultOption.value;
+			if (defaultValue !== undefined) {
+				defaultOption = this.getDefaultOption(options, defaultValue);
+				this.selectedText = defaultOption.text;
+				this.selectedValue = defaultOption.value;
+			}					
 			arrowContainerElement = this.createArrowElement();
 			valueContainerElement = this.createValueContainer();
 
@@ -95,7 +101,14 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 
 			}
 
-			valueContainerTextElement = this.createValueContainerText(defaultOption);
+			valueContainerTextElement = this.createValueContainerText();
+			if (this.selectedText !== undefined)
+				this.valueContainerText.setText(this.selectedText);
+			if (this.selectedValue !== undefined)
+				this.valueContainerText.setValue(this.selectedValue);
+			if (defaultOption === undefined && placeholder !== undefined)
+				this.valueContainerText.setPlaceholder(placeholder);
+
 			valueContainerElement.appendChild(valueContainerTextElement);
 
 			optionsMenuElement = this.createOptionsMenu(optionLimit);
@@ -177,8 +190,8 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		return this.nativeSelectBox.render();
 	}
 
-	this.createValueContainerText = function(defaultOption) {
-		this.valueContainerText = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText(defaultOption.value, defaultOption.text);
+	this.createValueContainerText = function() {
+		this.valueContainerText = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText();
 		return this.valueContainerText.render();
 	}
 

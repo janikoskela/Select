@@ -7,10 +7,21 @@ SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 	this.element = undefined;
 	this.tabIndex = 0;
 	this.fontSize = undefined;
+	this.placeholder;
 
 	this.setFontSize = function(fontSize) {
 		this.fontSize = fontSize;
 		this.element.setStyle("font-size", this.fontSize);
+	}
+
+	this.setPlaceholder = function(placeholder) {
+		this.placeholder = placeholder;
+		var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
+		var elem = placeholderInstance.render();
+		placeholderInstance.setText(placeholder);
+		elem.setAttribute("selected", true);
+		elem.setAttribute("disabled", true);
+		this.element.appendChild(elem);
 	}
 
 	this.render = function() {

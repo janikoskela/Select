@@ -1,10 +1,11 @@
-SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText = function(value, text) {
+SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText = function() {
 
-	this.value = value;
-	this.text = text;
+	this.value;
+	this.text;
 	this.type = "span";
 	this.className = "value-container-text";
 	this.element;
+	this.placeholder;
 
 	this.render = function() {
 		this.element = document.createElement(this.type);
@@ -14,11 +15,18 @@ SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText = function(value, t
 		return this.element;
 	}
 
+	this.setPlaceholder = function(placeholder) {
+		this.placeholder = placeholder;
+		this.element.innerHTML = this.placeholder;
+	}
+
 	this.setValue = function(value) {
+		this.value = value;
 		this.element.setAttribute("value", value);
 	}
 
 	this.setText = function(text) {
+		this.text = text;
 		this.element.innerHTML = text;
 	}
 }

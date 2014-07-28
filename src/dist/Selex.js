@@ -94,6 +94,7 @@
 			var fontSize = this.settings.getFontSize();
 			var fontFamily = this.settings.getFontFamily();
 			var orientation = this.settings.getOrientation();
+			var placeholder = this.settings.getPlaceholder();
 
 			rootElement.empty();
 
@@ -106,8 +107,11 @@
 				this.nativeSelectBox.setWidth(width);
 				this.nativeSelectBox.setTabIndex(tabIndex);
 				wrapperElement.appendChild(nativeSelectBoxElement);		
+				if (defaultValue === undefined && placeholder !== undefined)
+					this.nativeSelectBox.setPlaceholder(placeholder);
+				else
+					this.nativeSelectBox.setOption(defaultValue);
 				this.createNativeOptionElements(options);
-				this.nativeSelectBox.setOption(defaultValue);
 				this.nativeSelectBox.setFontSize(fontSize);
 				if (displayNativeSelectBox === true)
 					this.nativeSelectBox.show();
@@ -125,9 +129,11 @@
 				customGuiSubWrapperElement = this.createCustomGuiSubWrapper();
 				customGuiWrapperElement.appendChild(customGuiSubWrapperElement);
 
-				defaultOption = this.getDefaultOption(options, defaultValue);
-				this.selectedText = defaultOption.text;
-				this.selectedValue = defaultOption.value;
+				if (defaultValue !== undefined) {
+					defaultOption = this.getDefaultOption(options, defaultValue);
+					this.selectedText = defaultOption.text;
+					this.selectedValue = defaultOption.value;
+				}					
 				arrowContainerElement = this.createArrowElement();
 				valueContainerElement = this.createValueContainer();
 
@@ -147,7 +153,14 @@
 
 				}
 
-				valueContainerTextElement = this.createValueContainerText(defaultOption);
+				valueContainerTextElement = this.createValueContainerText();
+				if (this.selectedText !== undefined)
+					this.valueContainerText.setText(this.selectedText);
+				if (this.selectedValue !== undefined)
+					this.valueContainerText.setValue(this.selectedValue);
+				if (defaultOption === undefined && placeholder !== undefined)
+					this.valueContainerText.setPlaceholder(placeholder);
+
 				valueContainerElement.appendChild(valueContainerTextElement);
 
 				optionsMenuElement = this.createOptionsMenu(optionLimit);
@@ -229,8 +242,8 @@
 			return this.nativeSelectBox.render();
 		}
 
-		this.createValueContainerText = function(defaultOption) {
-			this.valueContainerText = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText(defaultOption.value, defaultOption.text);
+		this.createValueContainerText = function() {
+			this.valueContainerText = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText();
 			return this.valueContainerText.render();
 		}
 
@@ -457,10 +470,21 @@
 		this.element = undefined;
 		this.tabIndex = 0;
 		this.fontSize = undefined;
+		this.placeholder;
 
 		this.setFontSize = function(fontSize) {
 			this.fontSize = fontSize;
 			this.element.setStyle("font-size", this.fontSize);
+		}
+
+		this.setPlaceholder = function(placeholder) {
+			this.placeholder = placeholder;
+			var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
+			var elem = placeholderInstance.render();
+			placeholderInstance.setText(placeholder);
+			elem.setAttribute("selected", true);
+			elem.setAttribute("disabled", true);
+			this.element.appendChild(elem);
 		}
 
 		this.render = function() {
@@ -521,9 +545,22 @@
 
 		this.render = function() {
 			this.element = document.createElement("option");
-			this.element.innerHTML = this.text
-			this.element.setAttribute("value", this.value);
+			if (this.text !== undefined)
+				this.element.innerHTML = this.text;
+			if (this.value !== undefined)
+				this.element.setAttribute("value", this.value);
 			return this.element;
+		}
+
+		this.setValue = function(value) {
+			this.value = value;
+			this.element.setAttribute("value", this.value);
+		}
+
+		this.setText = function(text) {
+			this.text = text;
+			console.log(this)
+			this.element.innerHTML = this.text;
 		}
 	}
 
@@ -584,13 +621,14 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText = function(value, text) {
+	SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText = function() {
 
-		this.value = value;
-		this.text = text;
+		this.value;
+		this.text;
 		this.type = "span";
 		this.className = "value-container-text";
 		this.element;
+		this.placeholder;
 
 		this.render = function() {
 			this.element = document.createElement(this.type);
@@ -600,11 +638,18 @@
 			return this.element;
 		}
 
+		this.setPlaceholder = function(placeholder) {
+			this.placeholder = placeholder;
+			this.element.innerHTML = this.placeholder;
+		}
+
 		this.setValue = function(value) {
+			this.value = value;
 			this.element.setAttribute("value", value);
 		}
 
 		this.setText = function(text) {
+			this.text = text;
 			this.element.innerHTML = text;
 		}
 	}
@@ -673,6 +718,7 @@
 		var fontFamily = userDefinedSettings.fontFamily;
 		var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
 		var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
+		var placeholder = userDefinedSettings.placeholder;
 
 		this.isNativeSelectBoxToBeRendered = function() {
 			return nativeSelectBoxRender;
@@ -736,6 +782,10 @@
 
 		this.getDefaultValue = function() {
 			return defaultValue;
+		}
+
+		this.getPlaceholder = function() {
+			return placeholder;
 		}
 	}
 
