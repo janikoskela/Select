@@ -112,7 +112,6 @@
 			if (renderNativeSelectBox === true) {
 				nativeSelectBoxElement = this.createNativeSelectBox();
 				this.nativeSelectBox.setWidth(width);
-				this.nativeSelectBox.setTabIndex(tabIndex);
 				wrapperElement.appendChild(nativeSelectBoxElement);		
 				if (defaultValue === undefined && placeholder !== undefined)
 					this.nativeSelectBox.setPlaceholder(placeholder);
@@ -120,8 +119,10 @@
 					this.nativeSelectBox.setOption(defaultValue);
 				this.createNativeOptionElements(options);
 				this.nativeSelectBox.setFontSize(fontSize);
-				if (displayNativeSelectBox === true)
+				if (displayNativeSelectBox === true) {
 					this.nativeSelectBox.show();
+					this.nativeSelectBox.setTabIndex(tabIndex);
+				}
 				else
 					this.nativeSelectBox.hide();
 			}
