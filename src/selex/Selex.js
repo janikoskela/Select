@@ -39,6 +39,13 @@
 				mediator.enableWidget();
 		}
 
+		this.setOptions = function(options) {
+			if (settings.isNativeSelectBoxToBeRendered() === true)
+				mediator.createNativeOptionElements(options);
+			if (settings.isNativeSelectBoxToBeDisplayed() === false)
+				mediator.createOptionElements(options);
+		}
+
 	}
 
 	var SELEX = {};

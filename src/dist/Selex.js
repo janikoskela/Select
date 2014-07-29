@@ -39,6 +39,13 @@
 				mediator.enableWidget();
 		}
 
+		this.setOptions = function(options) {
+			if (settings.isNativeSelectBoxToBeRendered() === true)
+				mediator.createNativeOptionElements(options);
+			if (settings.isNativeSelectBoxToBeDisplayed() === false)
+				mediator.createOptionElements(options);
+		}
+
 	}
 
 	var SELEX = {};
@@ -283,6 +290,7 @@
 			var optionsMenuElement = this.optionsMenu.getElement();
 			var onOptionChange = this.settings.getOnOptionChange();
 			var optionLimit = this.settings.getOptionLimit();
+			optionsMenuElement.empty();
 			for (var i = 0; i < options.length; i++) {
 				var value = options[i].value;
 				var text = options[i].text;
@@ -313,6 +321,7 @@
 
 		this.createNativeOptionElements = function(options) {
 			var nativeSelectBoxElement = this.nativeSelectBox.getElement();
+			nativeSelectBoxElement.empty();
 			for (var i = 0; i < options.length; i++) {
 				var value = options[i].value;
 				var text = options[i].text;
@@ -391,9 +400,13 @@
 
 		this.open = function() {
 			this.element.show();
-			if (this.element.children.length > 0) {
-				var h = this.element.children[0].offsetHeight;
-				h *= this.optionLimit;
+			var children = this.element.children;
+			if (children.length > 0) {
+				var h = children[0].offsetHeight;
+				if (children.length < this.optionLimit)
+					h *= children.length;
+				else
+					h *= this.optionLimit;
 				h += "px";
 				this.setHeight(h);
 			}

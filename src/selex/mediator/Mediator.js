@@ -231,6 +231,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var optionsMenuElement = this.optionsMenu.getElement();
 		var onOptionChange = this.settings.getOnOptionChange();
 		var optionLimit = this.settings.getOptionLimit();
+		optionsMenuElement.empty();
 		for (var i = 0; i < options.length; i++) {
 			var value = options[i].value;
 			var text = options[i].text;
@@ -261,6 +262,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 
 	this.createNativeOptionElements = function(options) {
 		var nativeSelectBoxElement = this.nativeSelectBox.getElement();
+		nativeSelectBoxElement.empty();
 		for (var i = 0; i < options.length; i++) {
 			var value = options[i].value;
 			var text = options[i].text;

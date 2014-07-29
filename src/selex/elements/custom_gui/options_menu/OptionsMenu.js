@@ -33,9 +33,13 @@ SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 
 	this.open = function() {
 		this.element.show();
-		if (this.element.children.length > 0) {
-			var h = this.element.children[0].offsetHeight;
-			h *= this.optionLimit;
+		var children = this.element.children;
+		if (children.length > 0) {
+			var h = children[0].offsetHeight;
+			if (children.length < this.optionLimit)
+				h *= children.length;
+			else
+				h *= this.optionLimit;
 			h += "px";
 			this.setHeight(h);
 		}
