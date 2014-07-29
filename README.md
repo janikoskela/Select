@@ -35,7 +35,7 @@ show|-|Shows widget or native select box
 hide|-|Hides widget or native select box
 enable|-|Enables widget or native select box
 disable|-|Disabled widget or native select box
-setOptions|Array of object(s)|Sets a new set of options
+setOptions|Array of object(s)|Sets new options
 
 Implementations
 =============

@@ -403,7 +403,7 @@
 			var children = this.element.children;
 			if (children.length > 0) {
 				var h = children[0].offsetHeight;
-				if (children.length < this.optionLimit)
+				if (this.optionLimit === undefined || children.length < this.optionLimit)
 					h *= children.length;
 				else
 					h *= this.optionLimit;
