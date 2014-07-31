@@ -231,6 +231,7 @@
 			var self = this;
 			this.customGuiWrapper = new SELEX.ELEMENTS.CUSTOM_GUI.Wrapper(function() {
 				self.optionsMenu.close();
+				self.arrowContainerContent.toggleClass();
 			});
 			return this.customGuiWrapper.render();
 		}
