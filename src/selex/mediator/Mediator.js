@@ -78,13 +78,19 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			customGuiSubWrapperElement = this.createCustomGuiSubWrapper();
 			customGuiWrapperElement.appendChild(customGuiSubWrapperElement);
 
-			if (defaultValue !== undefined) {
+			arrowContainerElement = this.createArrowElement();
+			valueContainerElement = this.createValueContainer();
+			valueContainerTextElement = this.createValueContainerText();
+
+			if (placeholder === undefined) {
 				defaultOption = this.getDefaultOption(options, defaultValue);
 				this.selectedText = defaultOption.text;
 				this.selectedValue = defaultOption.value;
-			}					
-			arrowContainerElement = this.createArrowElement();
-			valueContainerElement = this.createValueContainer();
+				this.valueContainerText.setText(this.selectedText);
+				this.valueContainerText.setValue(this.selectedValue);
+			}
+			else
+				this.valueContainerText.setPlaceholder(placeholder);
 
 			switch (orientation) {
 				case ORIENTATION_LEFT:
@@ -101,14 +107,6 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 					throw new Error("Invalid orientation value \"" + orientation + "\"");
 
 			}
-
-			valueContainerTextElement = this.createValueContainerText();
-			if (this.selectedText !== undefined)
-				this.valueContainerText.setText(this.selectedText);
-			if (this.selectedValue !== undefined)
-				this.valueContainerText.setValue(this.selectedValue);
-			if (defaultOption === undefined && placeholder !== undefined)
-				this.valueContainerText.setPlaceholder(placeholder);
 
 			valueContainerElement.appendChild(valueContainerTextElement);
 
