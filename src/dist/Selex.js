@@ -313,6 +313,9 @@
 			this.valueContainerText.setValue(value);
 			this.valueContainerText.setText(text);
 			this.optionsMenu.close();
+			var previouslySelected = this.optionsMenu.getSelectedChild();
+			if (previouslySelected !== undefined)
+				previouslySelected.clearClasses();
 			this.arrowContainerContent.toggleClass();
 			this.selectedValue = value;
 			this.selectedText = text;
@@ -363,6 +366,7 @@
 		function onClick(e) {
 			if (typeof this.onMenuItemClick === "function")
 				this.onMenuItemClick(this.value, this.text);
+			this.element.setClass("selected", true);
 		}
 	}
 
@@ -379,6 +383,17 @@
 	    	this.element.setClass(this.className);
 	    	this.close();
 	    	return this.element;
+		}
+
+		this.getSelectedChild = function() {
+			var children = this.element.children;
+			for (var key in children) {
+				var child = children[key];
+				if (typeof child === "object") {
+					if (child.hasClass("selected"))
+						return child;
+				}
+			}
 		}
 
 		this.getElement = function() {

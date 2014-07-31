@@ -254,6 +254,9 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		this.valueContainerText.setValue(value);
 		this.valueContainerText.setText(text);
 		this.optionsMenu.close();
+		var previouslySelected = this.optionsMenu.getSelectedChild();
+		if (previouslySelected !== undefined)
+			previouslySelected.clearClasses();
 		this.arrowContainerContent.toggleClass();
 		this.selectedValue = value;
 		this.selectedText = text;

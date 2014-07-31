@@ -1,3 +1,4 @@
+
 SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 	this.type = "ul";
 	this.className = "options-container";
@@ -11,6 +12,17 @@ SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
     	this.element.setClass(this.className);
     	this.close();
     	return this.element;
+	}
+
+	this.getSelectedChild = function() {
+		var children = this.element.children;
+		for (var key in children) {
+			var child = children[key];
+			if (typeof child === "object") {
+				if (child.hasClass("selected"))
+					return child;
+			}
+		}
 	}
 
 	this.getElement = function() {
@@ -36,7 +48,7 @@ SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 		var children = this.element.children;
 		if (children.length > 0) {
 			var h = children[0].offsetHeight;
-			if (children.length < this.optionLimit)
+			if (this.optionLimit === undefined || children.length < this.optionLimit)
 				h *= children.length;
 			else
 				h *= this.optionLimit;
