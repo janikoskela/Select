@@ -351,14 +351,15 @@
 		this.onMenuItemClick = onMenuItemClick;
 		this.type = "li";
 		this.element;
-		this.textNode;
+		this.child;
 
 		this.render = function() {
+			this.child = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItemValue(this.text);
+			var childElem = this.child.render();
 	    	this.element = document.createElement(this.type);
 	    	this.element.addEventListener("click", onClick.bind(this));
 	    	this.element.setAttribute("value", this.value);
-	    	this.textNode = document.createTextNode(this.text);
-	    	this.element.appendChild(this.textNode);
+	    	this.element.appendChild(childElem);
 	    	return this.element;
 		}
 
@@ -366,6 +367,20 @@
 			if (typeof this.onMenuItemClick === "function")
 				this.onMenuItemClick(this.value, this.text);
 			this.element.setClass("selected", true);
+		}
+	}
+
+	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
+		this.text = text;
+		this.type = "span";
+		this.element;
+		this.textNode;
+
+		this.render = function() {
+	    	this.element = document.createElement(this.type);
+	    	this.textNode = document.createTextNode(this.text);
+	    	this.element.appendChild(this.textNode);
+	    	return this.element;
 		}
 	}
 

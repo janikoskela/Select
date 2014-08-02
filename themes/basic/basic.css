@@ -127,6 +127,7 @@
 	border-right: 1px solid #DEDEDE;
 	border-bottom: 1px solid #DEDEDE;
 	overflow-y: auto;
+	background-color: #fff;
 }
 
 .basic .options-container li {
@@ -135,7 +136,26 @@
 	text-overflow: ellipsis;
 	padding: .4em;
 }
-.basic .options-container li:hover, .basic .options-container li.selected { 
+
+.basic .options-container li span {
+	padding: 0 0 0 2em;
+}
+
+.basic .options-container li.selected span {
+	background-image: url(checked-black.png);
+	background-repeat: no-repeat;
+  	background-size: 10px 10px;
+  	background-position:left; 
+}
+
+.basic .options-container li.selected:hover span {
+	background-image: url(checked-white.png);
+	background-repeat: no-repeat;
+  	background-size: 10px 10px;
+  	background-position:left; 
+}
+
+.basic .options-container li:hover { 
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;
