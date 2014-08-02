@@ -112,7 +112,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 
 			optionsMenuElement = this.createOptionsMenu(optionLimit);
 			customGuiWrapperElement.appendChild(optionsMenuElement);
-			this.createOptionElements(options);
+			this.createOptionElements(options, defaultOption);
 			if (width === undefined) {
 				width = this.getWidthBasedLongestOption();
 				this.wrapper.setWidth(width);
@@ -226,7 +226,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	}
 
 
-	this.createOptionElements = function(options) {
+	this.createOptionElements = function(options, defaultOption) {
 		var self = this;
 		var optionsMenuElement = this.optionsMenu.getElement();
 		var onOptionChange = this.settings.getOnOptionChange();
@@ -236,6 +236,10 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			var value = options[i].value;
 			var text = options[i].text;
 			var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
+			if (defaultOption !== undefined) {
+				if (defaultOption.value == value && defaultOption.text == text)
+					elem.setClass("selected", true);
+			}
 			optionsMenuElement.appendChild(elem);
 		}
 	}

@@ -9,15 +9,16 @@
 
 <body>
   <div id="basic"></div>
+  <div id="plain"></div>
 <script type="text/javascript">
 var options = [
   {
     value: "1",
-    text: "Loooooong asomdokmsadkoqkokmqw"
+    text: "a"
   },
   {
     value: "2",
-    text: "asdasqwasx asdasd acasas "
+    text: "bbasdasd"
   },
   {
     value: "3",
@@ -45,26 +46,26 @@ var options = [
   },
 
 ];
-var f = new Selex({
+var instance = new Selex({
   targetElement: document.getElementById("basic"),
   options: options,
-  defaultValue: 8,
-  width: "10em",
+  //defaultValue: 8,
   theme: "basic",
-  fontSize: ".8em",
+  width: "100%",
+  fontSize: ".6em",
   orientation: "right",
   fontFamily: "Verdana",
+  //placeholder: "Valitse vaihtoehto",
   optionLimit: 5,
   renderNativeSelectBox: true,
   displayNativeSelectBox: false,
-  onOptionChange: (function(foo) {
+  onOptionChange: (function() {
     return function(value, text) {
       console.log("Chosen option: " + value, text);
     }
-  })(f)
+  })()
 });
-f.render();
-console.log(f.getSelectedValue() + " " + f.getSelectedText())
+instance.render();
 </script>
 </body>
 </html>
