@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.CUSTOM_GUI.SubWrapper = function(callback) {
+SELEX.ELEMENTS.WIDGET.SubWrapper = function(callback) {
 
     this.type = "div";
 

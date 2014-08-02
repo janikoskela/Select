@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainer = function() {
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function() {
 
 	this.type = "div";
 	this.className = "value-container";

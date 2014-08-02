@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText = function() {
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function() {
 
 	this.value;
 	this.text;

@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER.ArrowContainer = function() {
+SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function() {
 
 	this.type = "div";
 	this.element;

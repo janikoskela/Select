@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick) {
 	this.value = value;
 	this.text = text;
 	this.onMenuItemClick = onMenuItemClick;

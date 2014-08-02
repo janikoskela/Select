@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
 	this.text = text;
 	this.type = "span";
 	this.element;

@@ -1,5 +1,4 @@
-
-SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 	this.type = "ul";
 	this.className = "options-container";
 	this.element;
