@@ -458,7 +458,7 @@
 
 	    this.type = "div";
 
-	    this.className = "custom-gui-sub-wrapper";
+	    this.className = "widget-sub-wrapper";
 
 	    this.element;
 	    this.callback = callback;
@@ -483,7 +483,7 @@
 	    this.type = "div";
 	    this.onMouseLeaveCallback = onMouseLeaveCallback;
 
-	    this.className = "custom-gui-wrapper";
+	    this.className = "widget-wrapper";
 
 	    this.element;
 

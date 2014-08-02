@@ -2,7 +2,7 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(callback) {
 
     this.type = "div";
 
-    this.className = "custom-gui-sub-wrapper";
+    this.className = "widget-sub-wrapper";
 
     this.element;
     this.callback = callback;

@@ -10,15 +10,15 @@
 	width: 100%;
 }
 
-.basic .custom-gui-wrapper {
+.basic .widget-wrapper {
 	position: relative;
 }
 
-.basic .custom-gui-wrapper:focus {
+.basic .widget-wrapper:focus {
 	outline-width: 0;	
 }
 
-.basic .custom-gui-sub-wrapper {
+.basic .widget-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
@@ -27,7 +27,7 @@
 	border: 1px solid #DEDEDE;
 }
 
-.basic[disabled=true] .custom-gui-sub-wrapper {
+.basic[disabled=true] .widget-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
@@ -40,7 +40,7 @@
 	outline-width: 1px;
 }
 
-.basic .custom-gui-sub-wrapper div {
+.basic .widget-sub-wrapper div {
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -116,7 +116,7 @@
 .basic .options-container {
     position: absolute;
     left: 0;
-    top: 2em; /* same as .custom-gui-sub-wrapper's height */
+    top: 2em; /* same as .widget-sub-wrapper's height */
     z-index: 1;
 	padding: 0;
 	margin: 0;

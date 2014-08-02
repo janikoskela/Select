@@ -3,7 +3,7 @@ SELEX.ELEMENTS.CUSTOM_GUI.Wrapper = function(onMouseLeaveCallback) {
     this.type = "div";
     this.onMouseLeaveCallback = onMouseLeaveCallback;
 
-    this.className = "custom-gui-wrapper";
+    this.className = "widget-wrapper";
 
     this.element;
 
