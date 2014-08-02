@@ -52,10 +52,10 @@
 	SELEX.SETTINGS = {};
 	SELEX.MEDIATOR = {};
 	SELEX.ELEMENTS = {};
-	SELEX.ELEMENTS.CUSTOM_GUI = {};
-	SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER = {};
-	SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER = {};
-	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU = {};
+	SELEX.ELEMENTS.WIDGET = {};
+	SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER = {};
+	SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
+	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU = {};
 
 	SELEX.MEDIATOR.Mediator = function(settings) {
 
@@ -216,7 +216,7 @@
 
 		this.createCustomGuiSubWrapper = function() {
 			var self = this;
-			this.customGuiSubWrapper = new SELEX.ELEMENTS.CUSTOM_GUI.SubWrapper(function() {
+			this.customGuiSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(function() {
 				if (self.enabled === true) {
 					self.optionsMenu.toggleVisibility();
 					self.arrowContainerContent.toggleClass();
@@ -227,7 +227,7 @@
 
 		this.createCustomGuiWrapper = function() {
 			var self = this;
-			this.customGuiWrapper = new SELEX.ELEMENTS.CUSTOM_GUI.Wrapper(function() {
+			this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(function() {
 				self.optionsMenu.close();
 				self.arrowContainerContent.toggleClass();
 			});
@@ -240,7 +240,7 @@
 		}
 
 		this.createOptionsMenu = function(optionLimit) {
-			this.optionsMenu = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu(optionLimit);
+			this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(optionLimit);
 			return this.optionsMenu.render();
 		}
 
@@ -250,21 +250,21 @@
 		}
 
 		this.createValueContainerText = function() {
-			this.valueContainerText = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText();
+			this.valueContainerText = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText();
 			return this.valueContainerText.render();
 		}
 
 		this.createValueContainer = function() {
-			this.valueContainer = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainer();
+			this.valueContainer = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer();
 			return this.valueContainer.render();
 		}
 
 		this.createArrowElement = function() {
 			var arrowContainerElement;
 			var arrowContainerContentElement;
-			this.arrowContainer = new SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER.ArrowContainer();
+			this.arrowContainer = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer();
 			arrowContainerElement = this.arrowContainer.render();
-			this.arrowContainerContent = new SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER.ArrowContainerContent();
+			this.arrowContainerContent = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent();
 			arrowContainerContentElement = this.arrowContainerContent.render();
 			arrowContainerElement.appendChild(arrowContainerContentElement);
 			return arrowContainerElement;
@@ -294,7 +294,7 @@
 			for (var i = 0; i < options.length; i++) {
 				var value = options[i].value;
 				var text = options[i].text;
-				var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
+				var elem = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
 				if (defaultOption !== undefined) {
 					if (defaultOption.value == value && defaultOption.text == text)
 						elem.setClass("selected", true);
@@ -349,7 +349,7 @@
 
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick) {
+	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick) {
 		this.value = value;
 		this.text = text;
 		this.onMenuItemClick = onMenuItemClick;
@@ -358,7 +358,7 @@
 		this.child;
 
 		this.render = function() {
-			this.child = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItemValue(this.text);
+			this.child = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
 			var childElem = this.child.render();
 	    	this.element = document.createElement(this.type);
 	    	this.element.addEventListener("click", onClick.bind(this));
@@ -374,7 +374,7 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
+	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
 		this.text = text;
 		this.type = "span";
 		this.element;
@@ -388,7 +388,7 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
+	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 		this.type = "ul";
 		this.className = "options-container";
 		this.element;
@@ -454,7 +454,7 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.SubWrapper = function(callback) {
+	SELEX.ELEMENTS.WIDGET.SubWrapper = function(callback) {
 
 	    this.type = "div";
 
@@ -478,7 +478,7 @@
 	}
 
 
-	SELEX.ELEMENTS.CUSTOM_GUI.Wrapper = function(onMouseLeaveCallback) {
+	SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback) {
 
 	    this.type = "div";
 	    this.onMouseLeaveCallback = onMouseLeaveCallback;
@@ -654,7 +654,7 @@
 	    }
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainer = function() {
+	SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function() {
 
 		this.type = "div";
 		this.className = "value-container";
@@ -667,7 +667,7 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText = function() {
+	SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function() {
 
 		this.value;
 		this.text;
@@ -700,7 +700,7 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER.ArrowContainerContent = function() {
+	SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function() {
 
 		var CLASS_NAME_ARROW_DOWN = "arrow-down";
 		var CLASS_NAME_ARROW_UP = "arrow-up";
@@ -731,7 +731,7 @@
 		}
 	}
 
-	SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER.ArrowContainer = function() {
+	SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function() {
 
 		this.type = "div";
 		this.element;

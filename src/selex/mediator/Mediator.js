@@ -157,7 +157,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 
 	this.createCustomGuiSubWrapper = function() {
 		var self = this;
-		this.customGuiSubWrapper = new SELEX.ELEMENTS.CUSTOM_GUI.SubWrapper(function() {
+		this.customGuiSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(function() {
 			if (self.enabled === true) {
 				self.optionsMenu.toggleVisibility();
 				self.arrowContainerContent.toggleClass();
@@ -168,7 +168,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 
 	this.createCustomGuiWrapper = function() {
 		var self = this;
-		this.customGuiWrapper = new SELEX.ELEMENTS.CUSTOM_GUI.Wrapper(function() {
+		this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(function() {
 			self.optionsMenu.close();
 			self.arrowContainerContent.toggleClass();
 		});
@@ -181,7 +181,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	}
 
 	this.createOptionsMenu = function(optionLimit) {
-		this.optionsMenu = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenu(optionLimit);
+		this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(optionLimit);
 		return this.optionsMenu.render();
 	}
 
@@ -191,21 +191,21 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	}
 
 	this.createValueContainerText = function() {
-		this.valueContainerText = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainerText();
+		this.valueContainerText = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText();
 		return this.valueContainerText.render();
 	}
 
 	this.createValueContainer = function() {
-		this.valueContainer = new SELEX.ELEMENTS.CUSTOM_GUI.VALUE_CONTAINER.ValueContainer();
+		this.valueContainer = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer();
 		return this.valueContainer.render();
 	}
 
 	this.createArrowElement = function() {
 		var arrowContainerElement;
 		var arrowContainerContentElement;
-		this.arrowContainer = new SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER.ArrowContainer();
+		this.arrowContainer = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer();
 		arrowContainerElement = this.arrowContainer.render();
-		this.arrowContainerContent = new SELEX.ELEMENTS.CUSTOM_GUI.ARROW_CONTAINER.ArrowContainerContent();
+		this.arrowContainerContent = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent();
 		arrowContainerContentElement = this.arrowContainerContent.render();
 		arrowContainerElement.appendChild(arrowContainerContentElement);
 		return arrowContainerElement;
@@ -235,7 +235,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		for (var i = 0; i < options.length; i++) {
 			var value = options[i].value;
 			var text = options[i].text;
-			var elem = new SELEX.ELEMENTS.CUSTOM_GUI.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
+			var elem = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
 			if (defaultOption !== undefined) {
 				if (defaultOption.value == value && defaultOption.text == text)
 					elem.setClass("selected", true);
