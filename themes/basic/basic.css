@@ -18,13 +18,20 @@
 	outline-width: 0;	
 }
 
+.basic .widget-wrapper:focus .widget-sub-wrapper {
+    outline:none; /*or outline-color:#FFFFFF; if the first doesn't work*/
+    border:1px solid #639AFF;
+    -webkit-box-shadow: 0px 0px 4px 0px #639AFF;
+    box-shadow: 0px 0px 4px 0px #639AFF;
+}
+
 .basic .widget-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
 	position: relative;
 	cursor: pointer;
-	border: 1px solid #DEDEDE;
+	border: .2em solid #9C9C9C;
 }
 
 .basic[disabled=true] .widget-sub-wrapper {
@@ -34,10 +41,6 @@
 	position: relative;
 	border: 1px solid #DEDEDE;
 	cursor: default;
-}
-
-.basic:focus {
-	outline-width: 1px;
 }
 
 .basic .widget-sub-wrapper div {
@@ -116,18 +119,21 @@
 .basic .options-container {
     position: absolute;
     left: 0;
-    top: 2em; /* same as .widget-sub-wrapper's height */
+    top: 0; /* same as .widget-sub-wrapper's height (including its border) */
     z-index: 1;
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-	border-left: 1px solid #DEDEDE;
-	border-right: 1px solid #DEDEDE;
-	border-bottom: 1px solid #DEDEDE;
+	border-left: 1px solid #639AFF;
+	border-right: 1px solid #639AFF;
+	border-bottom: 1px solid #639AFF;
 	overflow-y: auto;
 	background-color: #fff;
+    -webkit-box-shadow: 0px 0px 4px 0px #639AFF;
+    box-shadow: 0px 0px 4px 0px #639AFF;
+    opacity: .97;
 }
 
 .basic .options-container li {
@@ -141,6 +147,13 @@
 	padding: 0 0 0 2em;
 }
 
+.basic .options-container li.selected.hovered span {
+	background-image: url(checked-white.png);
+	background-repeat: no-repeat;
+  	background-size: 10px 10px;
+  	background-position:left; 
+}
+
 .basic .options-container li.selected span {
 	background-image: url(checked-black.png);
 	background-repeat: no-repeat;
@@ -148,14 +161,7 @@
   	background-position:left; 
 }
 
-.basic .options-container li.selected:hover span {
-	background-image: url(checked-white.png);
-	background-repeat: no-repeat;
-  	background-size: 10px 10px;
-  	background-position:left; 
-}
-
-.basic .options-container li:hover { 
+.basic .options-container li:hover, .basic .options-container li.hovered { 
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;

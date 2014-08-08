@@ -48,6 +48,10 @@
 
 	}
 
+	var KEY_CODES = {};
+	KEY_CODES.UP = 38;
+	KEY_CODES.DOWN = 40;
+	KEY_CODES.ENTER = 13;
 	var SELEX = {};
 	SELEX.SETTINGS = {};
 	SELEX.MEDIATOR = {};
@@ -226,12 +230,77 @@
 		}
 
 		this.createCustomGuiWrapper = function() {
-			var self = this;
-			this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(function() {
-				self.optionsMenu.close();
-				self.arrowContainerContent.toggleClass();
-			});
+			this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(onFocusOut.bind(this), onKeyDown.bind(this), onKeyUp.bind(this), onKeyEnter.bind(this));
 			return this.customGuiWrapper.render();
+		}
+
+		function onKeyEnter(e) {
+			var hovered = this.optionsMenu.getHoveredChild();
+			this.onOptionItemClick(hovered);
+		}
+
+		function onFocusOut(e) {
+			this.optionsMenu.close();
+			this.arrowContainerContent.toggleClass();
+		}
+
+		function onMouseOut(e) {
+			this.optionsMenu.close();
+			this.arrowContainerContent.toggleClass();			
+		}
+
+		function onKeyDown(e) {
+			if (this.optionsMenu.isClosed())
+				this.optionsMenu.open();
+			var hovered = this.optionsMenu.getHoveredChild();
+			this.optionsMenu.clearChildHovers();
+			var optionsMenuElem = this.optionsMenu.getElement();
+			var children = optionsMenuElem.children;
+			if (children.length === 0)
+				return;
+			if (hovered === undefined) {
+				hovered = children[0];
+				this.optionsMenu.setChildHovered(hovered);
+			}
+			else {
+				var index = parseInt(hovered.getAttribute("index"));
+				if (children[index + 1] !== undefined) {
+					hovered = children[index + 1];
+					this.optionsMenu.setChildHovered(hovered);
+				}
+				else {
+					hovered = children[0];
+					this.optionsMenu.setChildHovered(hovered);
+				}
+			}
+			optionsMenuElem.scrollTop = hovered.offsetTop;
+		}
+
+		function onKeyUp(e) {
+			if (this.optionsMenu.isClosed())
+				this.optionsMenu.open();
+			var hovered = this.optionsMenu.getHoveredChild();
+			this.optionsMenu.clearChildHovers();
+			var optionsMenuElem = this.optionsMenu.getElement();
+			var children = optionsMenuElem.children;
+			if (children.length === 0)
+				return;
+			if (hovered === undefined) {
+				hovered = children[children.length - 1];
+				this.optionsMenu.setChildHovered(hovered);
+			}
+			else {
+				var index = parseInt(hovered.getAttribute("index"));
+				if (children[index - 1] !== undefined) {
+					hovered = children[index - 1];
+					this.optionsMenu.setChildHovered(hovered);
+				}
+				else {
+					hovered = children[children.length - 1];
+					this.optionsMenu.setChildHovered(hovered);
+				}
+			}
+			optionsMenuElem.scrollTop = hovered.offsetTop;
 		}
 
 		this.createWrapper = function(theme, fontSize, fontFamily, tabIndex) {
@@ -294,7 +363,7 @@
 			for (var i = 0; i < options.length; i++) {
 				var value = options[i].value;
 				var text = options[i].text;
-				var elem = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
+				var elem = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this), i).render();
 				if (defaultOption !== undefined) {
 					if (defaultOption.value == value && defaultOption.text == text)
 						elem.setClass("selected", true);
@@ -311,7 +380,9 @@
 				onOptionChange(this.selectedValue, this.selectedText);
 		}
 
-		this.onOptionItemClick = function(value, text) {
+		this.onOptionItemClick = function(elem) {
+			var value = elem.getAttribute("value");
+			var text = elem.children[0].innerHTML;
 			var onOptionChange = this.settings.getOnOptionChange();
 			this.valueContainerText.setValue(value);
 			this.valueContainerText.setText(text);
@@ -324,6 +395,7 @@
 			this.selectedText = text;
 			if (typeof onOptionChange === "function")
 				onOptionChange(this.selectedValue, this.selectedText);
+			elem.addClass("selected", true);
 		}
 
 		this.createNativeOptionElements = function(options) {
@@ -349,28 +421,51 @@
 
 	}
 
-	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick) {
+	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick, index) {
 		this.value = value;
 		this.text = text;
 		this.onMenuItemClick = onMenuItemClick;
 		this.type = "li";
 		this.element;
 		this.child;
+		this.index = index;
 
 		this.render = function() {
 			this.child = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
 			var childElem = this.child.render();
 	    	this.element = document.createElement(this.type);
 	    	this.element.addEventListener("click", onClick.bind(this));
+	    	this.element.addEventListener("mouseover", onMouseOver.bind(this));
+	    	this.element.addEventListener("keyup", onKeyUp.bind(this));
 	    	this.element.setAttribute("value", this.value);
 	    	this.element.appendChild(childElem);
+	    	this.element.setAttribute("index", this.index);
 	    	return this.element;
+		}
+
+		function onKeyUp(e) {
+			switch (e.keyCode) {
+				case KEY_CODES.ENTER:
+					onClick(e);
+					break;
+			}
+		}
+
+		this.getIndex = function() {
+			return this.index;
+		}
+
+		function onMouseOver(e) {
+			var siblings = this.element.parentNode.children;
+			for (var i = 0; i < siblings.length; i++) {
+				siblings[i].removeClass("hovered");
+			}
+			this.element.addClass("hovered");
 		}
 
 		function onClick(e) {
 			if (typeof this.onMenuItemClick === "function")
-				this.onMenuItemClick(this.value, this.text);
-			this.element.setClass("selected", true);
+				this.onMenuItemClick(this.element);
 		}
 	}
 
@@ -414,6 +509,27 @@
 			}
 		}
 
+		this.getHoveredChild = function() {
+			var children = this.element.children;
+			for (var key in children) {
+				var child = children[key];
+				if (typeof child === "object") {
+					if (child.hasClass("hovered"))
+						return child;
+				}
+			}
+		}
+
+		this.clearChildHovers = function() {
+			for (var i = 0; i < this.element.children.length; i++) {
+				this.element.children[i].removeClass("hovered");
+			}
+		}
+
+		this.setChildHovered = function(child) {
+			child.addClass("hovered");
+		}
+
 		this.getElement = function() {
 			return this.element;
 		}
@@ -429,7 +545,12 @@
 		}
 
 		this.close = function() {
+			this.clearChildHovers();
 			this.element.hide();
+		}
+
+		this.isClosed = function() {
+			return this.element.isHidden();
 		}
 
 		this.open = function() {
@@ -478,7 +599,7 @@
 	}
 
 
-	SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback) {
+	SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback, onKeyDownCallback, onKeyUpCallback, onKeyEnterCallback) {
 
 	    this.type = "div";
 	    this.onMouseLeaveCallback = onMouseLeaveCallback;
@@ -489,14 +610,51 @@
 
 	    this.tabIndex;
 
+	    this.onKeyDownCallback = onKeyDownCallback;
+
+	    this.onKeyUpCallback = onKeyUpCallback;
+
+	    this.onKeyEnterCallback = onKeyEnterCallback;
+
+
 	    this.render = function() {
 	    	this.element = document.createElement(this.type);
 	    	this.element.setClass(this.className);
-	    	this.element.addEventListener("mouseleave", this.onMouseLeave.bind(this));
+	    	this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
+	    	this.element.addEventListener("blur", onMouseLeave.bind(this));
+	    	this.element.addEventListener("keyup", onKeyUp.bind(this));
+	    	this.element.addEventListener("keydown", onKeyDown.bind(this));
 	    	return this.element;
 	    }
 
-	    this.onMouseLeave = function() {
+	    function onKeyDown(e) {
+	    	switch(e.keyCode) {
+	    		case KEY_CODES.UP:
+	    		case KEY_CODES.DOWN:
+	    			e.preventDefault();
+	    			break;
+	    	}
+	    	return false;
+	    }
+
+	    function onKeyUp(e) {
+	    	switch(e.keyCode) {
+	    		case KEY_CODES.UP:
+	    			if (typeof this.onKeyUpCallback === "function")
+	    				this.onKeyUpCallback(e);
+	    			break;
+	    		case KEY_CODES.DOWN:
+	    			if (typeof this.onKeyDownCallback === "function")
+	    				this.onKeyDownCallback(e);
+	    			break;
+	    		case KEY_CODES.ENTER:
+	    			if (typeof this.onKeyEnterCallback === "function")
+	    				this.onKeyEnterCallback(e);
+	    			break;
+	    	}
+	    }
+
+	    function onMouseLeave(e) {
 	    	if (typeof this.onMouseLeaveCallback === "function")
 	    		this.onMouseLeaveCallback();
 	    }
@@ -832,6 +990,13 @@
 
 		this.getPlaceholder = function() {
 			return placeholder;
+		}
+	}
+
+	Object.prototype.removeClass = function(name) {
+		if (this.hasClass(name)) {
+            var reg = new RegExp('(\\s|^)'+name+'(\\s|$)');
+            this.className = this.className.replace(reg,' ');
 		}
 	}
 

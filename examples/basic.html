@@ -5,6 +5,12 @@
   <meta charset="utf-8">
   <script src="../src/dist/Selex.js"></script>
   <link rel="stylesheet" type="text/css" href="../themes/basic/basic.css">
+  <style>
+    #basic {
+      height: 100px;
+      padding-top: 4em;
+    }
+  </style>
 </head>
 
 <body>
@@ -55,10 +61,33 @@ var instance = new Selex({
   fontSize: ".6em",
   orientation: "right",
   fontFamily: "Verdana",
-  //placeholder: "Valitse vaihtoehto",
+  tabIndex: 1,
+  placeholder: "Valitse vaihtoehto",
   optionLimit: 5,
   renderNativeSelectBox: true,
   displayNativeSelectBox: false,
+  onOptionChange: (function() {
+    return function(value, text) {
+      console.log("Chosen option: " + value, text);
+    }
+  })()
+});
+instance.render();
+
+var instance = new Selex({
+  targetElement: document.getElementById("plain"),
+  options: options,
+  //defaultValue: 8,
+  tabIndex: 2,
+  theme: "basic",
+  width: "100%",
+  fontSize: ".6em",
+  orientation: "right",
+  fontFamily: "Verdana",
+  placeholder: "Valitse vaihtoehto",
+  optionLimit: 5,
+  renderNativeSelectBox: true,
+  displayNativeSelectBox: true,
   onOptionChange: (function() {
     return function(value, text) {
       console.log("Chosen option: " + value, text);
