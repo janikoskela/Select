@@ -43,6 +43,20 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var fontFamily = this.settings.getFontFamily();
 		var orientation = this.settings.getOrientation();
 		var placeholder = this.settings.getPlaceholder();
+		var sortType = this.settings.getSort();
+
+		if (sortType !== undefined) {
+			switch(sortType) {
+				case SORT_TYPES.DESC:
+					options.sort(sortByDesc);
+					break;
+				case SORT_TYPES.ASC:
+					options.sort(sortByAsc);
+					break;
+				default:
+					throw Error("Unsupported sort type \"" + sortType + "\"");
+			}		
+		}
 
 		rootElement.empty();
 
@@ -113,12 +127,32 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			optionsMenuElement = this.createOptionsMenu(optionLimit);
 			customGuiWrapperElement.appendChild(optionsMenuElement);
 			this.createOptionElements(options, defaultOption);
-			if (width === undefined) {
+			if (width === undefined && options.length > 0) {
 				width = this.getWidthBasedLongestOption();
 				this.wrapper.setWidth(width);
 			}
 			this.optionsMenu.setWidth(width);
 		}
+	}
+
+	function sortByDesc(optionA, optionB) {
+		var a = optionA.text;
+		var b = optionB.text;
+		if (a > b)
+			return 1;
+		if (a < b)
+			return -1;
+		return 0;
+	}
+
+	function sortByAsc(optionA, optionB) {
+		var a = optionA.text;
+		var b = optionB.text;		
+		if (a > b)
+			return -1;
+		if (a < b)
+			return 1;
+		return 0;
 	}
 
 	this.disableWidget = function() {
@@ -167,12 +201,77 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	}
 
 	this.createCustomGuiWrapper = function() {
-		var self = this;
-		this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(function() {
-			self.optionsMenu.close();
-			self.arrowContainerContent.toggleClass();
-		});
+		this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(onFocusOut.bind(this), onKeyDown.bind(this), onKeyUp.bind(this), onKeyEnter.bind(this));
 		return this.customGuiWrapper.render();
+	}
+
+	function onKeyEnter(e) {
+		var hovered = this.optionsMenu.getHoveredChild();
+		this.onOptionItemClick(hovered);
+	}
+
+	function onFocusOut(e) {
+		this.optionsMenu.close();
+		this.arrowContainerContent.toggleClass();
+	}
+
+	function onMouseOut(e) {
+		this.optionsMenu.close();
+		this.arrowContainerContent.toggleClass();			
+	}
+
+	function onKeyDown(e) {
+		if (this.optionsMenu.isClosed())
+			this.optionsMenu.open();
+		var hovered = this.optionsMenu.getHoveredChild();
+		this.optionsMenu.clearChildHovers();
+		var optionsMenuElem = this.optionsMenu.getElement();
+		var children = optionsMenuElem.children;
+		if (children.length === 0)
+			return;
+		if (hovered === undefined) {
+			hovered = children[0];
+			this.optionsMenu.setChildHovered(hovered);
+		}
+		else {
+			var index = parseInt(hovered.getAttribute("index"));
+			if (children[index + 1] !== undefined) {
+				hovered = children[index + 1];
+				this.optionsMenu.setChildHovered(hovered);
+			}
+			else {
+				hovered = children[0];
+				this.optionsMenu.setChildHovered(hovered);
+			}
+		}
+		optionsMenuElem.scrollTop = hovered.offsetTop;
+	}
+
+	function onKeyUp(e) {
+		if (this.optionsMenu.isClosed())
+			this.optionsMenu.open();
+		var hovered = this.optionsMenu.getHoveredChild();
+		this.optionsMenu.clearChildHovers();
+		var optionsMenuElem = this.optionsMenu.getElement();
+		var children = optionsMenuElem.children;
+		if (children.length === 0)
+			return;
+		if (hovered === undefined) {
+			hovered = children[children.length - 1];
+			this.optionsMenu.setChildHovered(hovered);
+		}
+		else {
+			var index = parseInt(hovered.getAttribute("index"));
+			if (children[index - 1] !== undefined) {
+				hovered = children[index - 1];
+				this.optionsMenu.setChildHovered(hovered);
+			}
+			else {
+				hovered = children[children.length - 1];
+				this.optionsMenu.setChildHovered(hovered);
+			}
+		}
+		optionsMenuElem.scrollTop = hovered.offsetTop;
 	}
 
 	this.createWrapper = function(theme, fontSize, fontFamily, tabIndex) {
@@ -235,7 +334,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		for (var i = 0; i < options.length; i++) {
 			var value = options[i].value;
 			var text = options[i].text;
-			var elem = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this)).render();
+			var elem = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(value, text, this.onOptionItemClick.bind(this), i).render();
 			if (defaultOption !== undefined) {
 				if (defaultOption.value == value && defaultOption.text == text)
 					elem.setClass("selected", true);
@@ -252,7 +351,9 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			onOptionChange(this.selectedValue, this.selectedText);
 	}
 
-	this.onOptionItemClick = function(value, text) {
+	this.onOptionItemClick = function(elem) {
+		var value = elem.getAttribute("value");
+		var text = elem.children[0].innerHTML;
 		var onOptionChange = this.settings.getOnOptionChange();
 		this.valueContainerText.setValue(value);
 		this.valueContainerText.setText(text);
@@ -265,6 +366,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		this.selectedText = text;
 		if (typeof onOptionChange === "function")
 			onOptionChange(this.selectedValue, this.selectedText);
+		elem.addClass("selected", true);
 	}
 
 	this.createNativeOptionElements = function(options) {

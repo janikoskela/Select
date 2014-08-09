@@ -52,7 +52,11 @@
 	KEY_CODES.UP = 38;
 	KEY_CODES.DOWN = 40;
 	KEY_CODES.ENTER = 13;
+	var SORT_TYPES = {};
+	SORT_TYPES.ASC = "asc";
+	SORT_TYPES.DESC = "desc";
 	var SELEX = {};
+	SELEX.UTILS = {};
 	SELEX.SETTINGS = {};
 	SELEX.MEDIATOR = {};
 	SELEX.ELEMENTS = {};
@@ -106,6 +110,20 @@
 			var fontFamily = this.settings.getFontFamily();
 			var orientation = this.settings.getOrientation();
 			var placeholder = this.settings.getPlaceholder();
+			var sortType = this.settings.getSort();
+
+			if (sortType !== undefined) {
+				switch(sortType) {
+					case SORT_TYPES.DESC:
+						options.sort(sortByDesc);
+						break;
+					case SORT_TYPES.ASC:
+						options.sort(sortByAsc);
+						break;
+					default:
+						throw Error("Unsupported sort type \"" + sortType + "\"");
+				}		
+			}
 
 			rootElement.empty();
 
@@ -176,12 +194,32 @@
 				optionsMenuElement = this.createOptionsMenu(optionLimit);
 				customGuiWrapperElement.appendChild(optionsMenuElement);
 				this.createOptionElements(options, defaultOption);
-				if (width === undefined) {
+				if (width === undefined && options.length > 0) {
 					width = this.getWidthBasedLongestOption();
 					this.wrapper.setWidth(width);
 				}
 				this.optionsMenu.setWidth(width);
 			}
+		}
+
+		function sortByDesc(optionA, optionB) {
+			var a = optionA.text;
+			var b = optionB.text;
+			if (a > b)
+				return 1;
+			if (a < b)
+				return -1;
+			return 0;
+		}
+
+		function sortByAsc(optionA, optionB) {
+			var a = optionA.text;
+			var b = optionB.text;		
+			if (a > b)
+				return -1;
+			if (a < b)
+				return 1;
+			return 0;
 		}
 
 		this.disableWidget = function() {
@@ -906,18 +944,18 @@
 		}
 	}
 
-	SELEX.SETTINGS.Settings = function(userDefinedSettings){
+	SELEX.SETTINGS.Settings = function(userDefinedSettings) {
 		var options = userDefinedSettings.options || [];
-		var rootElement = userDefinedSettings.targetElement || undefined;
-		var defaultValue = userDefinedSettings.defaultValue || undefined;
+		var rootElement = userDefinedSettings.targetElement;
+		var defaultValue = userDefinedSettings.defaultValue;
 		var orientation = userDefinedSettings.orientation || "right";
-		var onOptionChange = userDefinedSettings.onOptionChange || undefined;
+		var onOptionChange = userDefinedSettings.onOptionChange;
 		var optionLimit = userDefinedSettings.optionLimit;
-		var sort = userDefinedSettings.sort || undefined;
+		var sort = userDefinedSettings.sort;
 		var tabIndex = userDefinedSettings.tabIndex || 0;
-		var height = userDefinedSettings.height || undefined;
-		var width = userDefinedSettings.width || undefined;
-		var fontSize = userDefinedSettings.fontSize || undefined;
+		var height = userDefinedSettings.height;
+		var width = userDefinedSettings.width;
+		var fontSize = userDefinedSettings.fontSize;
 		var theme = userDefinedSettings.theme || "default";
 		var fontFamily = userDefinedSettings.fontFamily;
 		var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
@@ -977,7 +1015,7 @@
 		}
 
 		this.getOptions = function() {
-			return options;
+			return options.clone();
 		}
 
 		this.getRootElement = function() {
@@ -998,43 +1036,56 @@
             var reg = new RegExp('(\\s|^)'+name+'(\\s|$)');
             this.className = this.className.replace(reg,' ');
 		}
-	}
+	};
 
 	Object.prototype.setStyle = function(name, value) {
 		this.style[name] = value;
-	}
+	};
 
 	Object.prototype.addClass = function(name) {
 		this.className += " " + name;
-	}
+	};
 
 	Object.prototype.clearClasses = function() {
 		this.className = "";
-	}
+	};
 
 	Object.prototype.hasClass = function(name) {
 		return this.className.match(new RegExp('(\\s|^)' + name + '(\\s|$)'));
-	}
+	};
 
 	Object.prototype.isHidden = function() {
 		return (this.style.display === "none") ? true : false;
-	}
+	};
 
 	Object.prototype.show = function() {
 		this.style.display = "block";
-	}
+	};
 
 	Object.prototype.hide = function() {
 		this.style.display = "none";
-	}
+	};
 
 	Object.prototype.empty = function() {
 		this.innerHTML = "";
-	}
+	};
 
 	Object.prototype.setClass = function(name) {
 		this.className = name;
-	}
+	};
+
+	Object.prototype.clone = function() {
+		var newObj = (this instanceof Array) ? [] : {};
+	  	for (var i in this) {
+	    	if (i == 'clone') 
+	    		continue;
+	    	if (this[i] && typeof this[i] == "object")
+	      		newObj[i] = this[i].clone();
+	    	else 
+	    		newObj[i] = this[i];
+	  	} 
+	  	return newObj;
+	};
 
 
 }());

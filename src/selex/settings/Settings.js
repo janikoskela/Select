@@ -1,15 +1,15 @@
-SELEX.SETTINGS.Settings = function(userDefinedSettings){
+SELEX.SETTINGS.Settings = function(userDefinedSettings) {
 	var options = userDefinedSettings.options || [];
-	var rootElement = userDefinedSettings.targetElement || undefined;
-	var defaultValue = userDefinedSettings.defaultValue || undefined;
+	var rootElement = userDefinedSettings.targetElement;
+	var defaultValue = userDefinedSettings.defaultValue;
 	var orientation = userDefinedSettings.orientation || "right";
-	var onOptionChange = userDefinedSettings.onOptionChange || undefined;
+	var onOptionChange = userDefinedSettings.onOptionChange;
 	var optionLimit = userDefinedSettings.optionLimit;
-	var sort = userDefinedSettings.sort || undefined;
+	var sort = userDefinedSettings.sort;
 	var tabIndex = userDefinedSettings.tabIndex || 0;
-	var height = userDefinedSettings.height || undefined;
-	var width = userDefinedSettings.width || undefined;
-	var fontSize = userDefinedSettings.fontSize || undefined;
+	var height = userDefinedSettings.height;
+	var width = userDefinedSettings.width;
+	var fontSize = userDefinedSettings.fontSize;
 	var theme = userDefinedSettings.theme || "default";
 	var fontFamily = userDefinedSettings.fontFamily;
 	var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
@@ -69,7 +69,7 @@ SELEX.SETTINGS.Settings = function(userDefinedSettings){
 	}
 
 	this.getOptions = function() {
-		return options;
+		return options.clone();
 	}
 
 	this.getRootElement = function() {
