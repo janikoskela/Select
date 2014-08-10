@@ -68,7 +68,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 	}
 
 	this.close = function() {
-		this.clearChildHovers();
 		this.element.hide();
 	}
 

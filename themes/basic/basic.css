@@ -161,7 +161,7 @@
   	background-position:left; 
 }
 
-.basic .options-container li:hover, .basic .options-container li.hovered { 
+.basic .options-container li.hovered { 
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;

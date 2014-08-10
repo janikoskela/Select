@@ -193,8 +193,8 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var self = this;
 		this.customGuiSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(function() {
 			if (self.enabled === true) {
+				self.arrowContainerContent.up();
 				self.optionsMenu.toggleVisibility();
-				self.arrowContainerContent.toggleClass();
 			}
 		});
 		return this.customGuiSubWrapper.render();
@@ -259,12 +259,12 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 
 	function onFocusOut(e) {
 		this.optionsMenu.close();
-		this.arrowContainerContent.toggleClass();
+		this.arrowContainerContent.down();
 	}
 
 	function onMouseOut(e) {
 		this.optionsMenu.close();
-		this.arrowContainerContent.toggleClass();			
+		this.arrowContainerContent.down();			
 	}
 
 	function onKeyDown(e) {
@@ -292,6 +292,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			}
 		}
 		optionsMenuElem.scrollTop = hovered.offsetTop;
+		this.arrowContainerContent.up();			
 	}
 
 	function onKeyUp(e) {
@@ -319,6 +320,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			}
 		}
 		optionsMenuElem.scrollTop = hovered.offsetTop;
+		this.arrowContainerContent.up();			
 	}
 
 	this.createWrapper = function(theme, fontSize, fontFamily, tabIndex) {
@@ -408,7 +410,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var previouslySelected = this.optionsMenu.getSelectedChild();
 		if (previouslySelected !== undefined)
 			previouslySelected.clearClasses();
-		this.arrowContainerContent.toggleClass();
+		this.arrowContainerContent.down();
 		this.selectedValue = value;
 		this.selectedText = text;
 		if (typeof onOptionChange === "function")

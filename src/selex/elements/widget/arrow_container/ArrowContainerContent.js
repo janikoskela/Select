@@ -17,14 +17,22 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function() {
 		return this.element;
 	}
 
+	this.down = function() {
+		this.className = CLASS_NAME_ARROW_DOWN;
+		this.element.setClass(CLASS_NAME_ARROW_DOWN);
+	}
+
+	this.up = function() {
+		this.className = CLASS_NAME_ARROW_UP;
+		this.element.setClass(CLASS_NAME_ARROW_UP);
+	}
+
 	this.toggleClass = function() {
 		if (this.className === CLASS_NAME_ARROW_DOWN) {
-			this.className = CLASS_NAME_ARROW_UP;
-			this.element.setClass(CLASS_NAME_ARROW_UP);
+			this.up();
 		}
 		else {
-			this.className = CLASS_NAME_ARROW_DOWN;
-			this.element.setClass(CLASS_NAME_ARROW_DOWN);
+			this.down();
 		}
 	}
 }

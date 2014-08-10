@@ -260,8 +260,8 @@
 			var self = this;
 			this.customGuiSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(function() {
 				if (self.enabled === true) {
+					self.arrowContainerContent.up();
 					self.optionsMenu.toggleVisibility();
-					self.arrowContainerContent.toggleClass();
 				}
 			});
 			return this.customGuiSubWrapper.render();
@@ -326,12 +326,12 @@
 
 		function onFocusOut(e) {
 			this.optionsMenu.close();
-			this.arrowContainerContent.toggleClass();
+			this.arrowContainerContent.down();
 		}
 
 		function onMouseOut(e) {
 			this.optionsMenu.close();
-			this.arrowContainerContent.toggleClass();			
+			this.arrowContainerContent.down();			
 		}
 
 		function onKeyDown(e) {
@@ -359,6 +359,7 @@
 				}
 			}
 			optionsMenuElem.scrollTop = hovered.offsetTop;
+			this.arrowContainerContent.up();			
 		}
 
 		function onKeyUp(e) {
@@ -386,6 +387,7 @@
 				}
 			}
 			optionsMenuElem.scrollTop = hovered.offsetTop;
+			this.arrowContainerContent.up();			
 		}
 
 		this.createWrapper = function(theme, fontSize, fontFamily, tabIndex) {
@@ -475,7 +477,7 @@
 			var previouslySelected = this.optionsMenu.getSelectedChild();
 			if (previouslySelected !== undefined)
 				previouslySelected.clearClasses();
-			this.arrowContainerContent.toggleClass();
+			this.arrowContainerContent.down();
 			this.selectedValue = value;
 			this.selectedText = text;
 			if (typeof onOptionChange === "function")
@@ -638,7 +640,6 @@
 		}
 
 		this.close = function() {
-			this.clearChildHovers();
 			this.element.hide();
 		}
 
@@ -974,14 +975,22 @@
 			return this.element;
 		}
 
+		this.down = function() {
+			this.className = CLASS_NAME_ARROW_DOWN;
+			this.element.setClass(CLASS_NAME_ARROW_DOWN);
+		}
+
+		this.up = function() {
+			this.className = CLASS_NAME_ARROW_UP;
+			this.element.setClass(CLASS_NAME_ARROW_UP);
+		}
+
 		this.toggleClass = function() {
 			if (this.className === CLASS_NAME_ARROW_DOWN) {
-				this.className = CLASS_NAME_ARROW_UP;
-				this.element.setClass(CLASS_NAME_ARROW_UP);
+				this.up();
 			}
 			else {
-				this.className = CLASS_NAME_ARROW_DOWN;
-				this.element.setClass(CLASS_NAME_ARROW_DOWN);
+				this.down();
 			}
 		}
 	}
