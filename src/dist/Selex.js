@@ -185,7 +185,7 @@
 						arrowContainerElement.setStyle("float", orientation);
 						break;
 					default:
-						throw new Error("Invalid orientation value \"" + orientation + "\"");
+						throw Error("Invalid orientation value \"" + orientation + "\"");
 
 				}
 
@@ -268,8 +268,55 @@
 		}
 
 		this.createCustomGuiWrapper = function() {
-			this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(onFocusOut.bind(this), onKeyDown.bind(this), onKeyUp.bind(this), onKeyEnter.bind(this));
+			this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(onFocusOut.bind(this), onKeyDown.bind(this), onKeyUp.bind(this), onKeyEnter.bind(this), onSearch.bind(this));
 			return this.customGuiWrapper.render();
+		}
+
+		function onSearch(e) {
+			var searchMode = this.settings.getSearchMode();
+			switch(searchMode) {
+				case undefined:
+					var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
+					this.searchByFirstChar(firstChar);
+					break;
+			}
+		}
+
+		this.searchByFirstChar = function(query) {
+			var optionsMenuElem = this.optionsMenu.getElement();
+			var listElements = this.optionsMenu.getListElements();
+			var hovered = this.optionsMenu.getHoveredChild();
+			if (hovered === undefined) {
+				for (var i = 0; i < listElements.length; i++) {
+					var li = listElements[i];
+					var label = li.children[0].innerHTML.toLowerCase();
+
+					if (label[0] === query) {
+
+						this.optionsMenu.clearChildHovers();
+						this.optionsMenu.setChildHovered(li);
+						optionsMenuElem.scrollTop = li.offsetTop;
+						return;
+					}
+				}
+			}
+			else {
+				var counter = 0;
+				var nextSibling = hovered.nextSibling;
+				while (counter < listElements.length) {
+					if (nextSibling === null)
+						nextSibling = listElements[0];
+					var nextSiblingText = nextSibling.children[0].innerHTML.toLowerCase();
+					if (nextSiblingText[0] === query) {
+						this.optionsMenu.clearChildHovers();
+						this.optionsMenu.setChildHovered(nextSibling);
+						optionsMenuElem.scrollTop = nextSibling.offsetTop;
+						return;
+					}
+					nextSibling = nextSibling.nextSibling;
+					counter++;
+				}
+			}
 		}
 
 		function onKeyEnter(e) {
@@ -433,7 +480,7 @@
 			this.selectedText = text;
 			if (typeof onOptionChange === "function")
 				onOptionChange(this.selectedValue, this.selectedText);
-			elem.addClass("selected", true);
+			this.optionsMenu.setChildSelected(elem);
 		}
 
 		this.createNativeOptionElements = function(options) {
@@ -536,6 +583,10 @@
 	    	return this.element;
 		}
 
+		this.getListElements = function() {
+			return this.element.childNodes;
+		}
+
 		this.getSelectedChild = function() {
 			var children = this.element.children;
 			for (var key in children) {
@@ -566,6 +617,10 @@
 
 		this.setChildHovered = function(child) {
 			child.addClass("hovered");
+		}
+
+		this.setChildSelected = function(child) {
+			child.addClass("selected");
 		}
 
 		this.getElement = function() {
@@ -637,7 +692,7 @@
 	}
 
 
-	SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback, onKeyDownCallback, onKeyUpCallback, onKeyEnterCallback) {
+	SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback, onKeyDownCallback, onKeyUpCallback, onKeyEnterCallback, onSearchCallback) {
 
 	    this.type = "div";
 	    this.onMouseLeaveCallback = onMouseLeaveCallback;
@@ -654,6 +709,7 @@
 
 	    this.onKeyEnterCallback = onKeyEnterCallback;
 
+	    this.onSearchCallback = onSearchCallback;
 
 	    this.render = function() {
 	    	this.element = document.createElement(this.type);
@@ -689,6 +745,9 @@
 	    			if (typeof this.onKeyEnterCallback === "function")
 	    				this.onKeyEnterCallback(e);
 	    			break;
+	    		default:
+	    			if (typeof this.onSearchCallback === "function")
+	    				this.onSearchCallback(e);
 	    	}
 	    }
 
@@ -961,6 +1020,11 @@
 		var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
 		var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
 		var placeholder = userDefinedSettings.placeholder;
+		var searchMode = userDefinedSettings.searchMode;
+
+		this.getSearchMode = function() {
+			return searchMode;
+		}
 
 		this.isNativeSelectBoxToBeRendered = function() {
 			return nativeSelectBoxRender;

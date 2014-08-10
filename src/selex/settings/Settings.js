@@ -15,6 +15,11 @@ SELEX.SETTINGS.Settings = function(userDefinedSettings) {
 	var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
 	var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
 	var placeholder = userDefinedSettings.placeholder;
+	var searchMode = userDefinedSettings.searchMode;
+
+	this.getSearchMode = function() {
+		return searchMode;
+	}
 
 	this.isNativeSelectBoxToBeRendered = function() {
 		return nativeSelectBoxRender;

@@ -13,6 +13,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
     	return this.element;
 	}
 
+	this.getListElements = function() {
+		return this.element.childNodes;
+	}
+
 	this.getSelectedChild = function() {
 		var children = this.element.children;
 		for (var key in children) {
@@ -22,6 +26,31 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 					return child;
 			}
 		}
+	}
+
+	this.getHoveredChild = function() {
+		var children = this.element.children;
+		for (var key in children) {
+			var child = children[key];
+			if (typeof child === "object") {
+				if (child.hasClass("hovered"))
+					return child;
+			}
+		}
+	}
+
+	this.clearChildHovers = function() {
+		for (var i = 0; i < this.element.children.length; i++) {
+			this.element.children[i].removeClass("hovered");
+		}
+	}
+
+	this.setChildHovered = function(child) {
+		child.addClass("hovered");
+	}
+
+	this.setChildSelected = function(child) {
+		child.addClass("selected");
 	}
 
 	this.getElement = function() {
@@ -39,7 +68,12 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 	}
 
 	this.close = function() {
+		this.clearChildHovers();
 		this.element.hide();
+	}
+
+	this.isClosed = function() {
+		return this.element.isHidden();
 	}
 
 	this.open = function() {

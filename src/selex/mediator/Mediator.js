@@ -118,7 +118,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 					arrowContainerElement.setStyle("float", orientation);
 					break;
 				default:
-					throw new Error("Invalid orientation value \"" + orientation + "\"");
+					throw Error("Invalid orientation value \"" + orientation + "\"");
 
 			}
 
@@ -201,8 +201,55 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	}
 
 	this.createCustomGuiWrapper = function() {
-		this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(onFocusOut.bind(this), onKeyDown.bind(this), onKeyUp.bind(this), onKeyEnter.bind(this));
+		this.customGuiWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(onFocusOut.bind(this), onKeyDown.bind(this), onKeyUp.bind(this), onKeyEnter.bind(this), onSearch.bind(this));
 		return this.customGuiWrapper.render();
+	}
+
+	function onSearch(e) {
+		var searchMode = this.settings.getSearchMode();
+		switch(searchMode) {
+			case undefined:
+				var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
+				this.searchByFirstChar(firstChar);
+				break;
+		}
+	}
+
+	this.searchByFirstChar = function(query) {
+		var optionsMenuElem = this.optionsMenu.getElement();
+		var listElements = this.optionsMenu.getListElements();
+		var hovered = this.optionsMenu.getHoveredChild();
+		if (hovered === undefined) {
+			for (var i = 0; i < listElements.length; i++) {
+				var li = listElements[i];
+				var label = li.children[0].innerHTML.toLowerCase();
+
+				if (label[0] === query) {
+
+					this.optionsMenu.clearChildHovers();
+					this.optionsMenu.setChildHovered(li);
+					optionsMenuElem.scrollTop = li.offsetTop;
+					return;
+				}
+			}
+		}
+		else {
+			var counter = 0;
+			var nextSibling = hovered.nextSibling;
+			while (counter < listElements.length) {
+				if (nextSibling === null)
+					nextSibling = listElements[0];
+				var nextSiblingText = nextSibling.children[0].innerHTML.toLowerCase();
+				if (nextSiblingText[0] === query) {
+					this.optionsMenu.clearChildHovers();
+					this.optionsMenu.setChildHovered(nextSibling);
+					optionsMenuElem.scrollTop = nextSibling.offsetTop;
+					return;
+				}
+				nextSibling = nextSibling.nextSibling;
+				counter++;
+			}
+		}
 	}
 
 	function onKeyEnter(e) {
@@ -366,7 +413,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		this.selectedText = text;
 		if (typeof onOptionChange === "function")
 			onOptionChange(this.selectedValue, this.selectedText);
-		elem.addClass("selected", true);
+		this.optionsMenu.setChildSelected(elem);
 	}
 
 	this.createNativeOptionElements = function(options) {
