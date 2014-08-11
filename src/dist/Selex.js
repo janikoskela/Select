@@ -295,7 +295,7 @@
 
 						this.optionsMenu.clearChildHovers();
 						this.optionsMenu.setChildHovered(li);
-						if (this.optionsMenu.isClosed())
+						if (this.optionsMenu.isClosed()) 
 							this.onOptionItemClick(li);
 						else
 							optionsMenuElem.scrollTop = li.offsetTop;
@@ -326,8 +326,10 @@
 		}
 
 		function onKeyEnter(e) {
-			var hovered = this.optionsMenu.getHoveredChild();
-			this.onOptionItemClick(hovered);
+			if (this.optionsMenu.isClosed() === false) {
+				var hovered = this.optionsMenu.getHoveredChild();
+				this.onOptionItemClick(hovered);
+			}
 		}
 
 		function onFocusOut(e) {
