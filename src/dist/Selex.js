@@ -295,7 +295,10 @@
 
 						this.optionsMenu.clearChildHovers();
 						this.optionsMenu.setChildHovered(li);
-						optionsMenuElem.scrollTop = li.offsetTop;
+						if (this.optionsMenu.isClosed())
+							this.onOptionItemClick(li);
+						else
+							optionsMenuElem.scrollTop = li.offsetTop;
 						return;
 					}
 				}
@@ -310,7 +313,10 @@
 					if (nextSiblingText[0] === query) {
 						this.optionsMenu.clearChildHovers();
 						this.optionsMenu.setChildHovered(nextSibling);
-						optionsMenuElem.scrollTop = nextSibling.offsetTop;
+						if (this.optionsMenu.isClosed())
+							this.onOptionItemClick(nextSibling);
+						else
+							optionsMenuElem.scrollTop = nextSibling.offsetTop;
 						return;
 					}
 					nextSibling = nextSibling.nextSibling;
@@ -656,6 +662,7 @@
 					h *= children.length;
 				else
 					h *= this.optionLimit;
+				h++; //so that element does not become scrollable in case visible options are not limited
 				h += "px";
 				this.setHeight(h);
 			}
