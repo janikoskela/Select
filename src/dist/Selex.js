@@ -47,7 +47,8 @@
 		}
 
 	}
-
+	var SEARCH_MODES = {};
+	SEARCH_MODES.BY_FIRST_KEY = "firstKey";
 	var KEY_CODES = {};
 	KEY_CODES.UP = 38;
 	KEY_CODES.DOWN = 40;
@@ -276,6 +277,7 @@
 			var searchMode = this.settings.getSearchMode();
 			switch(searchMode) {
 				case undefined:
+				case SEARCH_MODES.BY_FIRST_KEY:
 					var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
 					this.searchByFirstChar(firstChar);
 					break;
@@ -478,6 +480,8 @@
 		this.onOptionItemClick = function(elem) {
 			var value = elem.getAttribute("value");
 			var text = elem.children[0].innerHTML;
+			if (this.selectedValue === value && this.selectedText === text)
+				return;
 			var onOptionChange = this.settings.getOnOptionChange();
 			this.valueContainerText.setValue(value);
 			this.valueContainerText.setText(text);
@@ -514,6 +518,26 @@
 			return options[0];
 		}
 
+	}
+
+	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.Downward = function() {
+
+
+	}
+
+	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.Upward = function() {
+		this.type = "li";
+		this.className = "upward"
+
+		this.render = function() {
+			this.element = document.createElement(this.type);
+			this.element.addEventListener("mouseover", onMouseOver.bind(this));
+			return this.element;
+		}
+
+		function onMouseOver(e) {
+
+		}
 	}
 
 	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick, index) {

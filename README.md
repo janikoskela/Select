@@ -24,7 +24,7 @@ displayNativeSelectBox|Boolean|False|True|Controls whether native select box is 
 renderNativeSelectBox|Boolean|False|True|Controls whether native select box is rendered
 placeholder|String|-|True|Sets a placeholder text
 sort|String|-|True|Sorts options
-searchMode|String|-|False|Searches options with pressed key
+searchMode|String|-|False|Searches options with pressed key(s). Search by first key (default) is currently the only search mode
 
 Public methods
 ===============
