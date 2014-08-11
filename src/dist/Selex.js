@@ -520,26 +520,6 @@
 
 	}
 
-	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.Downward = function() {
-
-
-	}
-
-	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.Upward = function() {
-		this.type = "li";
-		this.className = "upward"
-
-		this.render = function() {
-			this.element = document.createElement(this.type);
-			this.element.addEventListener("mouseover", onMouseOver.bind(this));
-			return this.element;
-		}
-
-		function onMouseOver(e) {
-
-		}
-	}
-
 	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick, index) {
 		this.value = value;
 		this.text = text;
