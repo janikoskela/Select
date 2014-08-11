@@ -112,6 +112,7 @@
 			var orientation = this.settings.getOrientation();
 			var placeholder = this.settings.getPlaceholder();
 			var sortType = this.settings.getSort();
+			var optionsMenuWidth = this.settings.getOptionMenuWidth();
 
 			if (sortType !== undefined) {
 				switch(sortType) {
@@ -199,7 +200,10 @@
 					width = this.getWidthBasedLongestOption();
 					this.wrapper.setWidth(width);
 				}
-				this.optionsMenu.setWidth(width);
+				if (optionsMenuWidth === undefined)
+					this.optionsMenu.setWidth(width);
+				else
+					this.optionsMenu.setWidth(optionsMenuWidth);
 			}
 		}
 
@@ -1043,6 +1047,11 @@
 		var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
 		var placeholder = userDefinedSettings.placeholder;
 		var searchMode = userDefinedSettings.searchMode;
+		var optionMenuWidth = userDefinedSettings.optionMenuWidth;
+
+		this.getOptionMenuWidth = function() {
+			return optionMenuWidth;
+		}
 
 		this.getSearchMode = function() {
 			return searchMode;
