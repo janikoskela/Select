@@ -1,6 +1,6 @@
 Selex
 ===============
-Selex is a customizable and lightweight (No external library dependencies) widget made for <i>select</i>-element.
+Selex is a customizable and lightweight (No external library dependencies) widget made to function as a <i>select</i>-element.
 
 Usage
 ==============
