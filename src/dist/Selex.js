@@ -72,6 +72,7 @@
 		this.selectedValue;
 		this.selectedText;
 		this.enabled = true;
+		this.closeWhenMouseOut;
 
 		this.wrapper;
 		this.nativeSelectBox;
@@ -113,6 +114,7 @@
 			var placeholder = this.settings.getPlaceholder();
 			var sortType = this.settings.getSort();
 			var optionsMenuWidth = this.settings.getOptionMenuWidth();
+			this.closeWhenMouseOut = this.settings.getCloseWhenMouseOut();
 
 			if (sortType !== undefined) {
 				switch(sortType) {
@@ -339,8 +341,11 @@
 		}
 
 		function onFocusOut(e) {
-			this.optionsMenu.close();
-			this.arrowContainerContent.down();
+			var focusedElem = document.activeElement;
+			if (this.closeWhenMouseOut === true || !focusedElem.hasClass(this.customGuiWrapper.getClass())) {
+				this.optionsMenu.close();
+				this.arrowContainerContent.down();
+			}
 		}
 
 		function onMouseOut(e) {
@@ -739,6 +744,10 @@
 	    	return this.element;
 	    }
 
+	    this.getClass = function() {
+	    	return this.className;
+	    }
+
 	    function onKeyDown(e) {
 	    	switch(e.keyCode) {
 	    		case KEY_CODES.UP:
@@ -1048,6 +1057,11 @@
 		var placeholder = userDefinedSettings.placeholder;
 		var searchMode = userDefinedSettings.searchMode;
 		var optionMenuWidth = userDefinedSettings.optionMenuWidth;
+		var closeWhenMouseOut = userDefinedSettings.closeWhenMouseOut;
+
+		this.getCloseWhenMouseOut = function() {
+			return closeWhenMouseOut;
+		}
 
 		this.getOptionMenuWidth = function() {
 			return optionMenuWidth;
