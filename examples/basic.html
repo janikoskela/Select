@@ -48,24 +48,55 @@ var options = [
   },
   {
     value: "8",
-    text: "fooasdm"
+    text: "qwqaxzxz"
   },
-
+  {
+    value: "9",
+    text: "cxzczxc"
+  },
+  {
+    value: "10",
+    text: "asdqweqweqweqwqwasdcxqwz xca z"
+  },
+  {
+    value: "11",
+    text: "asdqwwq asd sd "
+  },
+  {
+    value: "12",
+    text: "qweqweasdzxcxzc asdasdas dasd assadqwd asdasads"
+  },
+  {
+    value: "13",
+    text: "wqxzxz"
+  },
+  {
+    value: "14",
+    text: "qwexxczvvcxz"
+  },
+  {
+    value: "15",
+    text: "asdwqexzcgf"
+  },
+  {
+    value: "16",
+    text: "ytryhhgf"
+  },
 ];
 var instance = new Selex({
   targetElement: document.getElementById("basic"),
   options: options,
-  //defaultValue: 8,
+  defaultValue: 16,
   theme: "basic",
   sort: "asc",
   fontSize: ".6em",
   orientation: "right",
   fontFamily: "Verdana",
   tabIndex: 1,
-  placeholder: "Valitse vaihtoehto",
-  optionLimit: 5,
+  placeholder: "Choose an option",
+  //optionLimit: 5,
   renderNativeSelectBox: true,
-  //closeWhenCursorOut: true,
+  closeWhenCursorOut: true,
   displayNativeSelectBox: false,
   onOptionChange: (function() {
     return function(value, text) {
@@ -78,14 +109,12 @@ instance.render();
 var instance = new Selex({
   targetElement: document.getElementById("plain"),
   options: options,
-  //defaultValue: 8,
+  defaultValue: 8,
   tabIndex: 2,
   theme: "basic",
   width: "100%",
   orientation: "right",
   fontFamily: "Verdana",
-  placeholder: "Valitse vaihtoehto",
-  optionLimit: 5,
   renderNativeSelectBox: true,
   displayNativeSelectBox: true,
   onOptionChange: (function() {
