@@ -16,6 +16,16 @@ SELEX.SETTINGS.Settings = function(userDefinedSettings) {
 	var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
 	var placeholder = userDefinedSettings.placeholder;
 	var searchMode = userDefinedSettings.searchMode;
+	var optionMenuWidth = userDefinedSettings.optionMenuWidth;
+	var closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut;
+
+	this.getCloseWhenCursorOut = function() {
+		return closeWhenCursorOut;
+	}
+
+	this.getOptionMenuWidth = function() {
+		return optionMenuWidth;
+	}
 
 	this.getSearchMode = function() {
 		return searchMode;

@@ -4,6 +4,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	this.selectedValue;
 	this.selectedText;
 	this.enabled = true;
+	this.closeWhenCursorOut = true;
 
 	this.wrapper;
 	this.nativeSelectBox;
@@ -44,6 +45,10 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var orientation = this.settings.getOrientation();
 		var placeholder = this.settings.getPlaceholder();
 		var sortType = this.settings.getSort();
+		var optionsMenuWidth = this.settings.getOptionMenuWidth();
+		var closeWhenCursorOut = this.settings.getCloseWhenCursorOut();
+		if (typeof closeWhenCursorOut === "boolean")
+			this.closeWhenCursorOut = closeWhenCursorOut;
 
 		if (sortType !== undefined) {
 			switch(sortType) {
@@ -131,7 +136,10 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 				width = this.getWidthBasedLongestOption();
 				this.wrapper.setWidth(width);
 			}
-			this.optionsMenu.setWidth(width);
+			if (optionsMenuWidth === undefined)
+				this.optionsMenu.setWidth(width);
+			else
+				this.optionsMenu.setWidth(optionsMenuWidth);
 		}
 	}
 
@@ -209,6 +217,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var searchMode = this.settings.getSearchMode();
 		switch(searchMode) {
 			case undefined:
+			case SEARCH_MODES.BY_FIRST_KEY:
 				var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
 				this.searchByFirstChar(firstChar);
 				break;
@@ -228,7 +237,10 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 
 					this.optionsMenu.clearChildHovers();
 					this.optionsMenu.setChildHovered(li);
-					optionsMenuElem.scrollTop = li.offsetTop;
+					if (this.optionsMenu.isClosed()) 
+						this.onOptionItemClick(li);
+					else
+						optionsMenuElem.scrollTop = li.offsetTop;
 					return;
 				}
 			}
@@ -243,7 +255,10 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 				if (nextSiblingText[0] === query) {
 					this.optionsMenu.clearChildHovers();
 					this.optionsMenu.setChildHovered(nextSibling);
-					optionsMenuElem.scrollTop = nextSibling.offsetTop;
+					if (this.optionsMenu.isClosed())
+						this.onOptionItemClick(nextSibling);
+					else
+						optionsMenuElem.scrollTop = nextSibling.offsetTop;
 					return;
 				}
 				nextSibling = nextSibling.nextSibling;
@@ -253,13 +268,18 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	}
 
 	function onKeyEnter(e) {
-		var hovered = this.optionsMenu.getHoveredChild();
-		this.onOptionItemClick(hovered);
+		if (this.optionsMenu.isClosed() === false) {
+			var hovered = this.optionsMenu.getHoveredChild();
+			this.onOptionItemClick(hovered);
+		}
 	}
 
 	function onFocusOut(e) {
-		this.optionsMenu.close();
-		this.arrowContainerContent.down();
+		var focusedElem = document.activeElement;
+		if (this.closeWhenCursorOut === true || !focusedElem.hasClass(this.customGuiWrapper.getClass())) {
+			this.optionsMenu.close();
+			this.arrowContainerContent.down();
+		}
 	}
 
 	function onMouseOut(e) {
@@ -403,6 +423,8 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	this.onOptionItemClick = function(elem) {
 		var value = elem.getAttribute("value");
 		var text = elem.children[0].innerHTML;
+		if (this.selectedValue === value && this.selectedText === text)
+			return;
 		var onOptionChange = this.settings.getOnOptionChange();
 		this.valueContainerText.setValue(value);
 		this.valueContainerText.setText(text);

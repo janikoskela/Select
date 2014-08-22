@@ -27,6 +27,10 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback, onKeyDownCallback
         return this.element;
     }
 
+    this.getClass = function() {
+        return this.className;
+    }
+
     function onKeyDown(e) {
         switch(e.keyCode) {
             case KEY_CODES.UP:

@@ -84,6 +84,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 				h *= children.length;
 			else
 				h *= this.optionLimit;
+			h++; //so that element does not become scrollable in case visible options are not limited
 			h += "px";
 			this.setHeight(h);
 		}
