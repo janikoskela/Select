@@ -65,6 +65,7 @@ var instance = new Selex({
   placeholder: "Valitse vaihtoehto",
   optionLimit: 5,
   renderNativeSelectBox: true,
+  //closeWhenCursorOut: true,
   displayNativeSelectBox: false,
   onOptionChange: (function() {
     return function(value, text) {
@@ -81,7 +82,6 @@ var instance = new Selex({
   tabIndex: 2,
   theme: "basic",
   width: "100%",
-  fontSize: ".6em",
   orientation: "right",
   fontFamily: "Verdana",
   placeholder: "Valitse vaihtoehto",

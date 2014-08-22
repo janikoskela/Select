@@ -26,7 +26,7 @@ placeholder|String|-|True|Sets a placeholder text
 sort|String|-|True|Sorts options
 searchMode|String|-|False|Searches options with pressed key(s). Search by first key (default) is currently the only search mode
 optionMenuWidth|String|-|False|Determines the width of option menu. Overrides width param
-closeWhenMouseOut|Boolean|True|False|Determines if option menu will be closed when mouse out
+closeWhenCursorOut|Boolean|True|False|Determines if option menu will be closed when cursor leaves select box
 
 Public methods
 ===============

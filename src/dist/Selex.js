@@ -72,7 +72,7 @@
 		this.selectedValue;
 		this.selectedText;
 		this.enabled = true;
-		this.closeWhenMouseOut;
+		this.closeWhenCursorOut = true;
 
 		this.wrapper;
 		this.nativeSelectBox;
@@ -114,7 +114,9 @@
 			var placeholder = this.settings.getPlaceholder();
 			var sortType = this.settings.getSort();
 			var optionsMenuWidth = this.settings.getOptionMenuWidth();
-			this.closeWhenMouseOut = this.settings.getCloseWhenMouseOut();
+			var closeWhenCursorOut = this.settings.getCloseWhenCursorOut();
+			if (typeof closeWhenCursorOut === "boolean")
+				this.closeWhenCursorOut = closeWhenCursorOut;
 
 			if (sortType !== undefined) {
 				switch(sortType) {
@@ -342,7 +344,7 @@
 
 		function onFocusOut(e) {
 			var focusedElem = document.activeElement;
-			if (this.closeWhenMouseOut === true || !focusedElem.hasClass(this.customGuiWrapper.getClass())) {
+			if (this.closeWhenCursorOut === true || !focusedElem.hasClass(this.customGuiWrapper.getClass())) {
 				this.optionsMenu.close();
 				this.arrowContainerContent.down();
 			}
@@ -1057,10 +1059,10 @@
 		var placeholder = userDefinedSettings.placeholder;
 		var searchMode = userDefinedSettings.searchMode;
 		var optionMenuWidth = userDefinedSettings.optionMenuWidth;
-		var closeWhenMouseOut = userDefinedSettings.closeWhenMouseOut;
+		var closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut;
 
-		this.getCloseWhenMouseOut = function() {
-			return closeWhenMouseOut;
+		this.getCloseWhenCursorOut = function() {
+			return closeWhenCursorOut;
 		}
 
 		this.getOptionMenuWidth = function() {
