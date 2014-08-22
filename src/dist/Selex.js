@@ -369,7 +369,7 @@
 				this.optionsMenu.setChildHovered(hovered);
 			}
 			else {
-				var index = parseInt(hovered.getAttribute("index"));
+				var index = parseInt(hovered.getAttribute("data-index"));
 				if (children[index + 1] !== undefined) {
 					hovered = children[index + 1];
 					this.optionsMenu.setChildHovered(hovered);
@@ -397,7 +397,7 @@
 				this.optionsMenu.setChildHovered(hovered);
 			}
 			else {
-				var index = parseInt(hovered.getAttribute("index"));
+				var index = parseInt(hovered.getAttribute("data-index"));
 				if (children[index - 1] !== undefined) {
 					hovered = children[index - 1];
 					this.optionsMenu.setChildHovered(hovered);
@@ -489,7 +489,7 @@
 		}
 
 		this.onOptionItemClick = function(elem) {
-			var value = elem.getAttribute("value");
+			var value = elem.getAttribute("data-value");
 			var text = elem.children[0].innerHTML;
 			if (this.selectedValue === value && this.selectedText === text)
 				return;
@@ -547,9 +547,9 @@
 	    	this.element.addEventListener("click", onClick.bind(this));
 	    	this.element.addEventListener("mouseover", onMouseOver.bind(this));
 	    	this.element.addEventListener("keyup", onKeyUp.bind(this));
-	    	this.element.setAttribute("value", this.value);
+	    	this.element.setAttribute("data-value", this.value);
 	    	this.element.appendChild(childElem);
-	    	this.element.setAttribute("index", this.index);
+	    	this.element.setAttribute("data-index", this.index);
 	    	return this.element;
 		}
 
@@ -814,8 +814,8 @@
 			var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
 			var elem = placeholderInstance.render();
 			placeholderInstance.setText(placeholder);
-			elem.setAttribute("selected", true);
-			elem.setAttribute("disabled", true);
+			elem.setAttribute("data-selected", true);
+			elem.setAttribute("data-disabled", true);
 			this.element.appendChild(elem);
 		}
 
@@ -826,11 +826,11 @@
 		}
 
 		this.enable = function() {
-			this.element.removeAttribute("disabled");
+			this.element.removeAttribute("data-disabled");
 		}
 
 		this.disable = function() {
-			this.element.setAttribute("disabled", true);
+			this.element.setAttribute("data-disabled", true);
 		}
 
 		this.setTabIndex = function(tabIndex) {
@@ -880,13 +880,13 @@
 			if (this.text !== undefined)
 				this.element.innerHTML = this.text;
 			if (this.value !== undefined)
-				this.element.setAttribute("value", this.value);
+				this.element.setAttribute("data-value", this.value);
 			return this.element;
 		}
 
 		this.setValue = function(value) {
 			this.value = value;
-			this.element.setAttribute("value", this.value);
+			this.element.setAttribute("data-value", this.value);
 		}
 
 		this.setText = function(text) {
@@ -926,11 +926,11 @@
 	    }
 
 	    this.enable = function() {
-	    	this.element.removeAttribute("disabled");
+	    	this.element.removeAttribute("data-disabled");
 	    }
 
 	    this.disable = function() {
-	    	this.element.setAttribute("disabled", true);
+	    	this.element.setAttribute("data-disabled", true);
 	    }
 
 	    this.setWidth = function(width) {
@@ -965,7 +965,7 @@
 			this.element = document.createElement(this.type);
 	    	this.element.setClass(this.className);
 	    	this.element.innerHTML = this.text;
-	    	this.element.setAttribute("value", this.value);
+	    	this.element.setAttribute("data-value", this.value);
 			return this.element;
 		}
 
@@ -976,7 +976,7 @@
 
 		this.setValue = function(value) {
 			this.value = value;
-			this.element.setAttribute("value", value);
+			this.element.setAttribute("data-value", value);
 		}
 
 		this.setText = function(text) {
