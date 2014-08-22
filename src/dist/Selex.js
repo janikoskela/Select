@@ -269,7 +269,8 @@
 			var self = this;
 			this.customGuiSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(function() {
 				if (self.enabled === true) {
-					self.arrowContainerContent.up();
+					if (self.optionsMenu.hasChildren())
+						self.arrowContainerContent.up();
 					self.optionsMenu.toggleVisibility();
 				}
 			});
@@ -597,8 +598,8 @@
 		this.type = "ul";
 		this.className = "options-container";
 		this.element;
-		this.width = "100%";
-		this.height = "100%";
+		this.width = undefined;
+		this.height = undefined;
 		this.optionLimit = optionLimit;
 
 		this.render = function() {
@@ -606,6 +607,10 @@
 	    	this.element.setClass(this.className);
 	    	this.close();
 	    	return this.element;
+		}
+
+		this.hasChildren = function() {
+			return (this.element.children > 0);
 		}
 
 		this.getListElements = function() {
@@ -671,8 +676,10 @@
 		}
 
 		this.open = function() {
-			this.element.show();
 			var children = this.element.children;
+			if (children.length === 0)
+				return;
+			this.element.show();
 			if (children.length > 0) {
 				var h = children[0].offsetHeight;
 				if (this.optionLimit === undefined || children.length < this.optionLimit)
@@ -797,7 +804,7 @@
 
 		var self = this;
 		this.type = "select";
-		this.width = "100%";
+		this.width = undefined;
 		this.changeCallback = changeCallback;
 		this.element = undefined;
 		this.tabIndex = 0;
@@ -905,7 +912,7 @@
 
 	    this.fontFamily = fontFamily || "verdana";
 
-	    this.width = "100%";
+	    this.width = undefined;
 
 	    this.element;
 

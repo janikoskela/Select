@@ -2,8 +2,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 	this.type = "ul";
 	this.className = "options-container";
 	this.element;
-	this.width = "100%";
-	this.height = "100%";
+	this.width = undefined;
+	this.height = undefined;
 	this.optionLimit = optionLimit;
 
 	this.render = function() {
@@ -11,6 +11,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
     	this.element.setClass(this.className);
     	this.close();
     	return this.element;
+	}
+
+	this.hasChildren = function() {
+		return (this.element.children > 0);
 	}
 
 	this.getListElements = function() {
@@ -76,8 +80,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 	}
 
 	this.open = function() {
-		this.element.show();
 		var children = this.element.children;
+		if (children.length === 0)
+			return;
+		this.element.show();
 		if (children.length > 0) {
 			var h = children[0].offsetHeight;
 			if (this.optionLimit === undefined || children.length < this.optionLimit)
