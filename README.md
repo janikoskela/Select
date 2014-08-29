@@ -2,7 +2,7 @@ Selex
 ===============
 Selex is a customizable and lightweight (No external library dependencies) widget made to function as a <i>select</i>-element.
 
-Selex includes a special feature where one can choose include a native <i>select</i>-element (which contains the same data as the widget) inside the wrapper. This is done because sometimes it's easier to manage a native element rather than using widgets public methods. Native <i>select</i>-element can be hidden or it can be displayed. In case of displaying the <i>select</i>-element the widget will be automatically hidden.
+Selex includes a special feature where one can choose to include a native <i>select</i>-element (which contains the same data as the widget) inside the wrapper. This is done because sometimes it's easier to manage a native element rather than using widgets public methods. Native <i>select</i>-element can be hidden or it can be displayed. In case of displaying the <i>select</i>-element the widget will be automatically hidden.
 
 Usage
 ==============
