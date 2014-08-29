@@ -134,8 +134,8 @@
 
 .poison ::-webkit-scrollbar {
     width: 4px;
-    background-color: transparent;
     overflow: visible;
+    background: #398713;
 }
 
 .poison ::-webkit-scrollbar-track {
@@ -144,7 +144,7 @@
 
 .poison ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background: #398713;
+    background: #275C0D;
 }
 
 .poison ::-webkit-scrollbar:window-inactive {
