@@ -71,6 +71,7 @@
 
 .basic .value-container span {
 	margin-left: .5em;
+	line-height: 2em; /* same as .widget-sub-wrapper height */
 }
 
 .basic[data-disabled=true] .value-container span {
