@@ -492,8 +492,6 @@
 		this.onOptionItemClick = function(elem) {
 			var value = elem.getAttribute("data-value");
 			var text = elem.children[0].innerHTML;
-			if (this.selectedValue === value && this.selectedText === text)
-				return;
 			var onOptionChange = this.settings.getOnOptionChange();
 			this.valueContainerText.setValue(value);
 			this.valueContainerText.setText(text);
