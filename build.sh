@@ -8,7 +8,6 @@ TEMP_FILE="temp"
 BUILD_DIR="src/selex"
 
 merge() {
-	cd "src/selex"
 	cwd=$(pwd)
 	> "$DESTINATION_FILE_NAME"
 	
@@ -20,14 +19,19 @@ merge() {
 	done
 	lastLine=$(tail -r $WRAPPER_FILE_NAME |egrep -m 1 .)
 	echo "$lastLine" >> "$DESTINATION_FILE_NAME"
-	cd "../../"
 }
 
 minify() {
-	cd "src/dist"
 	uglifyjs -o "Selex.min.js" "Selex.js"
-	cd "../../"
 }
 
+compress() {
+	tar -cvzf "Selex.min.js.gz" "Selex.min.js"
+}
+
+cd "src/selex"
 merge;
+cd "../../"
+cd "src/dist"
 minify;
+compress;
