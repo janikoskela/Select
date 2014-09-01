@@ -2,13 +2,13 @@ SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily) {
 
     this.type = "div";
 
-    this.className = theme || "selex";
+    this.className = theme || "plain";
 
     this.fontSize = fontSize || "12px";
 
     this.fontFamily = fontFamily || "verdana";
 
-    this.width = "100%";
+    this.width = undefined;
 
     this.element;
 
@@ -29,11 +29,11 @@ SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily) {
     }
 
     this.enable = function() {
-        this.element.removeAttribute("disabled");
+        this.element.removeAttribute("data-disabled");
     }
 
     this.disable = function() {
-        this.element.setAttribute("disabled", true);
+        this.element.setAttribute("data-disabled", true);
     }
 
     this.setWidth = function(width) {

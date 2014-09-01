@@ -904,7 +904,7 @@
 
 	    this.type = "div";
 
-	    this.className = theme || "selex";
+	    this.className = theme || "plain";
 
 	    this.fontSize = fontSize || "12px";
 
@@ -1058,7 +1058,7 @@
 		var height = userDefinedSettings.height;
 		var width = userDefinedSettings.width;
 		var fontSize = userDefinedSettings.fontSize;
-		var theme = userDefinedSettings.theme || "default";
+		var theme = userDefinedSettings.theme;
 		var fontFamily = userDefinedSettings.fontFamily;
 		var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
 		var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;

@@ -13,7 +13,7 @@ Constructor parameters
 Name| Type | Default | Applies to native select | Description
 ---|---|---------------|-----|------------|------
 options|Array of object(s) | - | True |Options
-theme|String|-|True|Defines what theme is to be used. Basically this will define the class of the root element
+theme|String|"plain"|True|Defines what theme is to be used. Basically this will simply define the class of the root element
 targetElement|Element |-|True|The element where Selex is rendered
 defaultValue|String|-|True|An option is searched with this value, first option that matches is picked
 width|String |-|True|Width for the select box
