@@ -4,10 +4,10 @@
   <title>Simple Select Box</title>
   <meta charset="utf-8">
   <script src="../src/dist/Selex.js"></script>
-  <link rel="stylesheet" type="text/css" href="../themes/basic/basic.css">
+  <link rel="stylesheet" type="text/css" href="../themes/plain/plain.css">
   <link rel="stylesheet" type="text/css" href="../themes/poison/poison.css">
   <style>
-    #basic {
+    #plain {
       height: 100px;
       padding-top: 4em;
     }
@@ -19,8 +19,8 @@
 </head>
 
 <body>
-  <div id="basic"></div>
   <div id="plain"></div>
+  <div id="native"></div>
   <div id="light"></div>
 <script type="text/javascript">
 var options = [
@@ -90,10 +90,10 @@ var options = [
   },
 ];
 var instance = new Selex({
-  targetElement: document.getElementById("basic"),
+  targetElement: document.getElementById("plain"),
   options: options,
   defaultValue: 16,
-  theme: "basic",
+  theme: "plain",
   sort: "desc",
   fontSize: ".6em",
   orientation: "right",
@@ -113,14 +113,11 @@ var instance = new Selex({
 instance.render();
 
 var instance = new Selex({
-  targetElement: document.getElementById("plain"),
+  targetElement: document.getElementById("native"),
   options: options,
   defaultValue: 8,
   tabIndex: 2,
-  theme: "basic",
   sort:"desc",
-  orientation: "right",
-  fontFamily: "Verdana",
   renderNativeSelectBox: true,
   displayNativeSelectBox: true,
   onOptionChange: (function() {

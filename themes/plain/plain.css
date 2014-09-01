@@ -1,4 +1,4 @@
-.basic {
+.plain {
 	-webkit-touch-callout: none; 
 	-webkit-user-select: none; 
 	-khtml-user-select: none; 
@@ -9,22 +9,22 @@
 	font-family: Verdana; 
 }
 
-.basic .widget-wrapper {
+.plain .widget-wrapper {
 	position: relative;
 }
 
-.basic .widget-wrapper:focus {
+.plain .widget-wrapper:focus {
 	outline-width: 0;	
 }
 
-.basic .widget-wrapper:focus .widget-sub-wrapper {
+.plain .widget-wrapper:focus .widget-sub-wrapper {
     outline:none; /*or outline-color:#FFFFFF; if the first doesn't work*/
     border:1px solid #639AFF;
     -webkit-box-shadow: 0px 0px 4px 0px #639AFF;
     box-shadow: 0px 0px 4px 0px #639AFF;
 }
 
-.basic .widget-sub-wrapper {
+.plain .widget-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
@@ -33,7 +33,7 @@
 	border: .2em solid #9C9C9C;
 }
 
-.basic[data-disabled=true] .widget-sub-wrapper {
+.plain[data-disabled=true] .widget-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
@@ -42,13 +42,13 @@
 	cursor: default;
 }
 
-.basic .widget-sub-wrapper div {
+.plain .widget-sub-wrapper div {
 	height: 100%;
 	margin: 0;
 	padding: 0;
 }
 
-.basic .value-container {
+.plain .value-container {
 	float: left;
     width: -moz-calc(100% - 30px);
     width: -webkit-calc(100% - 30px);
@@ -69,16 +69,16 @@
 
 }
 
-.basic .value-container span {
+.plain .value-container span {
 	margin-left: .5em;
 	line-height: 2em; /* same as .widget-sub-wrapper height */
 }
 
-.basic[data-disabled=true] .value-container span {
+.plain[data-disabled=true] .value-container span {
 	opacity: .4;
 }
 
-.basic .arrow-container {
+.plain .arrow-container {
 	float: left;
 	width: 30px;
 	height: 32px;
@@ -91,22 +91,22 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#efefef',GradientType=0 ); /* IE6-9 */
 }
 
-.basic .arrow-container div {
+.plain .arrow-container div {
 	background-repeat: no-repeat;
   	background-size: 16px 16px;
   	background-position:center; 
 }
 
-.basic .arrow-down {
+.plain .arrow-down {
 	background-image: url(arrow-down.png);
 }
 
-.basic[data-disabled=true] .arrow-down {
+.plain[data-disabled=true] .arrow-down {
 	background-image: url(arrow-down.png);
 	opacity: .4;
 }
 
-.basic .arrow-up {
+.plain .arrow-up {
 	background-image: url(arrow-down.png);
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
@@ -116,7 +116,7 @@
     -ms-filter: "FlipV";
 }
 
-.basic .options-container {
+.plain .options-container {
     position: absolute;
     left: 0;
     top: 0; /* same as .widget-sub-wrapper's height (including its border) */
@@ -136,32 +136,32 @@
     opacity: .97;
 }
 
-.basic .options-container li {
+.plain .options-container li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: .4em;
 }
 
-.basic .options-container li span {
+.plain .options-container li span {
 	padding: 0 0 0 2em;
 }
 
-.basic .options-container li.selected.hovered span {
+.plain .options-container li.selected.hovered span {
 	background-image: url(checked-white.png);
 	background-repeat: no-repeat;
   	background-size: 10px 10px;
   	background-position:left; 
 }
 
-.basic .options-container li.selected span {
+.plain .options-container li.selected span {
 	background-image: url(checked-black.png);
 	background-repeat: no-repeat;
   	background-size: 10px 10px;
   	background-position:left; 
 }
 
-.basic .options-container li.hovered { 
+.plain .options-container li.hovered { 
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;
