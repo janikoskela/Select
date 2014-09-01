@@ -6,8 +6,13 @@ DESTINATION_MINIFIED_COMPRESSED_FILE_NAME="../dist/Selex.min.js.gz"
 WRAPPER_FILE_NAME="Selex.js"
 TEMP_FILE="temp"
 CWD=$(pwd)
+BUILD_DIR="src/selex"
 
 merge() {
+	if [ "$CWD" != "$BUILD_DIR" ];
+		then
+			cd "src/selex"
+	fi
 	> "$DESTINATION_FILE_NAME"
 	find ${CWD} -name '*.js' | while read F; do
 	    if [ "${F##*/}" == "$WRAPPER_FILE_NAME" ];
