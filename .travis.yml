@@ -6,4 +6,5 @@ node_js:
   - "0.6"
 before_install:
   - cd src/selex
-  - sh build.sh
+script:
+  - ./build.sh
