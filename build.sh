@@ -13,6 +13,7 @@ merge() {
 	
 	sed '$ d' "$WRAPPER_FILE_NAME" > $TEMP_FILE
 	cat $TEMP_FILE >> $DESTINATION_FILE_NAME
+	rm $TEMP_FILE
 
 	find ${cwd} ! -name $WRAPPER_FILE_NAME -name '*.js' | while read F; do
 	    	cat "$F" >> $DESTINATION_FILE_NAME
