@@ -29,4 +29,3 @@ merge() {
 }
 
 merge;
-exit 1;
