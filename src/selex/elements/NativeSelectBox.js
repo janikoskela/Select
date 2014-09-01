@@ -2,7 +2,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 
 	var self = this;
 	this.type = "select";
-	this.width = "100%";
+	this.width = undefined;
 	this.changeCallback = changeCallback;
 	this.element = undefined;
 	this.tabIndex = 0;
@@ -19,8 +19,8 @@ SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 		var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
 		var elem = placeholderInstance.render();
 		placeholderInstance.setText(placeholder);
-		elem.setAttribute("selected", true);
-		elem.setAttribute("disabled", true);
+		elem.setAttribute("data-selected", true);
+		elem.setAttribute("data-disabled", true);
 		this.element.appendChild(elem);
 	}
 
@@ -31,11 +31,11 @@ SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 	}
 
 	this.enable = function() {
-		this.element.removeAttribute("disabled");
+		this.element.removeAttribute("data-disabled");
 	}
 
 	this.disable = function() {
-		this.element.setAttribute("disabled", true);
+		this.element.setAttribute("data-disabled", true);
 	}
 
 	this.setTabIndex = function(tabIndex) {
@@ -72,4 +72,4 @@ SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 		this.element.show();
 	}
 
-}
+};

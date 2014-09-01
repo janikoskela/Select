@@ -10,7 +10,7 @@ SELEX.SETTINGS.Settings = function(userDefinedSettings) {
 	var height = userDefinedSettings.height;
 	var width = userDefinedSettings.width;
 	var fontSize = userDefinedSettings.fontSize;
-	var theme = userDefinedSettings.theme || "default";
+	var theme = userDefinedSettings.theme;
 	var fontFamily = userDefinedSettings.fontFamily;
 	var nativeSelectBoxRender = userDefinedSettings.renderNativeSelectBox || false;
 	var nativeSelectBoxDisplay = userDefinedSettings.displayNativeSelectBox || false;
@@ -98,4 +98,4 @@ SELEX.SETTINGS.Settings = function(userDefinedSettings) {
 	this.getPlaceholder = function() {
 		return placeholder;
 	}
-}
+};

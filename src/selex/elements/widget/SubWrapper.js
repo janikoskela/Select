@@ -19,4 +19,4 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(callback) {
             this.callback();
     }
 
-}
+};

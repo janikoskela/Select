@@ -103,4 +103,4 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 		else
 			this.close();
 	}
-}
+};

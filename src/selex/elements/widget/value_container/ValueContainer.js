@@ -9,4 +9,4 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function() {
     	this.element.setClass(this.className);
 		return this.element;
 	}
-}
+};

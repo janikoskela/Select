@@ -11,7 +11,7 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function() {
 		this.element = document.createElement(this.type);
     	this.element.setClass(this.className);
     	this.element.innerHTML = this.text;
-    	this.element.setAttribute("value", this.value);
+    	this.element.setAttribute("data-value", this.value);
 		return this.element;
 	}
 
@@ -22,11 +22,11 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function() {
 
 	this.setValue = function(value) {
 		this.value = value;
-		this.element.setAttribute("value", value);
+		this.element.setAttribute("data-value", value);
 	}
 
 	this.setText = function(text) {
 		this.text = text;
 		this.element.innerHTML = text;
 	}
-}
+};

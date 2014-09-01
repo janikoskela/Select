@@ -13,4 +13,4 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function() {
 	this.getElement = function() {
 		return this.element;
 	}
-}
+};

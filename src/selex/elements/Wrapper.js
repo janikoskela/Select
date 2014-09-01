@@ -40,4 +40,4 @@ SELEX.ELEMENTS.Wrapper = function(theme, fontSize, fontFamily) {
         this.width = width;
         this.element.setStyle("width", this.width);
     }
-}
+};

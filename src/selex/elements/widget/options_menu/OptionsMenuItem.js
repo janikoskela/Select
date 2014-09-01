@@ -14,9 +14,9 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMen
     	this.element.addEventListener("click", onClick.bind(this));
     	this.element.addEventListener("mouseover", onMouseOver.bind(this));
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
-    	this.element.setAttribute("value", this.value);
+    	this.element.setAttribute("data-value", this.value);
     	this.element.appendChild(childElem);
-    	this.element.setAttribute("index", this.index);
+    	this.element.setAttribute("data-index", this.index);
     	return this.element;
 	}
 
@@ -44,4 +44,4 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMen
 		if (typeof this.onMenuItemClick === "function")
 			this.onMenuItemClick(this.element);
 	}
-}
+};

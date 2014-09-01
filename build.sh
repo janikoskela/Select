@@ -11,18 +11,23 @@ merge() {
 	cd "src/selex"
 	cwd=$(pwd)
 	> "$DESTINATION_FILE_NAME"
-	find ${cwd} -name '*.js' | while read F; do
-	    if [ "${F##*/}" == "$WRAPPER_FILE_NAME" ];
-	    then
-	    	sed '$ d' $F > $TEMP_FILE
-	    	cat $TEMP_FILE >> $DESTINATION_FILE_NAME
-	    	rm $TEMP_FILE
-	    else
+	
+	sed '$ d' "$WRAPPER_FILE_NAME" > $TEMP_FILE
+	cat $TEMP_FILE >> $DESTINATION_FILE_NAME
+
+	find ${cwd} ! -name $WRAPPER_FILE_NAME -name '*.js' | while read F; do
 	    	cat "$F" >> $DESTINATION_FILE_NAME
-	    fi
 	done
-	lastLine=$(tac $WRAPPER_FILE_NAME |egrep -m 1 .)
+	lastLine=$(tail -r $WRAPPER_FILE_NAME |egrep -m 1 .)
 	echo "$lastLine" >> "$DESTINATION_FILE_NAME"
+	cd "../../"
+}
+
+minify() {
+	cd "src/dist"
+	uglifyjs -o "Selex.min.js" "Selex.js"
+	cd "../../"
 }
 
 merge;
+minify;

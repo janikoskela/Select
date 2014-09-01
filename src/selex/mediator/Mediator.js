@@ -201,7 +201,8 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		var self = this;
 		this.customGuiSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(function() {
 			if (self.enabled === true) {
-				self.arrowContainerContent.up();
+				if (self.optionsMenu.hasChildren())
+					self.arrowContainerContent.up();
 				self.optionsMenu.toggleVisibility();
 			}
 		});
@@ -301,7 +302,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			this.optionsMenu.setChildHovered(hovered);
 		}
 		else {
-			var index = parseInt(hovered.getAttribute("index"));
+			var index = parseInt(hovered.getAttribute("data-index"));
 			if (children[index + 1] !== undefined) {
 				hovered = children[index + 1];
 				this.optionsMenu.setChildHovered(hovered);
@@ -329,7 +330,7 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 			this.optionsMenu.setChildHovered(hovered);
 		}
 		else {
-			var index = parseInt(hovered.getAttribute("index"));
+			var index = parseInt(hovered.getAttribute("data-index"));
 			if (children[index - 1] !== undefined) {
 				hovered = children[index - 1];
 				this.optionsMenu.setChildHovered(hovered);
@@ -421,10 +422,8 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 	}
 
 	this.onOptionItemClick = function(elem) {
-		var value = elem.getAttribute("value");
+		var value = elem.getAttribute("data-value");
 		var text = elem.children[0].innerHTML;
-		if (this.selectedValue === value && this.selectedText === text)
-			return;
 		var onOptionChange = this.settings.getOnOptionChange();
 		this.valueContainerText.setValue(value);
 		this.valueContainerText.setText(text);
@@ -461,4 +460,4 @@ SELEX.MEDIATOR.Mediator = function(settings) {
 		return options[0];
 	}
 
-}
+};

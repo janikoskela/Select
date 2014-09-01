@@ -10,4 +10,4 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
     	this.element.appendChild(this.textNode);
     	return this.element;
 	}
-}
+};

@@ -35,4 +35,4 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function() {
 			this.down();
 		}
 	}
-}
+};

@@ -9,17 +9,17 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(value, text) {
 		if (this.text !== undefined)
 			this.element.innerHTML = this.text;
 		if (this.value !== undefined)
-			this.element.setAttribute("value", this.value);
+			this.element.setAttribute("data-value", this.value);
 		return this.element;
 	}
 
 	this.setValue = function(value) {
 		this.value = value;
-		this.element.setAttribute("value", this.value);
+		this.element.setAttribute("data-value", this.value);
 	}
 
 	this.setText = function(text) {
 		this.text = text;
 		this.element.innerHTML = this.text;
 	}
-}
+};

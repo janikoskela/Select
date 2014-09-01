@@ -71,4 +71,4 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback, onKeyDownCallback
         this.element.setAttribute("tabindex", tabIndex);
     }
 
-}
+};
