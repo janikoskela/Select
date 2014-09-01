@@ -1,11 +1,10 @@
 #!/bin/bash
 
 DESTINATION_FILE_NAME="../dist/Selex.js"
-DESTINATION_MINIFIED_FILE_NAME="../dist/Selex.min.js"
-DESTINATION_MINIFIED_COMPRESSED_FILE_NAME="../dist/Selex.min.js.gz"
+DESTINATION_MINIFIED_FILE_NAME="Selex.min.js"
+DESTINATION_MINIFIED_COMPRESSED_FILE_NAME="Selex.min.js.gz"
 WRAPPER_FILE_NAME="Selex.js"
 TEMP_FILE="temp"
-BUILD_DIR="src/selex"
 
 merge() {
 	cwd=$(pwd)
@@ -23,11 +22,11 @@ merge() {
 }
 
 minify() {
-	uglifyjs -o "Selex.min.js" "Selex.js"
+	uglifyjs -o $DESTINATION_MINIFIED_FILE_NAME $WRAPPER_FILE_NAME
 }
 
 compress() {
-	tar -cvzf "Selex.min.js.gz" "Selex.min.js"
+	tar -cvzf $DESTINATION_MINIFIED_COMPRESSED_FILE_NAME $DESTINATION_MINIFIED_FILE_NAME
 }
 
 cd "src/selex"
