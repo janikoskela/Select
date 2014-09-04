@@ -1066,6 +1066,18 @@ Object.prototype.clone = function() {
     		newObj[i] = this[i];
   	} 
   	return newObj;
+};
+
+Object.prototype.removeClass = function(className) {
+    var newClassName = "";
+    var i;
+    var classes = this.className.split(" ");
+    for(i = 0; i < classes.length; i++) {
+        if(classes[i] !== className) {
+            newClassName += classes[i] + " ";
+        }
+    }
+    this.className = newClassName;
 };SELEX.SETTINGS.Settings = function(userDefinedSettings) {
 	var options = userDefinedSettings.options || [];
 	var rootElement = userDefinedSettings.targetElement;
