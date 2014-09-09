@@ -1,15 +1,15 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(params) {
 	this.type = "ul";
 	this.className = "options-container";
 	this.element;
 	this.width = undefined;
 	this.height = undefined;
-	this.optionLimit = optionLimit;
+	this.optionLimit = params.optionLimit;
 
 	this.render = function() {
-    	this.element = document.createElement(this.type);
+        this.element = SELEX.UTILS.createElement(this.type);
     	this.element.setClass(this.className);
-    	this.close();
+    	this.hide();
     	return this.element;
 	}
 
@@ -71,7 +71,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 		this.element.setStyle("height", this.height);
 	}
 
-	this.close = function() {
+	this.hide = function() {
 		this.element.hide();
 	}
 
@@ -79,7 +79,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(optionLimit) {
 		return this.element.isHidden();
 	}
 
-	this.open = function() {
+	this.show = function() {
 		var children = this.element.children;
 		if (children.length === 0)
 			return;

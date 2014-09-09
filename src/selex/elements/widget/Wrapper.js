@@ -1,29 +1,34 @@
-SELEX.ELEMENTS.WIDGET.Wrapper = function(onMouseLeaveCallback, onKeyDownCallback, onKeyUpCallback, onKeyEnterCallback, onSearchCallback) {
+SELEX.ELEMENTS.WIDGET.Wrapper = function(params) {
 
     this.type = "div";
-    this.onMouseLeaveCallback = onMouseLeaveCallback;
 
     this.className = "widget-wrapper";
 
     this.element;
 
-    this.tabIndex;
+    this.tabIndex = params.tabIndex;
 
-    this.onKeyDownCallback = onKeyDownCallback;
+    this.widgetSubWrapper;
 
-    this.onKeyUpCallback = onKeyUpCallback;
-
-    this.onKeyEnterCallback = onKeyEnterCallback;
-
-    this.onSearchCallback = onSearchCallback;
+    this.optionsMenu;
 
     this.render = function() {
-        this.element = document.createElement(this.type);
+        this.element = SELEX.UTILS.createElement(this.type);
         this.element.setClass(this.className);
         this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
         this.element.addEventListener("blur", onMouseLeave.bind(this));
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
+
+        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(params);
+        var widgetSubWrapperElem = this.widgetSubWrapper.render();
+        this.element.appendChild(widgetSubWrapperElem);
+
+
+        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(params);
+        var optionsMenuElem = this.optionsMenu.render();
+        this.element.appendChild(optionsMenuElem);
+        
         return this.element;
     }
 

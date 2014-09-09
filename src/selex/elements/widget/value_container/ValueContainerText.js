@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function() {
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(params) {
 
 	this.value;
 	this.text;

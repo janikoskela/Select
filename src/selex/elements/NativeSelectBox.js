@@ -1,13 +1,18 @@
-SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
+SELEX.ELEMENTS.NativeSelectBox = function(params) {
 
-	var self = this;
 	this.type = "select";
-	this.width = undefined;
-	this.changeCallback = changeCallback;
-	this.element = undefined;
-	this.tabIndex = 0;
-	this.fontSize = undefined;
-	this.placeholder;
+	this.width = params.width;
+	this.changeCallback = params.changeCallback;
+	this.element;
+	this.tabIndex = params.tabIndex || 0;
+	this.fontSize;
+	this.placeholder = params.placeholder;
+
+	this.render = function() {
+        this.element = SELEX.UTILS.createElement(this.type);
+		this.element.onchange = this.onOptionChange;
+		return this.element;
+	}
 
 	this.setFontSize = function(fontSize) {
 		this.fontSize = fontSize;
@@ -22,12 +27,6 @@ SELEX.ELEMENTS.NativeSelectBox = function(changeCallback) {
 		elem.setAttribute("data-selected", true);
 		elem.setAttribute("data-disabled", true);
 		this.element.appendChild(elem);
-	}
-
-	this.render = function() {
-		this.element = document.createElement(this.type);
-		this.element.onchange = this.onOptionChange;
-		return this.element;
 	}
 
 	this.enable = function() {
