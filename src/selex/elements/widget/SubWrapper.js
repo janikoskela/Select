@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.SubWrapper = function(params) {
+SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
 
     var ORIENTATION_LEFT = "left";
 
@@ -15,6 +15,10 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(params) {
     this.arrowContainer;
 
     this.valueContainer;
+
+    this.widgetWrapper = widgetWrapper;
+
+    this.optionsMenu;
 
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
@@ -47,8 +51,13 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(params) {
         return this.element;
     }
 
-    function onClick(e) {
+    this.getValueContainer = function() {
+        return this.valueContainer;
+    }
 
+    function onClick(e) {
+        this.optionsMenu = this.widgetWrapper.getOptionsMenu();
+        this.optionsMenu.toggle();
     }
 
 };

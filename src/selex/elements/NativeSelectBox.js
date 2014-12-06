@@ -7,11 +7,26 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 	this.tabIndex = params.tabIndex || 0;
 	this.fontSize;
 	this.placeholder = params.placeholder;
+	this.options = params.options || [];
+	this.optionItems = [];
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
 		this.element.onchange = this.onOptionChange;
+		this.renderOptions(this.options);
 		return this.element;
+	}
+
+	this.renderOptions = function(options) {
+		for (var i = 0; i < options.length; i++) {
+			var option = options[i];
+			var value = option.value;
+			var text = option.text;
+			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(value, text);
+			this.optionItems.push(optionItem);
+			var elem = optionItem.render();
+			this.element.appendChild(elem);
+		}
 	}
 
 	this.setFontSize = function(fontSize) {

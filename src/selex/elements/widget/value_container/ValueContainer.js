@@ -15,4 +15,8 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(params) {
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
 	}
+
+	this.getValueContainerText = function() {
+		return this.valueContainerText;
+	}
 };

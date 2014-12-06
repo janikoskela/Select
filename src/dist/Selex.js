@@ -11,6 +11,7 @@
 	SORT_TYPES.DESC = "desc";
 	var SELEX = {};
 	SELEX.UTILS = {};
+	SELEX.HELPERS = {};
 	SELEX.SETTINGS = {};
 	SELEX.MEDIATOR = {};
 	SELEX.ELEMENTS = {};
@@ -70,11 +71,26 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 	this.tabIndex = params.tabIndex || 0;
 	this.fontSize;
 	this.placeholder = params.placeholder;
+	this.options = params.options || [];
+	this.optionItems = [];
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
 		this.element.onchange = this.onOptionChange;
+		this.renderOptions(this.options);
 		return this.element;
+	}
+
+	this.renderOptions = function(options) {
+		for (var i = 0; i < options.length; i++) {
+			var option = options[i];
+			var value = option.value;
+			var text = option.text;
+			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(value, text);
+			this.optionItems.push(optionItem);
+			var elem = optionItem.render();
+			this.element.appendChild(elem);
+		}
 	}
 
 	this.setFontSize = function(fontSize) {
@@ -215,19 +231,136 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 			this.down();
 		}
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(params) {
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(params, widgetWrapper) {
+	var that = this;
 	this.type = "ul";
 	this.className = "options-container";
 	this.element;
-	this.width = undefined;
+	this.width = params.optionsMenuWidth || "100%";
 	this.height = undefined;
 	this.optionLimit = params.optionLimit;
+	this.options = params.options || [];
+	this.optionItems = [];
+	this.widgetWrapper = widgetWrapper;
+	this.sortType = params.sort;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
     	this.element.setClass(this.className);
-    	this.close();
+    	this.hide();
+    	switch(this.sortType) {
+    		case "asc":
+    			this.options.sort(sortByAsc);
+    			break;
+    		case "desc":
+    			this.options.sort(sortByDesc);
+    			break;
+    	}
+    	this.setWidth(this.width);
+    	renderOptionItems(this.options);
     	return this.element;
+	}
+
+	function renderOptionItems(options) {
+		for (var i = 0; i < options.length; i++) {
+			var option = options[i];
+			var optionValue = option.value;
+			var optionText = option.text;
+			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange);
+			that.optionItems.push(item);
+			var elem = item.render();
+			that.element.appendChild(elem);
+		}
+	}
+
+    function sortByDesc(optionA, optionB) {
+        var a = optionA.text;
+        var b = optionB.text;
+        if (a > b)
+            return 1;
+        if (a < b)
+            return -1;
+        return 0;
+    }
+
+    function sortByAsc(optionA, optionB) {
+        var a = optionA.text;
+        var b = optionB.text;       
+        if (a > b)
+            return -1;
+        if (a < b)
+            return 1;
+        return 0;
+    }
+
+	this.searchByFirstChar = function(firstChar) {
+		var listElements = this.element.children;
+		var hovered = this.getHoveredOption();
+		if (hovered === undefined) {
+			for (var i = 0; i < this.optionItems.length; i++) {
+				var item = this.optionItems[i];
+				var itemText = item.getText();
+				if (itemText[0] === firstChar) {
+					this.clearOptionItemHovers();
+					item.setHovered();
+					if (this.isHidden())
+						item.onClick();
+					else
+						item.getElement().scrollTop = item.offsetTop;
+				}
+			}
+		}
+		else {
+			var hoveredElem = hovered.getElement();
+			var hoveredIndex = this.optionItems.indexOf(hovered);
+			var counter = 0;
+			var nextSibling = getNext(hovered);//hoveredElem.nextSibling;
+			while (counter < this.optionItems.length) {
+				var nextSiblingText = nextSibling.getText();
+				if (nextSiblingText[0] === firstChar) {
+					this.clearOptionItemHovers();
+					nextSibling.setHovered();
+					return;
+				}
+				counter++;
+				nextSibling = getNext(nextSibling);
+			}
+			/*var hoveredElem = hovered.getElement();
+			var counter = 0;
+			var nextSibling = hovered.nextSibling;
+			while (counter < listElements.length) {
+				if (nextSibling === null || nextSibling === undefined)
+					nextSibling = listElements[0];
+				var nextSiblingText = nextSibling.children[0].innerHTML.toLowerCase();
+				if (nextSiblingText[0] === firstChar) {
+					this.clearOptionItemHovers();
+					this.optionsMenu.setChildHovered(nextSibling);
+					if (this.optionsMenu.isClosed())
+						this.onOptionItemClick(nextSibling);
+					else
+						this.element.scrollTop = nextSibling.offsetTop;
+					return;
+				}
+				nextSibling = nextSibling.nextSibling;
+				counter++;
+			}*/
+		}
+	}
+
+	function getNext(currentOptionItem) {
+		for (var i = 0; i < that.optionItems.length; i++) {
+			var optionItem = that.optionItems[i];
+			if (optionItem.getValue() === currentOptionItem.getValue() && optionItem.getText() === currentOptionItem.getText()) {
+				if (i === that.optionItems.length + 1)
+					return optionItems[0];
+				return that.optionItems[i + 1];
+			}2
+
+		}
+	}
+
+	this.getWidgetWrapper = function() {
+		return this.widgetWrapper;
 	}
 
 	this.hasChildren = function() {
@@ -238,40 +371,26 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		return this.element.childNodes;
 	}
 
-	this.getSelectedChild = function() {
-		var children = this.element.children;
-		for (var key in children) {
-			var child = children[key];
-			if (typeof child === "object") {
-				if (child.hasClass("selected"))
-					return child;
-			}
+	this.getHoveredOption = function() {
+		for (var i = 0; i < this.optionItems.length; i++) {
+			var item = this.optionItems[i];
+			if (item.isHovered())
+				return item;
 		}
 	}
 
-	this.getHoveredChild = function() {
-		var children = this.element.children;
-		for (var key in children) {
-			var child = children[key];
-			if (typeof child === "object") {
-				if (child.hasClass("hovered"))
-					return child;
-			}
+	this.getSelectedOption = function() {
+		for (var i = 0; i < this.optionItems.length; i++) {
+			var item = this.optionItems[i];
+			if (item.isSelected())
+				return item;
 		}
-	}
+ 	}
 
-	this.clearChildHovers = function() {
+	this.clearOptionItemHovers = function() {
 		for (var i = 0; i < this.element.children.length; i++) {
 			this.element.children[i].removeClass("hovered");
 		}
-	}
-
-	this.setChildHovered = function(child) {
-		child.addClass("hovered");
-	}
-
-	this.setChildSelected = function(child) {
-		child.addClass("selected");
 	}
 
 	this.getElement = function() {
@@ -288,15 +407,15 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		this.element.setStyle("height", this.height);
 	}
 
-	this.close = function() {
+	this.hide = function() {
 		this.element.hide();
 	}
 
-	this.isClosed = function() {
+	this.isHidden = function() {
 		return this.element.isHidden();
 	}
 
-	this.open = function() {
+	this.show = function() {
 		var children = this.element.children;
 		if (children.length === 0)
 			return;
@@ -314,32 +433,65 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		}
 	}
 
-	this.toggleVisibility = function() {
+	this.toggle = function() {
 		if (this.element.isHidden())
-			this.open();
+			this.show();
 		else
-			this.close();
+			this.hide();
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, onMenuItemClick, index) {
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenu, onClickCallback) {
+	var that = this;
 	this.value = value;
 	this.text = text;
-	this.onMenuItemClick = onMenuItemClick;
 	this.type = "li";
 	this.element;
-	this.child;
+	this.itemValue;
 	this.index = index;
+	this.optionsMenu = optionsMenu;
+	this.onClickCallback = onClickCallback;
 
 	this.render = function() {
-		this.child = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
-		var childElem = this.child.render();
-    	this.element = document.createElement(this.type);
+		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
+		var childElem = this.itemValue.render();
+    	this.element = SELEX.UTILS.createElement(this.type);
     	this.element.addEventListener("click", onClick.bind(this));
     	this.element.addEventListener("mouseover", onMouseOver.bind(this));
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
-    	this.element.setAttribute("data-value", this.value);
     	this.element.appendChild(childElem);
     	this.element.setAttribute("data-index", this.index);
     	return this.element;
+	}
+
+	this.getTextByElement = function(element) {
+
+	}
+
+	this.getValue = function() {
+		return this.value;
+	}
+
+	this.getElement = function() {
+		return this.element;
+	}
+
+	this.getText = function() {
+		return this.text;
+	}
+
+	this.isHovered = function() {
+		return (this.element.hasClass("hovered"));
+	}
+
+	this.isSelected = function() {
+		return (this.element.hasClass("selected"));
+	}
+
+	this.setHovered = function() {
+		this.element.addClass("hovered");
+	}
+
+	this.setSelected = function() {
+		this.element.addClass("selected");
 	}
 
 	function onKeyUp(e) {
@@ -362,9 +514,21 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		this.element.addClass("hovered");
 	}
 
+	this.onClick = function() {
+		onClick();
+	}
+
 	function onClick(e) {
-		if (typeof this.onMenuItemClick === "function")
-			this.onMenuItemClick(this.element);
+		if (typeof that.onClickCallback === "function")
+			that.onClickCallback(that.value, that.text);
+		that.optionsMenu.hide();
+		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+		var previosulySelected = that.optionsMenu.getSelectedOption();
+		if (previosulySelected !== undefined)
+			previosulySelected.getElement().removeClass("selected");
+		that.setSelected();
+		valueContainerText.setText(that.text);
+		valueContainerText.setValue(that.value);
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
 	this.text = text;
@@ -378,7 +542,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
     	this.element.appendChild(this.textNode);
     	return this.element;
 	}
-};SELEX.ELEMENTS.WIDGET.SubWrapper = function(params) {
+};SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
 
     var ORIENTATION_LEFT = "left";
 
@@ -395,6 +559,10 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
     this.arrowContainer;
 
     this.valueContainer;
+
+    this.widgetWrapper = widgetWrapper;
+
+    this.optionsMenu;
 
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
@@ -427,8 +595,13 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
         return this.element;
     }
 
-    function onClick(e) {
+    this.getValueContainer = function() {
+        return this.valueContainer;
+    }
 
+    function onClick(e) {
+        this.optionsMenu = this.widgetWrapper.getOptionsMenu();
+        this.optionsMenu.toggle();
     }
 
 };SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(params) {
@@ -448,7 +621,11 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
 	}
-};SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function() {
+
+	this.getValueContainerText = function() {
+		return this.valueContainerText;
+	}
+};SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(params) {
 
 	this.value;
 	this.text;
@@ -456,12 +633,30 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 	this.className = "value-container-text";
 	this.element;
 	this.placeholder;
+	this.defaultValue = params.defaultValue;
+	this.placeholder = params.placeholder;
 
 	this.render = function() {
 		this.element = document.createElement(this.type);
     	this.element.setClass(this.className);
     	this.element.innerHTML = this.text;
     	this.element.setAttribute("data-value", this.value);
+    	if (this.defaultValue !== undefined) {
+    		var option = SELEX.HELPERS.getOptionByValue(params.options, this.defaultValue);
+    		if (option !== undefined) {
+    			this.setValue(option.value);
+    			this.setText(option.text);
+    		}
+    	}
+    	else if (this.placeholder !== undefined) {
+    		this.setPlaceholder(this.placeholder);
+    	}
+    	else if (params.options.length > 0) {
+    		var firstOption = params.options[0];
+    		this.setValue(firstOption.value);
+    		this.setText(firstOption.text);
+    	}
+
 		return this.element;
 	}
 
@@ -479,7 +674,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		this.text = text;
 		this.element.innerHTML = text;
 	}
-};SELEX.ELEMENTS.WIDGET.Wrapper = function(params) {
+};SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
 
     this.type = "div";
 
@@ -493,24 +688,40 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 
     this.optionsMenu;
 
+    this.wrapper = wrapper;
+
+    this.closeWhenCursorOut = params.closeWhenCursorOut || true;
+
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
         this.element.setClass(this.className);
-        this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
-        this.element.addEventListener("blur", onMouseLeave.bind(this));
+        if (this.tabIndex !== undefined)
+            this.element.setAttribute("tabindex", this.tabIndex);
+        if (this.closeWhenCursorOut) {
+            this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
+            this.element.addEventListener("blur", onMouseLeave.bind(this));
+        }
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
-        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(params);
+        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(params, this);
         var widgetSubWrapperElem = this.widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
 
-        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(params);
+        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(params, this);
         var optionsMenuElem = this.optionsMenu.render();
         this.element.appendChild(optionsMenuElem);
-        
+
         return this.element;
+    }
+
+    this.getWidgetSubWrapper = function() {
+        return this.widgetSubWrapper;
+    }
+
+    this.getOptionsMenu = function() {
+        return this.optionsMenu;
     }
 
     this.getClass = function() {
@@ -542,14 +753,13 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
                     this.onKeyEnterCallback(e);
                 break;
             default:
-                if (typeof this.onSearchCallback === "function")
-                    this.onSearchCallback(e);
+                var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
+                this.optionsMenu.searchByFirstChar(firstChar);
         }
     }
 
     function onMouseLeave(e) {
-        if (typeof this.onMouseLeaveCallback === "function")
-            this.onMouseLeaveCallback();
+        this.optionsMenu.hide();
     }
 
     this.setTabIndex = function(tabIndex) {
@@ -559,15 +769,17 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 
 };SELEX.ELEMENTS.Wrapper = function(params) {
 
+    var that = this;
+
     this.type = "div";
 
-    this.className = params.theme || "plain";
+    this.className = params.theme;
 
     this.fontSize = params.fontSize;
 
     this.fontFamily = params.fontFamily;
 
-    this.width = undefined;
+    this.width = params.width || "100%";
 
     this.renderNativeSelectBox = params.renderNativeSelectBox || false;
 
@@ -582,6 +794,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
         this.element.setClass(this.className);
+        this.setWidth(this.width);
         if (this.fontSize !== undefined)
             this.element.setStyle("fontSize", this.fontSize);
         if (this.fontFamily !== undefined)
@@ -592,14 +805,22 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
             this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params);
             var nativeSelectBoxElem = this.nativeSelectBox.render();
             this.element.appendChild(nativeSelectBoxElem);
+            if (this.displayNativeSelectBox === false) {
+                this.nativeSelectBox.hide();
+                renderWidget();
+            }
         }
-        if (this.renderNativeSelectBox === false || (this.displayNativeSelectBox === false && this.renderNativeSelectBox === true)) {
-            this.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params);
-            var widgetWrapperElem = this.widgetWrapper.render();
-            this.element.appendChild(widgetWrapperElem);
+        else {
+            renderWidget();
         }
 
         return this.element;
+    }
+
+    function renderWidget() {
+        that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params);
+        var widgetWrapperElem = that.widgetWrapper.render();
+        that.element.appendChild(widgetWrapperElem);
     }
 
     this.show = function() {
@@ -622,6 +843,13 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
         this.width = width;
         this.element.setStyle("width", this.width);
     }
+};
+SELEX.HELPERS.getOptionByValue = function(options, value) {
+	for (var i = 0; i < options.length; i++) {
+		var option = options[i];
+		if (option.value == value)
+			return option;
+	}
 };SELEX.MEDIATOR.Mediator = function(settings) {
 
 	this.settings = settings;

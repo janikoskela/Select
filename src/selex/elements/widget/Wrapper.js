@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.Wrapper = function(params) {
+SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
 
     this.type = "div";
 
@@ -12,24 +12,40 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params) {
 
     this.optionsMenu;
 
+    this.wrapper = wrapper;
+
+    this.closeWhenCursorOut = params.closeWhenCursorOut || true;
+
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
         this.element.setClass(this.className);
-        this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
-        this.element.addEventListener("blur", onMouseLeave.bind(this));
+        if (this.tabIndex !== undefined)
+            this.element.setAttribute("tabindex", this.tabIndex);
+        if (this.closeWhenCursorOut) {
+            this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
+            this.element.addEventListener("blur", onMouseLeave.bind(this));
+        }
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
-        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(params);
+        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(params, this);
         var widgetSubWrapperElem = this.widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
 
-        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(params);
+        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(params, this);
         var optionsMenuElem = this.optionsMenu.render();
         this.element.appendChild(optionsMenuElem);
-        
+
         return this.element;
+    }
+
+    this.getWidgetSubWrapper = function() {
+        return this.widgetSubWrapper;
+    }
+
+    this.getOptionsMenu = function() {
+        return this.optionsMenu;
     }
 
     this.getClass = function() {
@@ -61,14 +77,13 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params) {
                     this.onKeyEnterCallback(e);
                 break;
             default:
-                if (typeof this.onSearchCallback === "function")
-                    this.onSearchCallback(e);
+                var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
+                this.optionsMenu.searchByFirstChar(firstChar);
         }
     }
 
     function onMouseLeave(e) {
-        if (typeof this.onMouseLeaveCallback === "function")
-            this.onMouseLeaveCallback();
+        this.optionsMenu.hide();
     }
 
     this.setTabIndex = function(tabIndex) {

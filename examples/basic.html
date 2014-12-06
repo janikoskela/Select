@@ -3,7 +3,7 @@
 <head>
   <title>Simple Select Box</title>
   <meta charset="utf-8">
-  <script src="../src/dist/Selex.min.js"></script>
+  <script src="../src/dist/Selex.js"></script>
   <link rel="stylesheet" type="text/css" href="../themes/plain/plain.css">
   <link rel="stylesheet" type="text/css" href="../themes/poison/poison.css">
   <style>
@@ -20,8 +20,8 @@
 
 <body>
   <div id="plain"></div>
-  <div id="native"></div>
   <div id="light"></div>
+  <div id="poison"></div>
 <script type="text/javascript">
 var options = [
   {
@@ -94,10 +94,11 @@ var instance = new Selex({
   options: options,
   defaultValue: 16,
   theme: "plain",
-  sort: "desc",
+  sort: "asc",
   fontSize: ".6em",
-  orientation: "right",
+  orientation: "left",
   fontFamily: "Verdana",
+  width: "20em",
   tabIndex: 1,
   placeholder: "Choose an option",
   //optionLimit: 5,
@@ -113,9 +114,10 @@ var instance = new Selex({
 instance.render();
 
 var instance = new Selex({
-  targetElement: document.getElementById("native"),
+  targetElement: document.getElementById("light"),
   options: options,
   defaultValue: 8,
+  theme: "basic",
   tabIndex: 2,
   sort:"desc",
   renderNativeSelectBox: true,
@@ -129,7 +131,7 @@ var instance = new Selex({
 instance.render();
 
 var instance = new Selex({
-  targetElement: document.getElementById("light"),
+  targetElement: document.getElementById("poison"),
   options: options,
   defaultValue: 16,
   theme: "poison",

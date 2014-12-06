@@ -1,14 +1,16 @@
 SELEX.ELEMENTS.Wrapper = function(params) {
 
+    var that = this;
+
     this.type = "div";
 
-    this.className = params.theme || "plain";
+    this.className = params.theme;
 
     this.fontSize = params.fontSize;
 
     this.fontFamily = params.fontFamily;
 
-    this.width = undefined;
+    this.width = params.width || "100%";
 
     this.renderNativeSelectBox = params.renderNativeSelectBox || false;
 
@@ -23,6 +25,7 @@ SELEX.ELEMENTS.Wrapper = function(params) {
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
         this.element.setClass(this.className);
+        this.setWidth(this.width);
         if (this.fontSize !== undefined)
             this.element.setStyle("fontSize", this.fontSize);
         if (this.fontFamily !== undefined)
@@ -33,14 +36,22 @@ SELEX.ELEMENTS.Wrapper = function(params) {
             this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params);
             var nativeSelectBoxElem = this.nativeSelectBox.render();
             this.element.appendChild(nativeSelectBoxElem);
+            if (this.displayNativeSelectBox === false) {
+                this.nativeSelectBox.hide();
+                renderWidget();
+            }
         }
-        if (this.renderNativeSelectBox === false || (this.displayNativeSelectBox === false && this.renderNativeSelectBox === true)) {
-            this.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params);
-            var widgetWrapperElem = this.widgetWrapper.render();
-            this.element.appendChild(widgetWrapperElem);
+        else {
+            renderWidget();
         }
 
         return this.element;
+    }
+
+    function renderWidget() {
+        that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params);
+        var widgetWrapperElem = that.widgetWrapper.render();
+        that.element.appendChild(widgetWrapperElem);
     }
 
     this.show = function() {

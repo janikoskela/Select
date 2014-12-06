@@ -11,6 +11,7 @@
 	SORT_TYPES.DESC = "desc";
 	var SELEX = {};
 	SELEX.UTILS = {};
+	SELEX.HELPERS = {};
 	SELEX.SETTINGS = {};
 	SELEX.MEDIATOR = {};
 	SELEX.ELEMENTS = {};
