@@ -56,6 +56,10 @@ SELEX.ELEMENTS.Wrapper = function(params) {
         that.widgetWrapper.getOptionsMenu().hide();
     }
 
+    this.getWidgetWrapper = function() {
+        return this.widgetWrapper;
+    }
+
     this.show = function() {
         this.element.show();
     }
@@ -65,11 +69,11 @@ SELEX.ELEMENTS.Wrapper = function(params) {
     }
 
     this.enable = function() {
-        this.element.removeAttribute("data-disabled");
+        this.element.removeDataAttribute("disabled");
     }
 
     this.disable = function() {
-        this.element.setAttribute("data-disabled", true);
+        this.element.setDataAttribute("disabled", true);
     }
 
     this.setWidth = function(width) {

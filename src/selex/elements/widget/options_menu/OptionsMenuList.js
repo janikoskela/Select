@@ -158,6 +158,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 	}
 
 	this.getSelectedOption = function() {
+		console.log(this.optionItems)
 		for (var i = 0; i < this.optionItems.length; i++) {
 			var item = this.optionItems[i];
 			if (item.isSelected())

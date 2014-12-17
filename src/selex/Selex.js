@@ -24,6 +24,8 @@
 
 	Selex = function(userDefinedSettings) {
 
+		var that = this;
+
 		this.wrapper;
 
 		init(userDefinedSettings);
@@ -31,31 +33,50 @@
 		function init() {
 			if (typeof userDefinedSettings !== "object")
 				throw new SELEX.EXCEPTIONS.InvalidOptionsErrorException();
-			this.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
-			this.wrapper.render();
+			that.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
 		}
 
 		this.render = function() {
+			this.wrapper.render();
+			return this;
 		}
 
 		this.hide = function() {
+			this.wrapper.hide();
+			return this;
 		}
 
 		this.show = function() {
+			this.wrapper.show();
+			return this;
 		}
 
 		this.getSelectedText = function() {
+			var option = this.getSelectedOption();
+			if (option == undefined)
+				return;
+			return option.getText();
 		}
 
 		this.getSelectedValue = function() {
+			var option = this.getSelectedOption();
+			if (option == undefined)
+				return;
+			return option.getValue();
+		}
+
+		this.getSelectedOption = function() {
+			return this.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().getSelectedOption();
 		}
 
 		this.disable = function() {
-
+			this.wrapper.disable();
+			return this;
 		}
 
 		this.enable = function() {
-
+			this.wrapper.enable();
+			return this;
 		}
 
 		this.setOptions = function(options) {

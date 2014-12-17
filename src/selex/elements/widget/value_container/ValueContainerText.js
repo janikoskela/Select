@@ -10,10 +10,9 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(params) {
 	this.placeholder = params.placeholder;
 
 	this.render = function() {
-		this.element = document.createElement(this.type);
-    	this.element.setClass(this.className);
+		this.element = document.createElement(this.type, this.className);
     	this.element.innerHTML = this.text;
-    	this.element.setAttribute("data-value", this.value);
+    	this.element.setDataAttribute("value", this.value);
     	if (this.defaultValue !== undefined) {
     		var option = SELEX.HELPERS.getOptionByValue(params.options, this.defaultValue);
     		if (option !== undefined) {
@@ -40,7 +39,7 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(params) {
 
 	this.setValue = function(value) {
 		this.value = value;
-		this.element.setAttribute("data-value", value);
+		this.element.setDataAttribute("value", value);
 	}
 
 	this.setText = function(text) {

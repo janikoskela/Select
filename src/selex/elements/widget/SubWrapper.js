@@ -21,8 +21,7 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
     this.optionsMenu;
 
     this.render = function() {
-        this.element = SELEX.UTILS.createElement(this.type);
-        this.element.setClass(this.className);
+        this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
 
         this.arrowContainer = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(params);

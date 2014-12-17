@@ -24,6 +24,8 @@
 
 	Selex = function(userDefinedSettings) {
 
+		var that = this;
+
 		this.wrapper;
 
 		init(userDefinedSettings);
@@ -31,31 +33,50 @@
 		function init() {
 			if (typeof userDefinedSettings !== "object")
 				throw new SELEX.EXCEPTIONS.InvalidOptionsErrorException();
-			this.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
-			this.wrapper.render();
+			that.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
 		}
 
 		this.render = function() {
+			this.wrapper.render();
+			return this;
 		}
 
 		this.hide = function() {
+			this.wrapper.hide();
+			return this;
 		}
 
 		this.show = function() {
+			this.wrapper.show();
+			return this;
 		}
 
 		this.getSelectedText = function() {
+			var option = this.getSelectedOption();
+			if (option == undefined)
+				return;
+			return option.getText();
 		}
 
 		this.getSelectedValue = function() {
+			var option = this.getSelectedOption();
+			if (option == undefined)
+				return;
+			return option.getValue();
+		}
+
+		this.getSelectedOption = function() {
+			return this.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().getSelectedOption();
 		}
 
 		this.disable = function() {
-
+			this.wrapper.disable();
+			return this;
 		}
 
 		this.enable = function() {
-
+			this.wrapper.enable();
+			return this;
 		}
 
 		this.setOptions = function(options) {
@@ -105,17 +126,17 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
 		var elem = placeholderInstance.render();
 		placeholderInstance.setText(placeholder);
-		elem.setAttribute("data-selected", true);
-		elem.setAttribute("data-disabled", true);
+		elem.setDataAttribute("selected", true);
+		elem.setDataAttribute("disabled", true);
 		this.element.appendChild(elem);
 	}
 
 	this.enable = function() {
-		this.element.removeAttribute("data-disabled");
+		this.element.removeDataAttribute("disabled");
 	}
 
 	this.disable = function() {
-		this.element.setAttribute("data-disabled", true);
+		this.element.setDataAttribute("disabled", true);
 	}
 
 	this.setTabIndex = function(tabIndex) {
@@ -556,6 +577,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.getSelectedOption = function() {
+		console.log(this.optionItems)
 		for (var i = 0; i < this.optionItems.length; i++) {
 			var item = this.optionItems[i];
 			if (item.isSelected())
@@ -606,8 +628,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.optionsMenu;
 
     this.render = function() {
-        this.element = SELEX.UTILS.createElement(this.type);
-        this.element.setClass(this.className);
+        this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
 
         this.arrowContainer = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(params);
@@ -678,10 +699,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.placeholder = params.placeholder;
 
 	this.render = function() {
-		this.element = document.createElement(this.type);
-    	this.element.setClass(this.className);
+		this.element = document.createElement(this.type, this.className);
     	this.element.innerHTML = this.text;
-    	this.element.setAttribute("data-value", this.value);
+    	this.element.setDataAttribute("value", this.value);
     	if (this.defaultValue !== undefined) {
     		var option = SELEX.HELPERS.getOptionByValue(params.options, this.defaultValue);
     		if (option !== undefined) {
@@ -708,7 +728,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.setValue = function(value) {
 		this.value = value;
-		this.element.setAttribute("data-value", value);
+		this.element.setDataAttribute("value", value);
 	}
 
 	this.setText = function(text) {
@@ -832,6 +852,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.parentElement = params.targetElement;
 
     this.render = function() {
+        console.log(SELEX.UTILS)
         this.element = SELEX.UTILS.createElement(this.type);
         this.element.setClass(this.className);
         this.setWidth(this.width);
@@ -865,6 +886,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         that.widgetWrapper.getOptionsMenu().hide();
     }
 
+    this.getWidgetWrapper = function() {
+        return this.widgetWrapper;
+    }
+
     this.show = function() {
         this.element.show();
     }
@@ -874,11 +899,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     this.enable = function() {
-        this.element.removeAttribute("data-disabled");
+        this.element.removeDataAttribute("disabled");
     }
 
     this.disable = function() {
-        this.element.setAttribute("data-disabled", true);
+        this.element.setDataAttribute("disabled", true);
     }
 
     this.setWidth = function(width) {
@@ -910,6 +935,14 @@ Object.prototype.addClass = function(name) {
 
 Object.prototype.clearClasses = function() {
 	this.className = "";
+};
+
+Object.prototype.setDataAttribute = function(name, value) {
+  this.setAttribute("data-" + name, value);
+};
+
+Object.prototype.removeDataAttribute = function(name) {
+  this.removeAttribute("data-" + name);
 };
 
 Object.prototype.hasClass = function(name) {

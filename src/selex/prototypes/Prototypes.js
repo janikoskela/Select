@@ -10,6 +10,14 @@ Object.prototype.clearClasses = function() {
 	this.className = "";
 };
 
+Object.prototype.setDataAttribute = function(name, value) {
+  this.setAttribute("data-" + name, value);
+};
+
+Object.prototype.removeDataAttribute = function(name) {
+  this.removeAttribute("data-" + name);
+};
+
 Object.prototype.hasClass = function(name) {
 	return this.className.match(new RegExp('(\\s|^)' + name + '(\\s|$)'));
 };

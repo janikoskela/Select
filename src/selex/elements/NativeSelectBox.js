@@ -39,17 +39,17 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
 		var elem = placeholderInstance.render();
 		placeholderInstance.setText(placeholder);
-		elem.setAttribute("data-selected", true);
-		elem.setAttribute("data-disabled", true);
+		elem.setDataAttribute("selected", true);
+		elem.setDataAttribute("disabled", true);
 		this.element.appendChild(elem);
 	}
 
 	this.enable = function() {
-		this.element.removeAttribute("data-disabled");
+		this.element.removeDataAttribute("disabled");
 	}
 
 	this.disable = function() {
-		this.element.setAttribute("data-disabled", true);
+		this.element.setDataAttribute("disabled", true);
 	}
 
 	this.setTabIndex = function(tabIndex) {
