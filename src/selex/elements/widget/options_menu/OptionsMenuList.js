@@ -3,7 +3,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 	this.type = "ul";
 	this.className = "options-container-list";
 	this.element;
-	this.width = params.optionsMenuWidth || "100%";
+	this.width = "100%";
 	this.height = undefined;
 	this.optionLimit = params.optionLimit;
 	this.options = params.options || [];

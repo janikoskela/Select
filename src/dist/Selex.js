@@ -242,6 +242,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 	this.optionsMenuList;
 
 	this.render = function() {
+		console.log(this.width)
         this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(params, widgetWrapper, this);
     	var optionsMenuListElem = this.optionsMenuList.render();
@@ -399,7 +400,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 	this.type = "ul";
 	this.className = "options-container-list";
 	this.element;
-	this.width = params.optionsMenuWidth || "100%";
+	this.width = "100%";
 	this.height = undefined;
 	this.optionLimit = params.optionLimit;
 	this.options = params.options || [];
