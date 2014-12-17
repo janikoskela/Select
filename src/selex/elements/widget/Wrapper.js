@@ -77,7 +77,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                this.optionsMenu.searchByFirstChar(firstChar);
+                this.optionsMenu.getOptionsMenuList().searchByFirstChar(firstChar);
         }
     }
 
