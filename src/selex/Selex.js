@@ -10,6 +10,7 @@
 	SORT_TYPES.ASC = "asc";
 	SORT_TYPES.DESC = "desc";
 	var SELEX = {};
+	SELEX.CONFIG = {};
 	SELEX.UTILS = {};
 	SELEX.HELPERS = {};
 	SELEX.SETTINGS = {};
@@ -19,6 +20,7 @@
 	SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER = {};
 	SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
 	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU = {};
+	SELEX.EXCEPTIONS = {};
 
 	Selex = function(userDefinedSettings) {
 
@@ -28,7 +30,7 @@
 
 		function init() {
 			if (typeof userDefinedSettings !== "object")
-				throw Error("Invalid settings");
+				throw new SELEX.EXCEPTIONS.InvalidOptionsErrorException();
 			this.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
 			this.wrapper.render();
 		}
