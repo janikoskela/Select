@@ -116,7 +116,7 @@
     -ms-filter: "FlipV";
 }
 
-.plain .options-container {
+.plain .options-container-list {
     position: absolute;
     left: 0;
     top: 0; /* same as .widget-sub-wrapper's height (including its border) */
@@ -136,32 +136,32 @@
     opacity: .97;
 }
 
-.plain .options-container li {
+.plain .options-container-list li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: .4em;
 }
 
-.plain .options-container li span {
+.plain .options-container-list li span {
 	padding: 0 0 0 2em;
 }
 
-.plain .options-container li.selected.hovered span {
+.plain .options-container-list li.selected.hovered span {
 	background-image: url(checked-white.png);
 	background-repeat: no-repeat;
   	background-size: 10px 10px;
   	background-position:left; 
 }
 
-.plain .options-container li.selected span {
+.plain .options-container-list li.selected span {
 	background-image: url(checked-black.png);
 	background-repeat: no-repeat;
   	background-size: 10px 10px;
   	background-position:left; 
 }
 
-.plain .options-container li.hovered { 
+.plain .options-container-list li.hovered { 
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;

@@ -233,8 +233,171 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(params, widgetWrapper) {
 	var that = this;
-	this.type = "ul";
+	this.type = "div";
 	this.className = "options-container";
+	this.element;
+	this.width = params.optionsMenuWidth || "100%";
+	this.height = undefined;
+	this.widgetWrapper = widgetWrapper;
+	this.optionsMenuList;
+
+	this.render = function() {
+        this.element = SELEX.UTILS.createElement(this.type, this.className);
+    	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(params, widgetWrapper, this);
+    	var optionsMenuListElem = this.optionsMenuList.render();
+    	this.element.appendChild(optionsMenuListElem);
+    	this.setWidth(this.width);
+    	return this.element;
+	}
+
+	this.getOptionsMenuList = function() {
+		return this.optionsMenuList;
+	}
+
+	this.getWidgetWrapper = function() {
+		return this.widgetWrapper;
+	}
+
+	this.getElement = function() {
+		return this.element;
+	}
+
+	this.setWidth = function(width) {
+		this.width = width;
+		this.element.setStyle("width", this.width);
+	}
+
+	this.setHeight = function(height) {
+		this.height = height;
+		this.element.setStyle("height", this.height);
+	}
+
+	this.hide = function() {
+		this.element.hide();
+	}
+
+	this.isHidden = function() {
+		return this.element.isHidden();
+	}
+
+	this.show = function() {
+		this.element.show();
+	}
+
+	this.toggle = function() {
+		if (this.element.isHidden())
+			this.show();
+		else
+			this.hide();
+	}
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenuList, onClickCallback, optionsMenu) {
+	var that = this;
+	this.value = value;
+	this.text = text;
+	this.type = "li";
+	this.element;
+	this.itemValue;
+	this.index = index;
+	this.optionsMenu = optionsMenu;
+	this.optionsMenuList = optionsMenuList;
+	this.onClickCallback = onClickCallback;
+
+	this.render = function() {
+		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
+		var childElem = this.itemValue.render();
+    	this.element = SELEX.UTILS.createElement(this.type);
+    	this.element.addEventListener("click", onClick.bind(this));
+    	this.element.addEventListener("mouseover", onMouseOver.bind(this));
+    	this.element.addEventListener("keyup", onKeyUp.bind(this));
+    	this.element.appendChild(childElem);
+    	this.element.setAttribute("data-index", this.index);
+    	return this.element;
+	}
+
+	this.getTextByElement = function(element) {
+
+	}
+
+	this.getValue = function() {
+		return this.value;
+	}
+
+	this.getElement = function() {
+		return this.element;
+	}
+
+	this.getText = function() {
+		return this.text;
+	}
+
+	this.isHovered = function() {
+		return (this.element.hasClass("hovered"));
+	}
+
+	this.isSelected = function() {
+		return (this.element.hasClass("selected"));
+	}
+
+	this.setHovered = function() {
+		this.element.addClass("hovered");
+	}
+
+	this.setSelected = function() {
+		this.element.addClass("selected");
+	}
+
+	function onKeyUp(e) {
+		switch (e.keyCode) {
+			case KEY_CODES.ENTER:
+				onClick(e);
+				break;
+		}
+	}
+
+	this.getIndex = function() {
+		return this.index;
+	}
+
+	function onMouseOver(e) {
+		var siblings = this.element.parentNode.children;
+		for (var i = 0; i < siblings.length; i++) {
+			siblings[i].removeClass("hovered");
+		}
+		this.element.addClass("hovered");
+	}
+
+	this.onClick = function() {
+		onClick();
+	}
+
+	function onClick(e) {
+		if (typeof that.onClickCallback === "function")
+			that.onClickCallback(that.value, that.text);
+		that.optionsMenu.hide();
+		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+		var previosulySelected = that.optionsMenuList.getSelectedOption();
+		if (previosulySelected !== undefined)
+			previosulySelected.getElement().removeClass("selected");
+		that.setSelected();
+		valueContainerText.setText(that.text);
+		valueContainerText.setValue(that.value);
+	}
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
+	this.text = text;
+	this.type = "span";
+	this.element;
+	this.textNode;
+
+	this.render = function() {
+    	this.element = document.createElement(this.type);
+    	this.textNode = document.createTextNode(this.text);
+    	this.element.appendChild(this.textNode);
+    	return this.element;
+	}
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrapper, optionsMenu) {
+	var that = this;
+	this.type = "ul";
+	this.className = "options-container-list";
 	this.element;
 	this.width = params.optionsMenuWidth || "100%";
 	this.height = undefined;
@@ -245,9 +408,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 	this.sortType = params.sort;
 
 	this.render = function() {
-        this.element = SELEX.UTILS.createElement(this.type);
-    	this.element.setClass(this.className);
-    	this.hide();
+        this.element = SELEX.UTILS.createElement(this.type, this.className);
     	switch(this.sortType) {
     		case "asc":
     			this.options.sort(sortByAsc);
@@ -258,7 +419,24 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
     	}
     	this.setWidth(this.width);
     	renderOptionItems(this.options);
-    	return this.element;
+		return this.element;
+	}
+
+	this.adjustHeight = function() {
+		var children = that.element.children;
+        if (children.length === 0)
+            return;
+        if (children.length > 0) {        
+         	var h = children[0].offsetHeight;
+            if (that.optionLimit === undefined || children.length < that.optionLimit)
+                h *= children.length;
+            else
+                h *= that.optionLimit;
+            //h++; //so that element does not become scrollable in cas
+            h += "px";
+            if (that.optionLimit !== undefined)
+                that.setHeight(h);
+        }
 	}
 
 	function renderOptionItems(options) {
@@ -266,7 +444,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 			var option = options[i];
 			var optionValue = option.value;
 			var optionText = option.text;
-			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange);
+			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu);
 			that.optionItems.push(item);
 			var elem = item.render();
 			that.element.appendChild(elem);
@@ -359,10 +537,6 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		}
 	}
 
-	this.getWidgetWrapper = function() {
-		return this.widgetWrapper;
-	}
-
 	this.hasChildren = function() {
 		return (this.element.children > 0);
 	}
@@ -407,141 +581,6 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		this.element.setStyle("height", this.height);
 	}
 
-	this.hide = function() {
-		this.element.hide();
-	}
-
-	this.isHidden = function() {
-		return this.element.isHidden();
-	}
-
-	this.show = function() {
-		var children = this.element.children;
-		if (children.length === 0)
-			return;
-		this.element.show();
-		if (children.length > 0) {
-			var h = children[0].offsetHeight;
-			if (this.optionLimit === undefined || children.length < this.optionLimit)
-				h *= children.length;
-			else
-				h *= this.optionLimit;
-			h++; //so that element does not become scrollable in case visible options are not limited
-			h += "px";
-			if (this.optionLimit !== undefined)
-				this.setHeight(h);
-		}
-	}
-
-	this.toggle = function() {
-		if (this.element.isHidden())
-			this.show();
-		else
-			this.hide();
-	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenu, onClickCallback) {
-	var that = this;
-	this.value = value;
-	this.text = text;
-	this.type = "li";
-	this.element;
-	this.itemValue;
-	this.index = index;
-	this.optionsMenu = optionsMenu;
-	this.onClickCallback = onClickCallback;
-
-	this.render = function() {
-		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
-		var childElem = this.itemValue.render();
-    	this.element = SELEX.UTILS.createElement(this.type);
-    	this.element.addEventListener("click", onClick.bind(this));
-    	this.element.addEventListener("mouseover", onMouseOver.bind(this));
-    	this.element.addEventListener("keyup", onKeyUp.bind(this));
-    	this.element.appendChild(childElem);
-    	this.element.setAttribute("data-index", this.index);
-    	return this.element;
-	}
-
-	this.getTextByElement = function(element) {
-
-	}
-
-	this.getValue = function() {
-		return this.value;
-	}
-
-	this.getElement = function() {
-		return this.element;
-	}
-
-	this.getText = function() {
-		return this.text;
-	}
-
-	this.isHovered = function() {
-		return (this.element.hasClass("hovered"));
-	}
-
-	this.isSelected = function() {
-		return (this.element.hasClass("selected"));
-	}
-
-	this.setHovered = function() {
-		this.element.addClass("hovered");
-	}
-
-	this.setSelected = function() {
-		this.element.addClass("selected");
-	}
-
-	function onKeyUp(e) {
-		switch (e.keyCode) {
-			case KEY_CODES.ENTER:
-				onClick(e);
-				break;
-		}
-	}
-
-	this.getIndex = function() {
-		return this.index;
-	}
-
-	function onMouseOver(e) {
-		var siblings = this.element.parentNode.children;
-		for (var i = 0; i < siblings.length; i++) {
-			siblings[i].removeClass("hovered");
-		}
-		this.element.addClass("hovered");
-	}
-
-	this.onClick = function() {
-		onClick();
-	}
-
-	function onClick(e) {
-		if (typeof that.onClickCallback === "function")
-			that.onClickCallback(that.value, that.text);
-		that.optionsMenu.hide();
-		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
-		var previosulySelected = that.optionsMenu.getSelectedOption();
-		if (previosulySelected !== undefined)
-			previosulySelected.getElement().removeClass("selected");
-		that.setSelected();
-		valueContainerText.setText(that.text);
-		valueContainerText.setValue(that.value);
-	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
-	this.text = text;
-	this.type = "span";
-	this.element;
-	this.textNode;
-
-	this.render = function() {
-    	this.element = document.createElement(this.type);
-    	this.textNode = document.createTextNode(this.text);
-    	this.element.appendChild(this.textNode);
-    	return this.element;
-	}
 };SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
 
     var ORIENTATION_LEFT = "left";
@@ -693,8 +732,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
     this.closeWhenCursorOut = params.closeWhenCursorOut || true;
 
     this.render = function() {
-        this.element = SELEX.UTILS.createElement(this.type);
-        this.element.setClass(this.className);
+        this.element = SELEX.UTILS.createElement(this.type, this.className);
         if (this.tabIndex !== undefined)
             this.element.setAttribute("tabindex", this.tabIndex);
         if (this.closeWhenCursorOut) {
@@ -821,6 +859,8 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
         that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params);
         var widgetWrapperElem = that.widgetWrapper.render();
         that.element.appendChild(widgetWrapperElem);
+        that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
+        that.widgetWrapper.getOptionsMenu().hide();
     }
 
     this.show = function() {
@@ -1471,7 +1511,10 @@ Object.prototype.removeClass = function(className) {
 	this.getPlaceholder = function() {
 		return placeholder;
 	}
-};SELEX.UTILS.createElement = function(type) {
-	return document.createElement(type);
+};SELEX.UTILS.createElement = function(type, classes) {
+	var elem = document.createElement(type);
+	if (typeof classes === "string")
+		elem.setClass(classes);
+	return elem;
 }
 }());

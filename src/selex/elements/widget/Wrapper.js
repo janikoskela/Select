@@ -17,8 +17,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
     this.closeWhenCursorOut = params.closeWhenCursorOut || true;
 
     this.render = function() {
-        this.element = SELEX.UTILS.createElement(this.type);
-        this.element.setClass(this.className);
+        this.element = SELEX.UTILS.createElement(this.type, this.className);
         if (this.tabIndex !== undefined)
             this.element.setAttribute("tabindex", this.tabIndex);
         if (this.closeWhenCursorOut) {

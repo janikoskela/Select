@@ -52,6 +52,8 @@ SELEX.ELEMENTS.Wrapper = function(params) {
         that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params);
         var widgetWrapperElem = that.widgetWrapper.render();
         that.element.appendChild(widgetWrapperElem);
+        that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
+        that.widgetWrapper.getOptionsMenu().hide();
     }
 
     this.show = function() {

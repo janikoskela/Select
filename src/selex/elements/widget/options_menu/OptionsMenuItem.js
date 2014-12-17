@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenu, onClickCallback) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenuList, onClickCallback, optionsMenu) {
 	var that = this;
 	this.value = value;
 	this.text = text;
@@ -7,6 +7,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
 	this.itemValue;
 	this.index = index;
 	this.optionsMenu = optionsMenu;
+	this.optionsMenuList = optionsMenuList;
 	this.onClickCallback = onClickCallback;
 
 	this.render = function() {
@@ -82,7 +83,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
 			that.onClickCallback(that.value, that.text);
 		that.optionsMenu.hide();
 		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
-		var previosulySelected = that.optionsMenu.getSelectedOption();
+		var previosulySelected = that.optionsMenuList.getSelectedOption();
 		if (previosulySelected !== undefined)
 			previosulySelected.getElement().removeClass("selected");
 		that.setSelected();
