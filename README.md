@@ -10,7 +10,7 @@ Widget options
 ===============
 Name| Type | Required | Default | Description
 ---|---|---------------|-----|------------|------
-targetElement|Element |true|-|The element where Selex is rendered. If this is <i>select</i>-element then widget is created based on it. 
+targetElement|Element |true|-|The element where Selex is rendered. If this is <i>select</i>-element then widget is created based on its content. 
 options|Array of object(s) | false | - |Options. This will be diregarded if targetElement is <i>select</i>-element
 theme|String|false|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
 defaultValue|String|false|-|An option is searched with this value, first option that matches is picked
