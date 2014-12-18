@@ -10,25 +10,23 @@ See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">exam
 
 Constructor parameters
 ===============
-Name| Type | Default | Applies to native select | Description
+Name| Type | Default | Description
 ---|---|---------------|-----|------------|------
-options|Array of object(s) | - | True |Options
-theme|String|"plain"|True|Defines what theme is to be used. Basically this will simply define the class of the root element
-targetElement|Element |-|True|The element where Selex is rendered
-defaultValue|String|-|True|An option is searched with this value, first option that matches is picked
-width|String |-|True|Width for the select box
-fontSize|String |-|True|The font size which is to be defined to the root element
-fontFamily|String|-|False|The font family which is to be defined to the root element
-orientation|String|"right"|False|Defines the side where arrow points
-onOptionChange|Function |-|True|A callback which is called when option changes
-optionLimit|Number|-|False |Specifies how many options will be displayed. If not specified all options will be displayed
-displayNativeSelectBox|Boolean|False|True|Controls whether native select box is displayed. Cannot be displayed if renderNativeSelectBox is false. If this is true and renderNativeSelectBox is true then only native select box is rendered
-renderNativeSelectBox|Boolean|False|True|Controls whether native select box is rendered
-placeholder|String|-|True|Sets a placeholder text
-sort|String|-|True|Sorts options
-searchMode|String|-|False|Searches options with pressed key(s). Search by first key (default) is currently the only search mode
-optionMenuWidth|String|-|False|Determines the width of option menu. Overrides width param
-closeWhenCursorOut|Boolean|True|False|Determines if option menu will be closed when cursor leaves select box
+options|Array of object(s) | - |Options. This will be diregarded if targetElement is <select>
+theme|String|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
+targetElement|Element |-|The element where Selex is rendered. If this is <select> then widget is created based on it. 
+defaultValue|String|-|An option is searched with this value, first option that matches is picked
+width|String |-|Width for the select box
+fontSize|String |-|The font size which is to be defined to the root element
+fontFamily|String|-|The font family which is to be defined to the root element
+orientation|String|"right"|Defines the side where arrow points
+onOptionChange|Function |-|A callback which is called when option changes
+optionLimit|Number|- |Specifies how many options will be displayed. If not specified all options will be displayed
+placeholder|String|-|Sets a placeholder text
+sort|String|-|Sorts options
+searchMode|String|-|Searches options with pressed key(s). Search by first key (default) is currently the only search mode
+optionMenuWidth|String|-|Determines the width of option menu. Overrides width param
+closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
 
 Public methods
 ===============
@@ -42,6 +40,7 @@ hide|-|Hides widget or native select box
 enable|-|Enables widget or native select box
 disable|-|Disabled widget or native select box
 setOptions|Array of object(s)|Sets new options
+getSelectedOption|-|Returns the selected option
 
 Implementations
 =============
