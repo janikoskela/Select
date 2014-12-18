@@ -12,9 +12,9 @@ Constructor parameters
 ===============
 Name| Type | Default | Description
 ---|---|---------------|-----|------------|------
-options|Array of object(s) | - |Options. This will be diregarded if targetElement is <select>
+options|Array of object(s) | - |Options. This will be diregarded if targetElement is <i>select</i>
 theme|String|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
-targetElement|Element |-|The element where Selex is rendered. If this is <select> then widget is created based on it. 
+targetElement|Element |-|The element where Selex is rendered. If this is <i>select</i> then widget is created based on it. 
 defaultValue|String|-|An option is searched with this value, first option that matches is picked
 width|String |-|Width for the select box
 fontSize|String |-|The font size which is to be defined to the root element
