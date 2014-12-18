@@ -168,7 +168,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.setSelected = function() {
-		this.element.setAttribute("selected", true);
+		this.element.setAttribute("selected", "selected");
 	}
 
 	this.removeSelected = function() {
@@ -373,19 +373,28 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		onClick();
 	}
 
-	function onClick(e) {
-		if (typeof that.onClickCallback === "function")
-			that.onClickCallback(that.value, that.text);
-		that.optionsMenu.hide();
+	function changeOption() {
+		var previosulySelected = that.optionsMenuList.getSelectedOption();
 		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
 		var nativeSelect = that.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
 		nativeSelect.setSelectedOption(that.value);
-		var previosulySelected = that.optionsMenuList.getSelectedOption();
-		if (previosulySelected !== undefined)
-			previosulySelected.getElement().removeClass("selected");
+		previosulySelected.getElement().removeClass("selected");
 		that.setSelected();
 		valueContainerText.setText(that.text);
 		valueContainerText.setValue(that.value);
+		if (typeof that.onClickCallback === "function")
+			that.onClickCallback(that.value, that.text);
+	}
+
+	function onClick(e) {
+		that.optionsMenu.hide();
+		var previosulySelected = that.optionsMenuList.getSelectedOption();
+		if (previosulySelected !== undefined) {
+			if (previosulySelected.getIndex() !== that.getIndex())
+				changeOption();
+		}
+		else
+			changeOption();
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(text) {
 	this.text = text;

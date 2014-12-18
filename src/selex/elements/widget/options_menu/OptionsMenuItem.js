@@ -81,18 +81,27 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
 		onClick();
 	}
 
-	function onClick(e) {
-		if (typeof that.onClickCallback === "function")
-			that.onClickCallback(that.value, that.text);
-		that.optionsMenu.hide();
+	function changeOption() {
+		var previosulySelected = that.optionsMenuList.getSelectedOption();
 		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
 		var nativeSelect = that.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
 		nativeSelect.setSelectedOption(that.value);
-		var previosulySelected = that.optionsMenuList.getSelectedOption();
-		if (previosulySelected !== undefined)
-			previosulySelected.getElement().removeClass("selected");
+		previosulySelected.getElement().removeClass("selected");
 		that.setSelected();
 		valueContainerText.setText(that.text);
 		valueContainerText.setValue(that.value);
+		if (typeof that.onClickCallback === "function")
+			that.onClickCallback(that.value, that.text);
+	}
+
+	function onClick(e) {
+		that.optionsMenu.hide();
+		var previosulySelected = that.optionsMenuList.getSelectedOption();
+		if (previosulySelected !== undefined) {
+			if (previosulySelected.getIndex() !== that.getIndex())
+				changeOption();
+		}
+		else
+			changeOption();
 	}
 };
