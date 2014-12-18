@@ -20,16 +20,16 @@
 
 <body>
     <select id="foo">
-      <option selected="selected" value="adsasd">asdsads</option>
-      <option value="adsawsd">asdsadsqwe</option>
-      <option value="adsawsd">asdsadsqwe</option>
-      <option value="adsawsd">asdsadsqwe</option>
-      <option value="adsawsd">as</option>
-      <option value="adsawsd">asdsdsdsadsadasdasd</option>
-      <option value="adsawsd">asdsadsqwe</option>
-      <option value="adsawsd">asdsadsqwe</option>
-      <option value="adsawsd">asdsadsqwe</option>
-      <option value="adsawsd">asdsadsqwe</option>
+      <option selected="selected" value="j">jjjjjjjj</option>
+      <option value="a">aaaaaaaaaa</option>
+      <option value="b">bbbbbb</option>
+      <option value="c">cccccccccccccccccc</option>
+      <option value="d">ddd</option>
+      <option value="e">eeeeeee</option>
+      <option value="f">ffffff</option>
+      <option value="g">gggggggg</option>
+      <option value="h">hhhhh</option>
+      <option value="i">iiiii</option>
     </select>
   <div id="plain"></div>
   <div id="light"></div>
@@ -105,9 +105,9 @@ var foo = {
   targetElement: document.getElementById("foo"),
   //options: document.getElementById("foo"),
   defaultValue: 16,
-  optionLimit: 4,
+  optionLimit: 10,
   theme: "plain",
-  sort: "asc",
+  sort: "desc",
   fontSize: ".6em",
   orientation: "left",
   fontFamily: "Verdana",
@@ -125,24 +125,6 @@ var foo = {
   })()
 };
 var instance = new Selex(foo);
-instance.render();
-console.log(instance.getSelectedText())
-
-var instance = new Selex({
-  targetElement: document.getElementById("light"),
-  options: options,
-  defaultValue: 8,
-  theme: "basic",
-  tabIndex: 2,
-  sort:"desc",
-  renderNativeSelectBox: true,
-  displayNativeSelectBox: true,
-  onOptionChange: (function() {
-    return function(value, text) {
-      console.log("Chosen option: " + value, text);
-    }
-  })()
-});
 instance.render();
 
 var instance = new Selex({
