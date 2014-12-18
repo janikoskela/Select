@@ -1,5 +1,5 @@
 SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(params) {
-
+	var that = this;
 	this.value;
 	this.text;
 	this.type = "span";
@@ -19,17 +19,23 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(params) {
     			this.setValue(option.value);
     			this.setText(option.text);
     		}
+    		else
+    			setFirstOptionAsDefault();
     	}
     	else if (this.placeholder !== undefined) {
     		this.setPlaceholder(this.placeholder);
     	}
     	else if (params.options.length > 0) {
-    		var firstOption = params.options[0];
-    		this.setValue(firstOption.value);
-    		this.setText(firstOption.text);
+    		setFirstOptionAsDefault();
     	}
 
 		return this.element;
+	}
+
+	function setFirstOptionAsDefault() {
+		var firstOption = params.options[0];
+		that.setValue(firstOption.value);
+		that.setText(firstOption.text);
 	}
 
 	this.setPlaceholder = function(placeholder) {

@@ -13,16 +13,16 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	switch(this.sortType) {
+    	this.setWidth(this.width);
+		switch(this.sortType) {
     		case "asc":
     			this.options.sort(sortByAsc);
     			break;
     		case "desc":
     			this.options.sort(sortByDesc);
     			break;
-    	}
-    	this.setWidth(this.width);
-    	renderOptionItems(this.options);
+		}
+		renderOptionItems(this.options);
 		return this.element;
 	}
 
@@ -48,7 +48,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 			var option = options[i];
 			var optionValue = option.value;
 			var optionText = option.text;
-			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu);
+			var selected = option.selected;
+			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu, selected);
 			that.optionItems.push(item);
 			var elem = item.render();
 			that.element.appendChild(elem);

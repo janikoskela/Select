@@ -88,14 +88,19 @@
 SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#constructor-parameters";SELEX.ELEMENTS.NativeSelectBox = function(params) {
 
 	this.type = "select";
-	this.width = params.width;
-	this.changeCallback = params.changeCallback;
 	this.element;
-	this.tabIndex = params.tabIndex || 0;
-	this.fontSize;
-	this.placeholder = params.placeholder;
 	this.options = params.options || [];
 	this.optionItems = [];
+
+	this.createFromExistingSelect = function(elem) {
+		this.element = elem;
+		for (var i = 0; i < this.element.options.length; i++) {
+			var option = this.element.options[i];
+			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem().createFromExistingOption(option);
+			this.optionItems.push(optionItem);
+		}
+		return this;
+	}
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
@@ -116,61 +121,22 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		}
 	}
 
-	this.setFontSize = function(fontSize) {
-		this.fontSize = fontSize;
-		this.element.setStyle("font-size", this.fontSize);
-	}
-
-	this.setPlaceholder = function(placeholder) {
-		this.placeholder = placeholder;
-		var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
-		var elem = placeholderInstance.render();
-		placeholderInstance.setText(placeholder);
-		elem.setDataAttribute("selected", true);
-		elem.setDataAttribute("disabled", true);
-		this.element.appendChild(elem);
-	}
-
-	this.enable = function() {
-		this.element.removeDataAttribute("disabled");
-	}
-
-	this.disable = function() {
-		this.element.setDataAttribute("disabled", true);
-	}
-
-	this.setTabIndex = function(tabIndex) {
-		this.tabIndex = tabIndex;
-		this.element.setAttribute("tabindex", this.tabIndex);
-	}
-
-	this.onOptionChange = function(e) {
-		var value = e.target.selectedOptions[0].value;
-		var text = e.target.selectedOptions[0].text;
-		if (typeof self.changeCallback === "function") {
-			self.changeCallback(value, text);
+	this.setSelectedOption = function(value) {
+		for (var i = 0; i < this.optionItems.length; i++) {
+			if (this.optionItems[i].getValue() == value) {
+				this.optionItems[i].setSelected();
+			}
+			else
+				this.optionItems[i].removeSelected();
 		}
-	}
-
-	this.setOption = function(value) {
-		this.element.value = value;
 	}
 
 	this.getElement = function() {
 		return this.element;
 	}
 
-	this.setWidth = function(width) {
-		this.width = width;
-		this.element.setStyle("width", this.width);
-	}
-
 	this.hide = function() {
 		this.element.hide();
-	}
-
-	this.show = function() {
-		this.element.show();
 	}
 
 };SELEX.ELEMENTS.NativeSelectBoxItem = function(value, text) {
@@ -188,14 +154,25 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		return this.element;
 	}
 
-	this.setValue = function(value) {
-		this.value = value;
-		this.element.setAttribute("data-value", this.value);
+	this.createFromExistingOption = function(option) {
+		this.element = option;
+		console.log(option.id)
+		this.value = this.element.value;
+		this.text = this.element.text;
+		this.selected = (this.element.getAttribute("selected") === null) ? false : true;
+		return this;
 	}
 
-	this.setText = function(text) {
-		this.text = text;
-		this.element.innerHTML = this.text;
+	this.getValue = function() {
+		return this.value;
+	}
+
+	this.setSelected = function() {
+		this.element.setAttribute("selected", true);
+	}
+
+	this.removeSelected = function() {
+		this.element.removeAttribute("selected");
 	}
 };SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(params) {
 
@@ -313,7 +290,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		else
 			this.hide();
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenuList, onClickCallback, optionsMenu) {
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenuList, onClickCallback, optionsMenu, selected) {
 	var that = this;
 	this.value = value;
 	this.text = text;
@@ -324,6 +301,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.optionsMenu = optionsMenu;
 	this.optionsMenuList = optionsMenuList;
 	this.onClickCallback = onClickCallback;
+	this.selected = selected;
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
@@ -334,6 +312,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	this.element.appendChild(childElem);
     	this.element.setAttribute("data-index", this.index);
+    	if (selected === true)
+    		this.setSelected();
     	return this.element;
 	}
 
@@ -398,6 +378,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			that.onClickCallback(that.value, that.text);
 		that.optionsMenu.hide();
 		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+		var nativeSelect = that.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
+		nativeSelect.setSelectedOption(that.value);
 		var previosulySelected = that.optionsMenuList.getSelectedOption();
 		if (previosulySelected !== undefined)
 			previosulySelected.getElement().removeClass("selected");
@@ -432,16 +414,16 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	switch(this.sortType) {
+    	this.setWidth(this.width);
+		switch(this.sortType) {
     		case "asc":
     			this.options.sort(sortByAsc);
     			break;
     		case "desc":
     			this.options.sort(sortByDesc);
     			break;
-    	}
-    	this.setWidth(this.width);
-    	renderOptionItems(this.options);
+		}
+		renderOptionItems(this.options);
 		return this.element;
 	}
 
@@ -467,7 +449,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			var option = options[i];
 			var optionValue = option.value;
 			var optionText = option.text;
-			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu);
+			var selected = option.selected;
+			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu, selected);
 			that.optionItems.push(item);
 			var elem = item.render();
 			that.element.appendChild(elem);
@@ -577,7 +560,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.getSelectedOption = function() {
-		console.log(this.optionItems)
 		for (var i = 0; i < this.optionItems.length; i++) {
 			var item = this.optionItems[i];
 			if (item.isSelected())
@@ -688,7 +670,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		return this.valueContainerText;
 	}
 };SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(params) {
-
+	var that = this;
 	this.value;
 	this.text;
 	this.type = "span";
@@ -708,17 +690,23 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     			this.setValue(option.value);
     			this.setText(option.text);
     		}
+    		else
+    			setFirstOptionAsDefault();
     	}
     	else if (this.placeholder !== undefined) {
     		this.setPlaceholder(this.placeholder);
     	}
     	else if (params.options.length > 0) {
-    		var firstOption = params.options[0];
-    		this.setValue(firstOption.value);
-    		this.setText(firstOption.text);
+    		setFirstOptionAsDefault();
     	}
 
 		return this.element;
+	}
+
+	function setFirstOptionAsDefault() {
+		var firstOption = params.options[0];
+		that.setValue(firstOption.value);
+		that.setText(firstOption.text);
 	}
 
 	this.setPlaceholder = function(placeholder) {
@@ -776,6 +764,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         return this.element;
     }
 
+    this.getWrapper = function() {
+        return this.wrapper;
+    }
+
     this.getWidgetSubWrapper = function() {
         return this.widgetSubWrapper;
     }
@@ -814,7 +806,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                this.optionsMenu.searchByFirstChar(firstChar);
+                this.optionsMenu.getOptionsMenuList().searchByFirstChar(firstChar);
         }
     }
 
@@ -852,38 +844,57 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.parentElement = params.targetElement;
 
     this.render = function() {
-        console.log(SELEX.UTILS)
-        this.element = SELEX.UTILS.createElement(this.type);
-        this.element.setClass(this.className);
+        this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.setWidth(this.width);
         if (this.fontSize !== undefined)
             this.element.setStyle("fontSize", this.fontSize);
         if (this.fontFamily !== undefined)
             this.element.setStyle("fontFamily", this.fontFamily);
-        this.parentElement.appendChild(this.element);
-
-        if (this.renderNativeSelectBox === true) {
-            this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params);
-            var nativeSelectBoxElem = this.nativeSelectBox.render();
-            this.element.appendChild(nativeSelectBoxElem);
-            if (this.displayNativeSelectBox === false) {
+        switch(this.parentElement.tagName) {
+            case "SELECT":
+                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params).createFromExistingSelect(this.parentElement);
+                var parentsParent = this.parentElement.parentNode;
+                parentsParent.insertBefore(this.element, this.parentElement);
+                this.element.appendChild(this.parentElement);
+                //this.parentElement.prependTo(this.element);
+                //this.parentElement.hide();
+                //parentsParent.appendChild(this.element);
+                params.options = parseOptionsFromElement(this.parentElement);
+                this.parentElement.hide();
+                break;
+            default:
+                this.parentElement.appendChild(this.element);
+                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params);
+                var nativeSelectBoxElem = this.nativeSelectBox.render();
+                this.element.appendChild(nativeSelectBoxElem);
                 this.nativeSelectBox.hide();
-                renderWidget();
-            }
         }
-        else {
-            renderWidget();
-        }
-
+        renderWidget();
         return this.element;
     }
 
     function renderWidget() {
-        that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params);
+        that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(params, that);
         var widgetWrapperElem = that.widgetWrapper.render();
         that.element.appendChild(widgetWrapperElem);
         that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
         that.widgetWrapper.getOptionsMenu().hide();
+    }
+
+    function parseOptionsFromElement(elem) {
+        var options = [];
+        for (var i = 0; i < elem.options.length; i++) {
+            var option = elem.options[i];
+            var optionValue = option.value;
+            var optionText = option.text;
+            var optionSelected = (option.getAttribute("selected") === null) ? false : true;
+            options.push({ value: optionValue, text: optionText, selected: optionSelected });
+        }
+        return options;
+    }
+
+    this.getNativeSelect = function() {
+        return this.nativeSelectBox;
     }
 
     this.getWidgetWrapper = function() {
@@ -997,5 +1008,12 @@ Object.prototype.removeClass = function(className) {
 	if (typeof classes === "string")
 		elem.setClass(classes);
 	return elem;
-}
-}());
+};
+
+SELEX.UTILS.isElement = function(o) {
+	//Returns true if it is a DOM element    
+  	return (
+    	typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2 
+    	o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+	);
+};}());

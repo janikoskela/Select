@@ -1,14 +1,19 @@
 SELEX.ELEMENTS.NativeSelectBox = function(params) {
 
 	this.type = "select";
-	this.width = params.width;
-	this.changeCallback = params.changeCallback;
 	this.element;
-	this.tabIndex = params.tabIndex || 0;
-	this.fontSize;
-	this.placeholder = params.placeholder;
 	this.options = params.options || [];
 	this.optionItems = [];
+
+	this.createFromExistingSelect = function(elem) {
+		this.element = elem;
+		for (var i = 0; i < this.element.options.length; i++) {
+			var option = this.element.options[i];
+			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem().createFromExistingOption(option);
+			this.optionItems.push(optionItem);
+		}
+		return this;
+	}
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
@@ -29,61 +34,22 @@ SELEX.ELEMENTS.NativeSelectBox = function(params) {
 		}
 	}
 
-	this.setFontSize = function(fontSize) {
-		this.fontSize = fontSize;
-		this.element.setStyle("font-size", this.fontSize);
-	}
-
-	this.setPlaceholder = function(placeholder) {
-		this.placeholder = placeholder;
-		var placeholderInstance = new SELEX.ELEMENTS.NativeSelectBoxItem();
-		var elem = placeholderInstance.render();
-		placeholderInstance.setText(placeholder);
-		elem.setDataAttribute("selected", true);
-		elem.setDataAttribute("disabled", true);
-		this.element.appendChild(elem);
-	}
-
-	this.enable = function() {
-		this.element.removeDataAttribute("disabled");
-	}
-
-	this.disable = function() {
-		this.element.setDataAttribute("disabled", true);
-	}
-
-	this.setTabIndex = function(tabIndex) {
-		this.tabIndex = tabIndex;
-		this.element.setAttribute("tabindex", this.tabIndex);
-	}
-
-	this.onOptionChange = function(e) {
-		var value = e.target.selectedOptions[0].value;
-		var text = e.target.selectedOptions[0].text;
-		if (typeof self.changeCallback === "function") {
-			self.changeCallback(value, text);
+	this.setSelectedOption = function(value) {
+		for (var i = 0; i < this.optionItems.length; i++) {
+			if (this.optionItems[i].getValue() == value) {
+				this.optionItems[i].setSelected();
+			}
+			else
+				this.optionItems[i].removeSelected();
 		}
-	}
-
-	this.setOption = function(value) {
-		this.element.value = value;
 	}
 
 	this.getElement = function() {
 		return this.element;
 	}
 
-	this.setWidth = function(width) {
-		this.width = width;
-		this.element.setStyle("width", this.width);
-	}
-
 	this.hide = function() {
 		this.element.hide();
-	}
-
-	this.show = function() {
-		this.element.show();
 	}
 
 };

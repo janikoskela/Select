@@ -19,6 +19,18 @@
 </head>
 
 <body>
+    <select id="foo">
+      <option selected="selected" value="adsasd">asdsads</option>
+      <option value="adsawsd">asdsadsqwe</option>
+      <option value="adsawsd">asdsadsqwe</option>
+      <option value="adsawsd">asdsadsqwe</option>
+      <option value="adsawsd">as</option>
+      <option value="adsawsd">asdsdsdsadsadasdasd</option>
+      <option value="adsawsd">asdsadsqwe</option>
+      <option value="adsawsd">asdsadsqwe</option>
+      <option value="adsawsd">asdsadsqwe</option>
+      <option value="adsawsd">asdsadsqwe</option>
+    </select>
   <div id="plain"></div>
   <div id="light"></div>
   <div id="poison"></div>
@@ -89,9 +101,9 @@ var options = [
     text: "ytryhhgf"
   },
 ];
-var instance = new Selex({
-  targetElement: document.getElementById("plain"),
-  options: options,
+var foo = {
+  targetElement: document.getElementById("foo"),
+  //options: document.getElementById("foo"),
   defaultValue: 16,
   optionLimit: 4,
   theme: "plain",
@@ -111,8 +123,10 @@ var instance = new Selex({
       console.log("Chosen option: " + value, text);
     }
   })()
-});
+};
+var instance = new Selex(foo);
 instance.render();
+console.log(instance.getSelectedText())
 
 var instance = new Selex({
   targetElement: document.getElementById("light"),

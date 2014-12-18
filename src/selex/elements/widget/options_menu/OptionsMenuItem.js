@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenuList, onClickCallback, optionsMenu) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenuList, onClickCallback, optionsMenu, selected) {
 	var that = this;
 	this.value = value;
 	this.text = text;
@@ -9,6 +9,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
 	this.optionsMenu = optionsMenu;
 	this.optionsMenuList = optionsMenuList;
 	this.onClickCallback = onClickCallback;
+	this.selected = selected;
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
@@ -19,6 +20,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	this.element.appendChild(childElem);
     	this.element.setAttribute("data-index", this.index);
+    	if (selected === true)
+    		this.setSelected();
     	return this.element;
 	}
 
@@ -83,6 +86,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
 			that.onClickCallback(that.value, that.text);
 		that.optionsMenu.hide();
 		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+		var nativeSelect = that.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
+		nativeSelect.setSelectedOption(that.value);
 		var previosulySelected = that.optionsMenuList.getSelectedOption();
 		if (previosulySelected !== undefined)
 			previosulySelected.getElement().removeClass("selected");

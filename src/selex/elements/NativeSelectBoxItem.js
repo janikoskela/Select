@@ -13,13 +13,24 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(value, text) {
 		return this.element;
 	}
 
-	this.setValue = function(value) {
-		this.value = value;
-		this.element.setAttribute("data-value", this.value);
+	this.createFromExistingOption = function(option) {
+		this.element = option;
+		console.log(option.id)
+		this.value = this.element.value;
+		this.text = this.element.text;
+		this.selected = (this.element.getAttribute("selected") === null) ? false : true;
+		return this;
 	}
 
-	this.setText = function(text) {
-		this.text = text;
-		this.element.innerHTML = this.text;
+	this.getValue = function() {
+		return this.value;
+	}
+
+	this.setSelected = function() {
+		this.element.setAttribute("selected", "selected");
+	}
+
+	this.removeSelected = function() {
+		this.element.removeAttribute("selected");
 	}
 };

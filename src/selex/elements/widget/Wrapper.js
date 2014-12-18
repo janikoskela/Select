@@ -39,6 +39,10 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
         return this.element;
     }
 
+    this.getWrapper = function() {
+        return this.wrapper;
+    }
+
     this.getWidgetSubWrapper = function() {
         return this.widgetSubWrapper;
     }
