@@ -30,13 +30,13 @@ Public methods
 ===============
 Name|Parameters|Description
 ----|----------|------|-----------
-render|-|Renders widget or native select box
+render|-|Renders widget
 getSelectedText|-|Returns the selected options text/label
 getSelectedValue|-|Returns the selected options value
-show|-|Shows widget or native select box
-hide|-|Hides widget or native select box
-enable|-|Enables widget or native select box
-disable|-|Disabled widget or native select box
+show|-|Shows widget
+hide|-|Hides widget
+enable|-|Enables widget
+disable|-|Disabled widget
 setOptions|Array of object(s)|Sets new options
 getSelectedOption|-|Returns the selected option
 
