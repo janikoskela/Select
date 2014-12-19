@@ -1,6 +1,6 @@
 Selex [![Build Status](https://travis-ci.org/janikoskela/Selex.svg?branch=master)](https://travis-ci.org/janikoskela/Selex)
 ===============
-Selex is a customizable and lightweight (No external library dependencies) widget made to function as a <i>select</i>-element.
+Selex is aimed to be easily customizable and lightweight (No external library dependencies) widget made to function as a <i>select</i>-element.
 
 Usage
 ==============
