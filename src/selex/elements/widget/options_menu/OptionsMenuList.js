@@ -46,14 +46,18 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 	function renderOptionItems(options) {
 		for (var i = 0; i < options.length; i++) {
 			var option = options[i];
-			var optionValue = option.value;
-			var optionText = option.text;
-			var selected = option.selected;
-			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu, selected);
-			that.optionItems.push(item);
-			var elem = item.render();
-			that.element.appendChild(elem);
+			renderOptionItem(option, i);
 		}
+	}
+
+	function renderOptionItem(option, i) {
+		var optionValue = option.value;
+		var optionText = option.text;
+		var selected = option.selected;
+		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu, selected);
+		that.optionItems.push(item);
+		var elem = item.render();
+		that.element.appendChild(elem);
 	}
 
     function sortByDesc(optionA, optionB) {
@@ -184,6 +188,14 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
+	}
+
+	this.removeOptionByOptionElement = function(optionElem) {
+		this.element.removeChild(optionElem);
+	}
+
+	this.createOptionByOptionElement = function(optionElem) {
+		renderOptionItem(optionElem);
 	}
 
 };

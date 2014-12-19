@@ -21,6 +21,7 @@
 	SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
 	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU = {};
 	SELEX.EXCEPTIONS = {};
+	var MUTATION_OBSERVER = window.MutationObserver || window.WebKitMutationObserver;
 
 	Selex = function(userDefinedSettings) {
 
@@ -85,16 +86,21 @@
 
 	}
 
-SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#constructor-parameters";SELEX.ELEMENTS.NativeSelectBox = function(params) {
-
+SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#constructor-parameters";SELEX.ELEMENTS.NativeSelectBox = function(params, wrapper) {
+	var that = this;
 	this.type = "select";
 	this.element;
 	this.options = params.options || [];
 	this.optionItems = [];
+	this.observer;
+	this.wrapper = wrapper;
 
 	this.createFromExistingSelect = function(elem) {
 		this.element = elem;
-		for (var i = 0; i < this.element.options.length; i++) {
+		if (MUTATION_OBSERVER !== undefined)
+			attachDomObserver();
+		var optionsLength = this.element.options.length;
+		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
 			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem().createFromExistingOption(option);
 			this.optionItems.push(optionItem);
@@ -104,9 +110,38 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
+		attachDomObserver();
 		this.element.onchange = this.onOptionChange;
 		this.renderOptions(this.options);
 		return this.element;
+	}
+
+	function attachDomObserver() {
+    	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
+    		mutations.forEach(function (mutation) {
+    			console.log(mutation)
+    			var addedNodesLength = (mutation.addedNodes === undefined) ? 0 : mutation.addedNodes.length;
+    			for (var i = 0; i < addedNodesLength; i++) {
+    				var addedNode = mutation.addedNodes[i];
+    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().createOptionByOptionElement(addedNode);
+    			}
+    			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
+    			for (i = 0; i < removedNodesLength; i++) {
+    				var removedNode = mutation.removedNodes[i];
+    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().removeOptionByOptionElement(removedNode);
+    			}
+      		});
+    	});
+    	var config = { 
+    		attributes: true, 
+    		childList: true, 
+    		characterData : false,  
+    		subtree : false,
+    		attributeOldValue: false,
+    		attributeFilter: [],
+    		characterDataOldValue: false,
+    	};
+    	that.observer.observe(that.element, config);
 	}
 
 	this.renderOptions = function(options) {
@@ -458,14 +493,18 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	function renderOptionItems(options) {
 		for (var i = 0; i < options.length; i++) {
 			var option = options[i];
-			var optionValue = option.value;
-			var optionText = option.text;
-			var selected = option.selected;
-			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu, selected);
-			that.optionItems.push(item);
-			var elem = item.render();
-			that.element.appendChild(elem);
+			renderOptionItem(option, i);
 		}
+	}
+
+	function renderOptionItem(option, i) {
+		var optionValue = option.value;
+		var optionText = option.text;
+		var selected = option.selected;
+		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu, selected);
+		that.optionItems.push(item);
+		var elem = item.render();
+		that.element.appendChild(elem);
 	}
 
     function sortByDesc(optionA, optionB) {
@@ -596,6 +635,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
+	}
+
+	this.removeOptionByOptionElement = function(optionElem) {
+		this.element.removeChild(optionElem);
+	}
+
+	this.createOptionByOptionElement = function(optionElem) {
+		renderOptionItem(optionElem);
 	}
 
 };SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
@@ -863,7 +910,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
             this.element.setStyle("fontFamily", this.fontFamily);
         switch(this.parentElement.tagName) {
             case "SELECT":
-                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params).createFromExistingSelect(this.parentElement);
+                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params).createFromExistingSelect(this.parentElement, this);
                 var parentsParent = this.parentElement.parentNode;
                 parentsParent.insertBefore(this.element, this.parentElement);
                 this.element.appendChild(this.parentElement);
@@ -875,7 +922,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
                 break;
             default:
                 this.parentElement.appendChild(this.element);
-                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params);
+                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params, this);
                 var nativeSelectBoxElem = this.nativeSelectBox.render();
                 this.element.appendChild(nativeSelectBoxElem);
                 this.nativeSelectBox.hide();

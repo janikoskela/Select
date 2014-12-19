@@ -31,7 +31,7 @@ SELEX.ELEMENTS.Wrapper = function(params) {
             this.element.setStyle("fontFamily", this.fontFamily);
         switch(this.parentElement.tagName) {
             case "SELECT":
-                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params).createFromExistingSelect(this.parentElement);
+                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params).createFromExistingSelect(this.parentElement, this);
                 var parentsParent = this.parentElement.parentNode;
                 parentsParent.insertBefore(this.element, this.parentElement);
                 this.element.appendChild(this.parentElement);
@@ -43,7 +43,7 @@ SELEX.ELEMENTS.Wrapper = function(params) {
                 break;
             default:
                 this.parentElement.appendChild(this.element);
-                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params);
+                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(params, this);
                 var nativeSelectBoxElem = this.nativeSelectBox.render();
                 this.element.appendChild(nativeSelectBoxElem);
                 this.nativeSelectBox.hide();

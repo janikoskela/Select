@@ -21,6 +21,7 @@
 	SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
 	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU = {};
 	SELEX.EXCEPTIONS = {};
+	var MUTATION_OBSERVER = window.MutationObserver || window.WebKitMutationObserver;
 
 	Selex = function(userDefinedSettings) {
 
