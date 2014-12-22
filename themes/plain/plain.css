@@ -33,7 +33,7 @@
 	border: .2em solid #9C9C9C;
 }
 
-.plain[data-disabled=true] .widget-sub-wrapper {
+.plain[disabled=true] .widget-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
@@ -72,7 +72,7 @@
 	line-height: 2em; /* same as .widget-sub-wrapper height */
 }
 
-.plain[data-disabled=true] .value-container span {
+.plain[disabled=true] .value-container span {
 	opacity: .4;
 }
 
@@ -98,7 +98,7 @@
 	background-image: url(arrow-down.png);
 }
 
-.plain[data-disabled=true] .arrow-down {
+.plain[disabled=true] .arrow-down {
 	background-image: url(arrow-down.png);
 	opacity: .4;
 }

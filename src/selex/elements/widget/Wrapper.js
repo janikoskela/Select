@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper) {
+SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSelectBox) {
 
     this.type = "div";
 
@@ -14,6 +14,8 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper) {
 
     this.wrapper = wrapper;
 
+    this.nativeSelectBox = nativeSelectBox;
+
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
 
     this.render = function() {
@@ -27,7 +29,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper) {
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
-        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(userDefinedSettings, this);
+        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(userDefinedSettings, this, this.nativeSelectBox);
         var widgetSubWrapperElem = this.widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 

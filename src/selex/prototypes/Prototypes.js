@@ -14,6 +14,10 @@ Object.prototype.setDataAttribute = function(name, value) {
   this.setAttribute("data-" + name, value);
 };
 
+Object.prototype.getDataAttribute = function(name) {
+  return this.getAttribute("data-" + name);
+};
+
 Object.prototype.removeDataAttribute = function(name) {
   this.removeAttribute("data-" + name);
 };

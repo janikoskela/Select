@@ -29,7 +29,7 @@
 	cursor: pointer;
 }
 
-.poison[data-disabled=true] .widget-sub-wrapper {
+.poison[disabled=true] .widget-sub-wrapper {
 	background-color: #fff;
 	height: 3.5em;
 	line-height: 2em;
@@ -64,7 +64,7 @@
 	font-weight: bold;
 }
 
-.poison[data-disabled=true] .value-container span {
+.poison[disabled=true] .value-container span {
 	opacity: .4;
 }
 
@@ -94,7 +94,7 @@
     -ms-filter: "FlipV";
 }
 
-.poison[data-disabled=true] .arrow-down {
+.poison[disabled=true] .arrow-down {
 	background-image: url(arrow.png);
 	opacity: .4;
 }

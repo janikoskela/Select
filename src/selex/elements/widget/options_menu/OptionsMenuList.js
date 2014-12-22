@@ -55,8 +55,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 		}
 	}
 
-	function renderOptionItem(option) {
-		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that);
+	function renderOptionItem(option, i) {
+		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that, i);
 		that.optionItems.push(item);
 		var elem = item.render();
 		that.element.appendChild(elem);
@@ -164,6 +164,14 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 		}
 	}
 
+	this.getOptionByValue = function(value) {
+		var l = this.optionItems.length;
+		for (var i = 0; i < l; i++) {
+			if (this.optionItems[i].getValue() === value)
+				return this.optionItems[i];
+		}
+	}
+
 	this.getSelectedOption = function() {
 		for (var i = 0; i < this.optionItems.length; i++) {
 			var item = this.optionItems[i];
@@ -199,7 +207,25 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	}
 
 	this.removeOptionByOptionElement = function(optionElem) {
-		this.element.removeChild(optionElem);
+		var option = this.getOptionByValue(optionElem.value);
+		if (option !== undefined) {
+			if (option.isSelected()) {
+				var i = option.getIndex();
+				var nextSibling = this.optionItems[i + 1];
+				if (nextSibling !== undefined) {
+					nextSibling.setSelected();
+					nextSibling.onClick();
+				}
+				else if (this.optionItems.length > 0) {
+					this.optionItems[0].setSelected();
+					this.optionItems[0].onClick();
+				}
+				else
+					this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText().setText("");
+
+			}
+			this.element.removeChild(option.getElement());
+		}
 	}
 
 	this.createOptionByOptionElement = function(optionElem) {

@@ -21,15 +21,13 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.setWidth(this.width);
-        if (this.fontSize !== undefined)
-            this.element.setStyle("fontSize", this.fontSize);
-        if (this.fontFamily !== undefined)
-            this.element.setStyle("fontFamily", this.fontFamily);
         var tagName = this.targetElement.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
                 this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(this);
                 this.nativeSelectBox.attach();
+                if (this.nativeSelectBox.isDisabled())
+                    this.disable();
                 var parentsParent = this.targetElement.parentNode;
                 parentsParent.insertBefore(this.element, this.targetElement);
                 this.element.appendChild(this.targetElement);
@@ -43,7 +41,7 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
     }
 
     function renderWidget() {
-        that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(userDefinedSettings, that);
+        that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(userDefinedSettings, that, that.nativeSelectBox);
         var widgetWrapperElem = that.widgetWrapper.render();
         that.element.appendChild(widgetWrapperElem);
         that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
@@ -71,11 +69,11 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
     }
 
     this.enable = function() {
-        this.element.removeDataAttribute("disabled");
+        this.element.removeAttribute("disabled");
     }
 
     this.disable = function() {
-        this.element.setDataAttribute("disabled", true);
+        this.element.setAttribute("disabled", true);
     }
 
     this.setWidth = function(width) {

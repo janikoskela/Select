@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption, optionsMenuList) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption, optionsMenuList, index) {
 	var that = this;
 	this.nativeSelectOption = nativeSelectOption;
 	this.selected = nativeSelectOption.isSelected();
@@ -6,6 +6,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 	this.element;
 	this.itemValue;
 	this.optionsMenuList = optionsMenuList;
+	this.index = index;
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(nativeSelectOption);
@@ -14,6 +15,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
     	this.element.addEventListener("click", onClick.bind(this));
     	this.element.addEventListener("mouseover", onMouseOver.bind(this));
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
+    	this.element.setDataAttribute("value", nativeSelectOption.getValue());
+    	this.element.setDataAttribute("index", this.index);
     	this.element.appendChild(childElem);
     	if (this.selected === true)
     		this.setSelected();
@@ -25,7 +28,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 	}
 
 	this.getValue = function() {
-		return this.value;
+		return this.nativeSelectOption.getValue();
 	}
 
 	this.getElement = function() {
@@ -33,7 +36,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 	}
 
 	this.getText = function() {
-		return this.text;
+		return this.nativeSelectOption.getText();
 	}
 
 	this.isHovered = function() {
@@ -66,7 +69,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 	}
 
 	this.getIndex = function() {
-		return this.index;
+		return parseInt(this.element.getDataAttribute("index"));
 	}
 
 	function onMouseOver(e) {

@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper) {
+SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, nativeSelectBox) {
 
     var ORIENTATION_LEFT = "left";
 
@@ -17,6 +17,8 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper) 
     this.valueContainer;
 
     this.widgetWrapper = widgetWrapper;
+
+    this.nativeSelectBox = nativeSelectBox;
 
     this.optionsMenu;
 
@@ -59,8 +61,10 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper) 
     }
 
     function onClick(e) {
-        this.optionsMenu = this.widgetWrapper.getOptionsMenu();
-        this.optionsMenu.toggle();
+        if (this.nativeSelectBox.isDisabled() === false) {
+            this.optionsMenu = this.widgetWrapper.getOptionsMenu();
+            this.optionsMenu.toggle();
+        }
     }
 
 };

@@ -21,6 +21,18 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 		return this.optionItems;
 	}
 
+	this.isDisabled = function() {
+		return (this.element.getAttribute("disabled") === null) ? false : true;
+	}
+
+    this.enable = function() {
+        this.element.removeAttribute("disabled");
+    }
+
+    this.disable = function() {
+        this.element.setAttribute("disabled", true);
+    }
+
 	function attachDomObserver() {
     	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
     		mutations.forEach(function (mutation) {
