@@ -2,6 +2,8 @@ Selex [![Build Status](https://travis-ci.org/janikoskela/Selex.svg?branch=master
 ===============
 Selex is aimed to be easily customizable and lightweight (No external library dependencies) widget made to function as a <i>select</i>-element.
 
+Widget requires a <i>select</i>-element to be passed to the constructor (See the examples). When widget is rendered the given <i>select</i> is then hidden. Widget aims to delegate events to the hidden <i>select</i> so that the user can attach events to it normally. This enables that the widget can be easily detached and removed if wanted.
+
 Usage
 ==============
 See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
@@ -10,11 +12,9 @@ Widget options
 ===============
 Name| Type | Required | Default | Description
 ---|---|---------------|-----|------------|------
-targetElement|Element |true|-|The element where Selex is rendered. If this is <i>select</i>-element then widget is created based on its content. 
+targetElement|Element (<i>select</i>) |true|-| Widget is rendered based on this element
 theme|String|false|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
 width|String |false|-|Width for the select box
-fontSize|String |false|-|The font size which is to be defined to the root element
-fontFamily|String|false|-|The font family which is to be defined to the root element
 orientation|String|false|"right"|Defines the side where arrow points
 optionLimit|Number|false|- |Specifies how many options will be displayed. If not specified all options will be displayed
 placeholder|String|false|-|Sets a placeholder text
