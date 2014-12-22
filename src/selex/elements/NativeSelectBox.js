@@ -1,32 +1,24 @@
-SELEX.ELEMENTS.NativeSelectBox = function(params, wrapper) {
+SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 	var that = this;
-	this.type = "select";
-	this.element;
-	this.options = params.options || [];
 	this.optionItems = [];
 	this.observer;
 	this.wrapper = wrapper;
+	this.element = this.wrapper.getTargetElement();
 
-	this.createFromExistingSelect = function(elem) {
-		this.element = elem;
+	this.attach = function() {
 		var optionsLength = this.element.options.length;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
-			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem().createFromExistingOption(option);
+			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(this, option);
 			this.optionItems.push(optionItem);
 		}
 		if (MUTATION_OBSERVER !== undefined)
 			attachDomObserver();
-		return this;
+		return this.element;
 	}
 
-	this.render = function() {
-        this.element = SELEX.UTILS.createElement(this.type);
-		this.element.onchange = this.onOptionChange;
-		this.renderOptions(this.options);
-		if (MUTATION_OBSERVER !== undefined)
-			attachDomObserver();
-		return this.element;
+	this.getOptions = function() {
+		return this.optionItems;
 	}
 
 	function attachDomObserver() {
@@ -56,18 +48,6 @@ SELEX.ELEMENTS.NativeSelectBox = function(params, wrapper) {
     	that.observer.observe(that.element, config);
 	}
 
-	this.renderOptions = function(options) {
-		for (var i = 0; i < options.length; i++) {
-			var option = options[i];
-			var value = option.value;
-			var text = option.text;
-			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(value, text);
-			this.optionItems.push(optionItem);
-			var elem = optionItem.render();
-			this.element.appendChild(elem);
-		}
-	}
-
 	this.setSelectedOption = function(value) {
 		for (var i = 0; i < this.optionItems.length; i++) {
 			if (this.optionItems[i].getValue() == value) {
@@ -76,6 +56,32 @@ SELEX.ELEMENTS.NativeSelectBox = function(params, wrapper) {
 			else
 				this.optionItems[i].removeSelected();
 		}
+	}
+
+	this.getSelectedOptionText = function() {
+		return this.getSelectedOption().text;
+	}
+
+	this.clearSelected = function() {
+		var l = this.optionItems.length;
+		for (var i = 0; i < l; i++)
+			this.optionItems[i].removeSelected();
+	}
+
+	this.setSelectedIndex = function(index) {
+		this.element.selectedIndex = index;
+	}
+
+	this.triggerChange = function() {
+	    SELEX.UTILS.triggerEvent("change", this.element);
+	}
+
+	this.getSelectedOptionValue = function() {
+		return this.getSelectedOption().value;
+	}
+
+	this.getSelectedOption = function() {
+		return this.element.options[this.element.selectedIndex];
 	}
 
 	this.getElement = function() {

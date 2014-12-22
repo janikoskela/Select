@@ -12,3 +12,17 @@ SELEX.UTILS.isElement = function(o) {
     	o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
 	);
 };
+
+SELEX.UTILS.triggerEvent = function(type, targetElem) {
+	var e;
+	if(typeof(document.createEvent) != 'undefined') {
+	    e = document.createEvent('HTMLEvents');
+	    e.initEvent(type, true, true);
+	    targetElem.dispatchEvent(e);
+	} else if(typeof(document.createEventObject) != 'undefined') {
+	    try {
+	        e = document.createEventObject();
+	        targetElem.fireEvent('on' + type.toLowerCase(), e);
+	    } catch(err){ }
+	}
+}

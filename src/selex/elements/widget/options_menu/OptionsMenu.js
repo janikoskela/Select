@@ -1,16 +1,16 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(params, widgetWrapper) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, widgetWrapper) {
 	var that = this;
 	this.type = "div";
 	this.className = "options-container";
 	this.element;
-	this.width = params.optionsMenuWidth || "100%";
+	this.width = userDefinedSettings.optionsMenuWidth || "100%";
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(params, widgetWrapper, this);
+    	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(userDefinedSettings, this);
     	var optionsMenuListElem = this.optionsMenuList.render();
     	this.element.appendChild(optionsMenuListElem);
     	this.setWidth(this.width);

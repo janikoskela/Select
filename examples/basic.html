@@ -3,23 +3,37 @@
 <head>
   <title>Simple Select Box</title>
   <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
   <script src="../src/dist/Selex.js"></script>
   <link rel="stylesheet" type="text/css" href="../themes/plain/plain.css">
   <link rel="stylesheet" type="text/css" href="../themes/poison/poison.css">
+
   <style>
-    #plain {
-      height: 100px;
-      padding-top: 4em;
-    }
-    #light {
-      height: 100px;
-      padding-top: 4em;
+    div {
+      margin-top: 1em;
     }
   </style>
 </head>
 
 <body>
-    <select id="foo">
+    <select id="normal">
+      <option>aoksdkosa</option>
+      <option>  aeqweq</option>
+    </select>
+
+    <select id="plain">
+      <option value="j">jjjjjjjj</option>
+      <option selected="selected" value="a">aaaaaaaaaa</option>
+      <option value="b">bbbbbb</option>
+      <option value="c">cccccccccccccccccc</option>
+      <option value="d">ddd</option>
+      <option value="e">eeeeeee</option>
+      <option value="f">ffffff</option>
+      <option value="g">gggggggg</option>
+      <option value="h">hhhhh</option>
+      <option value="i">iiiii</option>
+    </select>
+    <select id="poison">
       <option selected="selected" value="j">jjjjjjjj</option>
       <option value="a">aaaaaaaaaa</option>
       <option value="b">bbbbbb</option>
@@ -31,123 +45,44 @@
       <option value="h">hhhhh</option>
       <option value="i">iiiii</option>
     </select>
-  <div id="plain"></div>
-  <div id="light"></div>
-  <div id="poison"></div>
 <script type="text/javascript">
-var options = [
-  {
-    value: "1",
-    text: "a"
-  },
-  {
-    value: "2",
-    text: "bbasdasd"
-  },
-  {
-    value: "3",
-    text: "qweqwxazxc asdasd"
-  },
-  {
-    value: "4",
-    text: "qweqweasdzxcxzc asdasdas dasd asd asdasads"
-  },
-  {
-    value: "5",
-    text: "qweasd"
-  },
-  {
-    value: "6",
-    text: "fgegte"
-  },
-  {
-    value: "7",
-    text: "qwesdgxc"
-  },
-  {
-    value: "8",
-    text: "qwqaxzxz"
-  },
-  {
-    value: "9",
-    text: "cxzczxc"
-  },
-  {
-    value: "10",
-    text: "asdqweqweqweqwqwasdcxqwz xca z"
-  },
-  {
-    value: "11",
-    text: "asdqwwq asd sd "
-  },
-  {
-    value: "12",
-    text: "qweqweasdzxcxzc asdasdas dasd assadqwd asdasads"
-  },
-  {
-    value: "13",
-    text: "wqxzxz"
-  },
-  {
-    value: "14",
-    text: "qwexxczvvcxz"
-  },
-  {
-    value: "15",
-    text: "asdwqexzcgf"
-  },
-  {
-    value: "16",
-    text: "ytryhhgf"
-  },
-];
-var foo = {
-  targetElement: document.getElementById("foo"),
-  //options: document.getElementById("foo"),
-  defaultValue: 16,
-  optionLimit: 10,
+var normal = document.getElementById("normal");
+normal.addEventListener("change", function() {
+    console.log("normal: " + this.selectedIndex)
+
+});
+var plain = document.getElementById("plain");
+plain.addEventListener("change", function() {
+  console.log("plain: " + this.selectedIndex)
+  console.dir(this)
+});
+var poison = document.getElementById("poison");
+poison.addEventListener("change", function() {
+  console.log("poison: " + this.selectedIndex)
+});
+var settings = {
+  targetElement: plain,
+  optionLimit: 4,
   theme: "plain",
   sort: "desc",
-  fontSize: ".6em",
-  orientation: "left",
-  fontFamily: "Verdana",
+  orientation: "right",
   width: "20em",
-  tabIndex: 1,
   placeholder: "Choose an option",
-  //optionLimit: 5,
-  renderNativeSelectBox: true,
   closeWhenCursorOut: true,
-  displayNativeSelectBox: false,
-  onOptionChange: (function() {
-    return function(value, text) {
-      console.log("Chosen option: " + value, text);
-    }
-  })()
 };
-var instance = new Selex(foo);
+var instance = new Selex(settings);
 instance.render();
 
-var instance = new Selex({
+instance = new Selex({
   targetElement: document.getElementById("poison"),
-  options: options,
-  defaultValue: 16,
   theme: "poison",
   sort: "desc",
-  fontSize: ".6em",
   orientation: "right",
-  fontFamily: "Verdana",
   orientation: "left",
   tabIndex: 3,
   placeholder: "Choose an option",
   optionLimit: 5,
-  renderNativeSelectBox: true,
   closeWhenCursorOut: true,
-  displayNativeSelectBox: false,
-  onOptionChange: (function() {
-    return function(value, text) {
-      console.log("Chosen option: " + value, text);
-    }
-  })()
 });
 instance.render();
 </script>

@@ -1,33 +1,23 @@
-SELEX.ELEMENTS.NativeSelectBoxItem = function(value, text) {
-	this.element;
+SELEX.ELEMENTS.NativeSelectBoxItem = function(nativeSelect, optionElement) {
+	this.element = optionElement;
+	this.nativeSelect = nativeSelect;
 	this.type = "option";
-	this.value = value;
-	this.text = text;
 
-	this.render = function() {
-		this.element = document.createElement("option");
-		if (this.text !== undefined)
-			this.element.innerHTML = this.text;
-		if (this.value !== undefined)
-			this.element.setAttribute("data-value", this.value);
-		return this.element;
+	this.isSelected = function() {
+		return (this.element.getAttribute("selected") === null) ? false : true;
 	}
 
-	this.createFromExistingOption = function(option) {
-		this.element = option;
-		console.log(option.id)
-		this.value = this.element.value;
-		this.text = this.element.text;
-		this.selected = (this.element.getAttribute("selected") === null) ? false : true;
-		return this;
+	this.getText = function() {
+		return this.element.text;
 	}
 
 	this.getValue = function() {
-		return this.value;
+		return this.element.value;
 	}
 
-	this.setSelected = function() {
-		this.element.setAttribute("selected", "selected");
+	this.setSelected = function(e) {
+		this.nativeSelect.setSelectedIndex(this.element.index);
+		this.nativeSelect.triggerChange();
 	}
 
 	this.removeSelected = function() {

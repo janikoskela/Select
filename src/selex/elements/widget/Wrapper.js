@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
+SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper) {
 
     this.type = "div";
 
@@ -6,7 +6,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
 
     this.element;
 
-    this.tabIndex = params.tabIndex;
+    this.tabIndex = userDefinedSettings.tabIndex;
 
     this.widgetSubWrapper;
 
@@ -14,7 +14,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
 
     this.wrapper = wrapper;
 
-    this.closeWhenCursorOut = params.closeWhenCursorOut || true;
+    this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
 
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -27,12 +27,12 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(params, wrapper) {
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
-        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(params, this);
+        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(userDefinedSettings, this);
         var widgetSubWrapperElem = this.widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
 
-        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(params, this);
+        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(userDefinedSettings, this);
         var optionsMenuElem = this.optionsMenu.render();
         this.element.appendChild(optionsMenuElem);
 

@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
+SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper) {
 
     var ORIENTATION_LEFT = "left";
 
@@ -8,7 +8,7 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
 
     this.className = "widget-sub-wrapper";
 
-    this.orientation = params.orientation || "right";
+    this.orientation = userDefinedSettings.orientation || "right";
 
     this.element;
 
@@ -24,10 +24,10 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
 
-        this.arrowContainer = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(params);
+        this.arrowContainer = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(userDefinedSettings);
         var arrowContainerElem = this.arrowContainer.render();
 
-        this.valueContainer = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(params);
+        this.valueContainer = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(userDefinedSettings, this);
         var valueContainerElem = this.valueContainer.render();
 
 
@@ -48,6 +48,10 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(params, widgetWrapper) {
         }
 
         return this.element;
+    }
+
+    this.getWidgetWrapper = function() {
+        return this.widgetWrapper;
     }
 
     this.getValueContainer = function() {

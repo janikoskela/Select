@@ -1,29 +1,34 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrapper, optionsMenu) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSettings, optionsMenu) {
 	var that = this;
 	this.type = "ul";
 	this.className = "options-container-list";
 	this.element;
 	this.width = "100%";
 	this.height = undefined;
-	this.optionLimit = params.optionLimit;
-	this.options = params.options || [];
+	this.optionLimit = userDefinedSettings.optionLimit;
 	this.optionItems = [];
-	this.widgetWrapper = widgetWrapper;
-	this.sortType = params.sort;
+	this.sortType = userDefinedSettings.sort;
+	this.optionsMenu = optionsMenu;
+	this.nativeSelect = optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.setWidth(this.width);
+        var options = this.nativeSelect.getOptions();
 		switch(this.sortType) {
     		case "asc":
-    			this.options.sort(sortByAsc);
+    			options.sort(sortByAsc);
     			break;
     		case "desc":
-    			this.options.sort(sortByDesc);
+    			options.sort(sortByDesc);
     			break;
 		}
-		renderOptionItems(this.options);
+		renderOptionItems(options);
 		return this.element;
+	}
+
+	this.getOptionsMenu = function() {
+		return this.optionsMenu;
 	}
 
 	this.adjustHeight = function() {
@@ -50,19 +55,16 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 		}
 	}
 
-	function renderOptionItem(option, i) {
-		var optionValue = option.value;
-		var optionText = option.text;
-		var selected = option.selected;
-		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(optionValue, optionText, i, that, params.onOptionChange, optionsMenu, selected);
+	function renderOptionItem(option) {
+		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that);
 		that.optionItems.push(item);
 		var elem = item.render();
 		that.element.appendChild(elem);
 	}
 
     function sortByDesc(optionA, optionB) {
-        var a = optionA.text;
-        var b = optionB.text;
+        var a = optionA.getText();
+        var b = optionB.getText();
         if (a > b)
             return 1;
         if (a < b)
@@ -71,8 +73,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
     }
 
     function sortByAsc(optionA, optionB) {
-        var a = optionA.text;
-        var b = optionB.text;       
+        var a = optionA.getText();
+        var b = optionB.getText();       
         if (a > b)
             return -1;
         if (a < b)
@@ -174,6 +176,12 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(params, widgetWrap
 		for (var i = 0; i < this.element.children.length; i++) {
 			this.element.children[i].removeClass("hovered");
 		}
+	}
+
+	this.clearSelected = function() {
+		var l = this.optionItems.length;
+		for (var i = 0; i < l; i++)
+			this.optionItems[i].removeSelected();
 	}
 
 	this.getElement = function() {

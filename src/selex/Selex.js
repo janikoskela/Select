@@ -1,5 +1,4 @@
-(function () {
-
+(function ($) {
 	var SEARCH_MODES = {};
 	SEARCH_MODES.BY_FIRST_KEY = "firstKey";
 	var KEY_CODES = {};
@@ -14,7 +13,6 @@
 	SELEX.UTILS = {};
 	SELEX.HELPERS = {};
 	SELEX.SETTINGS = {};
-	SELEX.MEDIATOR = {};
 	SELEX.ELEMENTS = {};
 	SELEX.ELEMENTS.WIDGET = {};
 	SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER = {};
@@ -22,6 +20,7 @@
 	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU = {};
 	SELEX.EXCEPTIONS = {};
 	var MUTATION_OBSERVER = window.MutationObserver || window.WebKitMutationObserver;
+	var ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT = "select";
 
 	Selex = function(userDefinedSettings) {
 
@@ -52,24 +51,6 @@
 			return this;
 		}
 
-		this.getSelectedText = function() {
-			var option = this.getSelectedOption();
-			if (option == undefined)
-				return;
-			return option.getText();
-		}
-
-		this.getSelectedValue = function() {
-			var option = this.getSelectedOption();
-			if (option == undefined)
-				return;
-			return option.getValue();
-		}
-
-		this.getSelectedOption = function() {
-			return this.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().getSelectedOption();
-		}
-
 		this.disable = function() {
 			this.wrapper.disable();
 			return this;
@@ -80,10 +61,6 @@
 			return this;
 		}
 
-		this.setOptions = function(options) {
-
-		}
-
 	}
 
-}());
+}(jQuery));

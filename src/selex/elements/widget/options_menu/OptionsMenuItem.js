@@ -1,26 +1,21 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index, optionsMenuList, onClickCallback, optionsMenu, selected) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption, optionsMenuList) {
 	var that = this;
-	this.value = value;
-	this.text = text;
+	this.nativeSelectOption = nativeSelectOption;
+	this.selected = nativeSelectOption.isSelected();
 	this.type = "li";
 	this.element;
 	this.itemValue;
-	this.index = index;
-	this.optionsMenu = optionsMenu;
 	this.optionsMenuList = optionsMenuList;
-	this.onClickCallback = onClickCallback;
-	this.selected = selected;
 
 	this.render = function() {
-		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(this.text);
+		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(nativeSelectOption);
 		var childElem = this.itemValue.render();
     	this.element = SELEX.UTILS.createElement(this.type);
     	this.element.addEventListener("click", onClick.bind(this));
     	this.element.addEventListener("mouseover", onMouseOver.bind(this));
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	this.element.appendChild(childElem);
-    	this.element.setAttribute("data-index", this.index);
-    	if (selected === true)
+    	if (this.selected === true)
     		this.setSelected();
     	return this.element;
 	}
@@ -54,7 +49,12 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
 	}
 
 	this.setSelected = function() {
+		this.optionsMenuList.clearSelected();
 		this.element.addClass("selected");
+	}
+
+	this.removeSelected = function() {
+		this.element.removeClass("selected");
 	}
 
 	function onKeyUp(e) {
@@ -81,29 +81,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(value, text, index
 		onClick();
 	}
 
-	function changeOption() {
-		var previosulySelected = that.optionsMenuList.getSelectedOption();
-		var valueContainerText = that.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
-		var nativeSelect = that.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
-		nativeSelect.setSelectedOption(that.value);
-		if (previosulySelected !== undefined)
-			previosulySelected.getElement().removeClass("selected");
-		that.setSelected();
-		valueContainerText.setText(that.text);
-		valueContainerText.setValue(that.value);
-		if (typeof that.onClickCallback === "function")
-			that.onClickCallback(that.value, that.text);
-	}
-
 	function onClick(e) {
-		that.optionsMenu.hide();
-		var previosulySelected = that.optionsMenuList.getSelectedOption();
-		if (previosulySelected !== undefined) {
-			if (previosulySelected.getIndex() !== that.getIndex()) {
-				changeOption();
-			}
-		}
-		else
-			changeOption();
+		that.optionsMenuList.getOptionsMenu().hide();
+		var valueContainerText = that.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+		that.nativeSelectOption.setSelected(e);
+		that.setSelected();
+		valueContainerText.setText(that.nativeSelectOption.getText());
 	}
 };
