@@ -323,6 +323,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.itemValue;
 	this.optionsMenuList = optionsMenuList;
 	this.index = index;
+	this.valueContainerText = this.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(nativeSelectOption);
@@ -402,10 +403,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	function onClick(e) {
 		that.optionsMenuList.getOptionsMenu().hide();
-		var valueContainerText = that.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
-		that.nativeSelectOption.setSelected(e);
-		that.setSelected();
-		valueContainerText.setText(that.nativeSelectOption.getText());
+		if (that.optionsMenuList.getSelectedOption().getValue() !== that.getValue()) {
+			that.nativeSelectOption.setSelected(e);
+			that.setSelected();
+			that.valueContainerText.setText(that.nativeSelectOption.getText());
+		}
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(option) {
 	this.option = option;
@@ -430,7 +432,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.optionItems = [];
 	this.sortType = userDefinedSettings.sort;
 	this.optionsMenu = optionsMenu;
-	this.nativeSelect = optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
+	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -503,6 +505,66 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         return 0;
     }
 
+    function getNextOption(option) {
+    	var i = option.getIndex();
+    	if (i < that.optionItems.length)
+    		return that.optionItems[i + 1];
+    	return that.optionItems[0];
+    }
+
+    function getPreviousOption(option) {
+    	var i = option.getIndex();
+    	if (i === 0)
+    		return that.optionItems[that.optionItems.length - 1];
+    	if (that.optionItems.length - 1 >= i)
+    		return that.optionItems[i - 1];
+    	return that.optionItems[that.optionItems.length - 1];
+    }
+
+    this.hoverPreviousOption = function() {
+    	var hovered = this.getHoveredOption();
+    	var option;
+    	if (hovered === undefined) {
+    		var selected = this.getSelectedOption();
+    		if (selected !== undefined)
+    			option = getPreviousOption(selected);
+    	}
+    	else
+    		option = getPreviousOption(hovered);
+    	if (option === undefined)
+    		option = this.optionItems[this.optionItems.length - 1];
+    	this.clearOptionItemHovers();
+		option.setHovered();
+		this.optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
+		if (this.optionsMenu.isHidden())
+			option.onClick();
+    }
+
+    this.hoverNextOption = function() {
+    	var hovered = this.getHoveredOption();
+    	var option;
+    	if (hovered === undefined) {
+    		var selected = this.getSelectedOption();
+    		if (selected !== undefined)
+    			option = getNextOption(selected);
+    	}
+    	else
+    		option = getNextOption(hovered);
+    	if (option === undefined)
+    		option = this.optionItems[0];
+    	this.clearOptionItemHovers();
+		option.setHovered();
+		this.optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
+		if (this.optionsMenu.isHidden())
+			option.onClick();
+    }
+
+    this.selectHoveredOption = function() {
+    	var hovered = this.getHoveredOption();
+    	if (hovered !== undefined)
+    		hovered.onClick();
+    }
+
 	this.searchByFirstChar = function(firstChar) {
 		var listElements = this.element.children;
 		var hovered = this.getHoveredOption();
@@ -564,7 +626,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 				if (i === that.optionItems.length + 1)
 					return optionItems[0];
 				return that.optionItems[i + 1];
-			}2
+			}
 
 		}
 	}
@@ -783,6 +845,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.optionsMenu;
 
+    this.optionsMenuList;
+
     this.wrapper = wrapper;
 
     this.nativeSelectBox = nativeSelectBox;
@@ -794,7 +858,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
-        if (this.closeWhenCursorOut) {
+        if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
             this.element.addEventListener("blur", onMouseLeave.bind(this));
         }
@@ -809,6 +873,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(userDefinedSettings, this);
         var optionsMenuElem = this.optionsMenu.render();
         this.element.appendChild(optionsMenuElem);
+
+        this.optionsMenuList = this.optionsMenu.getOptionsMenuList();
 
         return this.element;
     }
@@ -842,20 +908,17 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     function onKeyUp(e) {
         switch(e.keyCode) {
             case KEY_CODES.UP:
-                if (typeof this.onKeyUpCallback === "function")
-                    this.onKeyUpCallback(e);
+                this.optionsMenuList.hoverPreviousOption();
                 break;
             case KEY_CODES.DOWN:
-                if (typeof this.onKeyDownCallback === "function")
-                    this.onKeyDownCallback(e);
+                this.optionsMenuList.hoverNextOption();
                 break;
             case KEY_CODES.ENTER:
-                if (typeof this.onKeyEnterCallback === "function")
-                    this.onKeyEnterCallback(e);
+                this.optionsMenuList.selectHoveredOption();
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                this.optionsMenu.getOptionsMenuList().searchByFirstChar(firstChar);
+                this.optionsMenuList.searchByFirstChar(firstChar);
         }
     }
 

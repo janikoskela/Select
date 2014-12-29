@@ -7,6 +7,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 	this.itemValue;
 	this.optionsMenuList = optionsMenuList;
 	this.index = index;
+	this.valueContainerText = this.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(nativeSelectOption);
@@ -86,9 +87,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 
 	function onClick(e) {
 		that.optionsMenuList.getOptionsMenu().hide();
-		var valueContainerText = that.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
-		that.nativeSelectOption.setSelected(e);
-		that.setSelected();
-		valueContainerText.setText(that.nativeSelectOption.getText());
+		if (that.optionsMenuList.getSelectedOption().getValue() !== that.getValue()) {
+			that.nativeSelectOption.setSelected(e);
+			that.setSelected();
+			that.valueContainerText.setText(that.nativeSelectOption.getText());
+		}
 	}
 };

@@ -9,7 +9,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	this.optionItems = [];
 	this.sortType = userDefinedSettings.sort;
 	this.optionsMenu = optionsMenu;
-	this.nativeSelect = optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
+	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -82,6 +82,66 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
         return 0;
     }
 
+    function getNextOption(option) {
+    	var i = option.getIndex();
+    	if (i < that.optionItems.length)
+    		return that.optionItems[i + 1];
+    	return that.optionItems[0];
+    }
+
+    function getPreviousOption(option) {
+    	var i = option.getIndex();
+    	if (i === 0)
+    		return that.optionItems[that.optionItems.length - 1];
+    	if (that.optionItems.length - 1 >= i)
+    		return that.optionItems[i - 1];
+    	return that.optionItems[that.optionItems.length - 1];
+    }
+
+    this.hoverPreviousOption = function() {
+    	var hovered = this.getHoveredOption();
+    	var option;
+    	if (hovered === undefined) {
+    		var selected = this.getSelectedOption();
+    		if (selected !== undefined)
+    			option = getPreviousOption(selected);
+    	}
+    	else
+    		option = getPreviousOption(hovered);
+    	if (option === undefined)
+    		option = this.optionItems[this.optionItems.length - 1];
+    	this.clearOptionItemHovers();
+		option.setHovered();
+		this.optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
+		if (this.optionsMenu.isHidden())
+			option.onClick();
+    }
+
+    this.hoverNextOption = function() {
+    	var hovered = this.getHoveredOption();
+    	var option;
+    	if (hovered === undefined) {
+    		var selected = this.getSelectedOption();
+    		if (selected !== undefined)
+    			option = getNextOption(selected);
+    	}
+    	else
+    		option = getNextOption(hovered);
+    	if (option === undefined)
+    		option = this.optionItems[0];
+    	this.clearOptionItemHovers();
+		option.setHovered();
+		this.optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
+		if (this.optionsMenu.isHidden())
+			option.onClick();
+    }
+
+    this.selectHoveredOption = function() {
+    	var hovered = this.getHoveredOption();
+    	if (hovered !== undefined)
+    		hovered.onClick();
+    }
+
 	this.searchByFirstChar = function(firstChar) {
 		var listElements = this.element.children;
 		var hovered = this.getHoveredOption();
@@ -143,7 +203,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 				if (i === that.optionItems.length + 1)
 					return optionItems[0];
 				return that.optionItems[i + 1];
-			}2
+			}
 
 		}
 	}

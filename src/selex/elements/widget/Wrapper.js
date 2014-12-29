@@ -12,6 +12,8 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
 
     this.optionsMenu;
 
+    this.optionsMenuList;
+
     this.wrapper = wrapper;
 
     this.nativeSelectBox = nativeSelectBox;
@@ -23,7 +25,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
-        if (this.closeWhenCursorOut) {
+        if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
             this.element.addEventListener("blur", onMouseLeave.bind(this));
         }
@@ -38,6 +40,8 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
         this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(userDefinedSettings, this);
         var optionsMenuElem = this.optionsMenu.render();
         this.element.appendChild(optionsMenuElem);
+
+        this.optionsMenuList = this.optionsMenu.getOptionsMenuList();
 
         return this.element;
     }
@@ -71,20 +75,17 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
     function onKeyUp(e) {
         switch(e.keyCode) {
             case KEY_CODES.UP:
-                if (typeof this.onKeyUpCallback === "function")
-                    this.onKeyUpCallback(e);
+                this.optionsMenuList.hoverPreviousOption();
                 break;
             case KEY_CODES.DOWN:
-                if (typeof this.onKeyDownCallback === "function")
-                    this.onKeyDownCallback(e);
+                this.optionsMenuList.hoverNextOption();
                 break;
             case KEY_CODES.ENTER:
-                if (typeof this.onKeyEnterCallback === "function")
-                    this.onKeyEnterCallback(e);
+                this.optionsMenuList.selectHoveredOption();
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                this.optionsMenu.getOptionsMenuList().searchByFirstChar(firstChar);
+                this.optionsMenuList.searchByFirstChar(firstChar);
         }
     }
 
