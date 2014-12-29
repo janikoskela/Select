@@ -82,6 +82,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		return this.element;
 	}
 
+	this.getTabIndex = function() {
+		return this.element.getAttribute("tabindex");
+	}
+
 	this.getOptions = function() {
 		return this.optionItems;
 	}
@@ -101,7 +105,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	function attachDomObserver() {
     	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
     		mutations.forEach(function (mutation) {
-    			console.log(mutation)
     			var addedNodesLength = (mutation.addedNodes === undefined) ? 0 : mutation.addedNodes.length;
     			for (var i = 0; i < addedNodesLength; i++) {
     				var addedNode = mutation.addedNodes[i];
@@ -774,7 +777,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.element;
 
-    this.tabIndex = userDefinedSettings.tabIndex;
+    this.tabIndex;
 
     this.widgetSubWrapper;
 
@@ -784,12 +787,13 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.nativeSelectBox = nativeSelectBox;
 
+    this.tabIndex = this.nativeSelectBox.getTabIndex() || 0;
+
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
 
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
-        if (this.tabIndex !== undefined)
-            this.element.setAttribute("tabindex", this.tabIndex);
+        this.element.setAttribute("tabindex", this.tabIndex);
         if (this.closeWhenCursorOut) {
             this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
             this.element.addEventListener("blur", onMouseLeave.bind(this));

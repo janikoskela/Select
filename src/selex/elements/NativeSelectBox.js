@@ -17,6 +17,10 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 		return this.element;
 	}
 
+	this.getTabIndex = function() {
+		return this.element.getAttribute("tabindex");
+	}
+
 	this.getOptions = function() {
 		return this.optionItems;
 	}
