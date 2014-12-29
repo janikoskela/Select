@@ -858,10 +858,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
-        if (userDefinedSettings.closeWhenCursorOut === true) {
+        if (userDefinedSettings.closeWhenCursorOut === true)
             this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
-            this.element.addEventListener("blur", onMouseLeave.bind(this));
-        }
+        this.element.addEventListener("blur", onMouseLeave.bind(this));
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
