@@ -4,6 +4,10 @@ Widget requires a <i>select</i>-element to be passed to the constructor (See the
 
 Usage
 ==============
+Using is simple and can be done with following code line (after Selex library has been imported):
+
+	<code>new Selex({targetElement: document.getElementById("select")}).render();</code>
+	
 See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
 
 Widget options
