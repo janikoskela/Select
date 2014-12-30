@@ -14,19 +14,24 @@ Using is simple and can be done with following code (after Selex library has bee
 	
 See more comprehensive <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
 
-Widget settings
+Required widget settings
 ===============
-Name| Type | Required | Default | Description
+Name| Type | Description
 ---|---|---------------|-----|------------|------
-targetElement|Element (<i>select</i>) |true|-| Widget is rendered based on this element
-theme|String|false|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
-width|String |false|-|Width for the select box
-orientation|String|false|"right"|Defines the side where arrow points
-optionLimit|Number|false|- |Specifies how many options will be displayed. If not specified all options will be displayed
-placeholder|String|false|-|Sets a placeholder text
-sort|String|false|-|Sorts options
-optionMenuWidth|String|false|-|Determines the width of option menu. Overrides width param
-closeWhenCursorOut|Boolean|false|True|Determines if option menu will be closed when cursor leaves select box
+targetElement|Element (<i>select</i>)| Widget is rendered based on this element
+
+Optional widget settings
+===============
+Name| Type | Default | Description
+---|---|---------------|-----|------------|------
+theme|String|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
+width|String|-|Width for the select box
+orientation|String|"right"|Defines the side where arrow points
+optionLimit|Number|- |Specifies how many options will be displayed. If not specified all options will be displayed
+placeholder|String|-|Sets a placeholder text
+sort|String|-|Sorts options
+optionMenuWidth|String|-|Determines the width of option menu. Overrides width param
+closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
 
 Public methods
 ===============
