@@ -85,12 +85,18 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 		onClick();
 	}
 
+	function setSelected(e) {
+		that.nativeSelectOption.setSelected(e);
+		that.setSelected();
+		that.valueContainerText.setText(that.nativeSelectOption.getText());
+	}
+
 	function onClick(e) {
 		that.optionsMenuList.getOptionsMenu().hide();
-		if (that.optionsMenuList.getSelectedOption().getValue() !== that.getValue()) {
-			that.nativeSelectOption.setSelected(e);
-			that.setSelected();
-			that.valueContainerText.setText(that.nativeSelectOption.getText());
-		}
+		var prevSelected = that.optionsMenuList.getSelectedOption();
+		if (prevSelected === undefined)
+			setSelected(e);
+		else if (prevSelected.getValue() !== that.getValue())
+			setSelected(e);
 	}
 };

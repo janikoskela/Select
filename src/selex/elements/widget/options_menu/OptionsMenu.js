@@ -49,16 +49,22 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 
 	this.show = function() {
 		this.element.show();
-		var h = this.element.offsetHeight;
 		this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
-		if ((window.innerHeight - this.element.getBoundingClientRect().top) < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
+		var top = this.element.getStyle("top") || 0;
+		this.element.removeStyle("top");
+		var h = this.element.offsetHeight;
+		var remainingWindowHeight = window.innerHeight - this.element.getBoundingClientRect().top;
+		this.element.hide();
+		if (remainingWindowHeight < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
 			this.element.addClass("options-container-up");
 			this.element.setStyle("top", h * -1);
 		}
 		else {
 			this.element.addClass("options-container-down");
+			this.element.setStyle("top", top);
 		}
+		this.element.show();
 	}
 
 	this.toggle = function() {

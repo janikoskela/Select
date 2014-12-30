@@ -116,7 +116,6 @@
 .plain .options-container {
     position: absolute;
     left: 0;
-    top: 0; /* same as .widget-sub-wrapper's height (including its border) */
     z-index: 1;
 	padding: 0;
 	margin: 0;
@@ -130,6 +129,15 @@
     -webkit-box-shadow: 0px 0px 4px 0px #639AFF;
     box-shadow: 0px 0px 4px 0px #639AFF;
     opacity: .97;
+    top: 0;
+}
+
+.plain .options-container-down {
+
+}
+
+.plain .options-container-up {
+	margin-top: 2.5em;
 }
 
 .plain .options-container-list {

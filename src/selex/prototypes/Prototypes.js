@@ -1,16 +1,32 @@
 Object.prototype.setStyle = function(name, value) {
   if (typeof value === "number") {
-    value = value + "px";
+    value += "px";
   }
-	this.style[name] = value;
+  this.style[name] = value;
+};
+
+Object.prototype.removeStyle = function(name) {
+  this.style[name] = null;
+};
+
+Object.prototype.getStyle = function(name) {
+  return this.style[name];
+};
+
+Object.prototype.hasClass = function(name) {
+  var result = this.className.match(new RegExp('(\\s|^)' + name + '(\\s|$)'));
+  if (result === null)
+    return false;
+  return result;
 };
 
 Object.prototype.addClass = function(name) {
-	this.className += " " + name;
+  console.log(this.hasClass(name))
+   this.className += " " + name;
 };
 
 Object.prototype.clearClasses = function() {
-	this.className = "";
+  this.className = "";
 };
 
 Object.prototype.setDataAttribute = function(name, value) {
@@ -25,41 +41,37 @@ Object.prototype.removeDataAttribute = function(name) {
   this.removeAttribute("data-" + name);
 };
 
-Object.prototype.hasClass = function(name) {
-	return this.className.match(new RegExp('(\\s|^)' + name + '(\\s|$)'));
-};
-
 Object.prototype.isHidden = function() {
-	return (this.style.display === "none") ? true : false;
+  return (this.style.display === "none") ? true : false;
 };
 
 Object.prototype.show = function() {
-	this.style.display = "block";
+  this.style.display = "block";
 };
 
 Object.prototype.hide = function() {
-	this.style.display = "none";
+  this.style.display = "none";
 };
 
 Object.prototype.empty = function() {
-	this.innerHTML = "";
+  this.innerHTML = "";
 };
 
 Object.prototype.setClass = function(name) {
-	this.className = name;
+  this.className = name;
 };
 
 Object.prototype.clone = function() {
-	var newObj = (this instanceof Array) ? [] : {};
-  	for (var i in this) {
-    	if (i == 'clone') 
-    		continue;
-    	if (this[i] && typeof this[i] == "object")
-      		newObj[i] = this[i].clone();
-    	else 
-    		newObj[i] = this[i];
-  	} 
-  	return newObj;
+  var newObj = (this instanceof Array) ? [] : {};
+    for (var i in this) {
+      if (i == 'clone') 
+        continue;
+      if (this[i] && typeof this[i] == "object")
+          newObj[i] = this[i].clone();
+      else 
+        newObj[i] = this[i];
+    } 
+    return newObj;
 };
 
 Object.prototype.removeClass = function(className) {
