@@ -4,13 +4,17 @@ Widget requires a <i>select</i>-element to be passed to the constructor (See the
 
 Usage
 ==============
-Using is simple and can be done with following code line (after Selex library has been imported):
+Using is simple and can be done with following code (after Selex library has been imported):
 
-	new Selex({targetElement: document.getElementById("select")}).render();
+	var settings = {
+		targetElement: document.getElementById("select")
+	};
+	var selexInstance = new Selex(settings);
+	selexInstance.render();
 	
 See more comprehensive <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
 
-Widget options
+Widget settings
 ===============
 Name| Type | Required | Default | Description
 ---|---|---------------|-----|------------|------
@@ -21,7 +25,6 @@ orientation|String|false|"right"|Defines the side where arrow points
 optionLimit|Number|false|- |Specifies how many options will be displayed. If not specified all options will be displayed
 placeholder|String|false|-|Sets a placeholder text
 sort|String|false|-|Sorts options
-searchMode|String|false|-|Searches options with pressed key(s). Search by first key (default) is currently the only search mode
 optionMenuWidth|String|false|-|Determines the width of option menu. Overrides width param
 closeWhenCursorOut|Boolean|false|True|Determines if option menu will be closed when cursor leaves select box
 
