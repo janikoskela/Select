@@ -49,6 +49,16 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 
 	this.show = function() {
 		this.element.show();
+		var h = this.element.offsetHeight;
+		this.element.removeClass("options-container-down");
+		this.element.removeClass("options-container-up");
+		if ((window.innerHeight - this.element.getBoundingClientRect().top) < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
+			this.element.addClass("options-container-up");
+			this.element.setStyle("top", h * -1);
+		}
+		else {
+			this.element.addClass("options-container-down");
+		}
 	}
 
 	this.toggle = function() {

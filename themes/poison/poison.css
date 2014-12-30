@@ -102,7 +102,6 @@
 .poison .options-container {
     position: absolute;
     left: 0;
-    top: 3.5em; /* same as .widget-sub-wrapper's height (including its border) */
     z-index: 1;
 	padding: 0;
 	margin: 0;
@@ -111,6 +110,14 @@
 	overflow-y: auto;
 	background-color: #44A614;
     opacity: .97;
+}
+
+.poison .options-container-down {
+    top: 3.5em; /* same as .widget-sub-wrapper's height (including its border) */
+}
+
+.poison .options-container-up {
+
 }
 
 .poison .options-container-list {

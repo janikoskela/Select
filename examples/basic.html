@@ -12,14 +12,13 @@
     div {
       margin-top: 1em;
     }
+    .poison {
+      margin-top: 30em;
+    }
   </style>
 </head>
 
 <body>
-    <select id="normal" tabindex="3">
-      <option>aoksdkosa</option>
-      <option>  aeqweq</option>
-    </select>
     <select id="plain" tabindex="1">
       <option value="j">jjjjjjjj</option>
       <option selected="selected" value="a">aaaaaaaaaa</option>
@@ -31,6 +30,10 @@
       <option value="g">gggggggg</option>
       <option value="h">hhhhh</option>
       <option value="i">iiiii</option>
+    </select>
+    <select id="normal" tabindex="3">
+      <option>aoksdkosa</option>
+      <option>  aeqweq</option>
     </select>
     <select id="poison" tabindex="4">
       <option selected="selected" value="j">jjjjjjjj</option>
@@ -80,7 +83,6 @@ instance = new Selex({
   orientation: "left",
   tabIndex: 3,
   placeholder: "Choose an option",
-  optionLimit: 5,
   closeWhenCursorOut: true,
 });
 instance.render();

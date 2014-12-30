@@ -45,6 +45,10 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
         return this.element;
     }
 
+    this.getElement = function() {
+        return this.element;
+    }
+
     this.getWrapper = function() {
         return this.wrapper;
     }

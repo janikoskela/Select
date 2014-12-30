@@ -1,4 +1,7 @@
 Object.prototype.setStyle = function(name, value) {
+  if (typeof value === "number") {
+    value = value + "px";
+  }
 	this.style[name] = value;
 };
 
