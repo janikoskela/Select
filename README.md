@@ -8,7 +8,7 @@ Using is simple and can be done with following code line (after Selex library ha
 
 	<code>new Selex({targetElement: document.getElementById("select")}).render();</code>
 	
-See the <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
+See more comprehensive <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
 
 Widget options
 ===============
