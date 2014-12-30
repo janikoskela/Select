@@ -6,7 +6,7 @@ Usage
 ==============
 Using is simple and can be done with following code line (after Selex library has been imported):
 
-	<code>new Selex({targetElement: document.getElementById("select")}).render();</code>
+	new Selex({targetElement: document.getElementById("select")}).render();
 	
 See more comprehensive <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
 
