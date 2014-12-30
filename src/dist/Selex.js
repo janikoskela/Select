@@ -209,6 +209,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.type = "div";
 	this.element;
 	this.className = "arrow-container";
+	this.arrowContainerContent;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
@@ -219,6 +220,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 		this.element.appendChild(elem);
 		return this.element;
+	}
+
+	this.getArrowContainerContent = function() {
+		return this.arrowContainerContent;
 	}
 
 	this.getElement = function() {
@@ -267,6 +272,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.className = "options-container";
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth || "100%";
+	this.arrowContainerContent = widgetWrapper.getWidgetSubWrapper().getArrowContainer().getArrowContainerContent();
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
@@ -304,6 +310,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.hide = function() {
 		this.element.hide();
+		this.arrowContainerContent.down();
 	}
 
 	this.isHidden = function() {
@@ -328,6 +335,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			this.element.setStyle("top", top);
 		}
 		this.element.show();
+		this.arrowContainerContent.up();
 	}
 
 	this.toggle = function() {
@@ -786,6 +794,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.getValueContainer = function() {
         return this.valueContainer;
+    }
+
+    this.getArrowContainer = function() {
+        return this.arrowContainer;
     }
 
     function onClick(e) {

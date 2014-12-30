@@ -60,6 +60,10 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, 
         return this.valueContainer;
     }
 
+    this.getArrowContainer = function() {
+        return this.arrowContainer;
+    }
+
     function onClick(e) {
         if (this.nativeSelectBox.isDisabled() === false) {
             this.optionsMenu = this.widgetWrapper.getOptionsMenu();

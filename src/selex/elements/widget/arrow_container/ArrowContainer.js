@@ -3,6 +3,7 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(params) {
 	this.type = "div";
 	this.element;
 	this.className = "arrow-container";
+	this.arrowContainerContent;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type);
@@ -13,6 +14,10 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(params) {
 
 		this.element.appendChild(elem);
 		return this.element;
+	}
+
+	this.getArrowContainerContent = function() {
+		return this.arrowContainerContent;
 	}
 
 	this.getElement = function() {
