@@ -587,69 +587,52 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     		hovered.onClick();
     }
 
-	this.searchByFirstChar = function(firstChar) {
-		var listElements = this.element.children;
-		var hovered = this.getHoveredOption();
-		if (hovered === undefined) {
-			for (var i = 0; i < this.optionItems.length; i++) {
-				var item = this.optionItems[i];
-				var itemText = item.getText();
-				if (itemText[0] === firstChar) {
-					this.clearOptionItemHovers();
-					item.setHovered();
-					if (this.isHidden())
-						item.onClick();
-					else
-						item.getElement().scrollTop = item.offsetTop;
-				}
+    function findOptionByFirstCharFromStart(firstChar) {
+    	var optionItemsCount = that.optionItems.length;
+    	for (var i = 0; i < optionItemsCount; i++) {
+			var itemText = that.optionItems[i].getText()
+			if (firstChar === itemText[0]) {
+				that.optionItems[i].setHovered();
+				if (that.optionsMenu.isHidden())
+					that.optionItems[i].onClick();
+				else
+					that.optionsMenu.getElement().scrollTop = that.optionItems[i].getElement().offsetTop;
+				return;
 			}
+		}
+    }
+
+    function isNextOptionFirstCharMatch(optionItem, firstChar) {
+    	var text = optionItem.getText();
+    	if (text[0] === firstChar) {
+    		that.clearOptionItemHovers();
+    		optionItem.setHovered();
+    		if (that.optionsMenu.isHidden())
+    			optionItem.onClick();
+    		else
+				that.optionsMenu.getElement().scrollTop = optionItem.getElement().offsetTop;
+			return true;
+    	}
+    	return false;
+    }
+
+	this.searchByFirstChar = function(firstChar) {
+		var hovered = this.getHoveredOption();
+		var optionItemsCount = this.optionItems.length;
+		if (hovered === undefined) {
+			findOptionByFirstCharFromStart(firstChar);
 		}
 		else {
-			var hoveredElem = hovered.getElement();
-			var hoveredIndex = this.optionItems.indexOf(hovered);
-			var counter = 0;
-			var nextSibling = getNext(hovered);//hoveredElem.nextSibling;
-			while (counter < this.optionItems.length) {
-				var nextSiblingText = nextSibling.getText();
-				if (nextSiblingText[0] === firstChar) {
-					this.clearOptionItemHovers();
-					nextSibling.setHovered();
+			var hoveredText = hovered.getText();
+			var hoveredIndex = hovered.getIndex();
+			for (var i = hoveredIndex + 1; i < optionItemsCount; i++) {
+				if (isNextOptionFirstCharMatch(this.optionItems[i], firstChar))
 					return;
-				}
-				counter++;
-				nextSibling = getNext(nextSibling);
 			}
-			/*var hoveredElem = hovered.getElement();
-			var counter = 0;
-			var nextSibling = hovered.nextSibling;
-			while (counter < listElements.length) {
-				if (nextSibling === null || nextSibling === undefined)
-					nextSibling = listElements[0];
-				var nextSiblingText = nextSibling.children[0].innerHTML.toLowerCase();
-				if (nextSiblingText[0] === firstChar) {
-					this.clearOptionItemHovers();
-					this.optionsMenu.setChildHovered(nextSibling);
-					if (this.optionsMenu.isClosed())
-						this.onOptionItemClick(nextSibling);
-					else
-						this.element.scrollTop = nextSibling.offsetTop;
+			for (var j = 0; j < hoveredIndex; j++) {
+				if (isNextOptionFirstCharMatch(this.optionItems[j], firstChar))
 					return;
-				}
-				nextSibling = nextSibling.nextSibling;
-				counter++;
-			}*/
-		}
-	}
-
-	function getNext(currentOptionItem) {
-		for (var i = 0; i < that.optionItems.length; i++) {
-			var optionItem = that.optionItems[i];
-			if (optionItem.getValue() === currentOptionItem.getValue() && optionItem.getText() === currentOptionItem.getText()) {
-				if (i === that.optionItems.length + 1)
-					return optionItems[0];
-				return that.optionItems[i + 1];
 			}
-
 		}
 	}
 
@@ -1084,7 +1067,7 @@ Object.prototype.hasClass = function(name) {
 };
 
 Object.prototype.addClass = function(name) {
-  console.log(this.hasClass(name))
+  if (this.hasClass(name) === false)
    this.className += " " + name;
 };
 
@@ -1174,4 +1157,4 @@ SELEX.UTILS.triggerEvent = function(type, targetElem) {
 	        targetElem.fireEvent('on' + type.toLowerCase(), e);
 	    } catch(err){ }
 	}
-}}(jQuery));
+};}(jQuery));

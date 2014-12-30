@@ -21,7 +21,7 @@ Object.prototype.hasClass = function(name) {
 };
 
 Object.prototype.addClass = function(name) {
-  console.log(this.hasClass(name))
+  if (this.hasClass(name) === false)
    this.className += " " + name;
 };
 

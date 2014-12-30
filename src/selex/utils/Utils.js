@@ -25,4 +25,4 @@ SELEX.UTILS.triggerEvent = function(type, targetElem) {
 	        targetElem.fireEvent('on' + type.toLowerCase(), e);
 	    } catch(err){ }
 	}
-}
+};
