@@ -9,7 +9,12 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(userDefinedS
 
 	this.render = function() {
 		this.element = SELEX.UTILS.createElement(this.type, this.className);
-		this.setText(this.text);
+		if (this.text === undefined || this.text === null)
+			this.setText(this.placeholder);
+		else if (this.text.length  === 0)
+			this.setText(this.placeholder);
+		else
+			this.setText(this.text);
 		return this.element;
 	}
 

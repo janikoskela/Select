@@ -75,7 +75,10 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 	}
 
 	this.getSelectedOptionText = function() {
-		return this.getSelectedOption().text;
+		var selectedOption = this.getSelectedOption();
+		if (selectedOption !== undefined)
+			return selectedOption.text;
+		return "";
 	}
 
 	this.clearSelected = function() {
@@ -93,7 +96,10 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 	}
 
 	this.getSelectedOptionValue = function() {
-		return this.getSelectedOption().value;
+		var selectedOption = this.getSelectedOption();
+		if (selectedOption !== undefined)
+			return selectedOption.value;
+		return "";
 	}
 
 	this.getSelectedOption = function() {

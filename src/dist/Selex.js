@@ -140,7 +140,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.getSelectedOptionText = function() {
-		return this.getSelectedOption().text;
+		var selectedOption = this.getSelectedOption();
+		if (selectedOption !== undefined)
+			return selectedOption.text;
+		return "";
 	}
 
 	this.clearSelected = function() {
@@ -158,7 +161,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.getSelectedOptionValue = function() {
-		return this.getSelectedOption().value;
+		var selectedOption = this.getSelectedOption();
+		if (selectedOption !== undefined)
+			return selectedOption.value;
+		return "";
 	}
 
 	this.getSelectedOption = function() {
@@ -823,7 +829,12 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.render = function() {
 		this.element = SELEX.UTILS.createElement(this.type, this.className);
-		this.setText(this.text);
+		if (this.text === undefined || this.text === null)
+			this.setText(this.placeholder);
+		else if (this.text.length  === 0)
+			this.setText(this.placeholder);
+		else
+			this.setText(this.text);
 		return this.element;
 	}
 
