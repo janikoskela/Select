@@ -56,7 +56,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 		var top = this.element.getStyle("top") || 0;
 		this.element.removeStyle("top");
 		var h = this.element.offsetHeight;
-		var remainingWindowHeight = window.innerHeight - this.element.getBoundingClientRect().top;
+		var windowInnerHeight = window.innerHeight;
+		var remainingWindowHeight = windowInnerHeight - this.element.getBoundingClientRect().top;
 		this.element.hide();
 		if (remainingWindowHeight < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
 			this.element.addClass("options-container-up");
@@ -64,7 +65,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 		}
 		else {
 			this.element.addClass("options-container-down");
-			this.element.setStyle("top", top);
 		}
 		this.element.show();
 		this.arrowContainerContent.up();

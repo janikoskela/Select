@@ -331,7 +331,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		var top = this.element.getStyle("top") || 0;
 		this.element.removeStyle("top");
 		var h = this.element.offsetHeight;
-		var remainingWindowHeight = window.innerHeight - this.element.getBoundingClientRect().top;
+		var windowInnerHeight = window.innerHeight;
+		var remainingWindowHeight = windowInnerHeight - this.element.getBoundingClientRect().top;
 		this.element.hide();
 		if (remainingWindowHeight < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
 			this.element.addClass("options-container-up");
@@ -339,7 +340,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		}
 		else {
 			this.element.addClass("options-container-down");
-			this.element.setStyle("top", top);
 		}
 		this.element.show();
 		this.arrowContainerContent.up();
