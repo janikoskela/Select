@@ -165,7 +165,13 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.getSelectedOption = function() {
-		return this.element.options[this.element.selectedIndex];
+		var l = this.element.options.length;
+		for (var i = 0; i < l; i++) {
+			var option = this.element.options[i];
+			var selected = (option.getAttribute("selected") === null) ? false : true;
+			if (selected)
+				return option;
+		}
 	}
 
 	this.getElement = function() {
@@ -479,6 +485,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.sortType = userDefinedSettings.sort;
 	this.optionsMenu = optionsMenu;
 	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
+	this.valueContainerText = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -498,6 +505,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     			break;
 		}
 		renderOptionItems(options);
+		this.valueContainerText.refresh();
 	}
 
 	this.getOptionsMenu = function() {
@@ -505,7 +513,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.adjustHeight = function() {
-		var children = that.element.children;
+		var children = that.element.getChildren();
         if (children.length === 0)
             return;
         if (children.length > 0) {        
@@ -736,7 +744,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 					this.optionItems[0].onClick();
 				}
 				else
-					this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText().setText("");
+					this.valueContainerText.setText("");
 
 			}
 			this.element.removeChild(option.getElement());
@@ -849,13 +857,18 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.render = function() {
 		this.element = SELEX.UTILS.createElement(this.type, this.className);
-		if (this.text === undefined || this.text === null)
+		this.refresh();
+		return this.element;
+	}
+
+	this.refresh = function() {
+		this.text = this.valueContainer.getWidgetSubWrapper().getWidgetWrapper().getWrapper().getNativeSelect().getSelectedOptionText();
+		if (this.text === undefined || this.text === null && this.placeholder !== undefined)
 			this.setText(this.placeholder);
-		else if (this.text.length  === 0)
+		else if (this.text.length  === 0 && this.placeholder !== undefined)
 			this.setText(this.placeholder);
 		else
 			this.setText(this.text);
-		return this.element;
 	}
 
 	this.setPlaceholder = function(placeholder) {

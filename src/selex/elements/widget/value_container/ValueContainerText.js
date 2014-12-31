@@ -9,13 +9,18 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(userDefinedS
 
 	this.render = function() {
 		this.element = SELEX.UTILS.createElement(this.type, this.className);
-		if (this.text === undefined || this.text === null)
+		this.refresh();
+		return this.element;
+	}
+
+	this.refresh = function() {
+		this.text = this.valueContainer.getWidgetSubWrapper().getWidgetWrapper().getWrapper().getNativeSelect().getSelectedOptionText();
+		if (this.text === undefined || this.text === null && this.placeholder !== undefined)
 			this.setText(this.placeholder);
-		else if (this.text.length  === 0)
+		else if (this.text.length  === 0 && this.placeholder !== undefined)
 			this.setText(this.placeholder);
 		else
 			this.setText(this.text);
-		return this.element;
 	}
 
 	this.setPlaceholder = function(placeholder) {

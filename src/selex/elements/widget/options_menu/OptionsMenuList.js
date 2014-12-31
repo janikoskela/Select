@@ -10,6 +10,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	this.sortType = userDefinedSettings.sort;
 	this.optionsMenu = optionsMenu;
 	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
+	this.valueContainerText = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -29,6 +30,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     			break;
 		}
 		renderOptionItems(options);
+		this.valueContainerText.refresh();
 	}
 
 	this.getOptionsMenu = function() {
@@ -36,7 +38,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	}
 
 	this.adjustHeight = function() {
-		var children = that.element.children;
+		var children = that.element.getChildren();
         if (children.length === 0)
             return;
         if (children.length > 0) {        
@@ -267,7 +269,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 					this.optionItems[0].onClick();
 				}
 				else
-					this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText().setText("");
+					this.valueContainerText.setText("");
 
 			}
 			this.element.removeChild(option.getElement());

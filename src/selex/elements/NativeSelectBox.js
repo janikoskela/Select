@@ -100,7 +100,13 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 	}
 
 	this.getSelectedOption = function() {
-		return this.element.options[this.element.selectedIndex];
+		var l = this.element.options.length;
+		for (var i = 0; i < l; i++) {
+			var option = this.element.options[i];
+			var selected = (option.getAttribute("selected") === null) ? false : true;
+			if (selected)
+				return option;
+		}
 	}
 
 	this.getElement = function() {
