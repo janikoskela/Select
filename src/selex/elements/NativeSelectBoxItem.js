@@ -11,6 +11,10 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(nativeSelect, optionElement) {
 		return this.element.text;
 	}
 
+	this.getOptionGroupLabel = function() {
+		return this.element.parentNode.label;
+	}
+
 	this.getValue = function() {
 		return this.element.value;
 	}

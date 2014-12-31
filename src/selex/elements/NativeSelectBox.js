@@ -6,13 +6,14 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 	this.element = this.wrapper.getTargetElement();
 
 	this.attach = function() {
+		this.optionItems = [];
 		var optionsLength = this.element.options.length;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
 			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(this, option);
 			this.optionItems.push(optionItem);
 		}
-		if (MUTATION_OBSERVER !== undefined)
+		if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
 			attachDomObserver();
 		return this.element;
 	}
@@ -41,14 +42,10 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
     	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
     		mutations.forEach(function (mutation) {
     			var addedNodesLength = (mutation.addedNodes === undefined) ? 0 : mutation.addedNodes.length;
-    			for (var i = 0; i < addedNodesLength; i++) {
-    				var addedNode = mutation.addedNodes[i];
-    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().createOptionByOptionElement(addedNode);
-    			}
     			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
-    			for (i = 0; i < removedNodesLength; i++) {
-    				var removedNode = mutation.removedNodes[i];
-    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().removeOptionByOptionElement(removedNode);
+    			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
+    				that.attach();
+    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().refresh();
     			}
       		});
     	});

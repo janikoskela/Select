@@ -14,6 +14,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.setWidth(this.width);
+    	this.refresh();
+		return this.element;
+	}
+
+	this.refresh = function() {
         var options = this.nativeSelect.getOptions();
 		switch(this.sortType) {
     		case "asc":
@@ -24,7 +29,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     			break;
 		}
 		renderOptionItems(options);
-		return this.element;
 	}
 
 	this.getOptionsMenu = function() {
@@ -49,17 +53,16 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	}
 
 	function renderOptionItems(options) {
-		for (var i = 0; i < options.length; i++) {
+        that.optionItems = [];
+        that.element.removeChildren();
+        var l = options.length;
+		for (var i = 0; i < l; i++) {
 			var option = options[i];
-			renderOptionItem(option, i);
+			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that, i);
+			that.optionItems.push(item);
+			var elem = item.render();
+			that.element.appendChild(elem);
 		}
-	}
-
-	function renderOptionItem(option, i) {
-		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that, i);
-		that.optionItems.push(item);
-		var elem = item.render();
-		that.element.appendChild(elem);
 	}
 
     function sortByDesc(optionA, optionB) {
@@ -192,11 +195,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	}
 
 	this.hasChildren = function() {
-		return (this.element.children > 0);
+		return (this.element.getChildren().length > 0);
 	}
 
 	this.getListElements = function() {
-		return this.element.childNodes;
+		return this.element.getChildren();
 	}
 
 	this.getHoveredOption = function() {
@@ -270,9 +273,4 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 			this.element.removeChild(option.getElement());
 		}
 	}
-
-	this.createOptionByOptionElement = function(optionElem) {
-		renderOptionItem(optionElem);
-	}
-
 };

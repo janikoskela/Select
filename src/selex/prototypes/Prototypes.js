@@ -5,6 +5,14 @@ Object.prototype.setStyle = function(name, value) {
   this.style[name] = value;
 };
 
+Object.prototype.removeChildren = function() {
+  this.innerHTML = "";
+};
+
+Object.prototype.getChildren = function() {
+  return this.childNodes;
+};
+
 Object.prototype.removeStyle = function(name) {
   this.style[name] = null;
 };

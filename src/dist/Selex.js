@@ -71,13 +71,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.element = this.wrapper.getTargetElement();
 
 	this.attach = function() {
+		this.optionItems = [];
 		var optionsLength = this.element.options.length;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
 			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(this, option);
 			this.optionItems.push(optionItem);
 		}
-		if (MUTATION_OBSERVER !== undefined)
+		if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
 			attachDomObserver();
 		return this.element;
 	}
@@ -106,14 +107,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
     		mutations.forEach(function (mutation) {
     			var addedNodesLength = (mutation.addedNodes === undefined) ? 0 : mutation.addedNodes.length;
-    			for (var i = 0; i < addedNodesLength; i++) {
-    				var addedNode = mutation.addedNodes[i];
-    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().createOptionByOptionElement(addedNode);
-    			}
     			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
-    			for (i = 0; i < removedNodesLength; i++) {
-    				var removedNode = mutation.removedNodes[i];
-    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().removeOptionByOptionElement(removedNode);
+    			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
+    				that.attach();
+    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().refresh();
     			}
       		});
     	});
@@ -190,6 +187,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.getText = function() {
 		return this.element.text;
+	}
+
+	this.getOptionGroupLabel = function() {
+		return this.element.parentNode.label;
 	}
 
 	this.getValue = function() {
@@ -445,6 +446,15 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		else if (prevSelected.getValue() !== that.getValue())
 			setSelected(e);
 	}
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemGroup = function(option) {
+	this.type = "ul";
+	this.element;
+	this.label;
+
+	this.render = function() {
+    	this.element = document.createElement(this.type);
+    	return this.element;
+	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(option) {
 	this.option = option;
 	this.type = "span";
@@ -473,6 +483,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.setWidth(this.width);
+    	this.refresh();
+		return this.element;
+	}
+
+	this.refresh = function() {
         var options = this.nativeSelect.getOptions();
 		switch(this.sortType) {
     		case "asc":
@@ -483,7 +498,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     			break;
 		}
 		renderOptionItems(options);
-		return this.element;
 	}
 
 	this.getOptionsMenu = function() {
@@ -508,17 +522,16 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	function renderOptionItems(options) {
-		for (var i = 0; i < options.length; i++) {
+        that.optionItems = [];
+        that.element.removeChildren();
+        var l = options.length;
+		for (var i = 0; i < l; i++) {
 			var option = options[i];
-			renderOptionItem(option, i);
+			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that, i);
+			that.optionItems.push(item);
+			var elem = item.render();
+			that.element.appendChild(elem);
 		}
-	}
-
-	function renderOptionItem(option, i) {
-		var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that, i);
-		that.optionItems.push(item);
-		var elem = item.render();
-		that.element.appendChild(elem);
 	}
 
     function sortByDesc(optionA, optionB) {
@@ -651,11 +664,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.hasChildren = function() {
-		return (this.element.children > 0);
+		return (this.element.getChildren().length > 0);
 	}
 
 	this.getListElements = function() {
-		return this.element.childNodes;
+		return this.element.getChildren();
 	}
 
 	this.getHoveredOption = function() {
@@ -729,11 +742,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			this.element.removeChild(option.getElement());
 		}
 	}
-
-	this.createOptionByOptionElement = function(optionElem) {
-		renderOptionItem(optionElem);
-	}
-
 };SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, nativeSelectBox) {
 
     var ORIENTATION_LEFT = "left";
@@ -1072,6 +1080,14 @@ SELEX.EXCEPTIONS.InvalidOptionsErrorException = function() {
     value += "px";
   }
   this.style[name] = value;
+};
+
+Object.prototype.removeChildren = function() {
+  this.innerHTML = "";
+};
+
+Object.prototype.getChildren = function() {
+  return this.childNodes;
 };
 
 Object.prototype.removeStyle = function(name) {
