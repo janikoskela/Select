@@ -72,6 +72,14 @@
 	line-height: 2em; /* same as .widget-sub-wrapper height */
 }
 
+.plain .value-container img {
+	display: inline-block;
+	vertical-align: middle;
+	height: 1.5em;
+	margin-left: .3em;
+	margin-right: .3em;
+}
+
 .plain[disabled=true] .value-container span {
 	opacity: .4;
 }
@@ -155,6 +163,8 @@
 
 .plain .options-container-list li span {
 	padding: 0 0 0 2em;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .plain .options-container-list li.selected.hovered span {
@@ -175,4 +185,11 @@
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;
+}
+
+.plain .options-container-list li img {
+	height: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: .5em;
 }
