@@ -7,7 +7,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 	this.itemValue;
 	this.optionsMenuList = optionsMenuList;
 	this.index = index;
-	this.valueContainerText = this.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+	this.valueContainer = this.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer();
+	this.valueContainerText = this.valueContainer.getValueContainerText();
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(nativeSelectOption);
@@ -18,6 +19,14 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	this.element.setDataAttribute("value", nativeSelectOption.getValue());
     	this.element.setDataAttribute("index", this.index);
+
+		var imageUrl = this.nativeSelectOption.getImageUrl();
+		if (imageUrl !== undefined && imageUrl !== null) {
+			this.itemImage = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(imageUrl);
+			var elem = this.itemImage.render();
+			this.element.appendChild(elem);
+		}
+
     	this.element.appendChild(childElem);
     	if (this.selected === true)
     		this.setSelected();
@@ -88,7 +97,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 	function setSelected(e) {
 		that.nativeSelectOption.setSelected(e);
 		that.setSelected();
-		that.valueContainerText.setText(that.nativeSelectOption.getText());
+		that.valueContainer.refresh();
+		//that.valueContainerText.setText(that.nativeSelectOption.getText());
 	}
 
 	function onClick(e) {

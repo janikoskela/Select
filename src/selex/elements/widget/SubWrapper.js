@@ -52,6 +52,10 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, 
         return this.element;
     }
 
+    this.getNativeSelect = function() {
+        return this.nativeSelectBox;
+    }
+
     this.getWidgetWrapper = function() {
         return this.widgetWrapper;
     }

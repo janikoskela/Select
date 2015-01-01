@@ -10,7 +10,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	this.sortType = userDefinedSettings.sort;
 	this.optionsMenu = optionsMenu;
 	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
-	this.valueContainerText = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+	this.valueContainer = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer();
+	this.valueContainerText = this.valueContainer.getValueContainerText();
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -30,7 +31,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     			break;
 		}
 		renderOptionItems(options);
-		this.valueContainerText.refresh();
+		this.valueContainer.refresh();
 	}
 
 	this.getOptionsMenu = function() {

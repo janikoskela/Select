@@ -62,6 +62,15 @@
 	line-height: 2.4em;
 	color: #fff;
 	font-weight: bold;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.poison .value-container img {
+	display: inline-block;
+	vertical-align: middle;
+	height: 1.8em;
+	margin-left: .3em;
 }
 
 .poison[disabled=true] .value-container span {
@@ -137,11 +146,20 @@
 
 .poison .options-container-list li span {
 	padding: 0 0 0 .1em;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .poison .options-container-list li.hovered { 
 	background: #398713; 
 	cursor: pointer;
+}
+
+.poison .options-container-list li img {
+	height: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 1em;
 }
 
 .poison ::-webkit-scrollbar {

@@ -13,6 +13,10 @@ Object.prototype.getChildren = function() {
   return this.childNodes;
 };
 
+Object.prototype.setSelected = function() {
+  this.setAttribute("selected", true);
+};
+
 Object.prototype.removeStyle = function(name) {
   this.style[name] = null;
 };

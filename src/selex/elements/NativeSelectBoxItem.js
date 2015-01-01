@@ -22,9 +22,14 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(nativeSelect, optionElement) {
 	this.setSelected = function(e) {
 		this.nativeSelect.setSelectedIndex(this.element.index);
 		this.nativeSelect.triggerChange();
+		this.element.setSelected();
 	}
 
 	this.removeSelected = function() {
-		this.element.removeAttribute("selected");
+		this.element.removeAttribute("selected", "selected");
+	}
+
+	this.getImageUrl = function() {
+		return this.element.getDataAttribute("image-url");
 	}
 };

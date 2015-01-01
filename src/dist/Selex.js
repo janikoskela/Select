@@ -18,6 +18,7 @@
 	SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER = {};
 	SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
 	SELEX.ELEMENTS.WIDGET.OPTIONS_MENU = {};
+	SELEX.ELEMENTS.WIDGET.LOADING_OVERLAY = {};
 	SELEX.EXCEPTIONS = {};
 	var MUTATION_OBSERVER = window.MutationObserver || window.WebKitMutationObserver;
 	var ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT = "select";
@@ -154,6 +155,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.triggerChange = function() {
+		this.clearSelected();
 	    SELEX.UTILS.triggerEvent("change", this.element);
 	}
 
@@ -162,6 +164,12 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		if (selectedOption !== undefined)
 			return selectedOption.value;
 		return "";
+	}
+
+	this.getSelectedOptionImageUrl = function() {
+		var selectedOption = this.getSelectedOption();
+		if (selectedOption !== undefined)
+			return selectedOption.getDataAttribute("image-url");
 	}
 
 	this.getSelectedOption = function() {
@@ -206,10 +214,15 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.setSelected = function(e) {
 		this.nativeSelect.setSelectedIndex(this.element.index);
 		this.nativeSelect.triggerChange();
+		this.element.setSelected();
 	}
 
 	this.removeSelected = function() {
-		this.element.removeAttribute("selected");
+		this.element.removeAttribute("selected", "selected");
+	}
+
+	this.getImageUrl = function() {
+		return this.element.getDataAttribute("image-url");
 	}
 };SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(params) {
 
@@ -272,6 +285,24 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		else {
 			this.down();
 		}
+	}
+};SELEX.ELEMENTS.WIDGET.LOADING_OVERLAY.LoadingOverlay = function(userDefinedSettings) {
+	this.type = "div";
+	this.className = "loading-overlay";
+	this.element;
+
+	this.render = function() {
+    	this.element = SELEX.UTILS.createElement(this.type, this.className);
+    	this.hide();
+    	return this.element;
+	}
+
+	this.hide = function() {
+		this.element.hide();
+	}
+
+	this.show = function() {
+		this.element.show();
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, widgetWrapper) {
 	var that = this;
@@ -360,7 +391,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.itemValue;
 	this.optionsMenuList = optionsMenuList;
 	this.index = index;
-	this.valueContainerText = this.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+	this.valueContainer = this.optionsMenuList.getOptionsMenu().getWidgetWrapper().getWidgetSubWrapper().getValueContainer();
+	this.valueContainerText = this.valueContainer.getValueContainerText();
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(nativeSelectOption);
@@ -371,6 +403,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	this.element.setDataAttribute("value", nativeSelectOption.getValue());
     	this.element.setDataAttribute("index", this.index);
+
+		var imageUrl = this.nativeSelectOption.getImageUrl();
+		if (imageUrl !== undefined && imageUrl !== null) {
+			this.itemImage = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(imageUrl);
+			var elem = this.itemImage.render();
+			this.element.appendChild(elem);
+		}
+
     	this.element.appendChild(childElem);
     	if (this.selected === true)
     		this.setSelected();
@@ -441,7 +481,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	function setSelected(e) {
 		that.nativeSelectOption.setSelected(e);
 		that.setSelected();
-		that.valueContainerText.setText(that.nativeSelectOption.getText());
+		that.valueContainer.refresh();
+		//that.valueContainerText.setText(that.nativeSelectOption.getText());
 	}
 
 	function onClick(e) {
@@ -459,6 +500,16 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.render = function() {
     	this.element = document.createElement(this.type);
+    	return this.element;
+	}
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(imageUrl) {
+	this.type = "img";
+	this.imageUrl = imageUrl;
+	this.element;
+
+	this.render = function() {
+    	this.element = new SELEX.UTILS.createElement(this.type);
+    	this.element.setAttribute("src", this.imageUrl);
     	return this.element;
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(option) {
@@ -485,7 +536,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.sortType = userDefinedSettings.sort;
 	this.optionsMenu = optionsMenu;
 	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
-	this.valueContainerText = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer().getValueContainerText();
+	this.valueContainer = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer();
+	this.valueContainerText = this.valueContainer.getValueContainerText();
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -505,7 +557,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     			break;
 		}
 		renderOptionItems(options);
-		this.valueContainerText.refresh();
+		this.valueContainer.refresh();
 	}
 
 	this.getOptionsMenu = function() {
@@ -804,6 +856,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         return this.element;
     }
 
+    this.getNativeSelect = function() {
+        return this.nativeSelectBox;
+    }
+
     this.getWidgetWrapper = function() {
         return this.widgetWrapper;
     }
@@ -830,13 +886,35 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.widgetSubWrapper = widgetSubWrapper;
 	this.element;
 	this.valueContainerText;
+	this.valueContainerImage;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
+
+		this.valueContainerImage = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage();
+		var valueContainerImageElem = this.valueContainerImage.render();
+		this.element.appendChild(valueContainerImageElem);
+		var imageUrl = this.widgetSubWrapper.getNativeSelect().getSelectedOptionImageUrl();
+		if (imageUrl === undefined || imageUrl === null)
+			this.valueContainerImage.hide();
+		else
+			this.valueContainerImage.setImageUrl(imageUrl);
     	this.valueContainerText = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText(userDefinedSettings, this);
     	var valueContainerTextElem = this.valueContainerText.render();
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
+	}
+
+	this.refresh = function() {
+		this.valueContainerText.refresh();
+		var imageUrl = this.widgetSubWrapper.getNativeSelect().getSelectedOptionImageUrl();
+		console.log(imageUrl)
+		if (imageUrl !== undefined && imageUrl !== null) {
+			this.valueContainerImage.setImageUrl(imageUrl);
+			this.valueContainerImage.show();
+		}
+		else
+			this.valueContainerImage.hide();
 	}
 
 	this.getWidgetSubWrapper = function() {
@@ -845,6 +923,28 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.getValueContainerText = function() {
 		return this.valueContainerText;
+	}
+};SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function() {
+	this.type = "img";
+	this.imageUrl;
+	this.element;
+
+	this.render = function() {
+		this.element = SELEX.UTILS.createElement(this.type);
+		return this.element;
+	}
+
+	this.setImageUrl = function(imageUrl) {
+		this.imageUrl = imageUrl;
+		this.element.setAttribute("src", this.imageUrl);
+	}
+
+	this.hide = function() {
+		this.element.hide();
+	}
+
+	this.show = function() {
+		this.element.setStyle("display", "inline-block");
 	}
 };SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(userDefinedSettings, valueContainer) {
 	var that = this;
@@ -1101,6 +1201,10 @@ Object.prototype.removeChildren = function() {
 
 Object.prototype.getChildren = function() {
   return this.childNodes;
+};
+
+Object.prototype.setSelected = function() {
+  this.setAttribute("selected", true);
 };
 
 Object.prototype.removeStyle = function(name) {

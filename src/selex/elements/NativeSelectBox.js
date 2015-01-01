@@ -89,6 +89,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 	}
 
 	this.triggerChange = function() {
+		this.clearSelected();
 	    SELEX.UTILS.triggerEvent("change", this.element);
 	}
 
@@ -97,6 +98,12 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
 		if (selectedOption !== undefined)
 			return selectedOption.value;
 		return "";
+	}
+
+	this.getSelectedOptionImageUrl = function() {
+		var selectedOption = this.getSelectedOption();
+		if (selectedOption !== undefined)
+			return selectedOption.getDataAttribute("image-url");
 	}
 
 	this.getSelectedOption = function() {
