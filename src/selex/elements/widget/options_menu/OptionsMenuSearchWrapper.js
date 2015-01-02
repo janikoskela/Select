@@ -16,6 +16,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(userDefin
     	return this.element;
 	}
 
+	this.getOptionsMenuSearchInput = function() {
+		return this.optionsMenuSearchInput;
+	}
+
 	this.getOptionsMenuSearchNoResults = function() {
 		return this.optionsMenuSearchNoResults;
 	}

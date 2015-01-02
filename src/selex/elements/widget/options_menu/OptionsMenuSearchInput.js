@@ -16,6 +16,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(optionsMenu
 		this.element.value = "";
 	}
 
+	this.focus = function() {
+		this.element.focus();
+	}
+
 	function onKeyUp(e) {
 		var value = this.element.value;
 		if (value.length === 0)

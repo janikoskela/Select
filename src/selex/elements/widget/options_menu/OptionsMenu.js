@@ -105,6 +105,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 		}
 		this.element.show();
 		this.arrowContainerContent.up();
+		if (this.useSearchInput === true)
+			this.optionsMenuSearchWrapper.getOptionsMenuSearchInput().focus();
 	}
 
 	this.toggle = function() {

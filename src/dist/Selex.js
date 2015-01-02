@@ -396,6 +396,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		}
 		this.element.show();
 		this.arrowContainerContent.up();
+		if (this.useSearchInput === true)
+			this.optionsMenuSearchWrapper.getOptionsMenuSearchInput().focus();
 	}
 
 	this.toggle = function() {
@@ -872,6 +874,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.element.value = "";
 	}
 
+	this.focus = function() {
+		this.element.focus();
+	}
+
 	function onKeyUp(e) {
 		var value = this.element.value;
 		if (value.length === 0)
@@ -921,6 +927,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.optionsMenuSearchNoResults = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(userDefinedSettings);
     	this.element.appendChild(this.optionsMenuSearchNoResults.render());
     	return this.element;
+	}
+
+	this.getOptionsMenuSearchInput = function() {
+		return this.optionsMenuSearchInput;
 	}
 
 	this.getOptionsMenuSearchNoResults = function() {
