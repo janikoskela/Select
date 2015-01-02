@@ -192,3 +192,12 @@
 	vertical-align: middle;
 	margin-right: .5em;
 }
+
+.plain .options-menu-search-wrapper {
+	width: 98%;
+	margin: auto;
+}
+
+.plain .options-menu-search-input {
+	width: 100%;
+}

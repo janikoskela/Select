@@ -9,14 +9,25 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
 	this.locked = false;
+	this.optionsMenuSearchWrapper;
+	this.searchMode = userDefinedSettings.searchMode;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(userDefinedSettings, this);
     	var optionsMenuListElem = this.optionsMenuList.render();
+        if (this.searchMode === "searchByInput") {
+        	this.optionsMenuSearchWrapper = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(this);
+        	var optionsMenuSearchWrapperElem = this.optionsMenuSearchWrapper.render();
+    		this.element.appendChild(optionsMenuSearchWrapperElem);
+        }
     	this.element.appendChild(optionsMenuListElem);
     	this.setWidth(this.width);
     	return this.element;
+	}
+
+	this.getOptionsMenuSearchWrapper = function() {
+		return this.optionsMenuSearchWrapper;
 	}
 
 	this.isLocked = function() {

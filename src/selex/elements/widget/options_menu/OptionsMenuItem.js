@@ -108,5 +108,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 			setSelected(e);
 		else if (prevSelected.getValue() !== that.getValue())
 			setSelected(e);
+		if (that.optionsMenuList.isInputSearchEnabled())
+			that.optionsMenuList.clearSearchResult();
 	}
 };
