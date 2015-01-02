@@ -10,13 +10,13 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	this.optionsMenuList;
 	this.locked = false;
 	this.optionsMenuSearchWrapper;
-	this.searchMode = userDefinedSettings.searchMode;
+	this.useSearchInput = userDefinedSettings.useSearchInput;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(userDefinedSettings, this);
     	var optionsMenuListElem = this.optionsMenuList.render();
-        if (this.searchMode === "searchByInput") {
+        if (this.useSearchInput === true) {
         	this.optionsMenuSearchWrapper = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(this);
         	var optionsMenuSearchWrapperElem = this.optionsMenuSearchWrapper.render();
     		this.element.appendChild(optionsMenuSearchWrapperElem);

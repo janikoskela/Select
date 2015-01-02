@@ -33,6 +33,7 @@ sort|String|-|Sorts options
 optionMenuWidth|String|-|Determines the width of option menu. Overrides width param
 closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
 loadingText|text|"Loading"|The text which is used in loading mode
+useSearchInput|boolean|false|Renders search input if true
 
 Public methods
 ===============

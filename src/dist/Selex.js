@@ -646,7 +646,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     this.hoverPreviousOption = function() {
-		if (this.optionsMenu.isLocked)
+		if (this.optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	var option;
@@ -667,7 +667,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     this.hoverNextOption = function() {
-		if (this.optionsMenu.isLocked)
+		if (this.optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	var option;
@@ -688,7 +688,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     this.selectHoveredOption = function() {
-		if (this.optionsMenu.isLocked)
+		if (this.optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
@@ -747,7 +747,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
 	this.searchByFirstChar = function(firstChar) {
-		if (this.optionsMenu.isLocked)
+		if (this.optionsMenu.isLocked())
 			return;
 		var hovered = this.getHoveredOption();
 		var optionItemsCount = this.optionItems.length;
