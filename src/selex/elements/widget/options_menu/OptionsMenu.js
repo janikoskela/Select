@@ -9,14 +9,35 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
 	this.locked = false;
+	this.optionsMenuSearchWrapper;
+	this.useSearchInput = userDefinedSettings.useSearchInput;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(userDefinedSettings, this);
     	var optionsMenuListElem = this.optionsMenuList.render();
+        if (this.useSearchInput === true) {
+        	this.optionsMenuSearchWrapper = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(userDefinedSettings, this);
+        	var optionsMenuSearchWrapperElem = this.optionsMenuSearchWrapper.render();
+    		this.element.appendChild(optionsMenuSearchWrapperElem);
+        }
     	this.element.appendChild(optionsMenuListElem);
     	this.setWidth(this.width);
     	return this.element;
+	}
+
+	this.getOptionsMenuSearchWrapper = function() {
+		return this.optionsMenuSearchWrapper;
+	}
+
+	this.onNoOptionsFound = function() {
+		this.optionsMenuList.getElement().hide();
+		this.optionsMenuSearchWrapper.getOptionsMenuSearchNoResults().show();
+	}
+
+	this.onOptionsFound = function() {
+		this.optionsMenuList.getElement().show();
+		this.optionsMenuSearchWrapper.getOptionsMenuSearchNoResults().hide();
 	}
 
 	this.isLocked = function() {

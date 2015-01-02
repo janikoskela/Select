@@ -12,6 +12,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
 	this.valueContainer = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer();
 	this.valueContainerText = this.valueContainer.getValueContainerText();
+	this.inputSearchEnabled = false;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -181,6 +182,34 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 			return true;
     	}
     	return false;
+    }
+
+    this.clearSearchResult = function() {
+    	this.refresh();
+    	this.optionsMenu.getOptionsMenuSearchWrapper().clear();
+    }
+
+    this.isInputSearchEnabled = function() {
+    	return this.inputSearchEnabled;
+    }
+
+    this.searchByInputString = function(query) {
+    	this.inputSearchEnabled = true;
+    	this.element.removeChildren();
+    	var l = this.optionItems.length;
+    	var foundOptions = 0;
+    	for (var i = 0; i < l; i++) {
+    		var option = this.optionItems[i];
+    		var optionText = option.getText();
+    		if (optionText.indexOf(query) > -1) {
+    			this.element.appendChild(option.getElement());
+    			foundOptions++;
+    		}
+    	}
+    	if (foundOptions === 0)
+    		this.optionsMenu.onNoOptionsFound();
+    	else
+    		this.optionsMenu.onOptionsFound();
     }
 
 	this.searchByFirstChar = function(firstChar) {

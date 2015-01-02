@@ -27,7 +27,10 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
         this.element.setAttribute("tabindex", this.tabIndex);
         if (userDefinedSettings.closeWhenCursorOut === true)
             this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
-        this.element.addEventListener("blur", onMouseLeave.bind(this));
+        document.addEventListener("click", onMouseLeave.bind(this));
+        this.element.addEventListener("click", function(e) {
+            e.stopPropagation();
+        });
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
