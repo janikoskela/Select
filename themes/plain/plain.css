@@ -201,3 +201,8 @@
 .plain .options-menu-search-input {
 	width: 100%;
 }
+
+.plain .options-menu-search-no-results {
+	margin: .5em 0 .5em 0;
+	text-align: left;
+}

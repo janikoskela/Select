@@ -308,7 +308,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(userDefinedSettings, this);
     	var optionsMenuListElem = this.optionsMenuList.render();
         if (this.useSearchInput === true) {
-        	this.optionsMenuSearchWrapper = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(this);
+        	this.optionsMenuSearchWrapper = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(userDefinedSettings, this);
         	var optionsMenuSearchWrapperElem = this.optionsMenuSearchWrapper.render();
     		this.element.appendChild(optionsMenuSearchWrapperElem);
         }
@@ -319,6 +319,16 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.getOptionsMenuSearchWrapper = function() {
 		return this.optionsMenuSearchWrapper;
+	}
+
+	this.onNoOptionsFound = function() {
+		this.optionsMenuList.getElement().hide();
+		this.optionsMenuSearchWrapper.getOptionsMenuSearchNoResults().show();
+	}
+
+	this.onOptionsFound = function() {
+		this.optionsMenuList.getElement().show();
+		this.optionsMenuSearchWrapper.getOptionsMenuSearchNoResults().hide();
 	}
 
 	this.isLocked = function() {
@@ -506,15 +516,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			setSelected(e);
 		if (that.optionsMenuList.isInputSearchEnabled())
 			that.optionsMenuList.clearSearchResult();
-	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemGroup = function(option) {
-	this.type = "ul";
-	this.element;
-	this.label;
-
-	this.render = function() {
-    	this.element = document.createElement(this.type);
-    	return this.element;
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(imageUrl) {
 	this.type = "img";
@@ -737,13 +738,19 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.inputSearchEnabled = true;
     	this.element.removeChildren();
     	var l = this.optionItems.length;
+    	var foundOptions = 0;
     	for (var i = 0; i < l; i++) {
     		var option = this.optionItems[i];
     		var optionText = option.getText();
     		if (optionText.indexOf(query) > -1) {
     			this.element.appendChild(option.getElement());
+    			foundOptions++;
     		}
     	}
+    	if (foundOptions === 0)
+    		this.optionsMenu.onNoOptionsFound();
+    	else
+    		this.optionsMenu.onOptionsFound();
     }
 
 	this.searchByFirstChar = function(firstChar) {
@@ -876,19 +883,48 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.value = value;
 		this.optionsMenu.getOptionsMenuList().searchByInputString(value);
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(optionsMenu) {
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(userDefinedSettings) {
+	this.type = "div";
+	this.className = "options-menu-search-no-results";
+	this.element;
+	this.text = userDefinedSettings.noResultsMessage || "No results";
+
+	this.render = function() {
+    	this.element = SELEX.UTILS.createElement(this.type, this.className);
+    	var textNode = document.createTextNode(this.text);
+    	this.element.appendChild(textNode);
+    	this.hide();
+    	return this.element;
+	}
+
+	this.show = function() {
+		this.element.show();
+	}
+
+	this.hide = function() {
+		this.element.hide();
+	}
+
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(userDefinedSettings, optionsMenu) {
 	this.type = "div";
 	this.className = "options-menu-search-wrapper";
 	this.element;
 	this.optionsMenu = optionsMenu;
 	this.optionsMenuSearchInput;
+	this.optionsMenuSearchNoResults;
 
 	this.render = function() {
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.optionsMenuSearchInput = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput(this.optionsMenu);
     	var optionsMenuSearchInputElem = this.optionsMenuSearchInput.render();
     	this.element.appendChild(optionsMenuSearchInputElem);
+    	this.optionsMenuSearchNoResults = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(userDefinedSettings);
+    	this.element.appendChild(this.optionsMenuSearchNoResults.render());
     	return this.element;
+	}
+
+	this.getOptionsMenuSearchNoResults = function() {
+		return this.optionsMenuSearchNoResults;
 	}
 
 	this.clear = function() {

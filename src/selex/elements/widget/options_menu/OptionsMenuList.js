@@ -197,13 +197,19 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     	this.inputSearchEnabled = true;
     	this.element.removeChildren();
     	var l = this.optionItems.length;
+    	var foundOptions = 0;
     	for (var i = 0; i < l; i++) {
     		var option = this.optionItems[i];
     		var optionText = option.getText();
     		if (optionText.indexOf(query) > -1) {
     			this.element.appendChild(option.getElement());
+    			foundOptions++;
     		}
     	}
+    	if (foundOptions === 0)
+    		this.optionsMenu.onNoOptionsFound();
+    	else
+    		this.optionsMenu.onOptionsFound();
     }
 
 	this.searchByFirstChar = function(firstChar) {

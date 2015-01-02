@@ -21,9 +21,9 @@
 <body>
     <select id="plain" tabindex="1">
       <option value="j">jjjjjjjj</option>
-      <option selected="selected" value="a">aaaaaaaaaa</option>
+      <option value="a">aaaaaaaaaa</option>
       <option value="b">bbbbbb</option>
-      <option value="c">cccccccccccccccccc</option>
+      <option selected value="c">cccccccccccccccccccccokaskodmkasodkoamsdkomsaodmaskodmsakodmoksadkosamdokmasmdaskodmaskodskmaodc</option>
       <option value="d">ddd</option>
       <option value="e">eeeeeee</option>
       <option value="f">ffffff</option>
@@ -43,7 +43,7 @@
       <option>  aeqweq</option>
     </select>
     <select id="poison" tabindex="4">
-     <option value="j">jjjjjjjj</option>
+     <option selected value="j">jjjjjjjjsadkomaskasdkmqwkoemkoqwkoemwkoqeomksakodsanjidinasdsadjniqwjniejniwqenwqnjenjiqwejnwqejniwjnqienjsadmkosakmdoqwkmoemkowqkmoewqkmoekwmoqemkoodsakodomsakdmkosadmkosamdkomsdokmqwmemkowqenwqiehqweuwnqijeiqwjeijqnisadkmsadmkoasmk</option>
       <option value="a">aaaaaaaaaa</option>
       <option value="b">bbbbbb</option>
       <option value="c">cccccccccccccccccc</option>
@@ -74,19 +74,20 @@ var settings = {
   optionLimit: 4,
   theme: "plain",
   sort: "desc",
+  useSearchInput: true,
   orientation: "right",
   width: "20em",
   closeWhenCursorOut: false,
 };
 var plainInstance = new Selex(settings);
 plainInstance.render();
-plainInstance.toggleLoadingMode();
+//plainInstance.toggleLoadingMode();
 setTimeout(function() {
   console.log("KOASMDOKASMDKO")
   $("#plain option[value='a']").remove();
   $('#plain').append('<option value="foo">akomdkoasd</option>');
   //plainInstance.toggleLoadingMode();
-  instance.toggleLoadingMode();
+  //instance.toggleLoadingMode();
 }, 5000);
 //plain.setAttribute("disabled", true);
 instance = new Selex({
