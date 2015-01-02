@@ -105,6 +105,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     }
 
     this.hoverPreviousOption = function() {
+		if (this.optionsMenu.isLocked)
+			return;
     	var hovered = this.getHoveredOption();
     	var option;
     	if (hovered === undefined) {
@@ -124,6 +126,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     }
 
     this.hoverNextOption = function() {
+		if (this.optionsMenu.isLocked)
+			return;
     	var hovered = this.getHoveredOption();
     	var option;
     	if (hovered === undefined) {
@@ -143,6 +147,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     }
 
     this.selectHoveredOption = function() {
+		if (this.optionsMenu.isLocked)
+			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.onClick();
@@ -178,6 +184,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     }
 
 	this.searchByFirstChar = function(firstChar) {
+		if (this.optionsMenu.isLocked)
+			return;
 		var hovered = this.getHoveredOption();
 		var optionItemsCount = this.optionItems.length;
 		if (hovered === undefined) {

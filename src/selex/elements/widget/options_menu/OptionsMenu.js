@@ -8,6 +8,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
+	this.locked = false;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -16,6 +17,19 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
     	this.element.appendChild(optionsMenuListElem);
     	this.setWidth(this.width);
     	return this.element;
+	}
+
+	this.isLocked = function() {
+		return this.locked;
+	}
+
+	this.disableLoadingMode = function() {
+		this.locked = false;
+	}
+
+	this.enableLoadingMode = function() {
+		this.hide();
+		this.locked = true;
 	}
 
 	this.getOptionsMenuList = function() {
@@ -50,6 +64,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	}
 
 	this.show = function() {
+		if (this.locked === true)
+			return;
 		this.element.show();
 		this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");

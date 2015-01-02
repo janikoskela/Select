@@ -43,7 +43,7 @@
       <option>  aeqweq</option>
     </select>
     <select id="poison" tabindex="4">
-     <!-- <option value="j">jjjjjjjj</option>
+     <option value="j">jjjjjjjj</option>
       <option value="a">aaaaaaaaaa</option>
       <option value="b">bbbbbb</option>
       <option value="c">cccccccccccccccccc</option>
@@ -52,7 +52,7 @@
       <option value="f">ffffff</option>
       <option value="g">gggggggg</option>
       <option value="h">hhhhh</option>
-      <option value="i">iiiii</option>-->
+      <option value="i">iiiii</option>
     </select>
 <script type="text/javascript">
 var normal = document.getElementById("normal");
@@ -76,11 +76,18 @@ var settings = {
   sort: "desc",
   orientation: "right",
   width: "20em",
-  placeholder: "Choose an option",
   closeWhenCursorOut: false,
 };
-var instance = new Selex(settings);
-instance.render();
+var plainInstance = new Selex(settings);
+plainInstance.render();
+plainInstance.toggleLoadingMode();
+setTimeout(function() {
+  console.log("KOASMDOKASMDKO")
+  $("#plain option[value='a']").remove();
+  $('#plain').append('<option value="foo">akomdkoasd</option>');
+  //plainInstance.toggleLoadingMode();
+  instance.toggleLoadingMode();
+}, 5000);
 //plain.setAttribute("disabled", true);
 instance = new Selex({
   targetElement: document.getElementById("poison"),
@@ -92,6 +99,7 @@ instance = new Selex({
   closeWhenCursorOut: true,
 });
 instance.render();
+instance.toggleLoadingMode();
 </script>
 </body>
 </html>

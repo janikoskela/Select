@@ -55,6 +55,14 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, 
     this.getNativeSelect = function() {
         return this.nativeSelectBox;
     }
+    
+    this.enableLoadingMode = function() {
+        this.valueContainer.enableLoadingMode();
+    }
+
+    this.disableLoadingMode = function() {
+        this.valueContainer.disableLoadingMode();
+    }
 
     this.getWidgetWrapper = function() {
         return this.widgetWrapper;

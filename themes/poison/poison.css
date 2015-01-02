@@ -22,7 +22,7 @@
 }
 
 .poison .widget-sub-wrapper {
-	background-color: #44A614;
+	background-color: #4EBF17;
 	height: 3.5em;
 	line-height: 2em;
 	position: relative;
@@ -81,6 +81,7 @@
 	float: left;
 	width: 30px;
 	height: 32px;
+	background: #44A614;
 }
 
 .poison .arrow-container div {

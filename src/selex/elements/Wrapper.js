@@ -18,6 +18,8 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
 
     this.targetElement = userDefinedSettings.targetElement;
 
+    this.loadingMode = false;
+
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.setWidth(this.width);
@@ -46,6 +48,25 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
         that.element.appendChild(widgetWrapperElem);
         that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
         that.widgetWrapper.getOptionsMenu().hide();
+    }
+
+    this.toggleLoadingMode = function() {
+        if (this.loadingMode === false)
+            this.enableLoadingMode();
+        else
+            this.disableLoadingMode();
+    }
+
+    this.enableLoadingMode = function() {
+        this.loadingMode = true;
+        this.widgetWrapper.getOptionsMenu().enableLoadingMode();
+        this.widgetWrapper.getWidgetSubWrapper().enableLoadingMode();
+    }
+
+    this.disableLoadingMode = function() {
+        this.loadingMode = false;
+        this.widgetWrapper.getOptionsMenu().disableLoadingMode();
+        this.widgetWrapper.getWidgetSubWrapper().disableLoadingMode();
     }
 
     this.getTargetElement = function() {

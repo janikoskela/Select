@@ -1,11 +1,12 @@
 SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(userDefinedSettings, widgetSubWrapper) {
-
+	var that = this;
 	this.type = "div";
 	this.className = "value-container";
 	this.widgetSubWrapper = widgetSubWrapper;
 	this.element;
 	this.valueContainerText;
 	this.valueContainerImage;
+	this.loadingText = userDefinedSettings.loadingText || "Loading";
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -27,13 +28,34 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(userDefinedSetti
 	this.refresh = function() {
 		this.valueContainerText.refresh();
 		var imageUrl = this.widgetSubWrapper.getNativeSelect().getSelectedOptionImageUrl();
-		console.log(imageUrl)
 		if (imageUrl !== undefined && imageUrl !== null) {
 			this.valueContainerImage.setImageUrl(imageUrl);
 			this.valueContainerImage.show();
 		}
 		else
 			this.valueContainerImage.hide();
+	}
+
+	this.enableLoadingMode = function() {
+		this.valueContainerText.setText(this.loadingText);
+		if (this.timeInterval === undefined)
+			enableDotDotDotInterval();
+	}
+
+	function enableDotDotDotInterval() {
+		var dots = ".";
+		that.timeInterval = setInterval(function() {
+			if (dots.length === 3)
+				dots = ".";
+			else
+				dots += ".";
+			that.valueContainerText.setText(that.loadingText + dots);
+		}, 500);
+	}
+
+	this.disableLoadingMode = function() {
+		clearInterval(this.timeInterval);
+		this.valueContainerText.refresh();
 	}
 
 	this.getWidgetSubWrapper = function() {

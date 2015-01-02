@@ -54,7 +54,6 @@
     width: -webkit-calc(100% - 30px);
     width: -o-calc(100% - 30px);
     width: calc(100% - 30px);
-	background-color: blue;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

@@ -62,6 +62,9 @@
 			return this;
 		}
 
+		this.toggleLoadingMode = function() {
+			this.wrapper.toggleLoadingMode();
+		}
 	}
 
 SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#constructor-parameters";SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
@@ -286,24 +289,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			this.down();
 		}
 	}
-};SELEX.ELEMENTS.WIDGET.LOADING_OVERLAY.LoadingOverlay = function(userDefinedSettings) {
-	this.type = "div";
-	this.className = "loading-overlay";
-	this.element;
-
-	this.render = function() {
-    	this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	this.hide();
-    	return this.element;
-	}
-
-	this.hide = function() {
-		this.element.hide();
-	}
-
-	this.show = function() {
-		this.element.show();
-	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, widgetWrapper) {
 	var that = this;
 	this.type = "div";
@@ -314,6 +299,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
+	this.locked = false;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -322,6 +308,19 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.appendChild(optionsMenuListElem);
     	this.setWidth(this.width);
     	return this.element;
+	}
+
+	this.isLocked = function() {
+		return this.locked;
+	}
+
+	this.disableLoadingMode = function() {
+		this.locked = false;
+	}
+
+	this.enableLoadingMode = function() {
+		this.hide();
+		this.locked = true;
 	}
 
 	this.getOptionsMenuList = function() {
@@ -356,6 +355,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.show = function() {
+		if (this.locked === true)
+			return;
 		this.element.show();
 		this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
@@ -631,6 +632,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     this.hoverPreviousOption = function() {
+		if (this.optionsMenu.isLocked)
+			return;
     	var hovered = this.getHoveredOption();
     	var option;
     	if (hovered === undefined) {
@@ -650,6 +653,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     this.hoverNextOption = function() {
+		if (this.optionsMenu.isLocked)
+			return;
     	var hovered = this.getHoveredOption();
     	var option;
     	if (hovered === undefined) {
@@ -669,6 +674,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     this.selectHoveredOption = function() {
+		if (this.optionsMenu.isLocked)
+			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.onClick();
@@ -704,6 +711,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
 	this.searchByFirstChar = function(firstChar) {
+		if (this.optionsMenu.isLocked)
+			return;
 		var hovered = this.getHoveredOption();
 		var optionItemsCount = this.optionItems.length;
 		if (hovered === undefined) {
@@ -859,6 +868,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.getNativeSelect = function() {
         return this.nativeSelectBox;
     }
+    
+    this.enableLoadingMode = function() {
+        this.valueContainer.enableLoadingMode();
+    }
+
+    this.disableLoadingMode = function() {
+        this.valueContainer.disableLoadingMode();
+    }
 
     this.getWidgetWrapper = function() {
         return this.widgetWrapper;
@@ -880,13 +897,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
 };SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(userDefinedSettings, widgetSubWrapper) {
-
+	var that = this;
 	this.type = "div";
 	this.className = "value-container";
 	this.widgetSubWrapper = widgetSubWrapper;
 	this.element;
 	this.valueContainerText;
 	this.valueContainerImage;
+	this.loadingText = userDefinedSettings.loadingText || "Loading";
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -908,13 +926,34 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.refresh = function() {
 		this.valueContainerText.refresh();
 		var imageUrl = this.widgetSubWrapper.getNativeSelect().getSelectedOptionImageUrl();
-		console.log(imageUrl)
 		if (imageUrl !== undefined && imageUrl !== null) {
 			this.valueContainerImage.setImageUrl(imageUrl);
 			this.valueContainerImage.show();
 		}
 		else
 			this.valueContainerImage.hide();
+	}
+
+	this.enableLoadingMode = function() {
+		this.valueContainerText.setText(this.loadingText);
+		if (this.timeInterval === undefined)
+			enableDotDotDotInterval();
+	}
+
+	function enableDotDotDotInterval() {
+		var dots = ".";
+		that.timeInterval = setInterval(function() {
+			if (dots.length === 3)
+				dots = ".";
+			else
+				dots += ".";
+			that.valueContainerText.setText(that.loadingText + dots);
+		}, 500);
+	}
+
+	this.disableLoadingMode = function() {
+		clearInterval(this.timeInterval);
+		this.valueContainerText.refresh();
 	}
 
 	this.getWidgetSubWrapper = function() {
@@ -1103,6 +1142,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.targetElement = userDefinedSettings.targetElement;
 
+    this.loadingMode = false;
+
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.setWidth(this.width);
@@ -1131,6 +1172,25 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         that.element.appendChild(widgetWrapperElem);
         that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
         that.widgetWrapper.getOptionsMenu().hide();
+    }
+
+    this.toggleLoadingMode = function() {
+        if (this.loadingMode === false)
+            this.enableLoadingMode();
+        else
+            this.disableLoadingMode();
+    }
+
+    this.enableLoadingMode = function() {
+        this.loadingMode = true;
+        this.widgetWrapper.getOptionsMenu().enableLoadingMode();
+        this.widgetWrapper.getWidgetSubWrapper().enableLoadingMode();
+    }
+
+    this.disableLoadingMode = function() {
+        this.loadingMode = false;
+        this.widgetWrapper.getOptionsMenu().disableLoadingMode();
+        this.widgetWrapper.getWidgetSubWrapper().disableLoadingMode();
     }
 
     this.getTargetElement = function() {

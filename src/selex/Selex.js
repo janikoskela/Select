@@ -62,6 +62,9 @@
 			return this;
 		}
 
+		this.toggleLoadingMode = function() {
+			this.wrapper.toggleLoadingMode();
+		}
 	}
 
 }(jQuery));
