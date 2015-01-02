@@ -32,6 +32,7 @@ placeholder|String|-|Sets a placeholder text
 sort|String|-|Sorts options
 optionMenuWidth|String|-|Determines the width of option menu. Overrides width param
 closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
+loadingText|text|"Loading"|The text which is used in loading mode
 
 Public methods
 ===============
@@ -42,6 +43,7 @@ show|-|Shows widget
 hide|-|Hides widget
 enable|-|Enables widget
 disable|-|Disabled widget
+toggleLoadingMode|-|Enables or disables loading mode
 
 Browser compatibility
 ==============
