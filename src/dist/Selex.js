@@ -740,8 +740,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	var foundOptions = 0;
     	for (var i = 0; i < l; i++) {
     		var option = this.optionItems[i];
-    		var optionText = option.getText();
-    		if (optionText.indexOf(query) > -1) {
+    		var optionText = option.getText().toLowerCase();
+    		if (optionText.indexOf(query.toLowerCase()) > -1) {
     			this.element.appendChild(option.getElement());
     			foundOptions++;
     		}
@@ -756,13 +756,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.searchByFirstChar = function(firstChar) {
 		if (this.optionsMenu.isLocked())
 			return;
+		firstChar = firstChar.toLowerCase();
 		var hovered = this.getHoveredOption();
 		var optionItemsCount = this.optionItems.length;
 		if (hovered === undefined) {
 			findOptionByFirstCharFromStart(firstChar);
 		}
 		else {
-			var hoveredText = hovered.getText();
+			var hoveredText = hovered.getText().toLowerCase();
 			var hoveredIndex = hovered.getIndex();
 			for (var i = hoveredIndex + 1; i < optionItemsCount; i++) {
 				if (isNextOptionFirstCharMatch(this.optionItems[i], firstChar))
