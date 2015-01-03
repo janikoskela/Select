@@ -27,10 +27,9 @@ Name| Type | Default | Description
 theme|String|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
 width|String|-|Width for the select box
 orientation|String|"right"|Defines the side where arrow points
-optionLimit|Number|- |Specifies how many options will be displayed. If not specified all options will be displayed
 placeholder|String|-|Sets a placeholder text
 sort|String|-|Sorts options
-optionMenuWidth|String|-|Determines the width of option menu. Overrides width param
+optionMenuWidth|String|-|Determines the width of option menu. Overrides the width of the widget
 closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
 loadingText|text|"Loading"|The text which is used in loading mode
 useSearchInput|boolean|false|Renders search input if true

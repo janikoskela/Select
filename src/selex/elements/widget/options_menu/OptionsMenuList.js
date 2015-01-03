@@ -45,14 +45,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
             return;
         if (children.length > 0) {        
          	var h = children[0].offsetHeight;
-            if (that.optionLimit === undefined || children.length < that.optionLimit)
                 h *= children.length;
-            else
-                h *= that.optionLimit;
             //h++; //so that element does not become scrollable in cas
             h += "px";
-            if (that.optionLimit !== undefined)
-                that.setHeight(h);
+            this.setHeight(h);
+            this.optionsMenu.show();
         }
 	}
 
@@ -210,6 +207,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     		this.optionsMenu.onNoOptionsFound();
     	else
     		this.optionsMenu.onOptionsFound();
+    	this.adjustHeight();
     }
 
 	this.searchByFirstChar = function(firstChar) {
@@ -290,27 +288,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
-	}
-
-	this.removeOptionByOptionElement = function(optionElem) {
-		var option = this.getOptionByValue(optionElem.value);
-		if (option !== undefined) {
-			if (option.isSelected()) {
-				var i = option.getIndex();
-				var nextSibling = this.optionItems[i + 1];
-				if (nextSibling !== undefined) {
-					nextSibling.setSelected();
-					nextSibling.onClick();
-				}
-				else if (this.optionItems.length > 0) {
-					this.optionItems[0].setSelected();
-					this.optionItems[0].onClick();
-				}
-				else
-					this.valueContainerText.setText("");
-
-			}
-			this.element.removeChild(option.getElement());
-		}
 	}
 };

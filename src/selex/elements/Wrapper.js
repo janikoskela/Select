@@ -46,7 +46,7 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
         that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(userDefinedSettings, that, that.nativeSelectBox);
         var widgetWrapperElem = that.widgetWrapper.render();
         that.element.appendChild(widgetWrapperElem);
-        that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
+        //that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
         that.widgetWrapper.getOptionsMenu().hide();
     }
 
