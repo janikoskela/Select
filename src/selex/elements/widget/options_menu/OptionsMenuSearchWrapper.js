@@ -20,9 +20,12 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
 		this.width = width;
 	}
 
-	this.clear = function() {
-		Facade.publish("OptionsMenuSearchInput").clear();
-		Facade.publish("OptionsMenuSearchNoResults").hide();
+	this.hide = function() {
+		this.element.hide();
+	}
+
+	this.show = function() {
+		this.element.show();
 	}
 
 };

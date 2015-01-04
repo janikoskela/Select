@@ -7,6 +7,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
 	this.locked = false;
+	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -24,13 +25,13 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	}
 
 	this.onNoOptionsFound = function() {
-		Facade.publish("OptionsMenuList").hide();
-		Facade.publish("OptionsMenuSearchWrapper").show();
+		Facade.publish("OptionsMenuList:hide");
+		Facade.publish("OptionsMenuSearchWrapper:show");
 	}
 
 	this.onOptionsFound = function() {
-		Facade.publish("OptionsMenuList").show();
-		Facade.publish("OptionsMenuSearchWrapper").hide();
+		Facade.publish("OptionsMenuList:show");
+		Facade.publish("OptionsMenuSearchWrapper:hide");
 	}
 
 	this.isLocked = function() {

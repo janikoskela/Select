@@ -10,7 +10,7 @@ SELEX.Facade = function() {
 			var instance = this[parts[0]];
 			if (instance !== undefined) {
 				var func = instance[parts[1]];
-				return func(args);
+				return func.bind(instance);
 			}
 		}
 		return this[name];

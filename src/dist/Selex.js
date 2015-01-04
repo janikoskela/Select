@@ -298,6 +298,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
 	this.locked = false;
+	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -315,13 +316,13 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.onNoOptionsFound = function() {
-		Facade.publish("OptionsMenuList").hide();
-		Facade.publish("OptionsMenuSearchWrapper").show();
+		Facade.publish("OptionsMenuList:hide");
+		Facade.publish("OptionsMenuSearchWrapper:show");
 	}
 
 	this.onOptionsFound = function() {
-		Facade.publish("OptionsMenuList").show();
-		Facade.publish("OptionsMenuSearchWrapper").hide();
+		Facade.publish("OptionsMenuList:show");
+		Facade.publish("OptionsMenuSearchWrapper:hide");
 	}
 
 	this.isLocked = function() {
@@ -899,9 +900,12 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.width = width;
 	}
 
-	this.clear = function() {
-		Facade.publish("OptionsMenuSearchInput").clear();
-		Facade.publish("OptionsMenuSearchNoResults").hide();
+	this.hide = function() {
+		this.element.hide();
+	}
+
+	this.show = function() {
+		this.element.show();
 	}
 
 };SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
@@ -1295,7 +1299,7 @@ SELEX.EXCEPTIONS.InvalidOptionsErrorException = function() {
 			var instance = this[parts[0]];
 			if (instance !== undefined) {
 				var func = instance[parts[1]];
-				return func(args);
+				return func.bind(instance);
 			}
 		}
 		return this[name];

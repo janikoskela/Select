@@ -114,7 +114,6 @@
 .plain .options-container {
     position: absolute;
     left: 0;
-    max-height: 30em;
     z-index: 1;
 	padding: 0;
 	margin: 0;
@@ -142,6 +141,8 @@
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
+    max-height: 30em;
+	
 }
 
 .plain .options-container-list li {
