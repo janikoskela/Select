@@ -189,10 +189,11 @@
 	margin: auto;
 	background: #fff;
 	padding: .3em;
+	text-align: center
 }
 
 .plain .options-menu-search-input {
-	width: 95%;
+	width: calc(100% - 2px);
 	-webkit-appearance:textfield;
 }
 
