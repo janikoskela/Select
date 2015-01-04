@@ -6,11 +6,7 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
 
     this.className = userDefinedSettings.theme || "plain";
 
-    this.fontSize = userDefinedSettings.fontSize;
-
-    this.fontFamily = userDefinedSettings.fontFamily;
-
-    this.width = userDefinedSettings.width || "100%";
+    this.width = userDefinedSettings.width;
 
     this.widgetWrapper;
 
@@ -22,7 +18,6 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
 
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
-        this.setWidth(this.width);
         var tagName = this.targetElement.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
@@ -39,7 +34,17 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
                 throw new SELEX.EXCEPTIONS.InvalidTargetElementErrorException();
         }
         renderWidget();
+        if (this.width !== undefined)
+            this.setWidth(this.width);
+        else
+            calculateWidthBasedOnWidestOption();
         return this.element;
+    }
+
+    function calculateWidthBasedOnWidestOption() {
+        var optionsMenuList = that.widgetWrapper.getOptionsMenu().getOptionsMenuList();
+        var width = optionsMenuList.getWidestOption();
+        that.setWidth(width);
     }
 
     function renderWidget() {
@@ -48,6 +53,10 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
         that.element.appendChild(widgetWrapperElem);
         //that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
         that.widgetWrapper.getOptionsMenu().hide();
+    }
+
+    this.getWidth = function() {
+        return this.width;
     }
 
     this.toggleLoadingMode = function() {

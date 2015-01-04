@@ -25,14 +25,15 @@ Optional widget settings
 Name| Type | Default | Description
 ---|---|---------------|-----|------------|------
 theme|String|"plain"|Defines what theme is to be used. Basically this will simply define the class of the root element
-width|String|-|Width for the select box
+width|String|-|Width for the select box. If not defined widgets width is based on the widest option
 orientation|String|"right"|Defines the side where arrow points
 placeholder|String|-|Sets a placeholder text
 sort|String|-|Sorts options
 optionMenuWidth|String|-|Determines the width of option menu. Overrides the width of the widget
 closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
-loadingText|text|"Loading"|The text which is used in loading mode
+loadingText|String|"Loading"|The text which is used in loading mode
 useSearchInput|boolean|false|Renders search input if true
+noResultsMessage|String|"No results"|No results message
 
 Public methods
 ===============

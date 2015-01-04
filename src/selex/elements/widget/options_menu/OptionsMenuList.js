@@ -39,18 +39,18 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 		return this.optionsMenu;
 	}
 
-	this.adjustHeight = function() {
-		var children = that.element.getChildren();
-        if (children.length === 0)
-            return;
-        if (children.length > 0) {        
-         	var h = children[0].offsetHeight;
-                h *= children.length;
-            //h++; //so that element does not become scrollable in cas
-            h += "px";
-            this.setHeight(h);
-            this.optionsMenu.show();
-        }
+	this.getWidestOption = function() {
+		this.optionsMenu.show();
+		var l = this.optionItems.length;
+		var longest = 0;
+		for (var i = 0; i < l; i++) {
+			var option = this.optionItems[i];
+			var optionWidth = option.getWidth();
+			if (optionWidth > longest)
+				longest = optionWidth;
+		}
+		this.optionsMenu.hide();
+		return longest;
 	}
 
 	function renderOptionItems(options) {
@@ -155,8 +155,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     function findOptionByFirstCharFromStart(firstChar) {
     	var optionItemsCount = that.optionItems.length;
     	for (var i = 0; i < optionItemsCount; i++) {
-			var itemText = that.optionItems[i].getText()
-			if (firstChar === itemText[0]) {
+			var itemText = that.optionItems[i].getText();
+			if (firstChar === itemText[0].toLowerCase()) {
 				that.optionItems[i].setHovered();
 				if (that.optionsMenu.isHidden())
 					that.optionItems[i].onClick();
@@ -169,7 +169,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 
     function isNextOptionFirstCharMatch(optionItem, firstChar) {
     	var text = optionItem.getText();
-    	if (text[0] === firstChar) {
+    	if (text[0].toLowerCase() === firstChar) {
     		that.clearOptionItemHovers();
     		optionItem.setHovered();
     		if (that.optionsMenu.isHidden())
@@ -207,7 +207,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     		this.optionsMenu.onNoOptionsFound();
     	else
     		this.optionsMenu.onOptionsFound();
-    	this.adjustHeight();
+    	//this.adjustHeight();
     }
 
 	this.searchByFirstChar = function(firstChar) {

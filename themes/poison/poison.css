@@ -164,7 +164,7 @@
 }
 
 .poison .options-menu-search-wrapper {
-	width: 98%;
+	width: calc(100% - 4px);
 	margin: auto;
 }
 

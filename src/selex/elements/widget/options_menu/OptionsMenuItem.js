@@ -41,6 +41,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(nativeSelectOption
 		return this.nativeSelectOption.getValue();
 	}
 
+	this.getWidth = function() {
+		return this.element.offsetWidth;
+	}
+
 	this.getElement = function() {
 		return this.element;
 	}

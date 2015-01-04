@@ -3,7 +3,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	this.type = "div";
 	this.className = "options-container";
 	this.element;
-	this.width = userDefinedSettings.optionsMenuWidth || "100%";
+	this.width = userDefinedSettings.optionsMenuWidth;
 	this.arrowContainerContent = widgetWrapper.getWidgetSubWrapper().getArrowContainer().getArrowContainerContent();
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
@@ -22,7 +22,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
     		this.element.appendChild(optionsMenuSearchWrapperElem);
         }
     	this.element.appendChild(optionsMenuListElem);
-    	this.setWidth(this.width);
+    	if (this.width !== undefined)
+			this.setWidth(this.width);
     	return this.element;
 	}
 

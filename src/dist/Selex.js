@@ -294,7 +294,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.type = "div";
 	this.className = "options-container";
 	this.element;
-	this.width = userDefinedSettings.optionsMenuWidth || "100%";
+	this.width = userDefinedSettings.optionsMenuWidth;
 	this.arrowContainerContent = widgetWrapper.getWidgetSubWrapper().getArrowContainer().getArrowContainerContent();
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
@@ -313,7 +313,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     		this.element.appendChild(optionsMenuSearchWrapperElem);
         }
     	this.element.appendChild(optionsMenuListElem);
-    	this.setWidth(this.width);
+    	if (this.width !== undefined)
+			this.setWidth(this.width);
     	return this.element;
 	}
 
@@ -449,6 +450,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		return this.nativeSelectOption.getValue();
 	}
 
+	this.getWidth = function() {
+		return this.element.offsetWidth;
+	}
+
 	this.getElement = function() {
 		return this.element;
 	}
@@ -582,18 +587,18 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		return this.optionsMenu;
 	}
 
-	this.adjustHeight = function() {
-		var children = that.element.getChildren();
-        if (children.length === 0)
-            return;
-        if (children.length > 0) {        
-         	var h = children[0].offsetHeight;
-                h *= children.length;
-            //h++; //so that element does not become scrollable in cas
-            h += "px";
-            this.setHeight(h);
-            this.optionsMenu.show();
-        }
+	this.getWidestOption = function() {
+		this.optionsMenu.show();
+		var l = this.optionItems.length;
+		var longest = 0;
+		for (var i = 0; i < l; i++) {
+			var option = this.optionItems[i];
+			var optionWidth = option.getWidth();
+			if (optionWidth > longest)
+				longest = optionWidth;
+		}
+		this.optionsMenu.hide();
+		return longest;
 	}
 
 	function renderOptionItems(options) {
@@ -698,8 +703,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     function findOptionByFirstCharFromStart(firstChar) {
     	var optionItemsCount = that.optionItems.length;
     	for (var i = 0; i < optionItemsCount; i++) {
-			var itemText = that.optionItems[i].getText()
-			if (firstChar === itemText[0]) {
+			var itemText = that.optionItems[i].getText();
+			if (firstChar === itemText[0].toLowerCase()) {
 				that.optionItems[i].setHovered();
 				if (that.optionsMenu.isHidden())
 					that.optionItems[i].onClick();
@@ -712,7 +717,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     function isNextOptionFirstCharMatch(optionItem, firstChar) {
     	var text = optionItem.getText();
-    	if (text[0] === firstChar) {
+    	if (text[0].toLowerCase() === firstChar) {
     		that.clearOptionItemHovers();
     		optionItem.setHovered();
     		if (that.optionsMenu.isHidden())
@@ -750,7 +755,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     		this.optionsMenu.onNoOptionsFound();
     	else
     		this.optionsMenu.onOptionsFound();
-    	this.adjustHeight();
+    	//this.adjustHeight();
     }
 
 	this.searchByFirstChar = function(firstChar) {
@@ -1240,11 +1245,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.className = userDefinedSettings.theme || "plain";
 
-    this.fontSize = userDefinedSettings.fontSize;
-
-    this.fontFamily = userDefinedSettings.fontFamily;
-
-    this.width = userDefinedSettings.width || "100%";
+    this.width = userDefinedSettings.width;
 
     this.widgetWrapper;
 
@@ -1256,7 +1257,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
-        this.setWidth(this.width);
         var tagName = this.targetElement.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
@@ -1273,7 +1273,17 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
                 throw new SELEX.EXCEPTIONS.InvalidTargetElementErrorException();
         }
         renderWidget();
+        if (this.width !== undefined)
+            this.setWidth(this.width);
+        else
+            calculateWidthBasedOnWidestOption();
         return this.element;
+    }
+
+    function calculateWidthBasedOnWidestOption() {
+        var optionsMenuList = that.widgetWrapper.getOptionsMenu().getOptionsMenuList();
+        var width = optionsMenuList.getWidestOption();
+        that.setWidth(width);
     }
 
     function renderWidget() {
@@ -1282,6 +1292,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         that.element.appendChild(widgetWrapperElem);
         //that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
         that.widgetWrapper.getOptionsMenu().hide();
+    }
+
+    this.getWidth = function() {
+        return this.width;
     }
 
     this.toggleLoadingMode = function() {
