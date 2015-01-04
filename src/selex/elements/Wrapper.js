@@ -36,15 +36,11 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
         renderWidget();
         if (this.width !== undefined)
             this.setWidth(this.width);
-        else
-            calculateWidthBasedOnWidestOption();
+        else {
+            var width = this.widgetWrapper.getOptionsMenu().getWidth();
+            this.setWidth(width);
+        }
         return this.element;
-    }
-
-    function calculateWidthBasedOnWidestOption() {
-        var optionsMenuList = that.widgetWrapper.getOptionsMenu().getOptionsMenuList();
-        var width = optionsMenuList.getWidestOption();
-        that.setWidth(width);
     }
 
     function renderWidget() {

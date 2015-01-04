@@ -4,7 +4,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	this.className = "options-container";
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
-	this.arrowContainerContent = widgetWrapper.getWidgetSubWrapper().getArrowContainer().getArrowContainerContent();
+	this.arrowContainer = widgetWrapper.getWidgetSubWrapper().getArrowContainer();
+	this.arrowContainerContent = this.arrowContainer.getArrowContainerContent();
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
@@ -71,12 +72,25 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 		this.element.setStyle("width", this.width);
 	}
 
+	this.getWidth = function() {
+		var width = this.element.offsetWidth;
+		if (this.element.isHidden()) {
+			this.element.show();
+			width = this.element.offsetWidth;
+			this.element.hide();
+		}
+		width += this.arrowContainer.getWidth();
+		this.setWidth(width);
+		return width;
+	}
+
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
 	}
 
 	this.hide = function() {
+		this.optionsMenuList.clearSearchResult();
 		this.element.hide();
 		this.arrowContainerContent.down();
 	}

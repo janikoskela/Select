@@ -16,6 +16,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(userDefin
     	return this.element;
 	}
 
+	this.setWidth = function(width) {
+		this.element.setStyle("width", width);
+		this.width = width;
+	}
+
 	this.getOptionsMenuSearchInput = function() {
 		return this.optionsMenuSearchInput;
 	}
@@ -26,6 +31,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(userDefin
 
 	this.clear = function() {
 		this.optionsMenuSearchInput.clear();
+		this.optionsMenuSearchNoResults.hide();
 	}
 
 };

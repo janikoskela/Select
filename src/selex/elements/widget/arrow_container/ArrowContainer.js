@@ -23,4 +23,8 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(params) {
 	this.getElement = function() {
 		return this.element;
 	}
+
+	this.getWidth = function() {
+		return this.element.offsetWidth;
+	}
 };

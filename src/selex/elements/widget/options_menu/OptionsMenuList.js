@@ -39,20 +39,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 		return this.optionsMenu;
 	}
 
-	this.getWidestOption = function() {
-		this.optionsMenu.show();
-		var l = this.optionItems.length;
-		var longest = 0;
-		for (var i = 0; i < l; i++) {
-			var option = this.optionItems[i];
-			var optionWidth = option.getWidth();
-			if (optionWidth > longest)
-				longest = optionWidth;
-		}
-		this.optionsMenu.hide();
-		return longest;
-	}
-
 	function renderOptionItems(options) {
         that.optionItems = [];
         that.element.removeChildren();

@@ -14,6 +14,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(optionsMenu
 
 	this.clear = function() {
 		this.element.value = "";
+		this.optionsMenu.getOptionsMenuList().searchByInputString("");
 	}
 
 	this.focus = function() {

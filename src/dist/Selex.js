@@ -252,6 +252,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.getElement = function() {
 		return this.element;
 	}
+
+	this.getWidth = function() {
+		return this.element.offsetWidth;
+	}
 };SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function() {
 
 	var CLASS_NAME_ARROW_DOWN = "arrow-down";
@@ -295,7 +299,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.className = "options-container";
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
-	this.arrowContainerContent = widgetWrapper.getWidgetSubWrapper().getArrowContainer().getArrowContainerContent();
+	this.arrowContainer = widgetWrapper.getWidgetSubWrapper().getArrowContainer();
+	this.arrowContainerContent = this.arrowContainer.getArrowContainerContent();
 	this.height = undefined;
 	this.widgetWrapper = widgetWrapper;
 	this.optionsMenuList;
@@ -362,12 +367,25 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.element.setStyle("width", this.width);
 	}
 
+	this.getWidth = function() {
+		var width = this.element.offsetWidth;
+		if (this.element.isHidden()) {
+			this.element.show();
+			width = this.element.offsetWidth;
+			this.element.hide();
+		}
+		width += this.arrowContainer.getWidth();
+		this.setWidth(width);
+		return width;
+	}
+
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
 	}
 
 	this.hide = function() {
+		this.optionsMenuList.clearSearchResult();
 		this.element.hide();
 		this.arrowContainerContent.down();
 	}
@@ -585,20 +603,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.getOptionsMenu = function() {
 		return this.optionsMenu;
-	}
-
-	this.getWidestOption = function() {
-		this.optionsMenu.show();
-		var l = this.optionItems.length;
-		var longest = 0;
-		for (var i = 0; i < l; i++) {
-			var option = this.optionItems[i];
-			var optionWidth = option.getWidth();
-			if (optionWidth > longest)
-				longest = optionWidth;
-		}
-		this.optionsMenu.hide();
-		return longest;
 	}
 
 	function renderOptionItems(options) {
@@ -854,6 +858,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.clear = function() {
 		this.element.value = "";
+		this.optionsMenu.getOptionsMenuList().searchByInputString("");
 	}
 
 	this.focus = function() {
@@ -911,6 +916,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	return this.element;
 	}
 
+	this.setWidth = function(width) {
+		this.element.setStyle("width", width);
+		this.width = width;
+	}
+
 	this.getOptionsMenuSearchInput = function() {
 		return this.optionsMenuSearchInput;
 	}
@@ -921,6 +931,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.clear = function() {
 		this.optionsMenuSearchInput.clear();
+		this.optionsMenuSearchNoResults.hide();
 	}
 
 };SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, nativeSelectBox) {
@@ -1275,15 +1286,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         renderWidget();
         if (this.width !== undefined)
             this.setWidth(this.width);
-        else
-            calculateWidthBasedOnWidestOption();
+        else {
+            var width = this.widgetWrapper.getOptionsMenu().getWidth();
+            this.setWidth(width);
+        }
         return this.element;
-    }
-
-    function calculateWidthBasedOnWidestOption() {
-        var optionsMenuList = that.widgetWrapper.getOptionsMenu().getOptionsMenuList();
-        var width = optionsMenuList.getWidestOption();
-        that.setWidth(width);
     }
 
     function renderWidget() {
