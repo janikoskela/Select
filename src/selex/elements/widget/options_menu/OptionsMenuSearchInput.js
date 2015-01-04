@@ -1,8 +1,7 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(optionsMenu) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 	this.type = "input";
 	this.className = "options-menu-search-input";
 	this.element;
-	this.optionsMenu = optionsMenu;
 
 	this.render = function() {
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -14,7 +13,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(optionsMenu
 
 	this.clear = function() {
 		this.element.value = "";
-		this.optionsMenu.getOptionsMenuList().searchByInputString("");
+		Facade.publish("OptionsMenuList").searchByInputString("");
 	}
 
 	this.focus = function() {
@@ -22,14 +21,15 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(optionsMenu
 	}
 
 	function onKeyUp(e) {
+		var optionsMenuList = Facade.publish("OptionsMenuList");
 		var value = this.element.value;
 		if (value.length === 0)
-			this.optionsMenu.getOptionsMenuList().clearSearchResult();
+			optionsMenuList.clearSearchResult();
 		if (this.value !== undefined) {
 			if (value.length === this.value.length)
 				return;
 		}
 		this.value = value;
-		this.optionsMenu.getOptionsMenuList().searchByInputString(value);
+		optionsMenuList.searchByInputString(value);
 	}
 };

@@ -1,4 +1,6 @@
-SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, nativeSelectBox) {
+SELEX.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
+
+    var userDefinedSettings = Facade.publish("UserDefinedSettings");
 
     var ORIENTATION_LEFT = "left";
 
@@ -12,26 +14,15 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, 
 
     this.element;
 
-    this.arrowContainer;
-
-    this.valueContainer;
-
-    this.widgetWrapper = widgetWrapper;
-
-    this.nativeSelectBox = nativeSelectBox;
-
-    this.optionsMenu;
-
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
 
-        this.arrowContainer = new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(userDefinedSettings);
-        var arrowContainerElem = this.arrowContainer.render();
+        var arrowContainer = Facade.subscribe("ArrowContainer", new SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(Facade));
+        var arrowContainerElem = arrowContainer.render();
 
-        this.valueContainer = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(userDefinedSettings, this);
-        var valueContainerElem = this.valueContainer.render();
-
+        var valueContainer = Facade.subscribe("ValueContainer", new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(Facade));
+        var valueContainerElem = valueContainer.render();
 
         switch (this.orientation) {
             case ORIENTATION_LEFT:
@@ -51,36 +42,19 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(userDefinedSettings, widgetWrapper, 
 
         return this.element;
     }
-
-    this.getNativeSelect = function() {
-        return this.nativeSelectBox;
-    }
     
     this.enableLoadingMode = function() {
-        this.valueContainer.enableLoadingMode();
+        Facade.publish("ValueContainer").enableLoadingMode();
     }
 
     this.disableLoadingMode = function() {
-        this.valueContainer.disableLoadingMode();
-    }
-
-    this.getWidgetWrapper = function() {
-        return this.widgetWrapper;
-    }
-
-    this.getValueContainer = function() {
-        return this.valueContainer;
-    }
-
-    this.getArrowContainer = function() {
-        return this.arrowContainer;
+        Facade.publish("ValueContainer").disableLoadingMode();
     }
 
     function onClick(e) {
-        if (this.nativeSelectBox.isDisabled() === false) {
-            this.optionsMenu = this.widgetWrapper.getOptionsMenu();
-            this.optionsMenu.toggle();
-        }
+        var nativeSelectBox = Facade.publish("NativeSelectBox");
+        if (nativeSelectBox.isDisabled() === false)
+            Facade.publish("OptionsMenu").toggle();
     }
 
 };

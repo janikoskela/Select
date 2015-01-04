@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(imageUrl) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(Facade, imageUrl) {
 	this.type = "img";
 	this.imageUrl = imageUrl;
 	this.element;

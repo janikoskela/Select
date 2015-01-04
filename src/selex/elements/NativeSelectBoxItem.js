@@ -1,6 +1,5 @@
-SELEX.ELEMENTS.NativeSelectBoxItem = function(nativeSelect, optionElement) {
+SELEX.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
 	this.element = optionElement;
-	this.nativeSelect = nativeSelect;
 	this.type = "option";
 
 	this.isSelected = function() {
@@ -20,9 +19,9 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(nativeSelect, optionElement) {
 	}
 
 	this.setSelected = function(e) {
-		this.nativeSelect.setSelectedIndex(this.element.index);
-		this.nativeSelect.triggerChange();
-		this.element.setSelected();
+		Facade.publish("NativeSelectBox").setSelectedIndex(this.element.index);
+		Facade.publish("NativeSelectBox").triggerChange();
+		this.element.setSelectedAttribute();
 	}
 
 	this.removeSelected = function() {

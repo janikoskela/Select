@@ -1,18 +1,17 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(userDefinedSettings, optionsMenu) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
+	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-menu-search-wrapper";
 	this.element;
-	this.optionsMenu = optionsMenu;
-	this.optionsMenuSearchInput;
-	this.optionsMenuSearchNoResults;
 
 	this.render = function() {
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	this.optionsMenuSearchInput = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput(this.optionsMenu);
-    	var optionsMenuSearchInputElem = this.optionsMenuSearchInput.render();
+    	var optionsMenuSearchInput = Facade.subscribe("OptionsMenuSearchInput", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput(Facade));
+    	var optionsMenuSearchInputElem = optionsMenuSearchInput.render();
     	this.element.appendChild(optionsMenuSearchInputElem);
-    	this.optionsMenuSearchNoResults = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(userDefinedSettings);
-    	this.element.appendChild(this.optionsMenuSearchNoResults.render());
+    	
+    	var optionsMenuSearchNoResults = Facade.subscribe("OptionsMenuSearchNoResults", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(Facade));
+    	this.element.appendChild(optionsMenuSearchNoResults.render());
     	return this.element;
 	}
 
@@ -21,17 +20,9 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(userDefin
 		this.width = width;
 	}
 
-	this.getOptionsMenuSearchInput = function() {
-		return this.optionsMenuSearchInput;
-	}
-
-	this.getOptionsMenuSearchNoResults = function() {
-		return this.optionsMenuSearchNoResults;
-	}
-
 	this.clear = function() {
-		this.optionsMenuSearchInput.clear();
-		this.optionsMenuSearchNoResults.hide();
+		Facade.publish("OptionsMenuSearchInput").clear();
+		Facade.publish("OptionsMenuSearchNoResults").hide();
 	}
 
 };

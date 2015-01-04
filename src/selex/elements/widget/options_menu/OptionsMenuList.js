@@ -1,17 +1,13 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSettings, optionsMenu) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
+	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	var that = this;
 	this.type = "ul";
 	this.className = "options-container-list";
 	this.element;
 	this.width = "100%";
 	this.height = undefined;
-	this.optionLimit = userDefinedSettings.optionLimit;
 	this.optionItems = [];
 	this.sortType = userDefinedSettings.sort;
-	this.optionsMenu = optionsMenu;
-	this.nativeSelect = this.optionsMenu.getWidgetWrapper().getWrapper().getNativeSelect();
-	this.valueContainer = this.optionsMenu.getWidgetWrapper().getWidgetSubWrapper().getValueContainer();
-	this.valueContainerText = this.valueContainer.getValueContainerText();
 	this.inputSearchEnabled = false;
 
 	this.render = function() {
@@ -21,8 +17,16 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
 		return this.element;
 	}
 
+	this.hide = function() {
+		this.element.hide();
+	}
+
+	this.show = function() {
+		this.element.show();
+	}
+
 	this.refresh = function() {
-        var options = this.nativeSelect.getOptions();
+        var options = Facade.publish("NativeSelectBox").getOptions();
 		switch(this.sortType) {
     		case "asc":
     			options.sort(sortByAsc);
@@ -32,11 +36,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     			break;
 		}
 		renderOptionItems(options);
-		this.valueContainer.refresh();
-	}
-
-	this.getOptionsMenu = function() {
-		return this.optionsMenu;
+		Facade.publish("ValueContainer").refresh();
 	}
 
 	function renderOptionItems(options) {
@@ -45,7 +45,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
         var l = options.length;
 		for (var i = 0; i < l; i++) {
 			var option = options[i];
-			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(option, that, i);
+			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(Facade, option, i);
 			that.optionItems.push(item);
 			var elem = item.render();
 			that.element.appendChild(elem);
@@ -89,7 +89,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     }
 
     this.hoverPreviousOption = function() {
-		if (this.optionsMenu.isLocked())
+    	var optionsMenu = Facade.publish("OptionsMenu");
+		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	var option;
@@ -104,13 +105,14 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     		option = this.optionItems[this.optionItems.length - 1];
     	this.clearOptionItemHovers();
 		option.setHovered();
-		this.optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
-		if (this.optionsMenu.isHidden())
+		optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
+		if (optionsMenu.isHidden())
 			option.onClick();
     }
 
     this.hoverNextOption = function() {
-		if (this.optionsMenu.isLocked())
+		var optionsMenu = Facade.publish("OptionsMenu");
+		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	var option;
@@ -125,13 +127,14 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     		option = this.optionItems[0];
     	this.clearOptionItemHovers();
 		option.setHovered();
-		this.optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
-		if (this.optionsMenu.isHidden())
+		optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
+		if (optionsMenu.isHidden())
 			option.onClick();
     }
 
     this.selectHoveredOption = function() {
-		if (this.optionsMenu.isLocked())
+		var optionsMenu = Facade.publish("OptionsMenu");
+		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
@@ -139,37 +142,34 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     }
 
     function findOptionByFirstCharFromStart(firstChar) {
+		var optionsMenu = Facade.publish("OptionsMenu");
     	var optionItemsCount = that.optionItems.length;
     	for (var i = 0; i < optionItemsCount; i++) {
 			var itemText = that.optionItems[i].getText();
 			if (firstChar === itemText[0].toLowerCase()) {
 				that.optionItems[i].setHovered();
-				if (that.optionsMenu.isHidden())
+				if (optionsMenu.isHidden())
 					that.optionItems[i].onClick();
 				else
-					that.optionsMenu.getElement().scrollTop = that.optionItems[i].getElement().offsetTop;
+					optionsMenu.getElement().scrollTop = that.optionItems[i].getElement().offsetTop;
 				return;
 			}
 		}
     }
 
     function isNextOptionFirstCharMatch(optionItem, firstChar) {
+    	var optionsMenu = Facade.publish("OptionsMenu");
     	var text = optionItem.getText();
     	if (text[0].toLowerCase() === firstChar) {
     		that.clearOptionItemHovers();
     		optionItem.setHovered();
-    		if (that.optionsMenu.isHidden())
+    		if (optionsMenu.isHidden())
     			optionItem.onClick();
     		else
-				that.optionsMenu.getElement().scrollTop = optionItem.getElement().offsetTop;
+				optionsMenu.getElement().scrollTop = optionItem.getElement().offsetTop;
 			return true;
     	}
     	return false;
-    }
-
-    this.clearSearchResult = function() {
-    	this.refresh();
-    	this.optionsMenu.getOptionsMenuSearchWrapper().clear();
     }
 
     this.isInputSearchEnabled = function() {
@@ -180,6 +180,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     	this.inputSearchEnabled = true;
     	this.element.removeChildren();
     	var l = this.optionItems.length;
+    	var optionsMenu = Facade.publish("OptionsMenu");
     	var foundOptions = 0;
     	for (var i = 0; i < l; i++) {
     		var option = this.optionItems[i];
@@ -190,14 +191,14 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(userDefinedSetting
     		}
     	}
     	if (foundOptions === 0)
-    		this.optionsMenu.onNoOptionsFound();
+    		optionsMenu.onNoOptionsFound();
     	else
-    		this.optionsMenu.onOptionsFound();
-    	//this.adjustHeight();
+    		optionsMenu.onOptionsFound();
     }
 
 	this.searchByFirstChar = function(firstChar) {
-		if (this.optionsMenu.isLocked())
+    	var optionsMenu = Facade.publish("OptionsMenu");
+		if (optionsMenu.isLocked())
 			return;
 		firstChar = firstChar.toLowerCase();
 		var hovered = this.getHoveredOption();

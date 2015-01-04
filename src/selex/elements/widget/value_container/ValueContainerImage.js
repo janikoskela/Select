@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function() {
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Facade) {
 	this.type = "img";
 	this.imageUrl;
 	this.element;

@@ -1,4 +1,5 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(userDefinedSettings) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Facade) {
+	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-menu-search-no-results";
 	this.element;

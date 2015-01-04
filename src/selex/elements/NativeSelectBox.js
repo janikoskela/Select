@@ -1,16 +1,15 @@
-SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
+SELEX.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
 	var that = this;
 	this.optionItems = [];
 	this.observer;
-	this.wrapper = wrapper;
-	this.element = this.wrapper.getTargetElement();
+	this.element = targetElement;
 
 	this.attach = function() {
 		this.optionItems = [];
 		var optionsLength = this.element.options.length;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
-			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(this, option);
+			var optionItem = new SELEX.ELEMENTS.NativeSelectBoxItem(Facade, option);
 			this.optionItems.push(optionItem);
 		}
 		if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
@@ -45,7 +44,7 @@ SELEX.ELEMENTS.NativeSelectBox = function(wrapper) {
     			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
     			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
     				that.attach();
-    				that.wrapper.getWidgetWrapper().getOptionsMenu().getOptionsMenuList().refresh();
+    				Facade.publish("OptionsMenuList").refresh();
     			}
       		});
     	});

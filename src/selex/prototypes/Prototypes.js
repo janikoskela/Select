@@ -13,7 +13,7 @@ Object.prototype.getChildren = function() {
   return this.childNodes;
 };
 
-Object.prototype.setSelected = function() {
+Object.prototype.setSelectedAttribute = function() {
   this.setAttribute("selected", true);
 };
 

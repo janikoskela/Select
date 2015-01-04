@@ -1,4 +1,4 @@
-SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function() {
+SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Facade) {
 
 	var CLASS_NAME_ARROW_DOWN = "arrow-down";
 	var CLASS_NAME_ARROW_UP = "arrow-up";

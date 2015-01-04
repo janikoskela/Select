@@ -25,49 +25,50 @@
 
 	Selex = function(userDefinedSettings) {
 
+		var Facade = new SELEX.Facade();
 		var that = this;
-
-		this.wrapper;
-
-		init(userDefinedSettings);
+		init();
 
 		function init() {
 			if (typeof userDefinedSettings !== "object")
 				throw new SELEX.EXCEPTIONS.InvalidOptionsErrorException();
-			that.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
+			Facade.subscribe("UserDefinedSettings", userDefinedSettings);
+			Facade.subscribe("Wrapper", new SELEX.ELEMENTS.Wrapper(Facade));
 		}
 
 		this.attach = function() {
-			this.wrapper.render();
+			Facade.publish("Wrapper").render();
 			return this;
 		}
 
 		this.hide = function() {
-			this.wrapper.hide();
+			Facade.publish("Wrapper").hide();
 			return this;
 		}
 
 		this.show = function() {
-			this.wrapper.show();
+			Facade.publish("Wrapper").show();
 			return this;
 		}
 
 		this.detach = function() {
-			this.wrapper.detach();
+			Facade.publish("Wrapper").detach();
+			return this;
 		}
 
 		this.disable = function() {
-			this.wrapper.disable();
+			Facade.publish("Wrapper").disable();
 			return this;
 		}
 
 		this.enable = function() {
-			this.wrapper.enable();
+			Facade.publish("Wrapper").enable();
 			return this;
 		}
 
 		this.toggleLoadingMode = function() {
-			this.wrapper.toggleLoadingMode();
+			Facade.publish("Wrapper").toggleLoadingMode();
+			return this;
 		}
 	}
 

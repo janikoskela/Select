@@ -1,43 +1,42 @@
-SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(userDefinedSettings, widgetSubWrapper) {
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
 	var that = this;
+	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "value-container";
-	this.widgetSubWrapper = widgetSubWrapper;
 	this.element;
-	this.valueContainerText;
-	this.valueContainerImage;
 	this.loadingText = userDefinedSettings.loadingText || "Loading";
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
 
-		this.valueContainerImage = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage();
-		var valueContainerImageElem = this.valueContainerImage.render();
+        var valueContainerImage = Facade.subscribe("ValueContainerImage", new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage(Facade));
+		var valueContainerImageElem = valueContainerImage.render();
 		this.element.appendChild(valueContainerImageElem);
-		var imageUrl = this.widgetSubWrapper.getNativeSelect().getSelectedOptionImageUrl();
+		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
 		if (imageUrl === undefined || imageUrl === null)
-			this.valueContainerImage.hide();
+			valueContainerImage.hide();
 		else
-			this.valueContainerImage.setImageUrl(imageUrl);
-    	this.valueContainerText = new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText(userDefinedSettings, this);
-    	var valueContainerTextElem = this.valueContainerText.render();
+			valueContainerImage.setImageUrl(imageUrl);
+
+    	var valueContainerText = Facade.subscribe("ValueContainerText", new SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText(Facade));
+    	var valueContainerTextElem = valueContainerText.render();
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
 	}
 
 	this.refresh = function() {
-		this.valueContainerText.refresh();
-		var imageUrl = this.widgetSubWrapper.getNativeSelect().getSelectedOptionImageUrl();
+		Facade.publish("ValueContainerText").refresh();
+		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
 		if (imageUrl !== undefined && imageUrl !== null) {
-			this.valueContainerImage.setImageUrl(imageUrl);
-			this.valueContainerImage.show();
+			Facade.publish("ValueContainerImage").setImageUrl(imageUrl);
+			Facade.publish("ValueContainerImage").show();
 		}
 		else
-			this.valueContainerImage.hide();
+			Facade.publish("ValueContainerImage").hide();	
 	}
 
 	this.enableLoadingMode = function() {
-		this.valueContainerText.setText(this.loadingText);
+		Facade.publish("ValueContainerText").setText(this.loadingText);
 		if (this.timeInterval === undefined)
 			enableDotDotDotInterval();
 	}
@@ -49,20 +48,12 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(userDefinedSetti
 				dots = ".";
 			else
 				dots += ".";
-			that.valueContainerText.setText(that.loadingText + dots);
+			Facade.publish("ValueContainerText").setText(that.loadingText + dots);
 		}, 500);
 	}
 
 	this.disableLoadingMode = function() {
 		clearInterval(this.timeInterval);
-		this.valueContainerText.refresh();
-	}
-
-	this.getWidgetSubWrapper = function() {
-		return this.widgetSubWrapper;
-	}
-
-	this.getValueContainerText = function() {
-		return this.valueContainerText;
+		Facade.publish("ValueContainerText").refresh();
 	}
 };

@@ -1,4 +1,6 @@
-SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSelectBox) {
+SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
+
+    var userDefinedSettings = Facade.publish("UserDefinedSettings");
 
     this.type = "div";
 
@@ -8,17 +10,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
 
     this.tabIndex;
 
-    this.widgetSubWrapper;
-
-    this.optionsMenu;
-
-    this.optionsMenuList;
-
-    this.wrapper = wrapper;
-
-    this.nativeSelectBox = nativeSelectBox;
-
-    this.tabIndex = this.nativeSelectBox.getTabIndex() || 0;
+    this.tabIndex = Facade.publish("NativeSelectBox").getTabIndex() || 0;
 
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
 
@@ -34,34 +26,19 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
-        this.widgetSubWrapper = new SELEX.ELEMENTS.WIDGET.SubWrapper(userDefinedSettings, this, this.nativeSelectBox);
-        var widgetSubWrapperElem = this.widgetSubWrapper.render();
+        var widgetSubWrapper = Facade.subscribe("WidgetSubWrapper", new SELEX.ELEMENTS.WIDGET.SubWrapper(Facade));
+        var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
-
-        this.optionsMenu = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(userDefinedSettings, this);
-        var optionsMenuElem = this.optionsMenu.render();
+        var optionsMenu = Facade.subscribe("OptionsMenu", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
+        var optionsMenuElem = optionsMenu.render();
         this.element.appendChild(optionsMenuElem);
-
-        this.optionsMenuList = this.optionsMenu.getOptionsMenuList();
 
         return this.element;
     }
 
     this.getElement = function() {
         return this.element;
-    }
-
-    this.getWrapper = function() {
-        return this.wrapper;
-    }
-
-    this.getWidgetSubWrapper = function() {
-        return this.widgetSubWrapper;
-    }
-
-    this.getOptionsMenu = function() {
-        return this.optionsMenu;
     }
 
     this.getClass = function() {
@@ -81,22 +58,22 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(userDefinedSettings, wrapper, nativeSel
     function onKeyUp(e) {
         switch(e.keyCode) {
             case KEY_CODES.UP:
-                this.optionsMenuList.hoverPreviousOption();
+                Facade.publish("OptionsMenuList").hoverPreviousOption();
                 break;
             case KEY_CODES.DOWN:
-                this.optionsMenuList.hoverNextOption();
+                Facade.publish("OptionsMenuList").hoverNextOption();
                 break;
             case KEY_CODES.ENTER:
-                this.optionsMenuList.selectHoveredOption();
+                Facade.publish("OptionsMenuList").selectHoveredOption();
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                this.optionsMenuList.searchByFirstChar(firstChar);
+                Facade.publish("OptionsMenuList").searchByFirstChar(firstChar);
         }
     }
 
     function onMouseLeave(e) {
-        this.optionsMenu.hide();
+        Facade.publish("OptionsMenu").hide();
     }
 
     this.setTabIndex = function(tabIndex) {

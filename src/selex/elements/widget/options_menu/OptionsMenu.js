@@ -1,25 +1,20 @@
-SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, widgetWrapper) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	var that = this;
+	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-container";
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
-	this.arrowContainer = widgetWrapper.getWidgetSubWrapper().getArrowContainer();
-	this.arrowContainerContent = this.arrowContainer.getArrowContainerContent();
 	this.height = undefined;
-	this.widgetWrapper = widgetWrapper;
-	this.optionsMenuList;
 	this.locked = false;
-	this.optionsMenuSearchWrapper;
-	this.useSearchInput = userDefinedSettings.useSearchInput;
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	this.optionsMenuList = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(userDefinedSettings, this);
-    	var optionsMenuListElem = this.optionsMenuList.render();
+    	var optionsMenuList = Facade.subscribe("OptionsMenuList", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Facade));
+    	var optionsMenuListElem = optionsMenuList.render();
         if (this.useSearchInput === true) {
-        	this.optionsMenuSearchWrapper = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(userDefinedSettings, this);
-        	var optionsMenuSearchWrapperElem = this.optionsMenuSearchWrapper.render();
+        	var optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
+        	var optionsMenuSearchWrapperElem = optionsMenuSearchWrapper.render();
     		this.element.appendChild(optionsMenuSearchWrapperElem);
         }
     	this.element.appendChild(optionsMenuListElem);
@@ -28,18 +23,14 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
     	return this.element;
 	}
 
-	this.getOptionsMenuSearchWrapper = function() {
-		return this.optionsMenuSearchWrapper;
-	}
-
 	this.onNoOptionsFound = function() {
-		this.optionsMenuList.getElement().hide();
-		this.optionsMenuSearchWrapper.getOptionsMenuSearchNoResults().show();
+		Facade.publish("OptionsMenuList").hide();
+		Facade.publish("OptionsMenuSearchWrapper").show();
 	}
 
 	this.onOptionsFound = function() {
-		this.optionsMenuList.getElement().show();
-		this.optionsMenuSearchWrapper.getOptionsMenuSearchNoResults().hide();
+		Facade.publish("OptionsMenuList").show();
+		Facade.publish("OptionsMenuSearchWrapper").hide();
 	}
 
 	this.isLocked = function() {
@@ -53,14 +44,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	this.enableLoadingMode = function() {
 		this.hide();
 		this.locked = true;
-	}
-
-	this.getOptionsMenuList = function() {
-		return this.optionsMenuList;
-	}
-
-	this.getWidgetWrapper = function() {
-		return this.widgetWrapper;
 	}
 
 	this.getElement = function() {
@@ -79,7 +62,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 			width = this.element.offsetWidth;
 			this.element.hide();
 		}
-		width += this.arrowContainer.getWidth();
+		width += Facade.publish("ArrowContainer").getWidth();
 		this.setWidth(width);
 		return width;
 	}
@@ -90,9 +73,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 	}
 
 	this.hide = function() {
-		this.optionsMenuList.clearSearchResult();
+		Facade.publish("OptionsMenuSearchInput:clear");
+		Facade.publish("OptionsMenuSearchNoResults:hide");
 		this.element.hide();
-		this.arrowContainerContent.down();
+		Facade.publish("ArrowContainerContent").down();
 	}
 
 	this.isHidden = function() {
@@ -111,6 +95,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 		var windowInnerHeight = window.innerHeight;
 		var remainingWindowHeight = windowInnerHeight - this.element.getBoundingClientRect().top;
 		this.element.hide();
+		var widgetWrapper = Facade.publish("WidgetWrapper");
 		if (remainingWindowHeight < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
 			this.element.addClass("options-container-up");
 			this.element.setStyle("top", h * -1);
@@ -119,9 +104,9 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(userDefinedSettings, w
 			this.element.addClass("options-container-down");
 		}
 		this.element.show();
-		this.arrowContainerContent.up();
+		Facade.publish("ArrowContainerContent").up();
 		if (this.useSearchInput === true)
-			this.optionsMenuSearchWrapper.getOptionsMenuSearchInput().focus();
+			Facade.publish("OptionsMenuSearchInput").focus();
 	}
 
 	this.toggle = function() {

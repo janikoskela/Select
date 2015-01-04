@@ -1,4 +1,6 @@
-SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
+SELEX.ELEMENTS.Wrapper = function(Facade) {
+
+    var userDefinedSettings = Facade.publish("UserDefinedSettings");
 
     var that = this;
 
@@ -21,9 +23,9 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
         var tagName = this.targetElement.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
-                this.nativeSelectBox = new SELEX.ELEMENTS.NativeSelectBox(this);
-                this.nativeSelectBox.attach();
-                if (this.nativeSelectBox.isDisabled())
+                var nativeSelectBox = Facade.subscribe("NativeSelectBox", new SELEX.ELEMENTS.NativeSelectBox(Facade, this.targetElement));
+                nativeSelectBox.attach();
+                if (nativeSelectBox.isDisabled())
                     this.disable();
                 var parentsParent = this.targetElement.parentNode;
                 parentsParent.insertBefore(this.element, this.targetElement);
@@ -37,21 +39,20 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
         if (this.width !== undefined) {
             this.setWidth(this.width);
             if (userDefinedSettings.optionMenuWidth === undefined)
-                this.widgetWrapper.getOptionsMenu().setWidth(this.width);
+                Facade.publish("OptionsMenu").setWidth(this.width);
         }
         else {
-            var width = this.widgetWrapper.getOptionsMenu().getWidth();
+            var width = Facade.publish("OptionsMenu").getWidth();
             this.setWidth(width);
         }
         return this.element;
     }
 
     function renderWidget() {
-        that.widgetWrapper = new SELEX.ELEMENTS.WIDGET.Wrapper(userDefinedSettings, that, that.nativeSelectBox);
-        var widgetWrapperElem = that.widgetWrapper.render();
+        var widgetWrapperInstance = Facade.subscribe("WidgetWrapper", new SELEX.ELEMENTS.WIDGET.Wrapper(Facade));
+        var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
-        //that.widgetWrapper.getOptionsMenu().getOptionsMenuList().adjustHeight();
-        that.widgetWrapper.getOptionsMenu().hide();
+        Facade.publish("OptionsMenu").hide();
     }
 
     this.getWidth = function() {
@@ -67,27 +68,14 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
 
     this.enableLoadingMode = function() {
         this.loadingMode = true;
-        var widgetWrapper = this.getWidgetWrapper();
-        widgetWrapper.getOptionsMenu().enableLoadingMode();
-        widgetWrapper.getWidgetSubWrapper().enableLoadingMode();
+        Facade.publish("OptionsMenu").enableLoadingMode();
+        Facade.publish("WidgetSubWrapper").enableLoadingMode();
     }
 
     this.disableLoadingMode = function() {
         this.loadingMode = false;
-        this.widgetWrapper.getOptionsMenu().disableLoadingMode();
-        this.widgetWrapper.getWidgetSubWrapper().disableLoadingMode();
-    }
-
-    this.getTargetElement = function() {
-        return this.targetElement;
-    }
-
-    this.getNativeSelect = function() {
-        return this.nativeSelectBox;
-    }
-
-    this.getWidgetWrapper = function() {
-        return this.widgetWrapper;
+        Facade.publish("OptionsMenu").disableLoadingMode();
+        Facade.publish("WidgetWrapper").disableLoadingMode();
     }
 
     this.show = function() {
