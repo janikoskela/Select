@@ -34,8 +34,11 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
                 throw new SELEX.EXCEPTIONS.InvalidTargetElementErrorException();
         }
         renderWidget();
-        if (this.width !== undefined)
+        if (this.width !== undefined) {
             this.setWidth(this.width);
+            if (userDefinedSettings.optionMenuWidth === undefined)
+                this.widgetWrapper.getOptionsMenu().setWidth(this.width);
+        }
         else {
             var width = this.widgetWrapper.getOptionsMenu().getWidth();
             this.setWidth(width);
