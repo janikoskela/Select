@@ -19,7 +19,6 @@
 
 .plain .widget-wrapper:focus .widget-sub-wrapper {
     outline:none; /*or outline-color:#FFFFFF; if the first doesn't work*/
-    border:1px solid #639AFF;
     -webkit-box-shadow: 0px 0px 4px 0px #639AFF;
     box-shadow: 0px 0px 4px 0px #639AFF;
 }

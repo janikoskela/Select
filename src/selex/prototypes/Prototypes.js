@@ -21,6 +21,11 @@ Object.prototype.removeStyle = function(name) {
   this.style[name] = null;
 };
 
+Object.prototype.remove = function() {
+  var parent = this.parentNode;
+  parent.removeChild(this);
+};
+
 Object.prototype.getStyle = function(name) {
   return this.style[name];
 };

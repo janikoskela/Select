@@ -37,7 +37,7 @@
 			that.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
 		}
 
-		this.render = function() {
+		this.attach = function() {
 			this.wrapper.render();
 			return this;
 		}
@@ -50,6 +50,10 @@
 		this.show = function() {
 			this.wrapper.show();
 			return this;
+		}
+
+		this.detach = function() {
+			this.wrapper.detach();
 		}
 
 		this.disable = function() {

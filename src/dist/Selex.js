@@ -37,7 +37,7 @@
 			that.wrapper = new SELEX.ELEMENTS.Wrapper(userDefinedSettings);
 		}
 
-		this.render = function() {
+		this.attach = function() {
 			this.wrapper.render();
 			return this;
 		}
@@ -50,6 +50,10 @@
 		this.show = function() {
 			this.wrapper.show();
 			return this;
+		}
+
+		this.detach = function() {
+			this.wrapper.detach();
 		}
 
 		this.disable = function() {
@@ -1317,8 +1321,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.enableLoadingMode = function() {
         this.loadingMode = true;
-        this.widgetWrapper.getOptionsMenu().enableLoadingMode();
-        this.widgetWrapper.getWidgetSubWrapper().enableLoadingMode();
+        var widgetWrapper = this.getWidgetWrapper();
+        widgetWrapper.getOptionsMenu().enableLoadingMode();
+        widgetWrapper.getWidgetSubWrapper().enableLoadingMode();
     }
 
     this.disableLoadingMode = function() {
@@ -1358,6 +1363,13 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.setWidth = function(width) {
         this.width = width;
         this.element.setStyle("width", this.width);
+    }
+
+    this.detach = function() {
+        var parent = this.element.parentNode;
+        this.targetElement.show();
+        parent.insertBefore(this.targetElement, this.element);
+        this.element.remove();
     }
 };
 SELEX.EXCEPTIONS.InvalidOptionsErrorException = function() {
@@ -1403,6 +1415,11 @@ Object.prototype.setSelected = function() {
 
 Object.prototype.removeStyle = function(name) {
   this.style[name] = null;
+};
+
+Object.prototype.remove = function() {
+  var parent = this.parentNode;
+  parent.removeChild(this);
 };
 
 Object.prototype.getStyle = function(name) {

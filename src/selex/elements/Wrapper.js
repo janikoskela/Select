@@ -67,8 +67,9 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
 
     this.enableLoadingMode = function() {
         this.loadingMode = true;
-        this.widgetWrapper.getOptionsMenu().enableLoadingMode();
-        this.widgetWrapper.getWidgetSubWrapper().enableLoadingMode();
+        var widgetWrapper = this.getWidgetWrapper();
+        widgetWrapper.getOptionsMenu().enableLoadingMode();
+        widgetWrapper.getWidgetSubWrapper().enableLoadingMode();
     }
 
     this.disableLoadingMode = function() {
@@ -108,5 +109,12 @@ SELEX.ELEMENTS.Wrapper = function(userDefinedSettings) {
     this.setWidth = function(width) {
         this.width = width;
         this.element.setStyle("width", this.width);
+    }
+
+    this.detach = function() {
+        var parent = this.element.parentNode;
+        this.targetElement.show();
+        parent.insertBefore(this.targetElement, this.element);
+        this.element.remove();
     }
 };
