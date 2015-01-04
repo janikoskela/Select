@@ -846,8 +846,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	function onKeyUp(e) {
 		var optionsMenuList = Facade.publish("OptionsMenuList");
 		var value = this.element.value;
-		if (value.length === 0)
-			optionsMenuList.clearSearchResult();
 		if (this.value !== undefined) {
 			if (value.length === this.value.length)
 				return;
