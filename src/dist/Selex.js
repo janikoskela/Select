@@ -376,7 +376,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.hide = function() {
-		if (this.isHidden() === true)
+		if (this.element.isHidden())
 			return;
 		this.element.hide();
 		Facade.publish("OptionsMenuSearchInput:clear");
@@ -496,8 +496,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.setSelected = function() {
 		Facade.publish("OptionsMenuList:clearSelected");
+		this.nativeSelectOption.setSelected();
 		this.element.addClass("selected");
-		that.nativeSelectOption.setSelected();
 		Facade.publish("ValueContainer:refresh");
 	}
 
@@ -534,30 +534,20 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	function onMouseOver(e) {
-		var siblings = this.element.parentNode.children;
-		for (var i = 0; i < siblings.length; i++) {
-			siblings[i].removeClass("hovered");
-		}
+		Facade.publish("OptionsMenuList:clearOptionItemHovers");
 		this.element.addClass("hovered");
 	}
 
-	this.onClick = function() {
-		onClick();
-	}
-
 	function onClick(e) {
-		Facade.publish("OptionsMenu:hide");
 		var optionsMenuList = Facade.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
-		if (prevSelected === undefined)
-			that.setSelected(e);
-		else if (prevSelected.getValue() !== that.getValue())
-			that.setSelected(e);
-		if (optionsMenuList.isInputSearchEnabled()) {
-			Facade.publish("OptionsMenuSearchInput:clear");
-			Facade.publish("OptionsMenuSearchNoResults:hide");
-			optionsMenuList.refresh();
+		if (prevSelected === undefined) {
+			this.setSelected();
 		}
+		else if (prevSelected.getIndex() !== this.getIndex()) {
+			this.setSelected();
+		}
+		Facade.publish("OptionsMenu:hide");
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription = function(Facade, description) {
 	this.type = "div";
@@ -687,12 +677,17 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     		return getOptionByIndex(index);
     	}
     	var optionGroup = option.getOptionGroup();
-    	var nextOptionGroup = optionGroup.nextSibling;
-    	var children;
-    	var index;
-    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
-    		return getFirstOptionFromOptionGroup(nextOptionGroup);
-    	}
+    	if (optionGroup !== undefined) {
+	    	var nextOptionGroup = optionGroup.nextSibling;
+	    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
+	    		if (nextOptionGroup.hasClass("options-container-list-item")) {
+	    			var index = nextOptionGroup.getDataAttribute("index");
+	    			return getOptionByIndex(index);
+	    		}
+	    		else
+	    			return getFirstOptionFromOptionGroup(nextOptionGroup);
+	    	}
+	    }
     }
 
     function getFirstOptionFromOptionGroup(optionGroup) {
@@ -738,9 +733,22 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.clearOptionItemHovers();
 		option.setHovered();
 		if (optionsMenu.isHidden())
-			option.onClick();
+			option.setSelected();
 		else
 			this.element.scrollTop = option.getElement().offsetTop;
+    }
+
+    this.hoverFirstOption = function() {
+    	this.clearOptionItemHovers();
+    	var children = this.element.getChildren();
+    	var firstChild = children[0];
+    	if (firstChild.hasClass("options-container-list-item"))
+    		firstChild.addClass("hovered");
+    	else {
+    		var f = firstChild.getChildren();
+    		var b = f[1].getChildren();
+    		b[0].addClass("hovered");
+    	}
     }
 
     this.hoverNextOption = function() {
@@ -773,7 +781,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
-    		hovered.onClick();
+    		hovered.setSelected();
     }
 
     function findOptionByFirstCharFromStart(firstChar) {
@@ -784,7 +792,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			if (firstChar === itemText[0].toLowerCase()) {
 				that.optionItems[i].setHovered();
 				if (optionsMenu.isHidden())
-					that.optionItems[i].onClick();
+					that.optionItems[i].setSelected();
 				else
 					that.element.scrollTop = that.optionItems[i].getElement().offsetTop;
 				return;
@@ -799,7 +807,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     		that.clearOptionItemHovers();
     		optionItem.setHovered();
     		if (optionsMenu.isHidden())
-    			optionItem.onClick();
+    			optionItem.setSelected();
     		else
 				that.element.scrollTop = optionItem.getElement().offsetTop;
 			return true;
@@ -1009,16 +1017,23 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	function onKeyUp(e) {
 		e.stopPropagation();
-		var value = this.element.value;
-		if (this.value !== undefined) {
-			if (value.length === this.value.length)
-				return;
-		}
-		this.value = value;
-		if (value.length === 0)
-			Facade.publish("OptionsMenuList:refresh");
-		else
-			Facade.publish("OptionsMenuList:searchByInputString", value);
+        switch(e.keyCode) {
+        	case KEY_CODES.DOWN:
+        		Facade.publish("OptionsMenuList").hoverFirstOption();
+        		this.blur();
+        		break;
+        	default:
+				var value = this.element.value;
+				if (this.value !== undefined) {
+					if (value.length === this.value.length)
+						return;
+				}
+				this.value = value;
+				if (value.length === 0)
+					Facade.publish("OptionsMenuList:refresh");
+				else
+					Facade.publish("OptionsMenuList:searchByInputString", value);
+        }
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Facade) {
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");

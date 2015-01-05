@@ -36,15 +36,22 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 
 	function onKeyUp(e) {
 		e.stopPropagation();
-		var value = this.element.value;
-		if (this.value !== undefined) {
-			if (value.length === this.value.length)
-				return;
-		}
-		this.value = value;
-		if (value.length === 0)
-			Facade.publish("OptionsMenuList:refresh");
-		else
-			Facade.publish("OptionsMenuList:searchByInputString", value);
+        switch(e.keyCode) {
+        	case KEY_CODES.DOWN:
+        		Facade.publish("OptionsMenuList").hoverFirstOption();
+        		this.blur();
+        		break;
+        	default:
+				var value = this.element.value;
+				if (this.value !== undefined) {
+					if (value.length === this.value.length)
+						return;
+				}
+				this.value = value;
+				if (value.length === 0)
+					Facade.publish("OptionsMenuList:refresh");
+				else
+					Facade.publish("OptionsMenuList:searchByInputString", value);
+        }
 	}
 };

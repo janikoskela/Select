@@ -74,7 +74,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	}
 
 	this.hide = function() {
-		if (this.isHidden() === true)
+		if (this.element.isHidden())
 			return;
 		this.element.hide();
 		Facade.publish("OptionsMenuSearchInput:clear");

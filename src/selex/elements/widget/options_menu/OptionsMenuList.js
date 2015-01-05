@@ -92,12 +92,17 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     		return getOptionByIndex(index);
     	}
     	var optionGroup = option.getOptionGroup();
-    	var nextOptionGroup = optionGroup.nextSibling;
-    	var children;
-    	var index;
-    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
-    		return getFirstOptionFromOptionGroup(nextOptionGroup);
-    	}
+    	if (optionGroup !== undefined) {
+	    	var nextOptionGroup = optionGroup.nextSibling;
+	    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
+	    		if (nextOptionGroup.hasClass("options-container-list-item")) {
+	    			var index = nextOptionGroup.getDataAttribute("index");
+	    			return getOptionByIndex(index);
+	    		}
+	    		else
+	    			return getFirstOptionFromOptionGroup(nextOptionGroup);
+	    	}
+	    }
     }
 
     function getFirstOptionFromOptionGroup(optionGroup) {
@@ -143,9 +148,22 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     	this.clearOptionItemHovers();
 		option.setHovered();
 		if (optionsMenu.isHidden())
-			option.onClick();
+			option.setSelected();
 		else
 			this.element.scrollTop = option.getElement().offsetTop;
+    }
+
+    this.hoverFirstOption = function() {
+    	this.clearOptionItemHovers();
+    	var children = this.element.getChildren();
+    	var firstChild = children[0];
+    	if (firstChild.hasClass("options-container-list-item"))
+    		firstChild.addClass("hovered");
+    	else {
+    		var f = firstChild.getChildren();
+    		var b = f[1].getChildren();
+    		b[0].addClass("hovered");
+    	}
     }
 
     this.hoverNextOption = function() {
@@ -178,7 +196,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
-    		hovered.onClick();
+    		hovered.setSelected();
     }
 
     function findOptionByFirstCharFromStart(firstChar) {
@@ -189,7 +207,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 			if (firstChar === itemText[0].toLowerCase()) {
 				that.optionItems[i].setHovered();
 				if (optionsMenu.isHidden())
-					that.optionItems[i].onClick();
+					that.optionItems[i].setSelected();
 				else
 					that.element.scrollTop = that.optionItems[i].getElement().offsetTop;
 				return;
@@ -204,7 +222,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     		that.clearOptionItemHovers();
     		optionItem.setHovered();
     		if (optionsMenu.isHidden())
-    			optionItem.onClick();
+    			optionItem.setSelected();
     		else
 				that.element.scrollTop = optionItem.getElement().offsetTop;
 			return true;

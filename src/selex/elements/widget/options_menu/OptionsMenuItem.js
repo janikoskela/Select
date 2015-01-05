@@ -72,8 +72,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 
 	this.setSelected = function() {
 		Facade.publish("OptionsMenuList:clearSelected");
+		this.nativeSelectOption.setSelected();
 		this.element.addClass("selected");
-		that.nativeSelectOption.setSelected();
 		Facade.publish("ValueContainer:refresh");
 	}
 
@@ -110,29 +110,19 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 	}
 
 	function onMouseOver(e) {
-		var siblings = this.element.parentNode.children;
-		for (var i = 0; i < siblings.length; i++) {
-			siblings[i].removeClass("hovered");
-		}
+		Facade.publish("OptionsMenuList:clearOptionItemHovers");
 		this.element.addClass("hovered");
 	}
 
-	this.onClick = function() {
-		onClick();
-	}
-
 	function onClick(e) {
-		Facade.publish("OptionsMenu:hide");
 		var optionsMenuList = Facade.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
-		if (prevSelected === undefined)
-			that.setSelected(e);
-		else if (prevSelected.getValue() !== that.getValue())
-			that.setSelected(e);
-		if (optionsMenuList.isInputSearchEnabled()) {
-			Facade.publish("OptionsMenuSearchInput:clear");
-			Facade.publish("OptionsMenuSearchNoResults:hide");
-			optionsMenuList.refresh();
+		if (prevSelected === undefined) {
+			this.setSelected();
 		}
+		else if (prevSelected.getIndex() !== this.getIndex()) {
+			this.setSelected();
+		}
+		Facade.publish("OptionsMenu:hide");
 	}
 };
