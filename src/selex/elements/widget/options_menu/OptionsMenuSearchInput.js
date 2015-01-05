@@ -25,11 +25,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 	}
 
 	function onClick(e) {
-		e.stopPropagation();
-		if (this.value !== undefined) {
-			var elementValue = this.element.value;
-			if (elementValue !== undefined && elementValue !== null)
-				Facade.publish("OptionsMenuList:refresh");
+		var elementValue = this.element.value;
+		if (elementValue.length === 0) {
+			Facade.publish("OptionsMenuList:refresh");
+			Facade.publish("OptionsMenuList:show");
+			Facade.publish("OptionsMenuSearchNoResults:hide");
 		}
 		this.value = elementValue;
 	}
