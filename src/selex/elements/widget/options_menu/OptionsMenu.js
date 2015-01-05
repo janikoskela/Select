@@ -26,12 +26,12 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 
 	this.onNoOptionsFound = function() {
 		Facade.publish("OptionsMenuList:hide");
-		Facade.publish("OptionsMenuSearchWrapper:show");
+		Facade.publish("OptionsMenuSearchNoResults:show");
 	}
 
 	this.onOptionsFound = function() {
 		Facade.publish("OptionsMenuList:show");
-		Facade.publish("OptionsMenuSearchWrapper:hide");
+		Facade.publish("OptionsMenuSearchNoResults:hide");
 	}
 
 	this.isLocked = function() {
@@ -74,9 +74,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	}
 
 	this.hide = function() {
-		Facade.publish("OptionsMenuSearchInput:clear");
-		Facade.publish("OptionsMenuSearchNoResults:hide");
+		if (this.isHidden() === true)
+			return;
 		this.element.hide();
+		Facade.publish("OptionsMenuSearchInput:blur");
+		Facade.publish("OptionsMenuSearchNoResults:hide");
 		Facade.publish("ArrowContainerContent").down();
 	}
 
@@ -85,7 +87,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	}
 
 	this.show = function() {
-		if (this.locked === true)
+		if (this.locked === true || this.isHidden() === false)
 			return;
 		this.element.show();
 		this.element.removeClass("options-container-down");
@@ -107,7 +109,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		this.element.show();
 		Facade.publish("ArrowContainerContent").up();
 		if (this.useSearchInput === true)
-			Facade.publish("OptionsMenuSearchInput").focus();
+			Facade.publish("OptionsMenuSearchInput:focus");
 	}
 
 	this.toggle = function() {

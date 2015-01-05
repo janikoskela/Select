@@ -5,12 +5,13 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 	this.type = "li";
 	this.element;
 	this.itemValue;
+	this.className = "options-container-list-item";
 	this.index = index;
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Facade, nativeSelectOption);
 		var childElem = this.itemValue.render();
-    	this.element = SELEX.UTILS.createElement(this.type);
+    	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.element.addEventListener("click", onClick.bind(this));
     	this.element.addEventListener("mouseover", onMouseOver.bind(this));
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
@@ -25,6 +26,13 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 		}
 
     	this.element.appendChild(childElem);
+
+		var description = this.nativeSelectOption.getDescription();
+		if (description !== undefined && description !== null) {
+			this.optionsMenuItemDescription = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Facade, description);
+			var optionsMenuItemDescriptionElem = this.optionsMenuItemDescription.render();
+			this.element.appendChild(optionsMenuItemDescriptionElem);
+		}
     	if (this.selected === true)
     		this.setSelected();
     	return this.element;
@@ -59,7 +67,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 	}
 
 	this.setSelected = function() {
-		Facade.publish("OptionsMenuList").clearSelected();
+		Facade.publish("OptionsMenuList:clearSelected");
 		this.element.addClass("selected");
 	}
 
@@ -94,11 +102,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 	function setSelected(e) {
 		that.nativeSelectOption.setSelected(e);
 		that.setSelected();
-		Facade.publish("ValueContainer").refresh();
+		Facade.publish("ValueContainer:refresh");
 	}
 
 	function onClick(e) {
-		Facade.publish("OptionsMenu").hide();
+		Facade.publish("OptionsMenu:hide");
 		var optionsMenuList = Facade.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
 		if (prevSelected === undefined)
@@ -106,8 +114,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 		else if (prevSelected.getValue() !== that.getValue())
 			setSelected(e);
 		if (optionsMenuList.isInputSearchEnabled()) {
-			Facade.publish("OptionsMenuSearchInput").clear();
-			Facade.publish("OptionsMenuSearchNoResults").hide();
+			Facade.publish("OptionsMenuSearchInput:clear");
+			Facade.publish("OptionsMenuSearchNoResults:hide");
 			optionsMenuList.refresh();
 		}
 	}

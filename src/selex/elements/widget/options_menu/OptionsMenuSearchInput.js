@@ -13,21 +13,27 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 
 	this.clear = function() {
 		this.element.value = "";
-		Facade.publish("OptionsMenuList").searchByInputString("");
+		Facade.publish("OptionsMenuList:searchByInputString", "");
 	}
 
 	this.focus = function() {
 		this.element.focus();
 	}
 
+	this.blur = function() {
+		this.element.blur();
+	}
+
 	function onKeyUp(e) {
-		var optionsMenuList = Facade.publish("OptionsMenuList");
+		e.stopPropagation();
 		var value = this.element.value;
+		if (value.length === 0)
+			this.clear();
 		if (this.value !== undefined) {
 			if (value.length === this.value.length)
 				return;
 		}
 		this.value = value;
-		optionsMenuList.searchByInputString(value);
+		Facade.publish("OptionsMenuList:searchByInputString", value);
 	}
 };

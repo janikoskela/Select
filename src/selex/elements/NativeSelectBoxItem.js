@@ -31,4 +31,8 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
 	this.getImageUrl = function() {
 		return this.element.getDataAttribute("image-url");
 	}
+
+	this.getDescription = function() {
+		return this.element.getDataAttribute("description");
+	}
 };

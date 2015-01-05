@@ -230,6 +230,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.getImageUrl = function() {
 		return this.element.getDataAttribute("image-url");
 	}
+
+	this.getDescription = function() {
+		return this.element.getDataAttribute("description");
+	}
 };SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Facade) {
 
 	this.type = "div";
@@ -317,12 +321,12 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.onNoOptionsFound = function() {
 		Facade.publish("OptionsMenuList:hide");
-		Facade.publish("OptionsMenuSearchWrapper:show");
+		Facade.publish("OptionsMenuSearchNoResults:show");
 	}
 
 	this.onOptionsFound = function() {
 		Facade.publish("OptionsMenuList:show");
-		Facade.publish("OptionsMenuSearchWrapper:hide");
+		Facade.publish("OptionsMenuSearchNoResults:hide");
 	}
 
 	this.isLocked = function() {
@@ -365,9 +369,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.hide = function() {
-		Facade.publish("OptionsMenuSearchInput:clear");
-		Facade.publish("OptionsMenuSearchNoResults:hide");
+		if (this.isHidden() === true)
+			return;
 		this.element.hide();
+		Facade.publish("OptionsMenuSearchInput:blur");
+		Facade.publish("OptionsMenuSearchNoResults:hide");
 		Facade.publish("ArrowContainerContent").down();
 	}
 
@@ -376,7 +382,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.show = function() {
-		if (this.locked === true)
+		if (this.locked === true || this.isHidden() === false)
 			return;
 		this.element.show();
 		this.element.removeClass("options-container-down");
@@ -398,7 +404,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.element.show();
 		Facade.publish("ArrowContainerContent").up();
 		if (this.useSearchInput === true)
-			Facade.publish("OptionsMenuSearchInput").focus();
+			Facade.publish("OptionsMenuSearchInput:focus");
 	}
 
 	this.toggle = function() {
@@ -414,12 +420,13 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.type = "li";
 	this.element;
 	this.itemValue;
+	this.className = "options-container-list-item";
 	this.index = index;
 
 	this.render = function() {
 		this.itemValue = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Facade, nativeSelectOption);
 		var childElem = this.itemValue.render();
-    	this.element = SELEX.UTILS.createElement(this.type);
+    	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.element.addEventListener("click", onClick.bind(this));
     	this.element.addEventListener("mouseover", onMouseOver.bind(this));
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
@@ -434,6 +441,13 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		}
 
     	this.element.appendChild(childElem);
+
+		var description = this.nativeSelectOption.getDescription();
+		if (description !== undefined && description !== null) {
+			this.optionsMenuItemDescription = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Facade, description);
+			var optionsMenuItemDescriptionElem = this.optionsMenuItemDescription.render();
+			this.element.appendChild(optionsMenuItemDescriptionElem);
+		}
     	if (this.selected === true)
     		this.setSelected();
     	return this.element;
@@ -468,7 +482,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.setSelected = function() {
-		Facade.publish("OptionsMenuList").clearSelected();
+		Facade.publish("OptionsMenuList:clearSelected");
 		this.element.addClass("selected");
 	}
 
@@ -503,11 +517,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	function setSelected(e) {
 		that.nativeSelectOption.setSelected(e);
 		that.setSelected();
-		Facade.publish("ValueContainer").refresh();
+		Facade.publish("ValueContainer:refresh");
 	}
 
 	function onClick(e) {
-		Facade.publish("OptionsMenu").hide();
+		Facade.publish("OptionsMenu:hide");
 		var optionsMenuList = Facade.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
 		if (prevSelected === undefined)
@@ -515,10 +529,22 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		else if (prevSelected.getValue() !== that.getValue())
 			setSelected(e);
 		if (optionsMenuList.isInputSearchEnabled()) {
-			Facade.publish("OptionsMenuSearchInput").clear();
-			Facade.publish("OptionsMenuSearchNoResults").hide();
+			Facade.publish("OptionsMenuSearchInput:clear");
+			Facade.publish("OptionsMenuSearchNoResults:hide");
 			optionsMenuList.refresh();
 		}
+	}
+};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription = function(Facade, description) {
+	this.type = "div";
+	this.description = description;
+	this.className = "options-container-list-item-description";
+	this.element;
+
+	this.render = function() {
+    	this.element = new SELEX.UTILS.createElement(this.type, this.className);
+    	this.textNode = document.createTextNode(this.description);
+    	this.element.appendChild(this.textNode);
+    	return this.element;
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(Facade, imageUrl) {
 	this.type = "img";
@@ -836,22 +862,28 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.clear = function() {
 		this.element.value = "";
-		Facade.publish("OptionsMenuList").searchByInputString("");
+		Facade.publish("OptionsMenuList:searchByInputString", "");
 	}
 
 	this.focus = function() {
 		this.element.focus();
 	}
 
+	this.blur = function() {
+		this.element.blur();
+	}
+
 	function onKeyUp(e) {
-		var optionsMenuList = Facade.publish("OptionsMenuList");
+		e.stopPropagation();
 		var value = this.element.value;
+		if (value.length === 0)
+			this.clear();
 		if (this.value !== undefined) {
 			if (value.length === this.value.length)
 				return;
 		}
 		this.value = value;
-		optionsMenuList.searchByInputString(value);
+		Facade.publish("OptionsMenuList:searchByInputString", value);
 	}
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Facade) {
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
@@ -1297,7 +1329,8 @@ SELEX.EXCEPTIONS.InvalidOptionsErrorException = function() {
 			var instance = this[parts[0]];
 			if (instance !== undefined) {
 				var func = instance[parts[1]];
-				return func.bind(instance);
+				if (typeof func === "function")
+					return func.call(instance, args);
 			}
 		}
 		return this[name];
