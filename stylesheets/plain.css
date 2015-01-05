@@ -5,8 +5,9 @@
 	-moz-user-select: none; 
 	-ms-user-select: none; 
 	user-select: none; 
-	font-size: 0.6em; 
+	font-size: 0.7em; 
 	font-family: Verdana;
+	color: #000;
 }
 
 .plain .widget-wrapper {
@@ -212,6 +213,7 @@
 
 .plain .options-menu-list-item-group-list {
 	padding-left: 1em;
+	padding-bottom: 1em;
 }
 
 .plain .options-menu-list-item-group-title {
