@@ -693,9 +693,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
     		return getFirstOptionFromOptionGroup(nextOptionGroup);
     	}
-    	var parent = optionGroup.parentNode;
-    	var parentChildren = parent.getChildren();
-    	return getFirstOptionFromOptionGroup(parentChildren[0]);
     }
 
     function getFirstOptionFromOptionGroup(optionGroup) {
@@ -816,18 +813,19 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.searchByInputString = function(query) {
     	this.inputSearchEnabled = true;
-    	var l = this.optionItems.length;
+    	var options = Facade.publish("NativeSelectBox:getOptions");
+    	var l = options.length;
     	var optionsMenu = Facade.publish("OptionsMenu");
-    	var options = [];
+    	var matchedOptions = [];
     	for (var i = 0; i < l; i++) {
-    		var option = this.optionItems[i];
+    		var option = options[i];
     		var optionText = option.getText().toLowerCase();
     		if (optionText.indexOf(query.toLowerCase()) > -1) {
-    			options.push(option.getNativeSelectOption());
+    			matchedOptions.push(option);
     		}
     	}
-    	renderOptionItems(options);
-    	if (options.length === 0)
+    	renderOptionItems(matchedOptions);
+    	if (matchedOptions.length === 0)
     		optionsMenu.onNoOptionsFound();
     	else
     		optionsMenu.onOptionsFound();
