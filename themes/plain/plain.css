@@ -209,3 +209,19 @@
 	margin: .5em 0 .5em 0;
 	text-align: left;
 }
+
+.plain .options-menu-list-item-group-list {
+	padding-left: 1em;
+}
+
+.plain .options-menu-list-item-group-title {
+	font-weight: 600;
+	cursor: default;
+	margin: 0;
+
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	user-select: none; 
+}

@@ -77,7 +77,9 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		if (this.isHidden() === true)
 			return;
 		this.element.hide();
+		Facade.publish("OptionsMenuSearchInput:clear");
 		Facade.publish("OptionsMenuSearchInput:blur");
+		Facade.publish("OptionsMenuList:refresh");
 		Facade.publish("OptionsMenuSearchNoResults:hide");
 		Facade.publish("ArrowContainerContent").down();
 	}

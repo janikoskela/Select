@@ -18,7 +18,7 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
 		return this.element.value;
 	}
 
-	this.setSelected = function(e) {
+	this.setSelected = function() {
 		Facade.publish("NativeSelectBox").setSelectedIndex(this.element.index);
 		Facade.publish("NativeSelectBox").triggerChange();
 		this.element.setSelectedAttribute();
@@ -34,5 +34,12 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
 
 	this.getDescription = function() {
 		return this.element.getDataAttribute("description");
+	}
+
+	this.getOptionGroup = function() {
+		var parentNode = this.element.parentNode;
+		var tagName = parentNode.tagName.toLowerCase();
+		if (tagName === "optgroup")
+			return parentNode;
 	}
 };

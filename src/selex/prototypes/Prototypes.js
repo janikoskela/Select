@@ -5,6 +5,10 @@ Object.prototype.setStyle = function(name, value) {
   this.style[name] = value;
 };
 
+Object.prototype.getNextSibling = function() {
+  return this.nextSibling;
+};
+
 Object.prototype.removeChildren = function() {
   this.innerHTML = "";
 };

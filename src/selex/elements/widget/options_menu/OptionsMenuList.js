@@ -9,6 +9,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 	this.optionItems = [];
 	this.sortType = userDefinedSettings.sort;
 	this.inputSearchEnabled = false;
+	this.optionGroups = {};
 
 	this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -41,14 +42,26 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 
 	function renderOptionItems(options) {
         that.optionItems = [];
-        that.element.removeChildren();
+       	that.optionGroups = {};
+       	that.element.removeChildren();
         var l = options.length;
 		for (var i = 0; i < l; i++) {
 			var option = options[i];
 			var item = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(Facade, option, i);
 			that.optionItems.push(item);
 			var elem = item.render();
-			that.element.appendChild(elem);
+			var optionGroup = option.getOptionGroup();
+			if (optionGroup !== undefined) {
+				var optionGroupLabel = optionGroup.label;
+				if (that.optionGroups[optionGroupLabel] === undefined) {
+					that.optionGroups[optionGroupLabel] = new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup(Facade, optionGroup);
+		    		var li = that.optionGroups[optionGroupLabel].render();
+		    		that.element.appendChild(li);
+				}
+				that.optionGroups[optionGroupLabel].getList().getElement().appendChild(elem);
+			}
+			else
+				that.element.appendChild(elem);
 		}
 	}
 
@@ -73,10 +86,37 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     }
 
     function getNextOption(option) {
-    	var i = option.getIndex();
-    	if (i < that.optionItems.length)
-    		return that.optionItems[i + 1];
-    	return that.optionItems[0];
+    	var nextSibling = option.getNextSibling();
+    	if (nextSibling !== null && nextSibling !== undefined) {
+    		var index = nextSibling.getDataAttribute("index");
+    		return getOptionByIndex(index);
+    	}
+    	var optionGroup = option.getOptionGroup();
+    	var nextOptionGroup = optionGroup.nextSibling;
+    	var children;
+    	var index;
+    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
+    		return getFirstOptionFromOptionGroup(nextOptionGroup);
+    	}
+    	var parent = optionGroup.parentNode;
+    	var parentChildren = parent.getChildren();
+    	return getFirstOptionFromOptionGroup(parentChildren[0]);
+    }
+
+    function getFirstOptionFromOptionGroup(optionGroup) {
+    	var children = optionGroup.getChildren();
+    	children = children[1].getChildren();
+    	var index = children[0].getDataAttribute("index");
+    	return getOptionByIndex(index);
+    }
+
+    function getOptionByIndex(index) {
+    	var l = that.optionItems.length;
+    	for (var i = 0; i < l; i++) {
+    		var option = that.optionItems[i];
+    		if (option.getIndex() == index)
+    			return option;
+    	}
     }
 
     function getPreviousOption(option) {
@@ -105,9 +145,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     		option = this.optionItems[this.optionItems.length - 1];
     	this.clearOptionItemHovers();
 		option.setHovered();
-		optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
 		if (optionsMenu.isHidden())
 			option.onClick();
+		else
+			this.element.scrollTop = option.getElement().offsetTop;
     }
 
     this.hoverNextOption = function() {
@@ -127,9 +168,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     		option = this.optionItems[0];
     	this.clearOptionItemHovers();
 		option.setHovered();
-		optionsMenu.getElement().scrollTop = option.getElement().offsetTop;
-		if (optionsMenu.isHidden())
-			option.onClick();
+		if (optionsMenu.isHidden()) {
+			option.setSelected();
+		}
+		else
+			this.element.scrollTop = option.getElement().offsetTop;
     }
 
     this.selectHoveredOption = function() {
@@ -151,7 +194,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 				if (optionsMenu.isHidden())
 					that.optionItems[i].onClick();
 				else
-					optionsMenu.getElement().scrollTop = that.optionItems[i].getElement().offsetTop;
+					that.element.scrollTop = that.optionItems[i].getElement().offsetTop;
 				return;
 			}
 		}
@@ -166,7 +209,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     		if (optionsMenu.isHidden())
     			optionItem.onClick();
     		else
-				optionsMenu.getElement().scrollTop = optionItem.getElement().offsetTop;
+				that.element.scrollTop = optionItem.getElement().offsetTop;
 			return true;
     	}
     	return false;
@@ -178,19 +221,18 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 
     this.searchByInputString = function(query) {
     	this.inputSearchEnabled = true;
-    	this.element.removeChildren();
     	var l = this.optionItems.length;
     	var optionsMenu = Facade.publish("OptionsMenu");
-    	var foundOptions = 0;
+    	var options = [];
     	for (var i = 0; i < l; i++) {
     		var option = this.optionItems[i];
     		var optionText = option.getText().toLowerCase();
     		if (optionText.indexOf(query.toLowerCase()) > -1) {
-    			this.element.appendChild(option.getElement());
-    			foundOptions++;
+    			options.push(option.getNativeSelectOption());
     		}
     	}
-    	if (foundOptions === 0)
+    	renderOptionItems(options);
+    	if (options.length === 0)
     		optionsMenu.onNoOptionsFound();
     	else
     		optionsMenu.onOptionsFound();
@@ -200,7 +242,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     	var optionsMenu = Facade.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
-		firstChar = firstChar.toLowerCase();
 		var hovered = this.getHoveredOption();
 		var optionItemsCount = this.optionItems.length;
 		if (hovered === undefined) {
@@ -253,8 +294,9 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
  	}
 
 	this.clearOptionItemHovers = function() {
-		for (var i = 0; i < this.element.children.length; i++) {
-			this.element.children[i].removeClass("hovered");
+		var l = this.optionItems.length;
+		for (var i = 0; i < l; i++) {
+			this.optionItems[i].removeHovered();
 		}
 	}
 
