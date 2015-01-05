@@ -15,6 +15,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
     	return this.element;
 	}
 
+	this.getHeight = function() {
+		return this.element.offsetHeight;
+	}
+
 	this.setWidth = function(width) {
 		this.element.setStyle("width", width);
 		this.width = width;

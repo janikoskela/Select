@@ -524,7 +524,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	function onKeyUp(e) {
 		switch (e.keyCode) {
 			case KEY_CODES.ENTER:
-				onClick(e);
+				//this.setSelected();
+				//Facade.publish("OptionsMenu:hide");
 				break;
 		}
 	}
@@ -742,14 +743,17 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.clearOptionItemHovers();
     	var children = this.element.getChildren();
     	var firstChild = children[0];
-    	if (firstChild.hasClass("options-container-list-item"))
+    	if (firstChild.hasClass("options-container-list-item")) {
     		firstChild.addClass("hovered");
+    	}
     	else {
     		var f = firstChild.getChildren();
     		var b = f[1].getChildren();
     		b[0].addClass("hovered");
     	}
-    }
+		this.element.scrollTop = 0;
+		Facade.publish("WidgetWrapper:focus");
+	}
 
     this.hoverNextOption = function() {
 		var optionsMenu = Facade.publish("OptionsMenu");
@@ -772,7 +776,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			option.setSelected();
 		}
 		else
-			this.element.scrollTop = option.getElement().offsetTop;
+			this.element.scrollTop = option.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
     }
 
     this.selectHoveredOption = function() {
@@ -782,6 +786,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.setSelected();
+		Facade.publish("OptionsMenu:hide");
     }
 
     function findOptionByFirstCharFromStart(firstChar) {
@@ -1075,6 +1080,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	return this.element;
 	}
 
+	this.getHeight = function() {
+		return this.element.offsetHeight;
+	}
+
 	this.setWidth = function(width) {
 		this.element.setStyle("width", width);
 		this.width = width;
@@ -1305,6 +1314,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.getClass = function() {
         return this.className;
+    }
+
+    this.focus = function() {
+        this.element.focus();
     }
 
     function onKeyDown(e) {

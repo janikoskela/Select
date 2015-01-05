@@ -100,7 +100,8 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 	function onKeyUp(e) {
 		switch (e.keyCode) {
 			case KEY_CODES.ENTER:
-				onClick(e);
+				//this.setSelected();
+				//Facade.publish("OptionsMenu:hide");
 				break;
 		}
 	}

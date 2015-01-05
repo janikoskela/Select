@@ -45,6 +45,10 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         return this.className;
     }
 
+    this.focus = function() {
+        this.element.focus();
+    }
+
     function onKeyDown(e) {
         switch(e.keyCode) {
             case KEY_CODES.UP:

@@ -157,14 +157,17 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     	this.clearOptionItemHovers();
     	var children = this.element.getChildren();
     	var firstChild = children[0];
-    	if (firstChild.hasClass("options-container-list-item"))
+    	if (firstChild.hasClass("options-container-list-item")) {
     		firstChild.addClass("hovered");
+    	}
     	else {
     		var f = firstChild.getChildren();
     		var b = f[1].getChildren();
     		b[0].addClass("hovered");
     	}
-    }
+		this.element.scrollTop = 0;
+		Facade.publish("WidgetWrapper:focus");
+	}
 
     this.hoverNextOption = function() {
 		var optionsMenu = Facade.publish("OptionsMenu");
@@ -187,7 +190,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 			option.setSelected();
 		}
 		else
-			this.element.scrollTop = option.getElement().offsetTop;
+			this.element.scrollTop = option.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
     }
 
     this.selectHoveredOption = function() {
@@ -197,6 +200,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.setSelected();
+		Facade.publish("OptionsMenu:hide");
     }
 
     function findOptionByFirstCharFromStart(firstChar) {
