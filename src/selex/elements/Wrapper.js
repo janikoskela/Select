@@ -94,10 +94,16 @@ SELEX.ELEMENTS.Wrapper = function(Facade) {
 
     this.enable = function() {
         this.element.removeAttribute("disabled");
+        Facade.publish("WidgetWrapper:unLock");
+        Facade.publish("WidgetSubWrapper:unLock");
+        Facade.publish("OptionsMenu:unLock");
     }
 
     this.disable = function() {
         this.element.setAttribute("disabled", true);
+        Facade.publish("WidgetWrapper:lock");
+        Facade.publish("WidgetSubWrapper:lock");
+        Facade.publish("OptionsMenu:lock");
     }
 
     this.setWidth = function(width) {
