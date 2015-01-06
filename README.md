@@ -4,7 +4,7 @@ Widget requires a <i>select</i>-element to be passed to the constructor (See the
 
 Demo
 ==============
-<a href="https://janikoskela.github.io/Selex">DEMO</a>
+<a href="http://janikoskela.github.io/Selex">DEMO</a>
 
 Required widget settings
 ===============
