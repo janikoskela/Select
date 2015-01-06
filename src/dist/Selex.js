@@ -1658,4 +1658,4 @@ SELEX.UTILS.isEmpty = function(obj) {
     }
 
     return true;
-};}(jQuery));
+};}(jQuery || {}));
