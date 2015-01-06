@@ -2,17 +2,9 @@ Selex [![Build Status](https://travis-ci.org/janikoskela/Selex.svg?branch=master
 ===============
 Widget requires a <i>select</i>-element to be passed to the constructor (See the examples). When widget is rendered the given <i>select</i> is then hidden. Widget aims to delegate events to the hidden <i>select</i> so that the user can attach events to it normally. This enables that the widget can be easily detached and removed if wanted.
 
-Usage
+Demo
 ==============
-Using is simple and can be done with following code (after Selex library has been imported):
-
-	var settings = {
-		targetElement: document.getElementById("select")
-	};
-	var selexInstance = new Selex(settings);
-	selexInstance.render();
-	
-See more comprehensive <a href="https://github.com/janikoskela/Selex/tree/master/examples">examples</a>
+<a href="https://janikoskela.github.io/Selex">DEMO</a>
 
 Required widget settings
 ===============
