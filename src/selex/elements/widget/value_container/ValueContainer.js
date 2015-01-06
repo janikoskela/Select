@@ -37,12 +37,12 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
 
 	this.enableLoadingMode = function() {
 		Facade.publish("ValueContainerText").setText(this.loadingText);
-		enableDotDotDotInterval.bind(this);
+		enableDotDotDotInterval();
 	}
 
 	function enableDotDotDotInterval() {
 		var dots = ".";
-		this.timeInterval = setInterval(function() {
+		that.timeInterval = setInterval(function() {
 			if (dots.length === 3)
 				dots = ".";
 			else
