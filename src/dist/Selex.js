@@ -1508,7 +1508,8 @@ SELEX.EXCEPTIONS.InvalidOptionsErrorException = function() {
   if (typeof value === "number") {
     value += "px";
   }
-  this.style[name] = value;
+  if (this !== undefined)
+    this.style[name] = value;
 };
 
 Object.prototype.getNextSibling = function() {
