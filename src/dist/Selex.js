@@ -37,37 +37,37 @@
 		}
 
 		this.attach = function() {
-			Facade.publish("Wrapper").render();
+			Facade.publish("Wrapper:render");
 			return this;
 		}
 
 		this.hide = function() {
-			Facade.publish("Wrapper").hide();
+			Facade.publish("Wrapper:hide");
 			return this;
 		}
 
 		this.show = function() {
-			Facade.publish("Wrapper").show();
+			Facade.publish("Wrapper:show");
 			return this;
 		}
 
 		this.detach = function() {
-			Facade.publish("Wrapper").detach();
+			Facade.publish("Wrapper:detach");
 			return this;
 		}
 
 		this.disable = function() {
-			Facade.publish("Wrapper").disable();
+			Facade.publish("Wrapper:disable");
 			return this;
 		}
 
 		this.enable = function() {
-			Facade.publish("Wrapper").enable();
+			Facade.publish("Wrapper:enable");
 			return this;
 		}
 
 		this.toggleLoadingMode = function() {
-			Facade.publish("Wrapper").toggleLoadingMode();
+			Facade.publish("Wrapper:toggleLoadingMode");
 			return this;
 		}
 	}
@@ -340,11 +340,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		return this.locked;
 	}
 
-	this.disableLoadingMode = function() {
+	this.unLock = function() {
 		this.locked = false;
 	}
 
-	this.enableLoadingMode = function() {
+	this.lock = function() {
 		this.hide();
 		this.locked = true;
 	}
@@ -1226,6 +1226,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.element;
 
+    this.locked = false;
+
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -1255,15 +1257,17 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         return this.element;
     }
     
-    this.enableLoadingMode = function() {
-        Facade.publish("ValueContainer").enableLoadingMode();
+    this.lock = function() {
+        this.locked = true;
     }
 
-    this.disableLoadingMode = function() {
-        Facade.publish("ValueContainer").disableLoadingMode();
+    this.unLock = function() {
+        this.locked = false;
     }
 
     function onClick(e) {
+        if (this.locked === true)
+            return;
         var nativeSelectBox = Facade.publish("NativeSelectBox");
         if (nativeSelectBox.isDisabled() === false)
             Facade.publish("OptionsMenu").toggle();
@@ -1284,6 +1288,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.tabIndex = Facade.publish("NativeSelectBox").getTabIndex() || 0;
 
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
+
+    this.locked = false;
 
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
@@ -1308,6 +1314,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         return this.element;
     }
 
+    this.lock = function() {
+        this.locked = true;
+    }
+
+    this.unLock = function() {
+        this.locked = false;
+    }
+
     this.getElement = function() {
         return this.element;
     }
@@ -1321,6 +1335,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     function onKeyDown(e) {
+        if (this.locked === true)
+            return;
         switch(e.keyCode) {
             case KEY_CODES.UP:
             case KEY_CODES.DOWN:
@@ -1331,6 +1347,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     }
 
     function onKeyUp(e) {
+        if (this.locked === true)
+            return;
         switch(e.keyCode) {
             case KEY_CODES.UP:
                 Facade.publish("OptionsMenuList").hoverPreviousOption();
@@ -1426,14 +1444,20 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.enableLoadingMode = function() {
         this.loadingMode = true;
-        Facade.publish("OptionsMenu").enableLoadingMode();
-        Facade.publish("WidgetSubWrapper").enableLoadingMode();
+        Facade.publish("OptionsMenu:lock");
+        Facade.publish("ValueContainer:enableLoadingMode");
+        Facade.publish("WidgetWrapper:lock");
+        Facade.publish("WidgetSubWrapper:lock");
+        Facade.publish("ValueContainerImage:hide");
     }
 
     this.disableLoadingMode = function() {
         this.loadingMode = false;
-        Facade.publish("OptionsMenu").disableLoadingMode();
-        Facade.publish("WidgetWrapper").disableLoadingMode();
+        Facade.publish("OptionsMenu:unLock");
+        Facade.publish("ValueContainer:disableLoadingMode");
+        Facade.publish("WidgetWrapper:unLock");
+        Facade.publish("WidgetSubWrapper:unLock");
+        Facade.publish("ValueContainerImage:show");
     }
 
     this.show = function() {

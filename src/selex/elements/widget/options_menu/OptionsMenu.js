@@ -38,11 +38,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		return this.locked;
 	}
 
-	this.disableLoadingMode = function() {
+	this.unLock = function() {
 		this.locked = false;
 	}
 
-	this.enableLoadingMode = function() {
+	this.lock = function() {
 		this.hide();
 		this.locked = true;
 	}

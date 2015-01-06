@@ -37,37 +37,37 @@
 		}
 
 		this.attach = function() {
-			Facade.publish("Wrapper").render();
+			Facade.publish("Wrapper:render");
 			return this;
 		}
 
 		this.hide = function() {
-			Facade.publish("Wrapper").hide();
+			Facade.publish("Wrapper:hide");
 			return this;
 		}
 
 		this.show = function() {
-			Facade.publish("Wrapper").show();
+			Facade.publish("Wrapper:show");
 			return this;
 		}
 
 		this.detach = function() {
-			Facade.publish("Wrapper").detach();
+			Facade.publish("Wrapper:detach");
 			return this;
 		}
 
 		this.disable = function() {
-			Facade.publish("Wrapper").disable();
+			Facade.publish("Wrapper:disable");
 			return this;
 		}
 
 		this.enable = function() {
-			Facade.publish("Wrapper").enable();
+			Facade.publish("Wrapper:enable");
 			return this;
 		}
 
 		this.toggleLoadingMode = function() {
-			Facade.publish("Wrapper").toggleLoadingMode();
+			Facade.publish("Wrapper:toggleLoadingMode");
 			return this;
 		}
 	}

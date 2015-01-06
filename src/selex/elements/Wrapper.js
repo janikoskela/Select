@@ -68,14 +68,20 @@ SELEX.ELEMENTS.Wrapper = function(Facade) {
 
     this.enableLoadingMode = function() {
         this.loadingMode = true;
-        Facade.publish("OptionsMenu").enableLoadingMode();
-        Facade.publish("WidgetSubWrapper").enableLoadingMode();
+        Facade.publish("OptionsMenu:lock");
+        Facade.publish("ValueContainer:enableLoadingMode");
+        Facade.publish("WidgetWrapper:lock");
+        Facade.publish("WidgetSubWrapper:lock");
+        Facade.publish("ValueContainerImage:hide");
     }
 
     this.disableLoadingMode = function() {
         this.loadingMode = false;
-        Facade.publish("OptionsMenu").disableLoadingMode();
-        Facade.publish("WidgetWrapper").disableLoadingMode();
+        Facade.publish("OptionsMenu:unLock");
+        Facade.publish("ValueContainer:disableLoadingMode");
+        Facade.publish("WidgetWrapper:unLock");
+        Facade.publish("WidgetSubWrapper:unLock");
+        Facade.publish("ValueContainerImage:show");
     }
 
     this.show = function() {

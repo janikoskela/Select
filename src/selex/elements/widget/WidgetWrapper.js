@@ -14,6 +14,8 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
 
+    this.locked = false;
+
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
@@ -37,6 +39,14 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         return this.element;
     }
 
+    this.lock = function() {
+        this.locked = true;
+    }
+
+    this.unLock = function() {
+        this.locked = false;
+    }
+
     this.getElement = function() {
         return this.element;
     }
@@ -50,6 +60,8 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
     }
 
     function onKeyDown(e) {
+        if (this.locked === true)
+            return;
         switch(e.keyCode) {
             case KEY_CODES.UP:
             case KEY_CODES.DOWN:
@@ -60,6 +72,8 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
     }
 
     function onKeyUp(e) {
+        if (this.locked === true)
+            return;
         switch(e.keyCode) {
             case KEY_CODES.UP:
                 Facade.publish("OptionsMenuList").hoverPreviousOption();

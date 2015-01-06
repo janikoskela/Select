@@ -14,6 +14,8 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
 
     this.element;
 
+    this.locked = false;
+
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -43,15 +45,17 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
         return this.element;
     }
     
-    this.enableLoadingMode = function() {
-        Facade.publish("ValueContainer").enableLoadingMode();
+    this.lock = function() {
+        this.locked = true;
     }
 
-    this.disableLoadingMode = function() {
-        Facade.publish("ValueContainer").disableLoadingMode();
+    this.unLock = function() {
+        this.locked = false;
     }
 
     function onClick(e) {
+        if (this.locked === true)
+            return;
         var nativeSelectBox = Facade.publish("NativeSelectBox");
         if (nativeSelectBox.isDisabled() === false)
             Facade.publish("OptionsMenu").toggle();
