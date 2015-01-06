@@ -1,4 +1,4 @@
-Object.prototype.setStyle = function(name, value) {
+Element.prototype.setStyle = function(name, value) {
   if (typeof value === "number") {
     value += "px";
   }
@@ -6,84 +6,84 @@ Object.prototype.setStyle = function(name, value) {
     this.style[name] = value;
 };
 
-Object.prototype.getNextSibling = function() {
+Element.prototype.getNextSibling = function() {
   return this.nextSibling;
 };
 
-Object.prototype.removeChildren = function() {
+Element.prototype.removeChildren = function() {
   this.innerHTML = "";
 };
 
-Object.prototype.getChildren = function() {
+Element.prototype.getChildren = function() {
   return this.childNodes;
 };
 
-Object.prototype.setSelectedAttribute = function() {
+Element.prototype.setSelectedAttribute = function() {
   this.setAttribute("selected", true);
 };
 
-Object.prototype.removeStyle = function(name) {
+Element.prototype.removeStyle = function(name) {
   this.style[name] = null;
 };
 
-Object.prototype.remove = function() {
+Element.prototype.remove = function() {
   var parent = this.parentNode;
   parent.removeChild(this);
 };
 
-Object.prototype.getStyle = function(name) {
+Element.prototype.getStyle = function(name) {
   return this.style[name];
 };
 
-Object.prototype.hasClass = function(name) {
+Element.prototype.hasClass = function(name) {
   var result = this.className.match(new RegExp('(\\s|^)' + name + '(\\s|$)'));
   if (result === null)
     return false;
   return result;
 };
 
-Object.prototype.addClass = function(name) {
+Element.prototype.addClass = function(name) {
   if (this.hasClass(name) === false)
    this.className += " " + name;
 };
 
-Object.prototype.clearClasses = function() {
+Element.prototype.clearClasses = function() {
   this.className = "";
 };
 
-Object.prototype.setDataAttribute = function(name, value) {
+Element.prototype.setDataAttribute = function(name, value) {
   this.setAttribute("data-" + name, value);
 };
 
-Object.prototype.getDataAttribute = function(name) {
+Element.prototype.getDataAttribute = function(name) {
   return this.getAttribute("data-" + name);
 };
 
-Object.prototype.removeDataAttribute = function(name) {
+Element.prototype.removeDataAttribute = function(name) {
   this.removeAttribute("data-" + name);
 };
 
-Object.prototype.isHidden = function() {
+Element.prototype.isHidden = function() {
   return (this.style.display === "none") ? true : false;
 };
 
-Object.prototype.show = function() {
+Element.prototype.show = function() {
   this.style.display = "block";
 };
 
-Object.prototype.hide = function() {
+Element.prototype.hide = function() {
   this.style.display = "none";
 };
 
-Object.prototype.empty = function() {
+Element.prototype.empty = function() {
   this.innerHTML = "";
 };
 
-Object.prototype.setClass = function(name) {
+Element.prototype.setClass = function(name) {
   this.className = name;
 };
 
-Object.prototype.clone = function() {
+Element.prototype.clone = function() {
   var newObj = (this instanceof Array) ? [] : {};
     for (var i in this) {
       if (i == 'clone') 
@@ -96,7 +96,7 @@ Object.prototype.clone = function() {
     return newObj;
 };
 
-Object.prototype.removeClass = function(className) {
+Element.prototype.removeClass = function(className) {
     var newClassName = "";
     var i;
     var classes = this.className.split(" ");
