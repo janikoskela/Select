@@ -29,7 +29,7 @@
 	line-height: 2em;
 	position: relative;
 	cursor: pointer;
-	border: .2em solid #9C9C9C;
+	border: 1px solid #9C9C9C;
 	background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(239,239,239,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(239,239,239,1))); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(239,239,239,1) 100%); /* Chrome10+,Safari5.1+ */
@@ -67,6 +67,7 @@
 .plain .value-container span {
 	margin-left: .5em;
 	line-height: 2em; /* same as .widget-sub-wrapper height */
+	vertical-align: middle;
 }
 
 .plain .value-container img {
@@ -214,13 +215,13 @@
 .plain .options-menu-list-item-group-list {
 	padding-left: 1em;
 	padding-bottom: 1em;
+	margin-bottom: 0;
 }
 
 .plain .options-menu-list-item-group-title {
 	font-weight: 600;
 	cursor: default;
 	margin: 0;
-
 	-webkit-user-select: none; 
 	-khtml-user-select: none; 
 	-moz-user-select: none; 

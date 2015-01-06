@@ -1,0 +1,89 @@
+          <h1>Attaching to <i>select</i></h1>
+          <div class="demoArea">
+            <div class="resultArea">
+            <select id="countriesForAttach">
+              <optgroup label="North America">
+                <option value="CA" data-image-url="images/Canada.png">Canada</option>
+                <option value="US" data-image-url="images/United States of America(USA).png">United States of America</option>
+                <option value="ME" data-image-url="images/Mexico.png">Mexico</option>
+                <option value="CU" data-image-url="images/Cuba.png">Cuba</option>
+                <option value="GU" data-image-url="images/Guatemala.png">Guatemala</option>
+                <option value="HA" data-image-url="images/Haiti.png">Haiti</option>
+                <option value="HO" data-image-url="images/Honduras.png">Honduras</option>
+                <option value="CO" data-image-url="images/Costa-Rica.png">Costa Rica</option>
+                <option value="PA" data-image-url="images/Panama.png">Panama</option>
+                <option value="JA" data-image-url="images/Jamaica.png">Jamaica</option>
+                <option value="BA" data-image-url="images/Bahamas.png">Bahamas</option>
+              </optgroup>
+              <optgroup label="Europe">
+                <option selected value="FI" data-image-url="images/Finland.png">Finland</option>
+                <option value="SE" data-image-url="images/Sweden.png">Sweden</option>
+                <option value="NO" data-image-url="images/Norway.png">Norway</option>
+                <option value="DE" data-image-url="images/Denmark.png">Denmark</option>
+                <option value="IC" data-image-url="images/Iceland.png">Iceland</option>
+                <option value="GE" data-image-url="images/Germany.png">Germany</option>
+                <option value="FR" data-image-url="images/France.png">France</option>
+                <option value="ES" data-image-url="images/Spain.png">Spain</option>
+                <option value="PO" data-image-url="images/Poland.png">Poland</option>
+                <option value="SC" data-image-url="images/Scotland.png">Scotland</option>
+                <option value="RU" data-image-url="images/Russian Federation.png">Russia</option>
+                <option value="PO" data-image-url="images/Portugal.png">Portugal</option>
+                <option value="IR" data-image-url="images/Ireland.png">Ireland</option>
+                <option value="WA" data-image-url="images/Wales.png">Wales</option>
+                <option value="NE" data-image-url="images/Netherlands.png">Netherlands</option>
+                <option value="GR" data-image-url="images/Greece.png">Greece</option>
+                <option value="IT" data-image-url="images/Italy.png">Italy</option>
+                <option value="HU" data-image-url="images/Hungary.png">Hungary</option>
+                <option value="BG" data-image-url="images/Bulgaria.png">Bulgaria</option>
+                <option value="BE" data-image-url="images/Belgium.png">Belgium</option>
+                <option value="ES" data-image-url="images/Estonia.png">Estonia</option>
+                <option value="LI" data-image-url="images/Lithuania.png">Lithuania</option>
+                <option value="LA" data-image-url="images/Latvia.png">Latvia</option>
+                <option value="VA" data-image-url="images/Vatican City.png">Vatican City</option>
+                <option value="TU" data-image-url="images/Turkey.png">Turkey</option>
+                <option value="IS" data-image-url="images/Israel.png">Israel</option>
+                <option value="AN" data-image-url="images/Andorra.png">Andorra</option>
+                <option value="MO" data-image-url="images/Monaco.png">Monaco</option>
+                <option value="SW" data-image-url="images/Switzerland.png">Switzerland</option>
+                <option value="AU" data-image-url="images/Austria.png">Austria</option>
+                <option value="EN" data-image-url="images/England.png">England</option>
+                <option value="SR" data-image-url="images/Serbia(Yugoslavia).png">Serbia</option>
+                <option value="LU" data-image-url="images/Luxembourg.png">Luxembourg</option>
+                <option value="RO" data-image-url="images/Romania.png">Romania</option>
+                <option value="UK" data-image-url="images/Ukraine.png">Ukraine</option>
+                <option value="MD" data-image-url="images/Moldova.png">Moldova</option>
+                <option value="CY" data-image-url="images/Cyprus.png">Cyprus</option>
+                <option value="UK" data-image-url="images/United Kingdom(Great Britain).png">United Kingdom</option>
+                <option value="SL" data-image-url="images/Slovakia.png">Slovakia</option>
+                <option value="SN" data-image-url="images/Slovenia.png">Slovenia</option>
+                <option value="SA" data-image-url="images/San Marino.png">San Marino</option>
+                <option value="LI" data-image-url="images/Liechtenstein.png">Liechtenstein</option>
+              </optgroup>
+            </select>
+            </div>
+            <div class="actionArea">
+              <button id="attachBtn">Attach</button>
+            </div>
+          </div>
+          <div class="exampleCode">
+<pre class="prettyprint">var instance = new Selex({
+  targetElement: document.getElementById("countries")}
+);
+instance.attach();</pre>
+          </div>
+          <script>
+        var attachInstance = new Selex({
+        targetElement: document.getElementById("countriesForAttach")
+      });
+      var attachBtn = $('#attachBtn').click(function() {
+        var value = $(this).text();
+        if (value == "Attach") {
+          attachInstance.attach();
+          $(this).text("Detach");
+        }
+        else {
+          attachInstance.detach();
+          $(this).text("Attach");
+        }
+      });
+          </script>

@@ -12,6 +12,10 @@ h1, h2, h3, h4, h5, h6 {
   margin:0 0 20px;
 }
 
+ul {
+  list-style: none;
+}
+
 p, ul, ol, table, pre, dl {
   margin:0 0 20px;
 }
@@ -64,7 +68,7 @@ code, pre {
 }
 
 pre {
-  padding:8px 15px;
+  padding:8px 15px !important;
   background: #f8f8f8;  
   border-radius:5px;
   border:1px solid #e5e5e5;
@@ -96,9 +100,15 @@ img {
 }
 
 header {
-  width:270px;
+  width:100%;
+}
+
+.left {
   float:left;
-  position:fixed;
+}
+
+.right {
+  float: right;
 }
 
 header ul {
@@ -160,9 +170,9 @@ header ul a strong {
 }
 
 section {
-  width:500px;
-  float:right;
+  width:100%;
   padding-bottom:50px;
+  max-width: 600px;
 }
 
 small {
@@ -180,9 +190,44 @@ footer {
   width:270px;
   float:left;
   position:fixed;
-  bottom:50px;
+  bottom:5px;
 }
 
+button {
+  padding: 7px 15px 7px !important;
+  font-size: 14px !important;
+  background-color: #57d6c7;
+  font-weight: bold;
+  text-shadow: 1px 1px #57D6C7;
+  color: #ffffff;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px solid #57D6C7;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+
+button:hover {
+  background-color: #51C4B7;
+}
+button:active {
+  background: #47B3A6;
+}
+
+.demoArea > * {
+  display: inline-block;
+}
+
+.resultArea {
+  width: 300px;
+}
+
+.exampleCode {
+  margin-top: 2em;
+}
 @media print, screen and (max-width: 960px) {
   
   div.wrapper {
