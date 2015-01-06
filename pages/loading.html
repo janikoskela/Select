@@ -62,28 +62,23 @@
             </select>
             </div>
             <div class="actionArea">
-              <button id="loadingModeBtn">Set loading mode on</button>
+              <button id="loadingModeBtn">Toggle loading mode</button>
             </div>
           </div>
           <div class="exampleCode">
 <pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")}
+  targetElement: document.getElementById("countries"),
+  loadingText: "Loading something"}
 );
-instance.attach();</pre>
+instance.attach();
+instance.toggleLoadingMode();</pre>
           </div>
           <script>
         var loadingModeInstance = new Selex({
-        targetElement: document.getElementById("countriesForLoadingMode")
+        targetElement: document.getElementById("countriesForLoadingMode"),
+        loadingText: "Loading something"
       }).attach();
       $('#loadingModeBtn').click(function() {
-        var value = $(this).text();
-        if (value == "Set loading mode on") {
           loadingModeInstance.toggleLoadingMode();
-          $(this).text("Set loading mode off");
-        }
-        else {
-          loadingModeInstance.toggleLoadingMode();
-          $(this).text("Set loading mode on");
-        }
       });
           </script>
