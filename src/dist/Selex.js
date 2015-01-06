@@ -775,8 +775,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		if (optionsMenu.isHidden()) {
 			option.setSelected();
 		}
-		else
+		else {
 			this.element.scrollTop = option.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
+		}
     }
 
     this.selectHoveredOption = function() {
@@ -814,7 +815,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     		if (optionsMenu.isHidden())
     			optionItem.setSelected();
     		else
-				that.element.scrollTop = optionItem.getElement().offsetTop;
+				that.element.scrollTop = optionItem.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
 			return true;
     	}
     	return false;
