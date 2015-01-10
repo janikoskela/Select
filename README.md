@@ -40,6 +40,7 @@ hide|-|Hides widget
 enable|-|Enables widget
 disable|-|Disabled widget
 toggleLoadingMode|-|Enables or disables loading mode
+toggleInputSearch|-|Enables or disables input search
 
 Delegations
 ===============

@@ -156,14 +156,15 @@ var settings = {
   theme: "plain",
   noResultsMessage: "No countries found",
   sort: "desc",
-  useSearchInput: true,
+  useSearchInput: false,
   orientation: "left",
   closeWhenCursorOut: false,
 };
 var plainInstance = new Selex(settings);
 plainInstance.attach();
-plainInstance.detach();
-plainInstance.attach();
+plainInstance.toggleInputSearch();
+plainInstance.toggleInputSearch();
+
 /*instance = new Selex({
   targetElement: document.getElementById("poison"),
   theme: "poison",

@@ -70,6 +70,11 @@
 			Facade.publish("Wrapper:toggleLoadingMode");
 			return this;
 		}
+
+		this.toggleInputSearch = function() {
+			Facade.publish("OptionsMenu:toggleInputSearch");
+			return this;
+		}
 	}
 
 SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#constructor-parameters";SELEX.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
@@ -316,14 +321,18 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	var optionsMenuList = Facade.subscribe("OptionsMenuList", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Facade));
     	var optionsMenuListElem = optionsMenuList.render();
         if (this.useSearchInput === true) {
-        	var optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
-        	var optionsMenuSearchWrapperElem = optionsMenuSearchWrapper.render();
-    		this.element.appendChild(optionsMenuSearchWrapperElem);
+        	renderOptionsMenuSearchWrapper();
         }
     	this.element.appendChild(optionsMenuListElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
     	return this.element;
+	}
+
+	function renderOptionsMenuSearchWrapper() {
+    	that.optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
+    	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
+		that.element.appendFirst(optionsMenuSearchWrapperElem);
 	}
 
 	this.onNoOptionsFound = function() {
@@ -422,6 +431,21 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		else
 			this.hide();
 	}
+
+	this.toggleInputSearch = function() {
+        if (this.useSearchInput === true) {
+        	this.useSearchInput = false;
+        	Facade.publish("OptionsMenuSearchWrapper:hide");
+        }
+        else {
+        	if (this.optionsMenuSearchWrapper !== undefined)
+        		Facade.publish("OptionsMenuSearchWrapper:show");
+        	else {
+        		renderOptionsMenuSearchWrapper();
+        	}
+        	this.useSearchInput = true;
+        }
+    }
 };SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSelectOption, index) {
 	var that = this;
 	this.nativeSelectOption = nativeSelectOption;
@@ -1642,6 +1666,12 @@ Element.prototype.removeClass = function(className) {
         }
     }
     this.className = newClassName;
+};
+Element.prototype.appendFirst = function(childNode){
+    if (this.firstChild)
+      this.insertBefore(childNode,this.firstChild);
+    else 
+      this.appendChild(childNode);
 };SELEX.UTILS.createElement = function(type, classes) {
 	var elem = document.createElement(type);
 	if (typeof classes === "string")

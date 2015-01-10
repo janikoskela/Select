@@ -70,6 +70,11 @@
 			Facade.publish("Wrapper:toggleLoadingMode");
 			return this;
 		}
+
+		this.toggleInputSearch = function() {
+			Facade.publish("OptionsMenu:toggleInputSearch");
+			return this;
+		}
 	}
 
 }(jQuery || {}));

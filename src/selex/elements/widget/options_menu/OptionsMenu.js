@@ -14,14 +14,18 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
     	var optionsMenuList = Facade.subscribe("OptionsMenuList", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Facade));
     	var optionsMenuListElem = optionsMenuList.render();
         if (this.useSearchInput === true) {
-        	var optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
-        	var optionsMenuSearchWrapperElem = optionsMenuSearchWrapper.render();
-    		this.element.appendChild(optionsMenuSearchWrapperElem);
+        	renderOptionsMenuSearchWrapper();
         }
     	this.element.appendChild(optionsMenuListElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
     	return this.element;
+	}
+
+	function renderOptionsMenuSearchWrapper() {
+    	that.optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
+    	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
+		that.element.appendFirst(optionsMenuSearchWrapperElem);
 	}
 
 	this.onNoOptionsFound = function() {
@@ -120,4 +124,19 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		else
 			this.hide();
 	}
+
+	this.toggleInputSearch = function() {
+        if (this.useSearchInput === true) {
+        	this.useSearchInput = false;
+        	Facade.publish("OptionsMenuSearchWrapper:hide");
+        }
+        else {
+        	if (this.optionsMenuSearchWrapper !== undefined)
+        		Facade.publish("OptionsMenuSearchWrapper:show");
+        	else {
+        		renderOptionsMenuSearchWrapper();
+        	}
+        	this.useSearchInput = true;
+        }
+    }
 };
