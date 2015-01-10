@@ -482,7 +482,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			this.element.appendChild(optionsMenuItemDescriptionElem);
 		}
     	if (this.selected === true)
-    		this.setSelected();
+    		this.setInitialSelected();
     	return this.element;
 	}
 
@@ -516,6 +516,12 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.setHovered = function() {
 		this.element.addClass("hovered");
+	}
+
+	this.setInitialSelected = function() {
+		Facade.publish("OptionsMenuList:clearSelected");
+		this.element.addClass("selected");
+		Facade.publish("ValueContainer:refresh");
 	}
 
 	this.setSelected = function() {

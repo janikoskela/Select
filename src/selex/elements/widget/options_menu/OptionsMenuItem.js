@@ -34,7 +34,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 			this.element.appendChild(optionsMenuItemDescriptionElem);
 		}
     	if (this.selected === true)
-    		this.setSelected();
+    		this.setInitialSelected();
     	return this.element;
 	}
 
@@ -68,6 +68,12 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 
 	this.setHovered = function() {
 		this.element.addClass("hovered");
+	}
+
+	this.setInitialSelected = function() {
+		Facade.publish("OptionsMenuList:clearSelected");
+		this.element.addClass("selected");
+		Facade.publish("ValueContainer:refresh");
 	}
 
 	this.setSelected = function() {
