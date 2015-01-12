@@ -1,7 +1,7 @@
-<h1>Input search</h1>
+          <h1>Disabling & enabling</h1>
           <div class="demoArea">
             <div class="resultArea">
-            <select id="countriesForInputSearch">
+            <select id="countriesForDisable">
               <optgroup label="North America">
                 <option value="CA" data-image-url="images/Canada.png">Canada</option>
                 <option value="US" data-image-url="images/United States of America(USA).png">United States of America</option>
@@ -62,24 +62,29 @@
             </select>
             </div>
             <div class="actionArea">
-              <button id="toggleInputSearchBtnF">Toggle input search</button>
+              <button id="disableBtn">Disable</button>
             </div>
           </div>
           <div class="exampleCode">
 <pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")},
-  useSearchInput: true,
-  noResultsMessage: "Could not find any countries, sorry"
+  targetElement: document.getElementById("countries")}
 );
-instance.attach();</pre>
+instance.attach();
+instance.disable();</pre>
           </div>
           <script>
-      var toggleInputSearchInstance = new Selex({
-        targetElement: document.getElementById("countriesForInputSearch"),
-          useSearchInput: true,
-        noResultsMessage: "Could not find any countries, sorry"
+        var disableInstance = new Selex({
+        targetElement: document.getElementById("countriesForDisable")
       }).attach();
-      $('#toggleInputSearchBtnF').click(function() {
-          toggleInputSearchInstance.toggleInputSearch();
+      $('#disableBtn').click(function() {
+        var value = $(this).text();
+        if (value == "Disable") {
+          disableInstance.disable();
+          $(this).text("Enable");
+        }
+        else {
+          disableInstance.enable();
+          $(this).text("Disable");
+        }
       });
           </script>

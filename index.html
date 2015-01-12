@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="stylesheets/plain.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-    <script src="javascripts/Selex.js" type="text/javascript"></script>
+    <script src="https://raw.githubusercontent.com/janikoskela/Selex/master/src/dist/Selex.min.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -21,12 +21,16 @@
         <p>Selex is a customizable and lightweight widget made to function as a <i>select</i>-element</p>
       </header>
       <section>
+        <div id="demoContent"></div>
         <div id="attachContent"></div>
         <div id="inputSearchContent"></div>
         <div id="sortContent"></div>
         <div id="loadingModeContent"></div>
         <div id="orientationContent"></div>
         <div id="changeContent"></div>
+        <div id="disableContent"></div>
+        <div id="hideContent"></div>
+
       </section>
       <footer>
         <!--<p>This project is maintained by <a href="https://github.com/janikoskela">janikoskela</a></p>
@@ -37,6 +41,9 @@
 
     $(document).ready(function(){
       $.getScript( "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js" ).done(function() {
+        //$("#demoContent").load("pages/demo.html");
+        $("#disableContent").load("pages/disable.html");
+        $("#hideContent").load("pages/hide.html");
         $("#attachContent").load("pages/attach.html");
         $("#inputSearchContent").load("pages/input-search.html");
         $("#sortContent").load("pages/sort.html");

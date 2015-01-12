@@ -333,6 +333,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	that.optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
     	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
 		that.element.appendFirst(optionsMenuSearchWrapperElem);
+		console.log(optionsMenuSearchWrapperElem)
 	}
 
 	this.onNoOptionsFound = function() {
@@ -433,11 +434,13 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	}
 
 	this.toggleInputSearch = function() {
+		console.log(this.useSearchInput)
         if (this.useSearchInput === true) {
         	this.useSearchInput = false;
         	Facade.publish("OptionsMenuSearchWrapper:hide");
         }
         else {
+        	console.log(this.optionsMenuSearchWrapper)
         	if (this.optionsMenuSearchWrapper !== undefined)
         		Facade.publish("OptionsMenuSearchWrapper:show");
         	else {
@@ -1674,10 +1677,7 @@ Element.prototype.removeClass = function(className) {
     this.className = newClassName;
 };
 Element.prototype.appendFirst = function(childNode){
-    if (this.firstChild)
-      this.insertBefore(childNode,this.firstChild);
-    else 
-      this.appendChild(childNode);
+	this.insertBefore(childNode, this.firstChild);
 };SELEX.UTILS.createElement = function(type, classes) {
 	var elem = document.createElement(type);
 	if (typeof classes === "string")

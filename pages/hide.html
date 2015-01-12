@@ -1,7 +1,7 @@
-<h1>Input search</h1>
+          <h1>Hiding & showing</h1>
           <div class="demoArea">
             <div class="resultArea">
-            <select id="countriesForInputSearch">
+            <select id="countriesForHide">
               <optgroup label="North America">
                 <option value="CA" data-image-url="images/Canada.png">Canada</option>
                 <option value="US" data-image-url="images/United States of America(USA).png">United States of America</option>
@@ -62,24 +62,29 @@
             </select>
             </div>
             <div class="actionArea">
-              <button id="toggleInputSearchBtnF">Toggle input search</button>
+              <button id="hideBtn">Hide</button>
             </div>
           </div>
           <div class="exampleCode">
 <pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")},
-  useSearchInput: true,
-  noResultsMessage: "Could not find any countries, sorry"
+  targetElement: document.getElementById("countries")}
 );
-instance.attach();</pre>
+instance.attach();
+instance.hide();</pre>
           </div>
           <script>
-      var toggleInputSearchInstance = new Selex({
-        targetElement: document.getElementById("countriesForInputSearch"),
-          useSearchInput: true,
-        noResultsMessage: "Could not find any countries, sorry"
+        var hideInstance = new Selex({
+        targetElement: document.getElementById("countriesForHide")
       }).attach();
-      $('#toggleInputSearchBtnF').click(function() {
-          toggleInputSearchInstance.toggleInputSearch();
+      $('#hideBtn').click(function() {
+        var value = $(this).text();
+        if (value == "Hide") {
+          hideInstance.hide();
+          $(this).text("Show");
+        }
+        else {
+          hideInstance.show();
+          $(this).text("Hide");
+        }
       });
           </script>

@@ -1,7 +1,7 @@
-<h1>Input search</h1>
+          <h1>Demo</h1>
           <div class="demoArea">
             <div class="resultArea">
-            <select id="countriesForInputSearch">
+            <select id="countriesForDemo">
               <optgroup label="North America">
                 <option value="CA" data-image-url="images/Canada.png">Canada</option>
                 <option value="US" data-image-url="images/United States of America(USA).png">United States of America</option>
@@ -62,24 +62,57 @@
             </select>
             </div>
             <div class="actionArea">
-              <button id="toggleInputSearchBtnF">Toggle input search</button>
+              <button id="demoDetachBtn">Detach</button>
+              <button id="demoDisableBtn">Disable</button>
+              <button id="demoHideBtn">Hide</button>
+              <button id="demoLoadingBtn">Toggle loading</button>
+              <button id="demoInputBtn">Toggle input search</button>
             </div>
           </div>
-          <div class="exampleCode">
-<pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")},
-  useSearchInput: true,
-  noResultsMessage: "Could not find any countries, sorry"
-);
-instance.attach();</pre>
-          </div>
           <script>
-      var toggleInputSearchInstance = new Selex({
-        targetElement: document.getElementById("countriesForInputSearch"),
-          useSearchInput: true,
-        noResultsMessage: "Could not find any countries, sorry"
-      }).attach();
-      $('#toggleInputSearchBtnF').click(function() {
-          toggleInputSearchInstance.toggleInputSearch();
+        var demoInstance = new Selex({
+        targetElement: document.getElementById("countriesForDemo")
       });
+        demoInstance.attach();
+
+        $('#demoInputBtn').click(function() {
+          demoInstance.toggleInputSearch();
+        });
+
+        $('#demoLoadingBtn').click(function() {
+          demoInstance.toggleLoadingMode();
+        });
+
+        $('#demoHideBtn').click(function() {
+          if ($(this).text() == "Hide") {
+            demoInstance.hide();
+            $(this).text("Show");
+          }
+          else {
+            demoInstance.show();
+            $(this).text("Hide");
+          }
+        });
+
+        $('#demoDetachBtn').click(function() {
+          if ($(this).text() == "Detach") {
+            demoInstance.detach();
+            $(this).text("Attach");
+          }
+          else {
+            demoInstance.attach();
+            $(this).text("Detach");
+          }
+        });
+
+        $('#demoDisableBtn').click(function() {
+          if ($(this).text() == "Disable") {
+            demoInstance.disable();
+            $(this).text("Enable");
+          }
+          else {
+            demoInstance.enable();
+            $(this).text("Disable");
+          }
+        });
           </script>
