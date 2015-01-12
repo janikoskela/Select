@@ -51,7 +51,7 @@ Delegated changes from hidden <i>select</i> to widget:
  - widget gets refreshed when an option or options are removed or added from the hidden <i>select</i>
 
 TODO:
- - widget should listen hidden <i>selects</i> attribute changes (i.e. if it gets disabled) and update widget accordingly. However I have not found any reasonable way to achieve this since Mutation Observer does not detect attribute changes on <i>select</i>. Polling is an option which should be considered properly.
+ - widget should listen hidden <i>selects</i> attribute changes (i.e. if it gets disabled) and update widget accordingly. However I have not found any reasonable way to achieve this since Mutation Observer does not detect attribute changes on <i>select</i> (<a href="http://stackoverflow.com/questions/10411824/webkit-mutation-observer-callback-not-triggered-when-select-box-attributes-chan">link</a>). Polling is an option which should be considered properly.
 
 Licence
 =============
