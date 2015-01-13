@@ -229,6 +229,10 @@ button:active {
 .exampleCode {
   margin-top: 2em;
 }
+
+.description {
+  margin-bottom: 2em;
+}
 @media print, screen and (max-width: 960px) {
   
   div.wrapper {
