@@ -97,6 +97,7 @@ SELEX.ELEMENTS.Wrapper = function(Facade) {
         Facade.publish("WidgetWrapper:unLock");
         Facade.publish("WidgetSubWrapper:unLock");
         Facade.publish("OptionsMenu:unLock");
+        Facade.publish("WidgetWrapper:enableTabNavigation");
     }
 
     this.disable = function() {
@@ -104,6 +105,7 @@ SELEX.ELEMENTS.Wrapper = function(Facade) {
         Facade.publish("WidgetWrapper:lock");
         Facade.publish("WidgetSubWrapper:lock");
         Facade.publish("OptionsMenu:lock");
+        Facade.publish("WidgetWrapper:disableTabNavigation");
     }
 
     this.setWidth = function(width) {

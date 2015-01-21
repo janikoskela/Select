@@ -1313,8 +1313,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.element;
 
-    this.tabIndex;
-
     this.tabIndex = Facade.publish("NativeSelectBox").getTabIndex() || 0;
 
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
@@ -1329,6 +1327,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         document.addEventListener("click", onMouseLeave.bind(this));
         this.element.addEventListener("click", function(e) {
             e.stopPropagation();
+            e.preventDefault();
         });
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
@@ -1350,6 +1349,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.unLock = function() {
         this.locked = false;
+    }
+
+    this.disableTabNavigation = function() {
+        this.element.setAttribute("tabindex", "-1");
+    }
+
+    this.enableTabNavigation = function() {
+        this.element.setAttribute("tabindex", this.tabIndex);
     }
 
     this.getElement = function() {
@@ -1378,7 +1385,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     function onKeyUp(e) {
         if (this.locked === true)
-            return;
+            return false;
         switch(e.keyCode) {
             case KEY_CODES.UP:
                 Facade.publish("OptionsMenuList").hoverPreviousOption();
@@ -1503,6 +1510,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         Facade.publish("WidgetWrapper:unLock");
         Facade.publish("WidgetSubWrapper:unLock");
         Facade.publish("OptionsMenu:unLock");
+        Facade.publish("WidgetWrapper:enableTabNavigation");
     }
 
     this.disable = function() {
@@ -1510,6 +1518,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         Facade.publish("WidgetWrapper:lock");
         Facade.publish("WidgetSubWrapper:lock");
         Facade.publish("OptionsMenu:lock");
+        Facade.publish("WidgetWrapper:disableTabNavigation");
     }
 
     this.setWidth = function(width) {

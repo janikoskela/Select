@@ -8,8 +8,6 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     this.element;
 
-    this.tabIndex;
-
     this.tabIndex = Facade.publish("NativeSelectBox").getTabIndex() || 0;
 
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
@@ -47,6 +45,14 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         this.locked = false;
     }
 
+    this.disableTabNavigation = function() {
+        this.element.setAttribute("tabindex", "-1");
+    }
+
+    this.enableTabNavigation = function() {
+        this.element.setAttribute("tabindex", this.tabIndex);
+    }
+
     this.getElement = function() {
         return this.element;
     }
@@ -73,7 +79,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     function onKeyUp(e) {
         if (this.locked === true)
-            return;
+            return false;
         switch(e.keyCode) {
             case KEY_CODES.UP:
                 Facade.publish("OptionsMenuList").hoverPreviousOption();
