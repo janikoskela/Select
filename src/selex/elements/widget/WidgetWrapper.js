@@ -17,12 +17,18 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
-        if (userDefinedSettings.closeWhenCursorOut === true)
-            this.element.addEventListener("mouseleave", onMouseLeave.bind(this));
-        document.addEventListener("click", onMouseLeave.bind(this));
+        if (userDefinedSettings.closeWhenCursorOut === true) {
+            this.element.addEventListener("mouseleave", function(e) {
+                Facade.publish("OptionsMenu:hide");
+            });
+        }
+        document.addEventListener("click", function(e) {
+            Facade.publish("OptionsMenu:hide");
+        });
         this.element.addEventListener("click", function(e) {
             e.stopPropagation();
         });
+        this.element.addEventListener("blur", onBlur.bind(this));
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
@@ -65,6 +71,10 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         this.element.focus();
     }
 
+    function onBlur(e) {
+        Facade.publish("OptionsMenu:hide");
+    }
+
     function onKeyDown(e) {
         if (this.locked === true)
             return;
@@ -97,7 +107,7 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
     }
 
     function onMouseLeave(e) {
-        Facade.publish("OptionsMenu").hide();
+        Facade.publish("OptionsMenu:hide");
     }
 
     this.setTabIndex = function(tabIndex) {
