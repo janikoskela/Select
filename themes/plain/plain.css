@@ -73,7 +73,7 @@
 .plain .value-container img {
 	display: inline-block;
 	vertical-align: middle;
-	height: 1.5em;
+	height: 100%;
 	margin-left: .3em;
 	margin-right: .3em;
 }
