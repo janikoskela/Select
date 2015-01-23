@@ -5,7 +5,7 @@
 	-moz-user-select: none; 
 	-ms-user-select: none; 
 	user-select: none; 
-	font-size: 0.7em; 
+	font-size: 11px; 
 	font-family: Verdana;
 	color: #000;
 }
@@ -19,14 +19,13 @@
 }
 
 .plain .widget-wrapper:focus .widget-sub-wrapper {
-    outline:none; /*or outline-color:#FFFFFF; if the first doesn't work*/
+    outline: none; /*or outline-color:#FFFFFF; if the first doesn't work*/
     -webkit-box-shadow: 0px 0px 4px 0px #639AFF;
     box-shadow: 0px 0px 4px 0px #639AFF;
 }
 
 .plain .widget-sub-wrapper {
 	height: 2em;
-	line-height: 2em;
 	position: relative;
 	cursor: pointer;
 	border: 1px solid #9C9C9C;
@@ -45,6 +44,7 @@
 	position: relative;
 	border: 1px solid #DEDEDE;
 	cursor: default;
+	outline-width: 0;
 }
 
 .plain .widget-sub-wrapper div {
@@ -73,7 +73,7 @@
 .plain .value-container img {
 	display: inline-block;
 	vertical-align: middle;
-	height: 1.5em;
+	height: 100%;
 	margin-left: .3em;
 	margin-right: .3em;
 }
@@ -215,7 +215,6 @@
 .plain .options-menu-list-item-group-list {
 	padding-left: 1em;
 	padding-bottom: 1em;
-	margin-bottom: 0;
 }
 
 .plain .options-menu-list-item-group-title {
