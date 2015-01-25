@@ -28,7 +28,6 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         this.element.addEventListener("click", function(e) {
             e.stopPropagation();
         });
-        this.element.addEventListener("blur", onBlur.bind(this));
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
 
@@ -69,10 +68,6 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     this.focus = function() {
         this.element.focus();
-    }
-
-    function onBlur(e) {
-        Facade.publish("OptionsMenu:hide");
     }
 
     function onKeyDown(e) {

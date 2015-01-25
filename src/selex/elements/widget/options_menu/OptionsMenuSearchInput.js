@@ -1,13 +1,16 @@
 SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 	this.type = "input";
 	this.className = "options-menu-search-input";
+	this.tabIndex = -1;
 	this.element;
 
 	this.render = function() {
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.element.setAttribute("type", "search");
+    	this.element.setAttribute("tabindex", this.tabIndex);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	this.element.addEventListener("click", onClick.bind(this));
+    	this.element.addEventListener("blur", onBlur.bind(this));
     	return this.element;
 	}
 
@@ -23,6 +26,10 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 	this.blur = function() {
 		this.element.blur();
 	}
+
+    function onBlur(e) {
+        Facade.publish("OptionsMenu:hide");
+    }
 
 	function onClick(e) {
 		var elementValue = this.element.value;
