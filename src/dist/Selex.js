@@ -1027,7 +1027,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.setAttribute("tabindex", this.tabIndex);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	this.element.addEventListener("click", onClick.bind(this));
-    	this.element.addEventListener("blur", onBlur.bind(this));
     	return this.element;
 	}
 
@@ -1043,10 +1042,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.blur = function() {
 		this.element.blur();
 	}
-
-    function onBlur(e) {
-        Facade.publish("OptionsMenu:hide");
-    }
 
 	function onClick(e) {
 		var elementValue = this.element.value;
@@ -1329,6 +1324,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
+        //this.element.addEventListener("blur", onBlur.bind(this));
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
                 Facade.publish("OptionsMenu:hide");
@@ -1356,6 +1352,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.lock = function() {
         this.locked = true;
+    }
+
+    function onBlur(e) {
+        Facade.publish("OptionsMenu:hide");
     }
 
     this.unLock = function() {
@@ -1397,6 +1397,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     function onKeyUp(e) {
         if (this.locked === true)
             return false;
+        console.log(e)
         switch(e.keyCode) {
             case KEY_CODES.UP:
                 Facade.publish("OptionsMenuList").hoverPreviousOption();
