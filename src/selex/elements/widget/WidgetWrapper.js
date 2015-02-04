@@ -70,6 +70,10 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         this.element.focus();
     }
 
+    this.blur = function() {
+        this.element.blur();
+    }
+
     function onKeyDown(e) {
         if (this.locked === true)
             return;

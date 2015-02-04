@@ -1025,6 +1025,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.element.setAttribute("type", "text");
     	this.element.setAttribute("tabindex", this.tabIndex);
+    	this.element.addEventListener("blur", this.focusOut);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	return this.element;
 	}
@@ -1040,6 +1041,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.blur = function() {
 		this.element.blur();
+	}
+
+	this.focusOut = function() {
+		Facade.publish("OptionsMenu:hide");
+		Facade.publish("WidgetWrapper:blur");
 	}
 
 	function onKeyUp(e) {
@@ -1362,6 +1368,10 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.focus = function() {
         this.element.focus();
+    }
+
+    this.blur = function() {
+        this.element.blur();
     }
 
     function onKeyDown(e) {

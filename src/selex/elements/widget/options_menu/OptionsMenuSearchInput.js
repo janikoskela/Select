@@ -8,6 +8,7 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	this.element.setAttribute("type", "text");
     	this.element.setAttribute("tabindex", this.tabIndex);
+    	this.element.addEventListener("blur", this.focusOut);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	return this.element;
 	}
@@ -23,6 +24,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 
 	this.blur = function() {
 		this.element.blur();
+	}
+
+	this.focusOut = function() {
+		Facade.publish("OptionsMenu:hide");
+		Facade.publish("WidgetWrapper:blur");
 	}
 
 	function onKeyUp(e) {
