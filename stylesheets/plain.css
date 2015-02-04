@@ -199,7 +199,7 @@
 }
 
 .plain .options-menu-search-input {
-	width: calc(100% - 2px);
+	width: 95%;
 	-webkit-appearance:textfield;
 }
 
