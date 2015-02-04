@@ -62,3 +62,5 @@ SELEX.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
     }
 
 };
+
+SELEX.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

@@ -11,3 +11,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(Facade, optio
     	return this.element;
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

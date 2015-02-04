@@ -18,14 +18,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 		return this.element;
 	}
 
-	this.hide = function() {
-		this.element.hide();
-	}
-
-	this.show = function() {
-		this.element.show();
-	}
-
 	this.refresh = function() {
         var options = Facade.publish("NativeSelectBox").getOptions();
 		switch(this.sortType) {
@@ -282,10 +274,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 		}
 	}
 
-	this.hasChildren = function() {
-		return (this.element.getChildren().length > 0);
-	}
-
 	this.getListElements = function() {
 		return this.element.getChildren();
 	}
@@ -327,9 +315,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 			this.optionItems[i].removeSelected();
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
 
 	this.setWidth = function(width) {
 		this.width = width;
@@ -341,3 +326,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 		this.element.setStyle("height", this.height);
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

@@ -11,3 +11,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription = function(Facade,
     	return this.element;
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

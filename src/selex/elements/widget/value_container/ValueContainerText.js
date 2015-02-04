@@ -32,3 +32,5 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Facade) {
 		this.element.innerHTML = text;
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

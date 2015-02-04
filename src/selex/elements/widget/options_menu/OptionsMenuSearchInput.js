@@ -18,14 +18,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 		this.value = undefined;
 	}
 
-	this.focus = function() {
-		this.element.focus();
-	}
-
-	this.blur = function() {
-		this.element.blur();
-	}
-
 	this.focusOut = function() {
 		Facade.publish("OptionsMenu:hide");
 		Facade.publish("WidgetWrapper:blur");
@@ -50,3 +42,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
         }
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

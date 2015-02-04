@@ -50,28 +50,8 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         this.locked = false;
     }
 
-    this.disableTabNavigation = function() {
-        this.element.setAttribute("tabindex", "-1");
-    }
-
     this.enableTabNavigation = function() {
         this.element.setAttribute("tabindex", this.tabIndex);
-    }
-
-    this.getElement = function() {
-        return this.element;
-    }
-
-    this.getClass = function() {
-        return this.className;
-    }
-
-    this.focus = function() {
-        this.element.focus();
-    }
-
-    this.blur = function() {
-        this.element.blur();
     }
 
     function onKeyDown(e) {
@@ -115,3 +95,5 @@ SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
     }
 
 };
+
+SELEX.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

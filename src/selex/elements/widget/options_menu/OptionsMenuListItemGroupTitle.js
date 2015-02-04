@@ -11,7 +11,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Faca
     	return this.element;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

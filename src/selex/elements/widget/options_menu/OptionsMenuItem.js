@@ -50,10 +50,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 		return this.element.offsetWidth;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
-
 	this.getText = function() {
 		return this.nativeSelectOption.getText();
 	}
@@ -133,3 +129,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSele
 		Facade.publish("OptionsMenu:hide");
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

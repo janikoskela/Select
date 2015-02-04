@@ -56,3 +56,5 @@ SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
 		Facade.publish("ValueContainerText").refresh();
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

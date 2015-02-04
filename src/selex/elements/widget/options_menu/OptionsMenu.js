@@ -51,10 +51,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		this.locked = true;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
-
 	this.setWidth = function(width) {
 		this.width = width;
 		this.element.setStyle("width", this.width);
@@ -86,10 +82,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		Facade.publish("OptionsMenuList:refresh");
 		Facade.publish("OptionsMenuSearchNoResults:hide");
 		Facade.publish("ArrowContainerContent").down();
-	}
-
-	this.isHidden = function() {
-		return this.element.isHidden();
 	}
 
 	this.show = function() {
@@ -140,3 +132,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
         }
     }
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

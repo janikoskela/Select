@@ -24,12 +24,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
 		this.width = width;
 	}
 
-	this.hide = function() {
-		this.element.hide();
-	}
-
-	this.show = function() {
-		this.element.show();
-	}
-
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

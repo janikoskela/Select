@@ -77,7 +77,71 @@
 		}
 	}
 
-SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#constructor-parameters";SELEX.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
+SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#constructor-parameters";SELEX.ELEMENTS.Element = function() {};
+
+SELEX.ELEMENTS.Element.prototype.hide = function() {
+	this.element.hide();
+};
+
+SELEX.ELEMENTS.Element.prototype.show = function() {
+	this.element.show();
+};
+
+SELEX.ELEMENTS.Element.prototype.getElement = function() {
+	return this.element;
+};
+
+SELEX.ELEMENTS.Element.prototype.focus = function() {
+	return this.element.focus();
+};
+
+SELEX.ELEMENTS.Element.prototype.blur = function() {
+	return this.element.blur();
+};
+
+SELEX.ELEMENTS.Element.prototype.getClass = function() {
+	return this.element.className();
+};
+
+SELEX.ELEMENTS.Element.prototype.getWidth = function() {
+	return this.element.offsetWidth;
+};
+
+SELEX.ELEMENTS.Element.prototype.isHidden = function() {
+	return this.element.isHidden();
+};
+
+SELEX.ELEMENTS.Element.prototype.disable = function() {
+	this.element.setAttribute("disabled", true);
+};
+
+SELEX.ELEMENTS.Element.prototype.enable = function() {
+	this.element.removeAttribute("disabled");
+};
+
+SELEX.ELEMENTS.Element.prototype.isDisabled = function() {
+	return (this.element.getAttribute("disabled") === null) ? false : true;
+};
+
+SELEX.ELEMENTS.Element.prototype.getTabIndex = function() {
+	return this.element.getAttribute("tabindex");
+};
+
+SELEX.ELEMENTS.Element.prototype.setSelectedIndex = function(index) {
+	this.element.selectedIndex = index;
+};
+
+SELEX.ELEMENTS.Element.prototype.empty = function() {
+	this.element.removeChildren();
+};
+
+SELEX.ELEMENTS.Element.prototype.hasChildren = function() {
+	return (this.element.getChildren().length > 0);
+};
+
+SELEX.ELEMENTS.Element.prototype.disableTabNavigation = function() {
+    this.element.setAttribute("tabindex", "-1");
+};SELEX.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
 	var that = this;
 	this.optionItems = [];
 	this.observer;
@@ -96,25 +160,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		return this.element;
 	}
 
-	this.getTabIndex = function() {
-		return this.element.getAttribute("tabindex");
-	}
-
 	this.getOptions = function() {
 		return this.optionItems;
 	}
-
-	this.isDisabled = function() {
-		return (this.element.getAttribute("disabled") === null) ? false : true;
-	}
-
-    this.enable = function() {
-        this.element.removeAttribute("disabled");
-    }
-
-    this.disable = function() {
-        this.element.setAttribute("disabled", true);
-    }
 
 	function attachDomObserver() {
     	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
@@ -162,10 +210,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			this.optionItems[i].removeSelected();
 	}
 
-	this.setSelectedIndex = function(index) {
-		this.element.selectedIndex = index;
-	}
-
 	this.triggerChange = function() {
 		this.clearSelected();
 	    SELEX.UTILS.triggerEvent("change", this.element);
@@ -194,15 +238,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		}
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
+};
 
-	this.hide = function() {
-		this.element.hide();
-	}
-
-};SELEX.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
+SELEX.ELEMENTS.NativeSelectBox.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
 	this.element = optionElement;
 	this.type = "option";
 
@@ -246,7 +284,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		if (tagName === "optgroup")
 			return parentNode;
 	}
-};SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Facade) {
+};
+
+SELEX.ELEMENTS.NativeSelectBoxItem.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Facade) {
 
 	this.type = "div";
 	this.element;
@@ -260,15 +300,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.element.appendChild(elem);
 		return this.element;
 	}
+};
 
-	this.getElement = function() {
-		return this.element;
-	}
-
-	this.getWidth = function() {
-		return this.element.offsetWidth;
-	}
-};SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Facade) {
+SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Facade) {
 
 	var CLASS_NAME_ARROW_DOWN = "arrow-down";
 	var CLASS_NAME_ARROW_UP = "arrow-up";
@@ -280,10 +314,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.render = function() {
 		this.element = document.createElement(this.type);
 		this.element.setClass(this.className);
-		return this.element;
-	}
-
-	this.getElement = function() {
 		return this.element;
 	}
 
@@ -305,7 +335,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			this.down();
 		}
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	var that = this;
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
@@ -358,10 +390,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.locked = true;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
-
 	this.setWidth = function(width) {
 		this.width = width;
 		this.element.setStyle("width", this.width);
@@ -393,10 +421,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		Facade.publish("OptionsMenuList:refresh");
 		Facade.publish("OptionsMenuSearchNoResults:hide");
 		Facade.publish("ArrowContainerContent").down();
-	}
-
-	this.isHidden = function() {
-		return this.element.isHidden();
 	}
 
 	this.show = function() {
@@ -446,7 +470,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         	this.useSearchInput = true;
         }
     }
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSelectOption, index) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSelectOption, index) {
 	var that = this;
 	this.nativeSelectOption = nativeSelectOption;
 	this.selected = nativeSelectOption.isSelected();
@@ -496,10 +522,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.getWidth = function() {
 		return this.element.offsetWidth;
-	}
-
-	this.getElement = function() {
-		return this.element;
 	}
 
 	this.getText = function() {
@@ -580,7 +602,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		}
 		Facade.publish("OptionsMenu:hide");
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription = function(Facade, description) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription = function(Facade, description) {
 	this.type = "div";
 	this.description = description;
 	this.className = "options-container-list-item-description";
@@ -592,7 +616,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.appendChild(this.textNode);
     	return this.element;
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(Facade, imageUrl) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(Facade, imageUrl) {
 	this.type = "img";
 	this.imageUrl = imageUrl;
 	this.element;
@@ -602,7 +628,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.setAttribute("src", this.imageUrl);
     	return this.element;
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(Facade, option) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(Facade, option) {
 	this.option = option;
 	this.type = "span";
 	this.element;
@@ -614,7 +642,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.appendChild(this.textNode);
     	return this.element;
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	var that = this;
 	this.type = "ul";
@@ -632,14 +662,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.setWidth(this.width);
     	this.refresh();
 		return this.element;
-	}
-
-	this.hide = function() {
-		this.element.hide();
-	}
-
-	this.show = function() {
-		this.element.show();
 	}
 
 	this.refresh = function() {
@@ -898,10 +920,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		}
 	}
 
-	this.hasChildren = function() {
-		return (this.element.getChildren().length > 0);
-	}
-
 	this.getListElements = function() {
 		return this.element.getChildren();
 	}
@@ -943,9 +961,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 			this.optionItems[i].removeSelected();
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
 
 	this.setWidth = function(width) {
 		this.width = width;
@@ -956,7 +971,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.height = height;
 		this.element.setStyle("height", this.height);
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Facade, optionGroup) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Facade, optionGroup) {
 	this.type = "li";
 	this.className = "options-menu-list-item-group";
 	this.element;
@@ -974,19 +991,14 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element.appendChild(listElem);
     	return this.element;
 	}
-
-	this.empty = function() {
-		this.element.removeChildren();
-	}
-
+	
 	this.getList = function() {
 		return this.list;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList = function(Facade) {
 	this.type = "ul";
 	this.className = "options-menu-list-item-group-list";
 	this.element;
@@ -995,11 +1007,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	return this.element;
 	}
+};
 
-	this.getElement = function() {
-		return this.element;
-	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Facade, text) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Facade, text) {
 	this.type = "div";
 	this.className = "options-menu-list-item-group-title";
 	this.text = text;
@@ -1012,10 +1022,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	return this.element;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 	this.type = "input";
 	this.className = "options-menu-search-input";
 	this.tabIndex = -1;
@@ -1033,14 +1042,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 	this.clear = function() {
 		this.element.value = "";
 		this.value = undefined;
-	}
-
-	this.focus = function() {
-		this.element.focus();
-	}
-
-	this.blur = function() {
-		this.element.blur();
 	}
 
 	this.focusOut = function() {
@@ -1066,7 +1067,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 					Facade.publish("OptionsMenuList:searchByInputString", value);
         }
 	}
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Facade) {
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-menu-search-no-results";
@@ -1081,15 +1084,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     	return this.element;
 	}
 
-	this.show = function() {
-		this.element.show();
-	}
+};
 
-	this.hide = function() {
-		this.element.hide();
-	}
-
-};SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-menu-search-wrapper";
@@ -1115,15 +1112,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.width = width;
 	}
 
-	this.hide = function() {
-		this.element.hide();
-	}
+};
 
-	this.show = function() {
-		this.element.show();
-	}
-
-};SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
 	var that = this;
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
@@ -1180,7 +1171,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		clearInterval(this.timeInterval);
 		Facade.publish("ValueContainerText").refresh();
 	}
-};SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Facade) {
 	this.type = "img";
 	this.imageUrl;
 	this.element;
@@ -1195,14 +1188,12 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.element.setAttribute("src", this.imageUrl);
 	}
 
-	this.hide = function() {
-		this.element.hide();
-	}
-
 	this.show = function() {
 		this.element.setStyle("display", "inline-block");
 	}
-};SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Facade) {
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	var that = this;
 	this.type = "span";
@@ -1235,7 +1226,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.text = text;
 		this.element.innerHTML = text;
 	}
-};SELEX.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
 
     var userDefinedSettings = Facade.publish("UserDefinedSettings");
 
@@ -1298,7 +1291,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
             Facade.publish("OptionsMenu").toggle();
     }
 
-};SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     var userDefinedSettings = Facade.publish("UserDefinedSettings");
 
@@ -1350,28 +1345,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         this.locked = false;
     }
 
-    this.disableTabNavigation = function() {
-        this.element.setAttribute("tabindex", "-1");
-    }
-
     this.enableTabNavigation = function() {
         this.element.setAttribute("tabindex", this.tabIndex);
-    }
-
-    this.getElement = function() {
-        return this.element;
-    }
-
-    this.getClass = function() {
-        return this.className;
-    }
-
-    this.focus = function() {
-        this.element.focus();
-    }
-
-    this.blur = function() {
-        this.element.blur();
     }
 
     function onKeyDown(e) {
@@ -1414,7 +1389,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         this.element.setAttribute("tabindex", tabIndex);
     }
 
-};SELEX.ELEMENTS.Wrapper = function(Facade) {
+};
+
+SELEX.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.ELEMENTS.Wrapper = function(Facade) {
 
     var userDefinedSettings = Facade.publish("UserDefinedSettings");
 
@@ -1439,7 +1416,8 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         var tagName = this.targetElement.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
-                var nativeSelectBox = Facade.subscribe("NativeSelectBox", new SELEX.ELEMENTS.NativeSelectBox(Facade, this.targetElement));
+                var instance = new SELEX.ELEMENTS.NativeSelectBox(Facade, this.targetElement);
+                var nativeSelectBox = Facade.subscribe("NativeSelectBox", instance);
                 nativeSelectBox.attach();
                 if (nativeSelectBox.isDisabled())
                     this.disable();
@@ -1536,7 +1514,7 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         this.element.remove();
     }
 };
-SELEX.EXCEPTIONS.InvalidOptionsErrorException = function() {
+SELEX.ELEMENTS.Wrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);SELEX.EXCEPTIONS.InvalidOptionsErrorException = function() {
 	return {
 		name:        "Invalid options object", 
 	    level:       "Show Stopper", 

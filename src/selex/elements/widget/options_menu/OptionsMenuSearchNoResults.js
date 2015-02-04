@@ -13,12 +13,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Facade)
     	return this.element;
 	}
 
-	this.show = function() {
-		this.element.show();
-	}
-
-	this.hide = function() {
-		this.element.hide();
-	}
-
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

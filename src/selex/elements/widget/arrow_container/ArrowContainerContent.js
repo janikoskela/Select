@@ -13,10 +13,6 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Facade) {
 		return this.element;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
-
 	this.down = function() {
 		this.className = CLASS_NAME_ARROW_DOWN;
 		this.element.setClass(CLASS_NAME_ARROW_DOWN);
@@ -36,3 +32,5 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Facade) {
 		}
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

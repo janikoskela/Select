@@ -12,12 +12,6 @@ SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Facade) {
 		this.element.appendChild(elem);
 		return this.element;
 	}
-
-	this.getElement = function() {
-		return this.element;
-	}
-
-	this.getWidth = function() {
-		return this.element.offsetWidth;
-	}
 };
+
+SELEX.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

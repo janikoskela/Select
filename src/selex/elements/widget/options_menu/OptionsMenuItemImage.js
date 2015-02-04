@@ -9,3 +9,5 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(Facade, image
     	return this.element;
 	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

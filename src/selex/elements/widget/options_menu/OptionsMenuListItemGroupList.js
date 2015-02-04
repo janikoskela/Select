@@ -7,8 +7,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList = function(Facad
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
     	return this.element;
 	}
-
-	this.getElement = function() {
-		return this.element;
-	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

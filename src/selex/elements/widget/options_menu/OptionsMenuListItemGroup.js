@@ -16,16 +16,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Facade, o
     	this.element.appendChild(listElem);
     	return this.element;
 	}
-
-	this.empty = function() {
-		this.element.removeChildren();
-	}
-
+	
 	this.getList = function() {
 		return this.list;
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
 };
+
+SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

@@ -17,25 +17,9 @@ SELEX.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
 		return this.element;
 	}
 
-	this.getTabIndex = function() {
-		return this.element.getAttribute("tabindex");
-	}
-
 	this.getOptions = function() {
 		return this.optionItems;
 	}
-
-	this.isDisabled = function() {
-		return (this.element.getAttribute("disabled") === null) ? false : true;
-	}
-
-    this.enable = function() {
-        this.element.removeAttribute("disabled");
-    }
-
-    this.disable = function() {
-        this.element.setAttribute("disabled", true);
-    }
 
 	function attachDomObserver() {
     	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
@@ -83,10 +67,6 @@ SELEX.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
 			this.optionItems[i].removeSelected();
 	}
 
-	this.setSelectedIndex = function(index) {
-		this.element.selectedIndex = index;
-	}
-
 	this.triggerChange = function() {
 		this.clearSelected();
 	    SELEX.UTILS.triggerEvent("change", this.element);
@@ -115,12 +95,6 @@ SELEX.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
 		}
 	}
 
-	this.getElement = function() {
-		return this.element;
-	}
-
-	this.hide = function() {
-		this.element.hide();
-	}
-
 };
+
+SELEX.ELEMENTS.NativeSelectBox.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

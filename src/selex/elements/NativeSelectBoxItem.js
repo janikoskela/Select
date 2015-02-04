@@ -43,3 +43,5 @@ SELEX.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
 			return parentNode;
 	}
 };
+
+SELEX.ELEMENTS.NativeSelectBoxItem.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);

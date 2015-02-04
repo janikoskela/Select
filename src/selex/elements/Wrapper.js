@@ -23,7 +23,8 @@ SELEX.ELEMENTS.Wrapper = function(Facade) {
         var tagName = this.targetElement.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
-                var nativeSelectBox = Facade.subscribe("NativeSelectBox", new SELEX.ELEMENTS.NativeSelectBox(Facade, this.targetElement));
+                var instance = new SELEX.ELEMENTS.NativeSelectBox(Facade, this.targetElement);
+                var nativeSelectBox = Facade.subscribe("NativeSelectBox", instance);
                 nativeSelectBox.attach();
                 if (nativeSelectBox.isDisabled())
                     this.disable();
@@ -120,3 +121,4 @@ SELEX.ELEMENTS.Wrapper = function(Facade) {
         this.element.remove();
     }
 };
+SELEX.ELEMENTS.Wrapper.prototype = Object.create(SELEX.ELEMENTS.Element.prototype);
