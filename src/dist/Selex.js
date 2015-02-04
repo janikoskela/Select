@@ -1023,10 +1023,9 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
 	this.render = function() {
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	this.element.setAttribute("type", "search");
+    	this.element.setAttribute("type", "text");
     	this.element.setAttribute("tabindex", this.tabIndex);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
-    	this.element.addEventListener("click", onClick.bind(this));
     	return this.element;
 	}
 
@@ -1043,16 +1042,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 		this.element.blur();
 	}
 
-	function onClick(e) {
-		var elementValue = this.element.value;
-		if (elementValue.length === 0) {
-			Facade.publish("OptionsMenuList:refresh");
-			Facade.publish("OptionsMenuList:show");
-			Facade.publish("OptionsMenuSearchNoResults:hide");
-		}
-		this.value = elementValue;
-	}
-
 	function onKeyUp(e) {
 		e.stopPropagation();
         switch(e.keyCode) {
@@ -1062,13 +1051,11 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
         		break;
         	default:
 				var value = this.element.value;
-				if (this.value !== undefined) {
-					if (value.length === this.value.length)
-						return;
-				}
-				this.value = value;
-				if (value.length === 0)
+				if (value.length === 0) {
 					Facade.publish("OptionsMenuList:refresh");
+					Facade.publish("OptionsMenuList:show");
+					Facade.publish("OptionsMenuSearchNoResults:hide");
+				}
 				else
 					Facade.publish("OptionsMenuList:searchByInputString", value);
         }
@@ -1324,7 +1311,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     this.render = function() {
         this.element = SELEX.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
-        //this.element.addEventListener("blur", onBlur.bind(this));
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
                 Facade.publish("OptionsMenu:hide");
@@ -1352,10 +1338,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
 
     this.lock = function() {
         this.locked = true;
-    }
-
-    function onBlur(e) {
-        Facade.publish("OptionsMenu:hide");
     }
 
     this.unLock = function() {
@@ -1397,7 +1379,6 @@ SELEX.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Selex#cons
     function onKeyUp(e) {
         if (this.locked === true)
             return false;
-        console.log(e)
         switch(e.keyCode) {
             case KEY_CODES.UP:
                 Facade.publish("OptionsMenuList").hoverPreviousOption();

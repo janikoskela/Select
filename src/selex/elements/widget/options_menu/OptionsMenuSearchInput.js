@@ -6,10 +6,9 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 
 	this.render = function() {
     	this.element = SELEX.UTILS.createElement(this.type, this.className);
-    	this.element.setAttribute("type", "search");
+    	this.element.setAttribute("type", "text");
     	this.element.setAttribute("tabindex", this.tabIndex);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
-    	this.element.addEventListener("click", onClick.bind(this));
     	return this.element;
 	}
 
@@ -26,16 +25,6 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 		this.element.blur();
 	}
 
-	function onClick(e) {
-		var elementValue = this.element.value;
-		if (elementValue.length === 0) {
-			Facade.publish("OptionsMenuList:refresh");
-			Facade.publish("OptionsMenuList:show");
-			Facade.publish("OptionsMenuSearchNoResults:hide");
-		}
-		this.value = elementValue;
-	}
-
 	function onKeyUp(e) {
 		e.stopPropagation();
         switch(e.keyCode) {
@@ -45,13 +34,11 @@ SELEX.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
         		break;
         	default:
 				var value = this.element.value;
-				if (this.value !== undefined) {
-					if (value.length === this.value.length)
-						return;
-				}
-				this.value = value;
-				if (value.length === 0)
+				if (value.length === 0) {
 					Facade.publish("OptionsMenuList:refresh");
+					Facade.publish("OptionsMenuList:show");
+					Facade.publish("OptionsMenuSearchNoResults:hide");
+				}
 				else
 					Facade.publish("OptionsMenuList:searchByInputString", value);
         }
