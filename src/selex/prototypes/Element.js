@@ -64,7 +64,7 @@ Element.prototype.removeDataAttribute = function(name) {
 };
 
 Element.prototype.isHidden = function() {
-  return (this.style.display === "none") ? true : false;
+  return offsetWidth > 0 && offsetHeight > 0;
 };
 
 Element.prototype.show = function() {
