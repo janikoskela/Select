@@ -213,8 +213,9 @@
 }
 
 .plain .options-menu-list-item-group-list {
+	padding: 0;
 	padding-left: 1em;
-	padding-bottom: 1em;
+	margin: 0;
 }
 
 .plain .options-menu-list-item-group-title {
