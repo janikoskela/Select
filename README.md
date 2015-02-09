@@ -1,10 +1,12 @@
-Select [![Build Status](https://travis-ci.org/janikoskela/Select.svg?branch=master)](https://travis-ci.org/janikoskela/Select)
+Selex [![Build Status](https://travis-ci.org/janikoskela/Selex.svg?branch=master)](https://travis-ci.org/janikoskela/Selex)
 ===============
-Widget requires a <i>select</i>-element to be passed to the constructor (See the examples). When widget is rendered the given <i>select</i> is then hidden. Widget aims to delegate events to the hidden <i>select</i> so that the user can attach events to it normally. This enables that the widget can be easily detached and removed if wanted. Widget is made with pure JS so no external libraries are needed.
+Widget requires a <i>select</i>-element to be passed to the constructor (See the examples). When widget is rendered the given <i>select</i> is then hidden. Widget aims to delegate events to the hidden <i>select</i> so that the user can attach events to it normally. This enables that the widget can be easily detached and removed if wanted.
+
+Oh, by the way Selex requires no external libraries.
 
 Demo
 ==============
-<a href="http://janikoskela.github.io/Select">DEMO</a>
+<a href="http://janikoskela.github.io/Selex">DEMO</a>
 
 Required widget settings
 ===============
