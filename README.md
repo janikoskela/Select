@@ -1,6 +1,6 @@
 Select [![Build Status](https://travis-ci.org/janikoskela/Select.svg?branch=master)](https://travis-ci.org/janikoskela/Select)
 ===============
-Customizable, jQuery free and lightweight HTML5 widget made to function on top of a select-element.
+jQuery free and lightweight HTML5 widget made to function on top of a select-element.
 
 Widget requires a <i>select</i>-element to be passed to the constructor (See the examples). When widget is rendered the given <i>select</i> is then hidden. Widget aims to delegate events to the hidden <i>select</i> so that the user can attach events to it normally. This enables that the widget can be easily detached and removed if wanted.
 
