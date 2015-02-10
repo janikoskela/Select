@@ -1,9 +1,9 @@
 #!/bin/bash
 
-DESTINATION_FILE_NAME="../dist/Selex.js"
-DESTINATION_MINIFIED_FILE_NAME="Selex.min.js"
-DESTINATION_MINIFIED_COMPRESSED_FILE_NAME="Selex.min.js.gz"
-WRAPPER_FILE_NAME="Selex.js"
+DESTINATION_FILE_NAME="../dist/Select.js"
+DESTINATION_MINIFIED_FILE_NAME="Select.min.js"
+DESTINATION_MINIFIED_COMPRESSED_FILE_NAME="Select.min.js.gz"
+WRAPPER_FILE_NAME="Select.js"
 TEMP_FILE="temp"
 
 merge() {
@@ -29,7 +29,7 @@ compress() {
 	tar -cvzf $DESTINATION_MINIFIED_COMPRESSED_FILE_NAME $DESTINATION_MINIFIED_FILE_NAME
 }
 
-cd "src/selex"
+cd "src/select"
 merge;
 cd "../../"
 cd "src/dist"
