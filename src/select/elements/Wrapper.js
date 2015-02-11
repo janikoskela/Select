@@ -23,15 +23,18 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
         var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
-                var instance = new SELECT.ELEMENTS.NativeSelectBox(Facade, this.el);
-                var nativeSelectBox = Facade.subscribe("NativeSelectBox", instance);
-                nativeSelectBox.attach();
-                if (nativeSelectBox.isDisabled())
-                    this.disable();
                 var parentsParent = this.el.parentNode;
+                var instance = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox(Facade, this.el);
+                Facade.subscribe("NativeSelectBox", instance).attach();
+                if (instance.isDisabled())
+                    this.disable();
                 parentsParent.insertBefore(this.element, this.el);
                 this.element.appendChild(this.el);
-                this.el.hide();
+                var nativeSelectBoxWrapper = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper(Facade);
+                var nativeSelectBoxWrapperEl = nativeSelectBoxWrapper.render();
+                this.el.parentNode.replaceChild(nativeSelectBoxWrapperEl, this.el);
+                nativeSelectBoxWrapperEl.appendChild(this.el);
+                this.element.appendChild(nativeSelectBoxWrapperEl);
                 break;
             default:
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();

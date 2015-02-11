@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Facade, optionElement) {
 	this.element = optionElement;
 	this.type = "option";
 
@@ -44,4 +44,4 @@ SELECT.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
 	}
 };
 
-SELECT.ELEMENTS.NativeSelectBoxItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);

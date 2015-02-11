@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.NativeSelectBox = function(Facade, el) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 	var that = this;
 	this.optionItems = [];
 	this.observer;
@@ -9,7 +9,7 @@ SELECT.ELEMENTS.NativeSelectBox = function(Facade, el) {
 		var optionsLength = this.element.options.length;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
-			var optionItem = new SELECT.ELEMENTS.NativeSelectBoxItem(Facade, option);
+			var optionItem = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem(Facade, option);
 			this.optionItems.push(optionItem);
 		}
 		if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
@@ -97,4 +97,4 @@ SELECT.ELEMENTS.NativeSelectBox = function(Facade, el) {
 
 };
 
-SELECT.ELEMENTS.NativeSelectBox.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);

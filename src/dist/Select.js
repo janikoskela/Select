@@ -19,6 +19,7 @@
 	SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
 	SELECT.ELEMENTS.WIDGET.OPTIONS_MENU = {};
 	SELECT.ELEMENTS.WIDGET.LOADING_OVERLAY = {};
+	SELECT.ELEMENTS.NATIVE_SELECT = {};
 	SELECT.EXCEPTIONS = {};
 	var MUTATION_OBSERVER = window.MutationObserver || window.WebKitMutationObserver;
 	var ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT = "select";
@@ -143,7 +144,7 @@ SELECT.ELEMENTS.Element.prototype.hasChildren = function() {
 
 SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
     this.element.setAttribute("tabindex", "-1");
-};SELECT.ELEMENTS.NativeSelectBox = function(Facade, el) {
+};SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 	var that = this;
 	this.optionItems = [];
 	this.observer;
@@ -154,7 +155,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		var optionsLength = this.element.options.length;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
-			var optionItem = new SELECT.ELEMENTS.NativeSelectBoxItem(Facade, option);
+			var optionItem = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem(Facade, option);
 			this.optionItems.push(optionItem);
 		}
 		if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
@@ -242,7 +243,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 
 };
 
-SELECT.ELEMENTS.NativeSelectBox.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.NativeSelectBoxItem = function(Facade, optionElement) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Facade, optionElement) {
 	this.element = optionElement;
 	this.type = "option";
 
@@ -288,7 +289,21 @@ SELECT.ELEMENTS.NativeSelectBox.prototype = Object.create(SELECT.ELEMENTS.Elemen
 	}
 };
 
-SELECT.ELEMENTS.NativeSelectBoxItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Facade) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper = function(Facade) {
+
+	this.type = "div";
+	this.element;
+	this.className = "native-select-wrapper";
+
+	this.render = function() {
+        this.element = SELECT.UTILS.createElement(this.type);
+		this.element.setClass(this.className);
+		this.element.hide();
+		return this.element;
+	}
+};
+
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Facade) {
 
 	this.type = "div";
 	this.element;
@@ -1424,15 +1439,18 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
-                var instance = new SELECT.ELEMENTS.NativeSelectBox(Facade, this.el);
-                var nativeSelectBox = Facade.subscribe("NativeSelectBox", instance);
-                nativeSelectBox.attach();
-                if (nativeSelectBox.isDisabled())
-                    this.disable();
                 var parentsParent = this.el.parentNode;
+                var instance = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox(Facade, this.el);
+                Facade.subscribe("NativeSelectBox", instance).attach();
+                if (instance.isDisabled())
+                    this.disable();
                 parentsParent.insertBefore(this.element, this.el);
                 this.element.appendChild(this.el);
-                this.el.hide();
+                var nativeSelectBoxWrapper = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper(Facade);
+                var nativeSelectBoxWrapperEl = nativeSelectBoxWrapper.render();
+                this.el.parentNode.replaceChild(nativeSelectBoxWrapperEl, this.el);
+                nativeSelectBoxWrapperEl.appendChild(this.el);
+                this.element.appendChild(nativeSelectBoxWrapperEl);
                 break;
             default:
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
