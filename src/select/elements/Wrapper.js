@@ -14,24 +14,24 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
 
     this.element;
 
-    this.targetElement = userDefinedSettings.targetElement;
+    this.el = userDefinedSettings.el;
 
     this.loadingMode = false;
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-        var tagName = this.targetElement.tagName.toLowerCase();
+        var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
-                var instance = new SELECT.ELEMENTS.NativeSelectBox(Facade, this.targetElement);
+                var instance = new SELECT.ELEMENTS.NativeSelectBox(Facade, this.el);
                 var nativeSelectBox = Facade.subscribe("NativeSelectBox", instance);
                 nativeSelectBox.attach();
                 if (nativeSelectBox.isDisabled())
                     this.disable();
-                var parentsParent = this.targetElement.parentNode;
-                parentsParent.insertBefore(this.element, this.targetElement);
-                this.element.appendChild(this.targetElement);
-                this.targetElement.hide();
+                var parentsParent = this.el.parentNode;
+                parentsParent.insertBefore(this.element, this.el);
+                this.element.appendChild(this.el);
+                this.el.hide();
                 break;
             default:
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
@@ -116,8 +116,8 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
 
     this.detach = function() {
         var parent = this.element.parentNode;
-        this.targetElement.show();
-        parent.insertBefore(this.targetElement, this.element);
+        this.el.show();
+        parent.insertBefore(this.el, this.element);
         this.element.remove();
     }
 };

@@ -1,8 +1,8 @@
-SELECT.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
+SELECT.ELEMENTS.NativeSelectBox = function(Facade, el) {
 	var that = this;
 	this.optionItems = [];
 	this.observer;
-	this.element = targetElement;
+	this.element = el;
 
 	this.attach = function() {
 		this.optionItems = [];

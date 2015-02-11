@@ -12,7 +12,7 @@ Required widget settings
 ===============
 Name| Type | Description
 ---|---|---------------|-----|------------|------
-targetElement|Element (<i>select</i>)| Widget is rendered based on this element
+el|Element (<i>select</i>)| Widget is rendered based on this element
 
 Optional widget settings
 ===============

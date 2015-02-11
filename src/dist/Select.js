@@ -141,11 +141,11 @@ SELECT.ELEMENTS.Element.prototype.hasChildren = function() {
 
 SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
     this.element.setAttribute("tabindex", "-1");
-};SELECT.ELEMENTS.NativeSelectBox = function(Facade, targetElement) {
+};SELECT.ELEMENTS.NativeSelectBox = function(Facade, el) {
 	var that = this;
 	this.optionItems = [];
 	this.observer;
-	this.element = targetElement;
+	this.element = el;
 
 	this.attach = function() {
 		this.optionItems = [];
@@ -1413,24 +1413,24 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.element;
 
-    this.targetElement = userDefinedSettings.targetElement;
+    this.el = userDefinedSettings.el;
 
     this.loadingMode = false;
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-        var tagName = this.targetElement.tagName.toLowerCase();
+        var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
-                var instance = new SELECT.ELEMENTS.NativeSelectBox(Facade, this.targetElement);
+                var instance = new SELECT.ELEMENTS.NativeSelectBox(Facade, this.el);
                 var nativeSelectBox = Facade.subscribe("NativeSelectBox", instance);
                 nativeSelectBox.attach();
                 if (nativeSelectBox.isDisabled())
                     this.disable();
-                var parentsParent = this.targetElement.parentNode;
-                parentsParent.insertBefore(this.element, this.targetElement);
-                this.element.appendChild(this.targetElement);
-                this.targetElement.hide();
+                var parentsParent = this.el.parentNode;
+                parentsParent.insertBefore(this.element, this.el);
+                this.element.appendChild(this.el);
+                this.el.hide();
                 break;
             default:
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
@@ -1515,8 +1515,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.detach = function() {
         var parent = this.element.parentNode;
-        this.targetElement.show();
-        parent.insertBefore(this.targetElement, this.element);
+        this.el.show();
+        parent.insertBefore(this.el, this.element);
         this.element.remove();
     }
 };
@@ -1532,7 +1532,7 @@ SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.protot
 	return {
 		name:        "Invalid target element", 
 	    level:       "Show Stopper", 
-	    message:     "targetElement should be <select> or <input type='select'>",  
+	    message:     "el should be <select> or <input type='select'>",  
 	    htmlMessage: "Error detected",
 	    toString:    function(){return this.name + ": " + this.message;} 
 	}
