@@ -32,6 +32,8 @@
 		function init() {
 			if (typeof userDefinedSettings !== "object")
 				throw new SELECT.EXCEPTIONS.InvalidOptionsErrorException();
+			if (userDefinedSettings.el instanceof jQuery)
+				userDefinedSettings.el = $(userDefinedSettings.el)[0];
 			Facade.subscribe("UserDefinedSettings", userDefinedSettings);
 			Facade.subscribe("Wrapper", new SELECT.ELEMENTS.Wrapper(Facade));
 		}
