@@ -113,3 +113,6 @@ Element.prototype.appendFirst = function(childNode){
     else 
       this.appendChild(childNode);
 };
+Element.prototype.isDisabled = function() {
+    return (this.getAttribute("disabled") === null) ? false : true;
+};

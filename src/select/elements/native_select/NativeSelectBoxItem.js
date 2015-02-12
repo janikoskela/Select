@@ -38,9 +38,11 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Facade, optionEleme
 
 	this.getOptionGroup = function() {
 		var parentNode = this.element.parentNode;
-		var tagName = parentNode.tagName.toLowerCase();
-		if (tagName === "optgroup")
-			return parentNode;
+		var tagName = parentNode.tagName;
+		if (tagName !== null && tagName !== undefined) {
+			if (tagName.toLowerCase() === "optgroup")
+				return parentNode;
+		}
 	}
 };
 

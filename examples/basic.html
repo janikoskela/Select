@@ -157,11 +157,20 @@ var settings = {
   useSearchInput: true,
   orientation: "left",
   closeWhenCursorOut: false,
+  usePolling: true
 };
+
 var defaultInstance = new Select(settings);
 defaultInstance.attach();
-defaultInstance.toggleInputSearch();
-defaultInstance.toggleInputSearch();
+
+setTimeout(function() {
+    console.log(new Date().getTime());
+  //$('#countries option:selected').remove();
+
+  //$('#countries').prop("disabled", "disabled");
+
+  $('#countries').hide();
+}, 5000)
 
 /*instance = new Selex({
   el: document.getElementById("poison"),

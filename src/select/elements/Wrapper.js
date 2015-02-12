@@ -118,8 +118,8 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
     }
 
     this.detach = function() {
+        Facade.publish("NativeSelectBox:detach");
         var parent = this.element.parentNode;
-        this.el.show();
         parent.insertBefore(this.el, this.element);
         this.element.remove();
     }

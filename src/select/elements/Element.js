@@ -41,7 +41,7 @@ SELECT.ELEMENTS.Element.prototype.enable = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.isDisabled = function() {
-	return (this.element.getAttribute("disabled") === null) ? false : true;
+	return this.element.isDisabled();
 };
 
 SELECT.ELEMENTS.Element.prototype.getTabIndex = function() {
