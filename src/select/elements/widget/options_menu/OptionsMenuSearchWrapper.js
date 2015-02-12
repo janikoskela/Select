@@ -6,9 +6,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) 
 
 	this.render = function() {
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuSearchInput = Facade.subscribe("OptionsMenuSearchInput", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput(Facade));
-    	var optionsMenuSearchInputElem = optionsMenuSearchInput.render();
-    	this.element.appendChild(optionsMenuSearchInputElem);
+    	var optionsMenuSearchInputWrapper = Facade.subscribe("OptionsMenuSearchInputWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper(Facade));
+    	var optionsMenuSearchInputWrapperElem = optionsMenuSearchInputWrapper.render();
+    	this.element.appendChild(optionsMenuSearchInputWrapperElem);
     	
     	var optionsMenuSearchNoResults = Facade.subscribe("OptionsMenuSearchNoResults", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(Facade));
     	this.element.appendChild(optionsMenuSearchNoResults.render());

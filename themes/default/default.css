@@ -198,8 +198,14 @@
 	text-align: center
 }
 
+.default .options-menu-search-input-wrapper {
+	margin: 0;
+	border: 1px solid #9C9C9C;
+}
+
 .default .options-menu-search-input {
 	width: 95%;
+	border: 0;
 	-webkit-appearance:textfield;
 }
 
