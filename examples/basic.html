@@ -5,7 +5,7 @@
   <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
   <script src="../src/dist/Select.js"></script>
-  <link rel="stylesheet" type="text/css" href="../themes/plain/plain.css">
+  <link rel="stylesheet" type="text/css" href="../themes/default/default.css">
   <link rel="stylesheet" type="text/css" href="../themes/poison/poison.css">
 
   <style>
@@ -151,17 +151,17 @@
 var settings = {
   //el: document.getElementById("countries"),
   el: $('#countries'),
-  theme: "plain",
+  theme: "default",
   noResultsMessage: "No countries found",
   sort: "desc",
   useSearchInput: true,
   orientation: "left",
   closeWhenCursorOut: false,
 };
-var plainInstance = new Select(settings);
-plainInstance.attach();
-plainInstance.toggleInputSearch();
-plainInstance.toggleInputSearch();
+var defaultInstance = new Select(settings);
+defaultInstance.attach();
+defaultInstance.toggleInputSearch();
+defaultInstance.toggleInputSearch();
 
 /*instance = new Selex({
   el: document.getElementById("poison"),

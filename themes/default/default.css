@@ -1,4 +1,4 @@
-.plain {
+.default {
 	-webkit-touch-callout: none; 
 	-webkit-user-select: none; 
 	-khtml-user-select: none; 
@@ -10,21 +10,21 @@
 	color: #000;
 }
 
-.plain .widget-wrapper {
+.default .widget-wrapper {
 	position: relative;
 }
 
-.plain .widget-wrapper:focus {
+.default .widget-wrapper:focus {
 	outline-width: 0;
 }
 
-.plain .widget-wrapper:focus .widget-sub-wrapper {
+.default .widget-wrapper:focus .widget-sub-wrapper {
     outline: none; /*or outline-color:#FFFFFF; if the first doesn't work*/
     -webkit-box-shadow: 0px 0px 4px 0px #639AFF;
     box-shadow: 0px 0px 4px 0px #639AFF;
 }
 
-.plain .widget-sub-wrapper {
+.default .widget-sub-wrapper {
 	height: 2em;
 	position: relative;
 	cursor: pointer;
@@ -37,7 +37,7 @@
 	background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(239,239,239,1) 100%); /* W3C */
 }
 
-.plain[disabled=true] .widget-sub-wrapper {
+.default[disabled=true] .widget-sub-wrapper {
 	background-color: #fff;
 	height: 2em;
 	line-height: 2em;
@@ -47,13 +47,13 @@
 	outline-width: 0;
 }
 
-.plain .widget-sub-wrapper div {
+.default .widget-sub-wrapper div {
 	height: 100%;
 	margin: 0;
 	padding: 0;
 }
 
-.plain .value-container {
+.default .value-container {
 	float: left;
     width: -moz-calc(100% - 30px);
     width: -webkit-calc(100% - 30px);
@@ -64,13 +64,13 @@
 	text-overflow: ellipsis;
 }
 
-.plain .value-container span {
+.default .value-container span {
 	margin-left: .5em;
 	line-height: 2em; /* same as .widget-sub-wrapper height */
 	vertical-align: middle;
 }
 
-.plain .value-container img {
+.default .value-container img {
 	display: inline-block;
 	vertical-align: middle;
 	height: 90%;
@@ -78,32 +78,32 @@
 	margin-right: .3em;
 }
 
-.plain[disabled=true] .value-container span {
+.default[disabled=true] .value-container span {
 	opacity: .4;
 }
 
-.plain .arrow-container {
+.default .arrow-container {
 	float: left;
 	width: 30px;
 	height: 32px;
 }
 
-.plain .arrow-container div {
+.default .arrow-container div {
 	background-repeat: no-repeat;
   	background-size: 16px 16px;
   	background-position:center; 
 }
 
-.plain .arrow-down {
+.default .arrow-down {
 	background-image: url(arrow-down.png);
 }
 
-.plain[disabled=true] .arrow-down {
+.default[disabled=true] .arrow-down {
 	background-image: url(arrow-down.png);
 	opacity: .4;
 }
 
-.plain .arrow-up {
+.default .arrow-up {
 	background-image: url(arrow-down.png);
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
@@ -113,7 +113,7 @@
     -ms-filter: "FlipV";
 }
 
-.plain .options-container {
+.default .options-container {
     position: absolute;
     left: 0;
     z-index: 1;
@@ -130,15 +130,15 @@
     padding: .1em .1em .1em .1em;
 }
 
-.plain .options-container-down {
+.default .options-container-down {
 
 }
 
-.plain .options-container-up {
+.default .options-container-up {
 	margin-top: 2.5em;
 }
 
-.plain .options-container-list {
+.default .options-container-list {
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
@@ -146,79 +146,79 @@
     overflow: auto;
 }
 
-.plain .options-container-list li {
+.default .options-container-list li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: .4em;
 }
 
-.plain .options-container-list li span {
+.default .options-container-list li span {
 	padding: 0 2em 0 0;
 	display: inline-block;
 	vertical-align: middle;
 }
 
-.plain .options-container-list li.selected.hovered span {
+.default .options-container-list li.selected.hovered span {
 	background-image: url(checked-white.png);
 	background-repeat: no-repeat;
   	background-size: 10px 10px;
   	background-position:right; 
 }
 
-.plain .options-container-list li.selected span {
+.default .options-container-list li.selected span {
 	background-image: url(checked-black.png);
 	background-repeat: no-repeat;
   	background-size: 10px 10px;
   	background-position:right; 
 }
 
-.plain .options-container-list li.hovered { 
+.default .options-container-list li.hovered { 
 	background: #326BF0; 
 	color: #fff;
 	cursor: pointer;
 }
 
-.plain .options-container-list li img {
+.default .options-container-list li img {
 	height: 20px;
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: .5em;
 }
 
-.plain .options-container-list-item-description {
+.default .options-container-list-item-description {
 	font-size: 9px;
 	color: #696969;
 }
 
-.plain .options-menu-search-wrapper {
+.default .options-menu-search-wrapper {
 	margin: auto;
 	background: #fff;
 	padding: .3em;
 	text-align: center
 }
 
-.plain .options-menu-search-input {
+.default .options-menu-search-input {
 	width: 95%;
 	-webkit-appearance:textfield;
 }
 
-.plain .options-menu-search-input:focus {
+.default .options-menu-search-input:focus {
 	outline-width: 0;
 }
 
-.plain .options-menu-search-no-results {
+.default .options-menu-search-no-results {
 	margin: .5em 0 .5em 0;
 	text-align: left;
 }
 
-.plain .options-menu-list-item-group-list {
+.default .options-menu-list-item-group-list {
 	padding: 0;
 	padding-left: 1em;
 	margin: 0;
 }
 
-.plain .options-menu-list-item-group-title {
+.default .options-menu-list-item-group-title {
 	font-weight: 600;
 	cursor: default;
 	margin: 0;

@@ -6,7 +6,7 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
 
     this.type = "div";
 
-    this.className = userDefinedSettings.theme || "plain";
+    this.className = userDefinedSettings.theme || "default";
 
     this.width = userDefinedSettings.width;
 
