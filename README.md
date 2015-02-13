@@ -28,7 +28,7 @@ closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cu
 loadingText|String|"Loading"|The text which is used in loading mode
 useSearchInput|boolean|false|Renders search input if true
 noResultsMessage|String|"No results"|No results message
-usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. Look <a href="#monitoring">Monitoring</a> below
+usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. See <a href="#monitoring">Monitoring</a> below
 pollingInterval|Integer|100|polling interval speed in ms
 
 Public methods
