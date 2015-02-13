@@ -44,13 +44,12 @@ disable|-|Disabled widget
 toggleLoadingMode|-|Enables or disables loading mode
 toggleInputSearch|-|Enables or disables input search
 
-Delegations
+Monitoring
 ===============
-Delegated events from widget to hidden <i>select</i>:
- - change event is fired when widgets selected option changes
-
-Delegated changes from hidden <i>select</i> to widget:
- - widget gets refreshed when an option or options are removed or added from the hidden <i>select</i>
+When polling is enabled widget monitors given <i>select</i> to look for changed attributes or options. In case of widget finding any changes widget refreshes itself accordingly. Following changes on <i>select</i> are monitored:
+ - whether it becomes visible or hidden
+ - whether it becomes enabled or disabled
+ - whether options are added or removed
 
 Licence
 =============
