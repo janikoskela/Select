@@ -29,7 +29,7 @@ loadingText|String|"Loading"|The text which is used in loading mode
 useSearchInput|boolean|false|Renders search input if true
 noResultsMessage|String|"No results"|No results message
 usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. Look Delegations below
-pollingInterval|Integer|polling interval speed in ms
+pollingInterval|Integer|100|polling interval speed in ms
 
 Public methods
 ===============
