@@ -23,7 +23,7 @@
 
 .light .widget-sub-wrapper {
 	background-color: #fff;
-	height: 3.5em;
+	height: 3em;
 	line-height: 2em;
 	position: relative;
 	cursor: pointer;
@@ -62,7 +62,7 @@
 
 .light .value-container span {
 	margin-left: .5em;
-	line-height: 2.4em;
+	line-height: 1.9em;
 	color: #000;
 	font-weight: 500;
 	display: inline-block;
@@ -132,7 +132,7 @@
 }
 
 .light .options-container-down {
-    top: 3.3em; /* same as .widget-sub-wrapper's height (including its border) */
+    top: 2.8em; /* same as .widget-sub-wrapper's height (including its border) */
 }
 
 .light .options-container-up {
