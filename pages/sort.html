@@ -63,15 +63,15 @@
             </div>
           </div>
           <div class="exampleCode">
-<pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")},
+<pre class="prettyprint">var instance = new Select({
+  el: document.getElementById("countries")},
   sort: "asc"
 );
 instance.attach();</pre>
           </div>
           <script>
-      new Selex({
-        targetElement: document.getElementById("countriesForSort"),
+      new Select({
+        el: document.getElementById("countriesForSort"),
         sort: "asc"
       }).attach();
           </script>

@@ -66,14 +66,14 @@
             </div>
           </div>
           <div class="exampleCode">
-<pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")}
+<pre class="prettyprint">var instance = new Select({
+  el: document.getElementById("countries")}
 );
 instance.attach();</pre>
           </div>
           <script>
-        var attachInstance = new Selex({
-        targetElement: document.getElementById("countriesForAttach")
+        var attachInstance = new Select({
+        el: document.getElementById("countriesForAttach")
       });
       var attachBtn = $('#attachBtn').click(function() {
         var value = $(this).text();

@@ -66,15 +66,15 @@
             </div>
           </div>
           <div class="exampleCode">
-<pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")}
+<pre class="prettyprint">var instance = new Select({
+  el: document.getElementById("countries")}
 );
 instance.attach();
 instance.hide();</pre>
           </div>
           <script>
-        var hideInstance = new Selex({
-        targetElement: document.getElementById("countriesForHide")
+        var hideInstance = new Select({
+        el: document.getElementById("countriesForHide")
       }).attach();
       $('#hideBtn').click(function() {
         var value = $(this).text();

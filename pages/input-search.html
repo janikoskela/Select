@@ -66,16 +66,16 @@
             </div>
           </div>
           <div class="exampleCode">
-<pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries")},
+<pre class="prettyprint">var instance = new Select({
+  el: document.getElementById("countries")},
   useSearchInput: true,
   noResultsMessage: "Could not find any countries, sorry"
 );
 instance.attach();</pre>
           </div>
           <script>
-      var toggleInputSearchInstance = new Selex({
-        targetElement: document.getElementById("countriesForInputSearch"),
+      var toggleInputSearchInstance = new Select({
+        el: document.getElementById("countriesForInputSearch"),
           useSearchInput: true,
         noResultsMessage: "Could not find any countries, sorry"
       }).attach();

@@ -66,16 +66,16 @@
             </div>
           </div>
           <div class="exampleCode">
-<pre class="prettyprint">var instance = new Selex({
-  targetElement: document.getElementById("countries"),
+<pre class="prettyprint">var instance = new Select({
+  el: document.getElementById("countries"),
   loadingText: "Loading something"}
 );
 instance.attach();
 instance.toggleLoadingMode();</pre>
           </div>
           <script>
-        var loadingModeInstance = new Selex({
-        targetElement: document.getElementById("countriesForLoadingMode"),
+        var loadingModeInstance = new Select({
+        el: document.getElementById("countriesForLoadingMode"),
         loadingText: "Loading something"
       }).attach();
       $('#loadingModeBtn').click(function() {
