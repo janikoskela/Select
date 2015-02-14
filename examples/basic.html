@@ -7,6 +7,7 @@
   <script src="../src/dist/Select.js"></script>
   <link rel="stylesheet" type="text/css" href="../themes/default/default.css">
   <link rel="stylesheet" type="text/css" href="../themes/poison/poison.css">
+  <link rel="stylesheet" type="text/css" href="../themes/light/light.css">
 
   <style>
     div {
@@ -151,10 +152,10 @@
 var settings = {
   //el: document.getElementById("countries"),
   el: $('#countries'),
-  theme: "default",
+  theme: "foo",
   noResultsMessage: "No countries found",
   sort: "desc",
-  useSearchInput: true,
+  useSearchInput: false,
   orientation: "left",
   closeWhenCursorOut: false,
   usePolling: true
@@ -169,7 +170,7 @@ setTimeout(function() {
 
   //$('#countries').prop("disabled", "disabled");
 
-  $('#countries').hide();
+  //$('#countries').hide();
 }, 5000)
 
 /*instance = new Selex({

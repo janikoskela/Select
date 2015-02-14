@@ -4,7 +4,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 	this.type = "ul";
 	this.className = "options-container-list";
 	this.element;
-	this.width = "100%";
 	this.height = undefined;
 	this.optionItems = [];
 	this.sortType = userDefinedSettings.sort;
@@ -13,7 +12,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	this.setWidth(this.width);
     	this.refresh();
 		return this.element;
 	}

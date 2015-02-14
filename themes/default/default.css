@@ -226,6 +226,7 @@
 
 .default .options-menu-list-item-group-title {
 	font-weight: 600;
+	font-size: 12px;
 	cursor: default;
 	margin: 0;
 	-webkit-user-select: none; 

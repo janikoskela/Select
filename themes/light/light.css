@@ -1,4 +1,4 @@
-.poison {
+.light {
 	-webkit-touch-callout: none; 
 	-webkit-user-select: none; 
 	-khtml-user-select: none; 
@@ -9,27 +9,31 @@
 	font-family: NeoSansMediumRegular, "Helvetica Neue", "Arial", sans-serif;
 }
 
-.poison .widget-wrapper {
+.light .widget-wrapper {
 	position: relative;
 }
 
-.poison .widget-wrapper:focus {
+.light .widget-wrapper:focus {
 	outline-width: 0;	
 }
 
-.poison .widget-wrapper:focus .widget-sub-wrapper {
+.light .widget-wrapper:focus .widget-sub-wrapper {
     outline:none; /*or outline-color:#FFFFFF; if the first doesn't work*/
 }
 
-.poison .widget-sub-wrapper {
-	background-color: #4EBF17;
+.light .widget-sub-wrapper {
+	background-color: #fff;
 	height: 3.5em;
 	line-height: 2em;
 	position: relative;
 	cursor: pointer;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #000;
 }
 
-.poison[disabled=true] .widget-sub-wrapper {
+.light[disabled=true] .widget-sub-wrapper {
 	background-color: #fff;
 	height: 3.5em;
 	line-height: 2em;
@@ -37,13 +41,13 @@
 	cursor: default;
 }
 
-.poison .widget-sub-wrapper div {
+.light .widget-sub-wrapper div {
 	height: 100%;
 	margin: 0;
 	padding: 0;
 }
 
-.poison .value-container {
+.light .value-container {
 	float: left;
     width: -moz-calc(100% - 30px);
     width: -webkit-calc(100% - 30px);
@@ -52,49 +56,47 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	background: #4EBF17;
 	color: #fff;
 	font-size: 1.5em;
 }
 
-.poison .value-container span {
+.light .value-container span {
 	margin-left: .5em;
 	line-height: 2.4em;
-	color: #fff;
-	font-weight: bold;
+	color: #000;
+	font-weight: 500;
 	display: inline-block;
 	vertical-align: middle;
 }
 
-.poison .value-container img {
+.light .value-container img {
 	display: inline-block;
 	vertical-align: middle;
-	height: 1.6em;
+	height: 1.2em;
 	margin-left: .3em;
 }
 
-.poison[disabled=true] .value-container span {
+.light[disabled=true] .value-container span {
 	opacity: .4;
 }
 
-.poison .arrow-container {
+.light .arrow-container {
 	float: left;
 	width: 30px;
 	height: 32px;
-	background: #44A614;
 }
 
-.poison .arrow-container div {
+.light .arrow-container div {
 	background-repeat: no-repeat;
   	background-size: 16px 16px;
   	background-position:center; 
 }
 
-.poison .arrow-down {
+.light .arrow-down {
 	background-image: url(arrow.png);
 }
 
-.poison .arrow-up {
+.light .arrow-up {
 	background-image: url(arrow.png);
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
@@ -104,12 +106,12 @@
     -ms-filter: "FlipV";
 }
 
-.poison[disabled=true] .arrow-down {
+.light[disabled=true] .arrow-down {
 	background-image: url(arrow.png);
 	opacity: .4;
 }
 
-.poison .options-container {
+.light .options-container {
     position: absolute;
     left: 0;
     z-index: 1;
@@ -118,77 +120,100 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 	overflow-y: auto;
-	background-color: #44A614;
-    opacity: .97;
+	background-color: #fff;
+    border: 1px solid #000;
+    border-top: 0;
+    -webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
 
-.poison .options-container-down {
-    top: 3.5em; /* same as .widget-sub-wrapper's height (including its border) */
+.light .options-container-down {
+    top: 3.3em; /* same as .widget-sub-wrapper's height (including its border) */
 }
 
-.poison .options-container-up {
+.light .options-container-up {
 
 }
 
-.poison .options-container-list {
+.light .options-container-list {
 	padding: 0;
-	margin: 0;
+	margin: 0 0 .5em 0;
 	list-style-type: none;
 	max-height: 30em;
 	overflow: auto;
+	margin-top: .5em;
+	width: 97%;
 }
 
-.poison .options-container-list li {
+.light .options-container-list li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: .4em;
 	font-size: 12px;
-	color: #fff;
+	color: #000;
 }
 
-.poison .options-container-list li span {
+.light .options-container-list li span {
 	padding: 0 0 0 .1em;
 	display: inline-block;
 	vertical-align: middle;
 }
 
-.poison .options-container-list li.hovered { 
-	background: #398713; 
+.light .options-container-list li.hovered { 
+	background: #F2F2F2; 
 	cursor: pointer;
 }
 
-.poison .options-container-list li img {
+.light .options-container-list li img {
 	height: 20px;
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 1em;
 }
 
-.poison .options-menu-search-wrapper {
-	width: calc(100% - 4px);
+.light .options-menu-search-wrapper {
+	width: calc(100% - 10px);
 	margin: auto;
 	text-align: center;
+
 }
 
-.poison .options-menu-search-input {
+.light .options-menu-search-input-wrapper {
+	border: 1px solid #808080;
+	padding: .3em;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.light .options-menu-search-input {
 	width: 95%;
 	-webkit-appearance:textfield;
+	border: 0;
 }
 
-.poison .options-menu-search-no-results {
+.light .options-menu-search-input:focus {
+	outline-width: 0;	
+}
+
+.light .options-menu-search-no-results {
 	margin: .5em 0 .5em 0;
 	text-align: left;
 }
 
-.poison .options-menu-list-item-group-list {
+.light .options-menu-list-item-group-list {
 	padding: 0;
 	padding-left: 1em;
 	margin: 0;
 }
 
-.poison .options-menu-list-item-group-title {
-	font-weight: 600;
+.light .options-menu-list-item-group-title {
+	font-weight: 500;
 	font-size: 12px;
 	cursor: default;
 	margin: 0;
@@ -199,21 +224,28 @@
 	user-select: none; 
 }
 
-.poison ::-webkit-scrollbar {
-    width: 4px;
+.light ::-webkit-scrollbar {
     overflow: visible;
-    background: #398713;
+    background: transparent;
+    width: 6px;
 }
 
-.poison ::-webkit-scrollbar-track {
-  background-color: transparent;
+.light ::-webkit-scrollbar-track {
+	border-radius: 2px;
+	width: 2px;
+	background: #F2F2F2;
 }
 
-.poison ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background: #275C0D;
+.light ::-webkit-scrollbar-button {
+	background: yellow;
 }
 
-.poison ::-webkit-scrollbar:window-inactive {
+.light ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    width: 5px;
+    background: #808080;
+}
+
+.light ::-webkit-scrollbar:window-inactive {
     background-color: transparent;
 }

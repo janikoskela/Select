@@ -178,7 +178,8 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 
 	this.detach = function() {
 		this.observer = undefined;
-		clearInterval(this.poller);
+		if (this.poller !== undefined)
+			clearInterval(this.poller);
 	}
 
 	this.poll = function() {
@@ -198,15 +199,14 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 			else
 				Facade.publish("Wrapper:enable");
 		}
-		if (this.observer === undefined) { //mutation observer does not detech attribute changes on <select>
+		//if (this.observer === undefined) { //mutation observer does not detech attribute changes on <select>
 			var optionsCount = this.element.options.length;
 			if (optionsCount !== this.optionsCount) {
-		console.log(new Date().getTime());
 				this.optionsCount = optionsCount;
 				this.attach();
 				Facade.publish("OptionsMenuList").refresh();
 			}
-		}
+		//}
 	}
 
 	this.getOptions = function() {
@@ -715,7 +715,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 	this.type = "ul";
 	this.className = "options-container-list";
 	this.element;
-	this.width = "100%";
 	this.height = undefined;
 	this.optionItems = [];
 	this.sortType = userDefinedSettings.sort;
@@ -724,7 +723,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	this.setWidth(this.width);
     	this.refresh();
 		return this.element;
 	}
@@ -1075,7 +1073,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup.prototype = Object.
 };
 
 SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Facade, text) {
-	this.type = "div";
+	this.type = "h2";
 	this.className = "options-menu-list-item-group-title";
 	this.text = text;
 	this.element;
