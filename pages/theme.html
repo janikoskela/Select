@@ -1,0 +1,29 @@
+<h1>Themes</h1>
+          <div class="demoArea">
+            <div class="resultArea">
+            <select id="countriesForTheme">
+              <option selected value="default">Default</option>
+              <option value="light">Light</option>
+              <option value="poison">Green</option>
+            </select>
+            </div>
+          </div>
+          <div class="exampleCode">
+<pre class="prettyprint">var instance = new Select({
+  el: document.getElementById("countries")},
+  theme: "default"
+);
+instance.attach();</pre>
+          </div>
+          <script>
+      var changeThemeInstance = new Select({
+        el: document.getElementById("countriesForTheme"),
+        noResultsMessage: "Could not find any countries, sorry",
+        theme: "default"
+      }).attach();
+      $('#countriesForTheme').change(function() {
+        var className = $(this).find("option:selected").val();
+        var widgetElem = $(this).closest('.native-select-wrapper').parent();
+        $(widgetElem).removeClass().addClass(className);
+      });
+          </script>
