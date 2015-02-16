@@ -79,8 +79,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		this.element.hide();
 		Facade.publish("OptionsMenuSearchInput:clear");
 		Facade.publish("OptionsMenuSearchInput:blur");
-		Facade.publish("OptionsMenuList:refresh");
 		Facade.publish("OptionsMenuSearchNoResults:hide");
+		Facade.publish("OptionsMenuList:refresh");
 		Facade.publish("ArrowContainerContent").down();
 	}
 
@@ -88,6 +88,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		if (this.locked === true || this.isHidden() === false)
 			return;
 		this.element.show();
+		Facade.publish("OptionsMenuList:show");
 		this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
 		var top = this.element.getStyle("top") || 0;
