@@ -725,7 +725,19 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.refresh();
+    	this.element.addEventListener("mousewheel", preventScrollEventFromBubbling.bind(this));
+    	this.element.addEventListener("DOMMouseScroll", preventScrollEventFromBubbling.bind(this));
 		return this.element;
+	}
+
+	function preventScrollEventFromBubbling(e) {
+		var scrollingSpeed = 30;
+   		var event = e.originalEvent;
+   		var d = e.wheelDelta || -event.detail;
+    	this.element.scrollTop += ( d < 0 ? 1 : -1 ) * scrollingSpeed;
+    	e.preventDefault();
+    	e.stopPropagation();
+    	return false;
 	}
 
 	this.refresh = function() {
@@ -1435,6 +1447,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
     }
 
     function onKeyDown(e) {
+        e.stopPropagation();
+        e.preventDefault();
         if (this.locked === true)
             return;
         switch(e.keyCode) {
@@ -1447,6 +1461,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
     }
 
     function onKeyUp(e) {
+        e.stopPropagation();
+        e.preventDefault();
         if (this.locked === true)
             return false;
         switch(e.keyCode) {
@@ -1463,6 +1479,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
                 Facade.publish("OptionsMenuList").searchByFirstChar(firstChar);
         }
+        return false;
     }
 
     function onMouseLeave(e) {

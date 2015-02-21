@@ -8,6 +8,12 @@
 	font-size: 11px; 
 	font-family: Verdana;
 	color: #000;
+	text-align: left;
+	height: auto;
+	width: auto;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
 }
 
 .default .widget-wrapper {
@@ -128,6 +134,7 @@
     box-shadow: 0px 0px 4px 0px #639AFF;
     top: 0;
     padding: .1em .1em .1em .1em;
+	overflow: hidden;
 }
 
 .default .options-container-down {
@@ -143,7 +150,14 @@
 	margin: 0;
 	list-style-type: none;
     max-height: 30em;
-    overflow: auto;
+	height: auto;
+	float: none;
+	border-radius: 0;
+	border: 0;
+	box-shadow: none;
+	background: #fff;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .default .options-container-list li {
@@ -151,6 +165,9 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: .4em;
+	float: none;
+	width: 100%;
+	height: auto;
 }
 
 .default .options-container-list li span {
@@ -222,6 +239,11 @@
 	padding: 0;
 	padding-left: 1em;
 	margin: 0;
+	height: auto;
+	border-radius: 0;
+	border: 0;
+	box-shadow: none;
+	width: auto;
 }
 
 .default .options-menu-list-item-group-title {
