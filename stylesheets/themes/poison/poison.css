@@ -7,6 +7,12 @@
 	user-select: none; 
 	font-size: 0.6em;
 	font-family: NeoSansMediumRegular, "Helvetica Neue", "Arial", sans-serif;
+	text-align: left;
+	height: auto;
+	width: auto;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
 }
 
 .poison .widget-wrapper {
@@ -117,9 +123,9 @@
 	margin: 0;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-	overflow-y: auto;
 	background-color: #44A614;
     opacity: .97;
+    overflow: hidden;
 }
 
 .poison .options-container-down {
@@ -135,7 +141,15 @@
 	margin: 0;
 	list-style-type: none;
 	max-height: 30em;
-	overflow: auto;
+	height: auto;
+	float: none;
+	border-radius: 0;
+	border: 0;
+	box-shadow: none;
+	background: #fff;
+	overflow-x: hidden;
+	overflow-y: auto;
+	border: 0;
 }
 
 .poison .options-container-list li {
@@ -145,6 +159,9 @@
 	padding: .4em;
 	font-size: 12px;
 	color: #fff;
+	float: none;
+	width: 100%;
+	height: auto;
 }
 
 .poison .options-container-list li span {
@@ -185,6 +202,11 @@
 	padding: 0;
 	padding-left: 1em;
 	margin: 0;
+	height: auto;
+	border-radius: 0;
+	border: 0;
+	box-shadow: none;
+	width: auto;
 }
 
 .poison .options-menu-list-item-group-title {
