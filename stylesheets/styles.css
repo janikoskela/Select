@@ -253,8 +253,14 @@ section .step {
 section .step .content {
 }
 
+.social-media {
+  display: table;
+}
+
+
 .social-media li {
-  display: inline;
+  display: table-cell;
+  margin: .2em;
 }
 
 .page2 {
