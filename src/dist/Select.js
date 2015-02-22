@@ -1500,7 +1500,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.type = "div";
 
-    this.className = userDefinedSettings.theme || "default select-widget";
+    this.className = userDefinedSettings.theme || "default";
+
+    this.commonClassName = "select-widget";
 
     this.width = userDefinedSettings.width;
 
@@ -1513,7 +1515,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
     this.loadingMode = false;
 
     this.render = function() {
-        this.element = SELECT.UTILS.createElement(this.type, this.className);
+        this.element = SELECT.UTILS.createElement(this.type, this.className + " " + this.commonClassName);
         var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
