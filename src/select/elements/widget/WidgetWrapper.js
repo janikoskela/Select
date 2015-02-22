@@ -55,22 +55,19 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
     }
 
     function onKeyDown(e) {
-        e.stopPropagation();
-        e.preventDefault();
         if (this.locked === true)
             return;
         switch(e.keyCode) {
             case KEY_CODES.UP:
             case KEY_CODES.DOWN:
                 e.preventDefault();
+                e.stopPropagation();
                 break;
         }
         return false;
     }
 
     function onKeyUp(e) {
-        e.stopPropagation();
-        e.preventDefault();
         if (this.locked === true)
             return false;
         switch(e.keyCode) {
@@ -87,6 +84,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
                 Facade.publish("OptionsMenuList").searchByFirstChar(firstChar);
         }
+        e.stopPropagation();
+        e.preventDefault();
         return false;
     }
 
