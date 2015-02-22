@@ -205,10 +205,20 @@
       useSearchInput: true
     }).attach();
 
-    new Select({
-      el: document.getElementById("themes-select"),
+    var themesSelect = document.getElementById("themes-select");
+
+    var themeInstance = new Select({
+      el: themesSelect,
       theme: "dark"
     }).attach();
+
+    $(themesSelect).change(function() {
+      var val = $(this).val();
+      if (val == "default")
+        $(this).parent().parent().removeClass("dark").addClass(val);
+      else
+        $(this).parent().parent().removeClass("default").addClass(val);
+    });
   
   });
 
