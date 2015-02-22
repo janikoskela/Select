@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <link rel="stylesheet" href="stylesheets/themes/default/default.css">
-    <link rel="stylesheet" href="stylesheets/themes/light/light.css">
-    <link rel="stylesheet" href="stylesheets/themes/poison/poison.css">
+    <link rel="stylesheet" href="stylesheets/themes/dark/dark.css">
     <link rel="stylesheet" href="stylesheets/one-page-scroll.css">
     <link rel="stylesheet" href="stylesheets/prettyprint-desert.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -41,7 +40,7 @@
             <p>Designed to function without external libraries</p>
           </header>
           <div class="body">
-            <select id="countriesForAttach">
+            <select id="countries-select">
               <optgroup label="North America">
                 <option value="CA" data-image-url="images/Canada.png">Canada</option>
                 <option value="US" data-image-url="images/United States of America(USA).png">United States of America</option>
@@ -147,6 +146,20 @@
           <footer></footer>
         </section>
 
+        <section class="page3">
+          <header>
+            <h1>Diverse themes</h1>
+            <p>Deployment can be done in seconds</p>
+          </header>
+          <div class="body">
+            <select id="themes-select">
+              <option selected value="dark">Dark</option>
+              <option value="default">Light</option>
+            </select>
+          </div>
+          <footer></footer>
+        </section>
+
 
         <!--<div id="demoContent"></div>
         <div id="attachContent"></div>
@@ -187,10 +200,14 @@
     });
 
     new Select({
-      el: document.getElementById("countriesForAttach"),
-      theme: "light",
+      el: document.getElementById("countries-select"),
       placeholder: "Choose country",
       useSearchInput: true
+    }).attach();
+
+    new Select({
+      el: document.getElementById("themes-select"),
+      theme: "dark"
     }).attach();
   
   });
