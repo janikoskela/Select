@@ -260,7 +260,8 @@ section .step .content {
 
 .social-media li {
   display: table-cell;
-  margin: .2em;
+  padding: 1em;
+  vertical-align: top;
 }
 
 .page2 {
