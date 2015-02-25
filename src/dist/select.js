@@ -1422,6 +1422,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         });
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
+        this.element.addEventListener("touchmove", touchScroll.bind(this));
+        this.element.addEventListener("scroll", touchScroll.bind(this));
 
         var widgetSubWrapper = Facade.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Facade));
         var widgetSubWrapperElem = widgetSubWrapper.render();
@@ -1444,6 +1446,11 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
     this.enableTabNavigation = function() {
         this.element.setAttribute("tabindex", this.tabIndex);
+    }
+
+    function touchScroll(e) {
+        e.stopPropagation();
+        return false;
     }
 
     function onKeyDown(e) {
