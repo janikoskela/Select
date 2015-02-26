@@ -253,15 +253,8 @@ section .step {
 section .step .content {
 }
 
-.social-media {
-  display: table;
-}
-
-
-.social-media li {
-  display: table-cell;
-  padding: 1em;
-  vertical-align: top;
+.social-media > div {
+  display: inline-block;
 }
 
 .page2 {
