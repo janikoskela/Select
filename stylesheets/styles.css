@@ -253,10 +253,15 @@ section .step {
 section .step .content {
 }
 
+.social-media {
+  display: table;
+}
+
 .social-media > div {
-  display: inline-block;
+  display: table-cell;
   text-align: center;
-  margin: auto auto .5em auto;
+  margin: 0 .1em .5em .1em;
+  vertical-align: top;
 }
 
 .page2 {
