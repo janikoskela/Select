@@ -255,6 +255,8 @@ section .step .content {
 
 .social-media > div {
   display: inline-block;
+  text-align: center;
+  margin: auto auto .5em auto;
 }
 
 .page2 {
