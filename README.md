@@ -27,6 +27,7 @@ optionMenuWidth|String|-|Determines the width of option menu. Overrides the widt
 closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
 loadingText|String|"Loading"|The text which is used in loading mode
 useSearchInput|boolean|false|Renders search input if true
+searchInputPlaceholder|String|""|Sets search inputs placeholder text
 noResultsMessage|String|"No results"|No results message
 usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. See <a href="#monitoring">Monitoring</a> below
 pollingInterval|Integer|100|polling interval speed in ms

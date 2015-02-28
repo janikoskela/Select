@@ -1101,16 +1101,19 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Obj
 };
 
 SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
+	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "input";
 	this.className = "options-menu-search-input";
 	this.tabIndex = -1;
 	this.element;
 	this.allowClose = true;
+	this.placeholder = userDefinedSettings.searchInputPlaceholder || "";
 
 	this.render = function() {
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.element.setAttribute("type", "text");
     	this.element.setAttribute("tabindex", this.tabIndex);
+    	this.element.setAttribute("placeholder", this.placeholder);
     	this.element.addEventListener("blur", this.focusOut);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
     	return this.element;
