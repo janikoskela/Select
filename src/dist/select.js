@@ -78,6 +78,10 @@
 			Facade.publish("OptionsMenu:toggleInputSearch");
 			return this;
 		}
+
+		this.isOptionMenuOpen = function() {
+			return !Facade.publish("OptionsMenu:isHidden");
+		}
 	}
 
 SELECT.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Select#constructor-parameters";SELECT.ELEMENTS.Element = function() {};

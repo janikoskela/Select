@@ -44,6 +44,7 @@ enable|-|Enables widget
 disable|-|Disabled widget
 toggleLoadingMode|-|Enables or disables loading mode
 toggleInputSearch|-|Enables or disables input search
+isOptionMenuOpen|-|Returns true if option menu is open, false if not
 
 Monitoring
 ===============

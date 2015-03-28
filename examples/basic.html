@@ -162,9 +162,11 @@ var settings = {
 
 var defaultInstance = new Select(settings);
 defaultInstance.attach();
+console.log(defaultInstance.isOptionMenuOpen())
 
 setTimeout(function() {
     console.log(new Date().getTime());
+    console.log(defaultInstance.isOptionMenuOpen())
   //$('#countries option:selected').remove();
 
   //$('#countries').prop("disabled", "disabled");

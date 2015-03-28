@@ -78,6 +78,10 @@
 			Facade.publish("OptionsMenu:toggleInputSearch");
 			return this;
 		}
+
+		this.isOptionMenuOpen = function() {
+			return !Facade.publish("OptionsMenu:isHidden");
+		}
 	}
 
 }(jQuery || {}));
