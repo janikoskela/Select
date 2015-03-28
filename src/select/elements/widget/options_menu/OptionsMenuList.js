@@ -14,14 +14,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.refresh();
     	this.element.addEventListener("mousewheel", preventScrollEventFromBubbling.bind(this));
+        this.element.addEventListener("onmousewheel", preventScrollEventFromBubbling.bind(this));
     	this.element.addEventListener("DOMMouseScroll", preventScrollEventFromBubbling.bind(this));
 		return this.element;
 	}
 
 	function preventScrollEventFromBubbling(e) {
 		var scrollingSpeed = 30;
-   		var event = e.originalEvent;
-   		var d = e.wheelDelta || -event.detail;
+   		var d = SELECT.UTILS.extractDelta(e);
     	this.element.scrollTop += ( d < 0 ? 1 : -1 ) * scrollingSpeed;
     	e.preventDefault();
     	e.stopPropagation();

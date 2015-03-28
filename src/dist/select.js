@@ -730,14 +730,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.refresh();
     	this.element.addEventListener("mousewheel", preventScrollEventFromBubbling.bind(this));
+        this.element.addEventListener("onmousewheel", preventScrollEventFromBubbling.bind(this));
     	this.element.addEventListener("DOMMouseScroll", preventScrollEventFromBubbling.bind(this));
 		return this.element;
 	}
 
 	function preventScrollEventFromBubbling(e) {
 		var scrollingSpeed = 30;
-   		var event = e.originalEvent;
-   		var d = e.wheelDelta || -event.detail;
+   		var d = SELECT.UTILS.extractDelta(e);
     	this.element.scrollTop += ( d < 0 ? 1 : -1 ) * scrollingSpeed;
     	e.preventDefault();
     	e.stopPropagation();
@@ -1837,4 +1837,22 @@ SELECT.UTILS.isEmpty = function(obj) {
     }
 
     return true;
+};
+
+SELECT.UTILS.extractDelta = function(e) {
+    if (e.wheelDelta) {
+        return e.wheelDelta;
+    }
+    if (e.detail)
+    	return -e.detail * 40;
+    if (e.originalEvent !== undefined) {
+	    if (e.originalEvent.detail) {
+	        return e.originalEvent.detail * -40;
+	    }
+
+	    if (e.originalEvent && e.originalEvent.wheelDelta) {
+	        return e.originalEvent.wheelDelta;
+	    }
+	}
+	return 0;
 };}(jQuery || {}));

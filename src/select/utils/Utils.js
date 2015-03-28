@@ -45,3 +45,21 @@ SELECT.UTILS.isEmpty = function(obj) {
 
     return true;
 };
+
+SELECT.UTILS.extractDelta = function(e) {
+    if (e.wheelDelta) {
+        return e.wheelDelta;
+    }
+    if (e.detail)
+    	return -e.detail * 40;
+    if (e.originalEvent !== undefined) {
+	    if (e.originalEvent.detail) {
+	        return e.originalEvent.detail * -40;
+	    }
+
+	    if (e.originalEvent && e.originalEvent.wheelDelta) {
+	        return e.originalEvent.wheelDelta;
+	    }
+	}
+	return 0;
+};
