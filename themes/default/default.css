@@ -122,7 +122,7 @@
 }
 
 .default .options-container {
-    position: absolute;
+    position: fixed;
     left: 0;
     z-index: 1;
 	padding: 0;
@@ -145,7 +145,8 @@
 }
 
 .default .options-container-down {
-    top: 2.8em; /* same as .widget-sub-wrapper's height (including its border) */
+    left: .7em;
+	margin-top: -.3em;
 }
 
 .default .options-container-up {
