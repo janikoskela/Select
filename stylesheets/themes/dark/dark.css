@@ -18,12 +18,9 @@
 
 .dark .widget-wrapper {
 	background-color: #252525;
-	position: relative;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	-webkit-transform: translateX(0);
-	transform: translateX(0);
 }
 
 .dark .widget-wrapper:focus {
@@ -123,8 +120,7 @@
 }
 
 .dark .options-container {
-    position: fixed;
-    left: 0;
+    position: absolute;
     z-index: 1;
 	padding: 0;
 	margin: 0;
