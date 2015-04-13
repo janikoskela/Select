@@ -18,6 +18,7 @@
 
 .dark .widget-wrapper {
 	background-color: #252525;
+	position: relative;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -121,6 +122,7 @@
 
 .dark .options-container {
     position: absolute;
+    left: 0;
     z-index: 1;
 	padding: 0;
 	margin: 0;
@@ -142,7 +144,7 @@
 }
 
 .dark .options-container-down {
-	margin-top: -.2em;
+    top: 2.8em; /* same as .widget-sub-wrapper's height (including its border) */
 }
 
 .dark .options-container-up {
