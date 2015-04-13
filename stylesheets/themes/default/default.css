@@ -20,6 +20,8 @@
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+	-webkit-transform: translateX(0);
+	transform: translateX(0);
 }
 
 .default .widget-wrapper:focus {
@@ -122,7 +124,7 @@
 }
 
 .default .options-container {
-    position: absolute;
+    position: fixed;
     left: 0;
     z-index: 1;
 	padding: 0;
@@ -145,7 +147,7 @@
 }
 
 .default .options-container-down {
-    top: 2.8em; /* same as .widget-sub-wrapper's height (including its border) */
+	margin-top: -.3em;
 }
 
 .default .options-container-up {
