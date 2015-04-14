@@ -20,7 +20,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     this.positionTop;
 
-    this.pollingInterval = 500;
+    this.pollingInterval = userDefinedSettings.optionMenuPositionRefreshRate || 500;
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);

@@ -31,6 +31,7 @@ searchInputPlaceholder|String|""|Sets search inputs placeholder text
 noResultsMessage|String|"No results"|No results message
 usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. See <a href="#monitoring">Monitoring</a> below
 pollingInterval|Integer|100|polling interval speed in ms
+optionMenuPositionRefreshRate|Integer|500|Option menu position refresh rate in ms
 
 Public functions
 ===============
