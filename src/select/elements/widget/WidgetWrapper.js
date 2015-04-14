@@ -14,12 +14,23 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     this.locked = false;
 
+    this.poller;
+
+    this.positionLeft;
+
+    this.positionTop;
+
+    this.pollingInterval = 500;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
-                Facade.publish("OptionsMenu:hide");
+                var toElem = e.toElement;
+                var optionsMenuElem = Facade.publish("OptionsMenu:getElement");
+                if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
+                    Facade.publish("OptionsMenu:hide");
             });
         }
         document.addEventListener("click", function(e) {
@@ -39,9 +50,34 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
         var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
         var optionsMenuElem = optionsMenu.render();
-        this.element.appendChild(optionsMenuElem);
+        document.body.appendChild(optionsMenuElem);
+        this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
 
         return this.element;
+    }
+
+    this.detach = function() {
+        if (this.poller !== undefined)
+            clearInterval(this.poller);
+    }
+
+    this.poll = function() {
+        var pos = this.getPosition();
+        var top = pos.top;
+        var left = pos.left;
+        if (this.positionTop === undefined)
+            this.positionTop = top;
+        if (this.positionLeft === undefined)
+            this.positionLeft = left;
+        if (top !== this.positionTop || left != this.positionLeft) {
+            Facade.publish("OptionsMenu").setPosition(left, top);
+            this.positionLeft = left;
+            this.positionTop = top;
+        }
+    }
+
+    this.getPosition = function() {
+        return SELECT.UTILS.getElementPosition(this.element);
     }
 
     this.lock = function() {

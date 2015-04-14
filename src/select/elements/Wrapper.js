@@ -6,7 +6,9 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
 
     this.type = "div";
 
-    this.className = userDefinedSettings.theme || "default";
+    this.theme = userDefinedSettings.theme || "default";
+
+    this.className = this.theme;
 
     this.commonClassName = "select-widget";
 
@@ -59,6 +61,10 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
         Facade.publish("OptionsMenu").hide();
+    }
+
+    this.getTheme = function() {
+        return this.theme;
     }
 
     this.getWidth = function() {
@@ -121,6 +127,7 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
 
     this.detach = function() {
         Facade.publish("NativeSelectBox:detach");
+        Facade.publish("WidgetWrapper:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.element.remove();

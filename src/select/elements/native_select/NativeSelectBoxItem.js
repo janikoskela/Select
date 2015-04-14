@@ -20,6 +20,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Facade, optionEleme
 
 	this.setSelected = function() {
 		Facade.publish("NativeSelectBox").setSelectedIndex(this.element.index);
+		Facade.publish("NativeSelectBox").setValue(this.getValue());
 		Facade.publish("NativeSelectBox").triggerChange();
 		this.element.setSelectedAttribute();
 	}

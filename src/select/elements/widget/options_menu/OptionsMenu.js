@@ -2,12 +2,13 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	var that = this;
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
-	this.className = "options-container";
+	this.className = "options-container " + Facade.publish("Wrapper:getTheme");
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
 	this.locked = false;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
+	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -19,6 +20,15 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
     	this.element.appendChild(optionsMenuListElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
+
+        if (userDefinedSettings.closeWhenCursorOut === true) {
+            this.element.addEventListener("mouseleave", function(e) {
+                var toElem = e.toElement;
+                var widgetWrapperElem = Facade.publish("WidgetWrapper:getElement");
+                if (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem)
+                    Facade.publish("OptionsMenu:hide");
+            });
+        }
     	return this.element;
 	}
 
@@ -87,9 +97,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	this.show = function() {
 		if (this.locked === true || this.isHidden() === false)
 			return;
+		Facade.publish("NativeSelectBox:triggerFocus");
 		this.element.show();
 		Facade.publish("OptionsMenuList:show");
-		this.element.removeClass("options-container-down");
+		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
 		var top = this.element.getStyle("top") || 0;
 		this.element.removeStyle("top");
@@ -106,9 +117,16 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 			this.element.addClass("options-container-down");
 		}
 		this.element.show();
-		Facade.publish("ArrowContainerContent").up();
+		Facade.publish("ArrowContainerContent").up();*/
 		if (this.useSearchInput === true)
 			Facade.publish("OptionsMenuSearchInput:focus");
+		var pos = Facade.publish("WidgetWrapper:getPosition");
+		this.setPosition(pos.left, pos.top);
+	}
+
+	this.setPosition = function(left, top) {
+		this.element.setStyle("top", top);
+		this.element.setStyle("left", left);
 	}
 
 	this.toggle = function() {

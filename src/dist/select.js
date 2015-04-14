@@ -186,6 +186,14 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 			clearInterval(this.poller);
 	}
 
+	this.triggerFocus = function() {
+		SELECT.UTILS.triggerEvent("focus", this.element);
+	}
+
+	this.setValue = function(value) {
+		this.element.value = value;
+	}
+
 	this.poll = function() {
 		var isHidden = this.element.isHidden();
 		if (isHidden !== this.isElemHidden) {
@@ -241,13 +249,8 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	}
 
 	this.setSelectedOption = function(value) {
-		for (var i = 0; i < this.optionItems.length; i++) {
-			if (this.optionItems[i].getValue() == value) {
-				this.optionItems[i].setSelected();
-			}
-			else
-				this.optionItems[i].removeSelected();
-		}
+		var selectedIndex = this.element.selectedIndex;
+		return this.element.options[selectedIndex];
 	}
 
 	this.getSelectedOptionText = function() {
@@ -315,6 +318,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.E
 
 	this.setSelected = function() {
 		Facade.publish("NativeSelectBox").setSelectedIndex(this.element.index);
+		Facade.publish("NativeSelectBox").setValue(this.getValue());
 		Facade.publish("NativeSelectBox").triggerChange();
 		this.element.setSelectedAttribute();
 	}
@@ -333,6 +337,8 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.E
 
 	this.getOptionGroup = function() {
 		var parentNode = this.element.parentNode;
+		if (SELECT.UTILS.isEmpty(parentNode))
+			return;
 		var tagName = parentNode.tagName;
 		if (tagName !== null && tagName !== undefined) {
 			if (tagName.toLowerCase() === "optgroup")
@@ -410,12 +416,13 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	var that = this;
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
-	this.className = "options-container";
+	this.className = "options-container " + Facade.publish("Wrapper:getTheme");
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
 	this.locked = false;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
+	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -427,6 +434,15 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
     	this.element.appendChild(optionsMenuListElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
+
+        if (userDefinedSettings.closeWhenCursorOut === true) {
+            this.element.addEventListener("mouseleave", function(e) {
+                var toElem = e.toElement;
+                var widgetWrapperElem = Facade.publish("WidgetWrapper:getElement");
+                if (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem)
+                    Facade.publish("OptionsMenu:hide");
+            });
+        }
     	return this.element;
 	}
 
@@ -495,9 +511,10 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.show = function() {
 		if (this.locked === true || this.isHidden() === false)
 			return;
+		Facade.publish("NativeSelectBox:triggerFocus");
 		this.element.show();
 		Facade.publish("OptionsMenuList:show");
-		this.element.removeClass("options-container-down");
+		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
 		var top = this.element.getStyle("top") || 0;
 		this.element.removeStyle("top");
@@ -514,9 +531,16 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			this.element.addClass("options-container-down");
 		}
 		this.element.show();
-		Facade.publish("ArrowContainerContent").up();
+		Facade.publish("ArrowContainerContent").up();*/
 		if (this.useSearchInput === true)
 			Facade.publish("OptionsMenuSearchInput:focus");
+		var pos = Facade.publish("WidgetWrapper:getPosition");
+		this.setPosition(pos.left, pos.top);
+	}
+
+	this.setPosition = function(left, top) {
+		this.element.setStyle("top", top);
+		this.element.setStyle("left", left);
 	}
 
 	this.toggle = function() {
@@ -1413,12 +1437,23 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
     this.locked = false;
 
+    this.poller;
+
+    this.positionLeft;
+
+    this.positionTop;
+
+    this.pollingInterval = 500;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
-                Facade.publish("OptionsMenu:hide");
+                var toElem = e.toElement;
+                var optionsMenuElem = Facade.publish("OptionsMenu:getElement");
+                if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
+                    Facade.publish("OptionsMenu:hide");
             });
         }
         document.addEventListener("click", function(e) {
@@ -1438,9 +1473,34 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
         var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
         var optionsMenuElem = optionsMenu.render();
-        this.element.appendChild(optionsMenuElem);
+        document.body.appendChild(optionsMenuElem);
+        this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
 
         return this.element;
+    }
+
+    this.detach = function() {
+        if (this.poller !== undefined)
+            clearInterval(this.poller);
+    }
+
+    this.poll = function() {
+        var pos = this.getPosition();
+        var top = pos.top;
+        var left = pos.left;
+        if (this.positionTop === undefined)
+            this.positionTop = top;
+        if (this.positionLeft === undefined)
+            this.positionLeft = left;
+        if (top !== this.positionTop || left != this.positionLeft) {
+            Facade.publish("OptionsMenu").setPosition(left, top);
+            this.positionLeft = left;
+            this.positionTop = top;
+        }
+    }
+
+    this.getPosition = function() {
+        return SELECT.UTILS.getElementPosition(this.element);
     }
 
     this.lock = function() {
@@ -1514,7 +1574,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.type = "div";
 
-    this.className = userDefinedSettings.theme || "default";
+    this.theme = userDefinedSettings.theme || "default";
+
+    this.className = this.theme;
 
     this.commonClassName = "select-widget";
 
@@ -1567,6 +1629,10 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
         Facade.publish("OptionsMenu").hide();
+    }
+
+    this.getTheme = function() {
+        return this.theme;
     }
 
     this.getWidth = function() {
@@ -1629,6 +1695,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.detach = function() {
         Facade.publish("NativeSelectBox:detach");
+        Facade.publish("WidgetWrapper:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.element.remove();
@@ -1820,6 +1887,16 @@ SELECT.UTILS.triggerEvent = function(type, targetElem) {
 	}
 };
 
+SELECT.UTILS.isDescendant = function(parent, child) {
+    var node = child.parentNode;
+    while (node != null) {
+        if (node == parent)
+             return true;
+        node = node.parentNode;
+    }
+    return false;
+}
+
 SELECT.UTILS.isEmpty = function(obj) {
     // null and undefined are "empty"
     if (obj == null) return true;
@@ -1838,6 +1915,33 @@ SELECT.UTILS.isEmpty = function(obj) {
 
     return true;
 };
+
+SELECT.UTILS.getElementPosition = function(elem) {
+	var isIE = navigator.appName.indexOf('Microsoft Internet Explorer') != -1;
+    var currentOffsetLeft = 0;
+    var currentOffsetTop = 0;
+    var currentOffsetTopscroll = 0;
+    var currentOffsetLeftscroll = 0;
+    var offsetX = isIE ? document.body.scrollLeft : window.pageXOffset;
+    var offsetY = isIE ? document.body.scrollTop : window.pageYOffset;
+
+    if (elem.offsetParent) {
+        currentOffsetLeft = elem.offsetLeft;
+        currentOffsetTop = elem.offsetTop;
+        var elScroll = elem;
+        while (elScroll = elScroll.parentNode) {
+            currentOffsetTopscroll = elScroll.scrollTop ? elScroll.scrollTop : 0;
+            currentOffsetLeftscroll = elScroll.scrollLeft ? elScroll.scrollLeft : 0;
+            currentOffsetLeft -= currentOffsetLeftscroll;
+            currentOffsetTop -= currentOffsetTopscroll;
+        }
+        while (elem = elem.offsetParent) {
+            currentOffsetLeft += elem.offsetLeft;
+            currentOffsetTop += elem.offsetTop;
+        }
+    }
+    return { top: currentOffsetTop + offsetY, left: currentOffsetLeft + offsetX };
+}
 
 SELECT.UTILS.extractDelta = function(e) {
     if (e.wheelDelta) {

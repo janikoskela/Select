@@ -27,6 +27,16 @@ SELECT.UTILS.triggerEvent = function(type, targetElem) {
 	}
 };
 
+SELECT.UTILS.isDescendant = function(parent, child) {
+    var node = child.parentNode;
+    while (node != null) {
+        if (node == parent)
+             return true;
+        node = node.parentNode;
+    }
+    return false;
+}
+
 SELECT.UTILS.isEmpty = function(obj) {
     // null and undefined are "empty"
     if (obj == null) return true;
@@ -45,6 +55,33 @@ SELECT.UTILS.isEmpty = function(obj) {
 
     return true;
 };
+
+SELECT.UTILS.getElementPosition = function(elem) {
+	var isIE = navigator.appName.indexOf('Microsoft Internet Explorer') != -1;
+    var currentOffsetLeft = 0;
+    var currentOffsetTop = 0;
+    var currentOffsetTopscroll = 0;
+    var currentOffsetLeftscroll = 0;
+    var offsetX = isIE ? document.body.scrollLeft : window.pageXOffset;
+    var offsetY = isIE ? document.body.scrollTop : window.pageYOffset;
+
+    if (elem.offsetParent) {
+        currentOffsetLeft = elem.offsetLeft;
+        currentOffsetTop = elem.offsetTop;
+        var elScroll = elem;
+        while (elScroll = elScroll.parentNode) {
+            currentOffsetTopscroll = elScroll.scrollTop ? elScroll.scrollTop : 0;
+            currentOffsetLeftscroll = elScroll.scrollLeft ? elScroll.scrollLeft : 0;
+            currentOffsetLeft -= currentOffsetLeftscroll;
+            currentOffsetTop -= currentOffsetTopscroll;
+        }
+        while (elem = elem.offsetParent) {
+            currentOffsetLeft += elem.offsetLeft;
+            currentOffsetTop += elem.offsetTop;
+        }
+    }
+    return { top: currentOffsetTop + offsetY, left: currentOffsetLeft + offsetX };
+}
 
 SELECT.UTILS.extractDelta = function(e) {
     if (e.wheelDelta) {

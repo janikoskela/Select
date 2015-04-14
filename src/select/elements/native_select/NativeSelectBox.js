@@ -36,6 +36,14 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 			clearInterval(this.poller);
 	}
 
+	this.triggerFocus = function() {
+		SELECT.UTILS.triggerEvent("focus", this.element);
+	}
+
+	this.setValue = function(value) {
+		this.element.value = value;
+	}
+
 	this.poll = function() {
 		var isHidden = this.element.isHidden();
 		if (isHidden !== this.isElemHidden) {
@@ -91,13 +99,8 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 	}
 
 	this.setSelectedOption = function(value) {
-		for (var i = 0; i < this.optionItems.length; i++) {
-			if (this.optionItems[i].getValue() == value) {
-				this.optionItems[i].setSelected();
-			}
-			else
-				this.optionItems[i].removeSelected();
-		}
+		var selectedIndex = this.element.selectedIndex;
+		return this.element.options[selectedIndex];
 	}
 
 	this.getSelectedOptionText = function() {
