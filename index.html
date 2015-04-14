@@ -203,23 +203,26 @@
       el: document.getElementById("countries-select"),
       placeholder: "Choose country",
       searchInputPlaceholder: "Filter countries",
-      useSearchInput: true
+      useSearchInput: true,
+      closeWhenCursorOut: true,
     }).attach();
 
     var themesSelect = document.getElementById("themes-select");
 
     var themeInstance = new Select({
       el: themesSelect,
-      theme: "dark"
+      theme: "dark",
+      closeWhenCursorOut: true,
+      width: 80
     }).attach();
 
-    $(themesSelect).change(function() {
+    /*$(themesSelect).change(function() {
       var val = $(this).val();
       if (val == "default")
         $(this).parent().parent().removeClass("dark").addClass(val);
       else
         $(this).parent().parent().removeClass("default").addClass(val);
-    });
+    });*/
   
   });
 
