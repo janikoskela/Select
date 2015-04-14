@@ -310,6 +310,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d37441', end
 
 }
 
+.page3 .select-widget, .page3 .options-container {
+  width: 10em !important;
+}
+
 .circle img {
   width: 62px
 }
