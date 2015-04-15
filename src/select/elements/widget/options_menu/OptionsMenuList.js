@@ -38,6 +38,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     			options.sort(sortByDesc);
     			break;
 		}
+        if (typeof this.sortType === "function")
+            options.sort(this.sortType);
 		renderOptionItems(options);
 		Facade.publish("ValueContainer").refresh();
 	}
