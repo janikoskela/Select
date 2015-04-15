@@ -122,6 +122,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 			Facade.publish("OptionsMenuSearchInput:focus");
 		var pos = Facade.publish("WidgetWrapper:getPosition");
 		this.setPosition(pos.left, pos.top);
+		var elem = Facade.publish("Wrapper:getElement");
+		this.setWidth(elem.offsetWidth);
 	}
 
 	this.setPosition = function(left, top) {
