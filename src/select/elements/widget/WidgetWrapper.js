@@ -28,6 +28,10 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement;
+                if (SELECT.UTILS.isEmpty(toElem)) {
+                    Facade.publish("OptionsMenu:hide");
+                    return;
+                }
                 var optionsMenuElem = Facade.publish("OptionsMenu:getElement");
                 if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
                     Facade.publish("OptionsMenu:hide");
