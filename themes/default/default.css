@@ -142,6 +142,7 @@
 	-webkit-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
 	-moz-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
 	box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
+	height: auto;
 }
 
 .default .options-container-down {
@@ -180,6 +181,7 @@
 	float: none;
 	width: 100%;
 	height: auto;
+	display: list-item;
 }
 
 .defaul.options-container .options-container-list li span {
