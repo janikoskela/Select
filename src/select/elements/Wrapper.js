@@ -46,8 +46,13 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
         renderWidget();
         if (this.width !== undefined) {
             this.setWidth(this.width);
-            if (userDefinedSettings.optionMenuWidth === undefined)
-                Facade.publish("OptionsMenu").setWidth(this.width);
+            var optionMenuWidth = userDefinedSettings.optionMenuWidth;
+            if (optionMenuWidth === undefined) {
+                var width = this.element.offsetWidth;
+                Facade.publish("OptionsMenu").setWidth(width);
+            }
+            else
+                Facade.publish("OptionsMenu").setWidth(optionMenuWidth);
         }
         else {
             var width = Facade.publish("OptionsMenu").getWidth();
