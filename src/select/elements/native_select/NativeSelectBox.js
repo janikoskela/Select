@@ -135,13 +135,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 	}
 
 	this.getSelectedOption = function() {
-		var l = this.element.options.length;
-		for (var i = 0; i < l; i++) {
-			var option = this.element.options[i];
-			var selected = (option.getAttribute("selected") === null) ? false : true;
-			if (selected)
-				return option;
-		}
+		return this.element.options[this.element.selectedIndex];
 	}
 
 };
