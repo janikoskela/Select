@@ -285,13 +285,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	}
 
 	this.getSelectedOption = function() {
-		var l = this.element.options.length;
-		for (var i = 0; i < l; i++) {
-			var option = this.element.options[i];
-			var selected = (option.getAttribute("selected") === null) ? false : true;
-			if (selected)
-				return option;
-		}
+		return this.element.options[this.element.selectedIndex];
 	}
 
 };
@@ -536,6 +530,8 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			Facade.publish("OptionsMenuSearchInput:focus");
 		var pos = Facade.publish("WidgetWrapper:getPosition");
 		this.setPosition(pos.left, pos.top);
+		var elem = Facade.publish("Wrapper:getElement");
+		this.setWidth(elem.offsetWidth);
 	}
 
 	this.setPosition = function(left, top) {
@@ -777,7 +773,12 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     		case "desc":
     			options.sort(sortByDesc);
     			break;
+            case "naturalSort":
+                options.sort(naturalSort);
+                break;
 		}
+        if (typeof this.sortType === "function")
+            options.sort(this.sortType);
 		renderOptionItems(options);
 		Facade.publish("ValueContainer").refresh();
 	}
@@ -806,6 +807,29 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 				that.element.appendChild(elem);
 		}
 	}
+
+    // http://stackoverflow.com/questions/2802341/javascript-natural-sort-of-alphanumerical-strings
+    function naturalSort(as, bs) {
+        as = as.getText();
+        bs = bs.getText();
+        var a, b, a1, b1, i= 0, n, L,
+        rx=/(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
+        if(as=== bs) return 0;
+        a= as.toLowerCase().match(rx);
+        b= bs.toLowerCase().match(rx);
+        L= a.length;
+        while(i<L){
+            if(!b[i]) return 1;
+            a1= a[i],
+            b1= b[i++];
+            if(a1!== b1){
+                n= a1-b1;
+                if(!isNaN(n)) return n;
+                return a1>b1? 1:-1;
+            }
+        }
+        return b[i]? -1:0;
+    }
 
     function sortByDesc(optionA, optionB) {
         var a = optionA.getText();
@@ -1451,6 +1475,10 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement;
+                if (SELECT.UTILS.isEmpty(toElem)) {
+                    Facade.publish("OptionsMenu:hide");
+                    return;
+                }
                 var optionsMenuElem = Facade.publish("OptionsMenu:getElement");
                 if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
                     Facade.publish("OptionsMenu:hide");
@@ -1614,8 +1642,13 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         renderWidget();
         if (this.width !== undefined) {
             this.setWidth(this.width);
-            if (userDefinedSettings.optionMenuWidth === undefined)
-                Facade.publish("OptionsMenu").setWidth(this.width);
+            var optionMenuWidth = userDefinedSettings.optionMenuWidth;
+            if (optionMenuWidth === undefined) {
+                var width = this.element.offsetWidth;
+                Facade.publish("OptionsMenu").setWidth(width);
+            }
+            else
+                Facade.publish("OptionsMenu").setWidth(optionMenuWidth);
         }
         else {
             var width = Facade.publish("OptionsMenu").getWidth();

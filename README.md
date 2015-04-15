@@ -22,7 +22,7 @@ theme|String|"default"|Defines what theme is to be used. Basically this will sim
 width|String|-|Width for the select box. If not defined widgets width is based on the widest option
 orientation|String|"right"|Defines the side where arrow points
 placeholder|String|-|Sets a placeholder text
-sort|String|-|Sorts options
+sort|String/function|-|Sorts options. Options are "asc", "desc" & "naturalSort"
 optionMenuWidth|String|-|Determines the width of option menu. Overrides the width of the widget
 closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
 loadingText|String|"Loading"|The text which is used in loading mode
