@@ -52,9 +52,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
-        var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
-        var optionsMenuElem = optionsMenu.render();
-        document.body.appendChild(optionsMenuElem);
         if (isNaN(this.pollingInterval))
             this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
 

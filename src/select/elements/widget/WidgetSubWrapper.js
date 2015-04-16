@@ -56,6 +56,12 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
     function onClick(e) {
         if (this.locked === true)
             return;
+        if (Facade.publish("OptionsMenu") === undefined) {
+            var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
+            var optionsMenuElem = optionsMenu.render();
+            document.body.appendChild(optionsMenuElem);
+            Facade.publish("OptionsMenu").hide();
+        }
         var nativeSelectBox = Facade.publish("NativeSelectBox");
         if (nativeSelectBox.isDisabled() === false)
             Facade.publish("OptionsMenu").toggle();

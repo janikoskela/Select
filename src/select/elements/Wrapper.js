@@ -44,20 +44,9 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
         }
         renderWidget();
-        if (this.width !== undefined) {
-            this.setWidth(this.width);
-            var optionMenuWidth = userDefinedSettings.optionMenuWidth;
-            if (optionMenuWidth === undefined) {
-                var width = this.element.offsetWidth;
-                Facade.publish("OptionsMenu").setWidth(width);
-            }
-            else
-                Facade.publish("OptionsMenu").setWidth(optionMenuWidth);
-        }
-        else {
-            var width = Facade.publish("OptionsMenu").getWidth();
-            this.setWidth(width);
-        }
+        if (SELECT.UTILS.isEmpty(this.width) || !isNaN(this.width))
+            this.width = Facade.publish("ValueContainer:getWidthByWidestOption");
+        this.setWidth(this.width);
         return this.element;
     }
 
@@ -65,7 +54,6 @@ SELECT.ELEMENTS.Wrapper = function(Facade) {
         var widgetWrapperInstance = Facade.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Facade));
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
-        Facade.publish("OptionsMenu").hide();
     }
 
     this.getTheme = function() {

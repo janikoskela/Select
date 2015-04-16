@@ -13,7 +13,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
 		var valueContainerImageElem = valueContainerImage.render();
 		this.element.appendChild(valueContainerImageElem);
 		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
-		if (imageUrl === undefined || imageUrl === null)
+		if (SELECT.UTILS.isEmpty(imageUrl))
 			valueContainerImage.hide();
 		else
 			valueContainerImage.setImageUrl(imageUrl);
@@ -22,6 +22,27 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
     	var valueContainerTextElem = valueContainerText.render();
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
+	}
+
+	this.getWidthByWidestOption = function(callback) {
+		var options = Facade.publish("NativeSelectBox").getOptions();
+		var origOption = Facade.publish("NativeSelectBox").getSelectedOption();
+		var l = options.length;
+		var widest = 0;
+		for (var i = 0; i < l; i++) {
+			var option = options[i];
+			Facade.publish("NativeSelectBox").setSelectedOption(option.getValue());
+			this.refresh();
+			var elem = Facade.publish("Wrapper:getElement");
+			var width = elem.offsetWidth;
+			width += Facade.publish("ArrowContainer:getWidth");
+			if (width > widest) {
+				widest = width;
+			}
+		}
+		Facade.publish("NativeSelectBox").setSelectedOption(origOption.value);
+		this.refresh();
+		return widest;
 	}
 
 	this.refresh = function() {

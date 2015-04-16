@@ -99,8 +99,8 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 	}
 
 	this.setSelectedOption = function(value) {
-		var selectedIndex = this.element.selectedIndex;
-		return this.element.options[selectedIndex];
+		this.element.value = value;
+		return this;
 	}
 
 	this.getSelectedOptionText = function() {

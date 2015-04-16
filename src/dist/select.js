@@ -249,8 +249,8 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	}
 
 	this.setSelectedOption = function(value) {
-		var selectedIndex = this.element.selectedIndex;
-		return this.element.options[selectedIndex];
+		this.element.value = value;
+		return this;
 	}
 
 	this.getSelectedOptionText = function() {
@@ -1283,7 +1283,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
 		var valueContainerImageElem = valueContainerImage.render();
 		this.element.appendChild(valueContainerImageElem);
 		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
-		if (imageUrl === undefined || imageUrl === null)
+		if (SELECT.UTILS.isEmpty(imageUrl))
 			valueContainerImage.hide();
 		else
 			valueContainerImage.setImageUrl(imageUrl);
@@ -1292,6 +1292,27 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
     	var valueContainerTextElem = valueContainerText.render();
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
+	}
+
+	this.getWidthByWidestOption = function(callback) {
+		var options = Facade.publish("NativeSelectBox").getOptions();
+		var origOption = Facade.publish("NativeSelectBox").getSelectedOption();
+    	var l = options.length;
+    	var widest = 0;
+		for (var i = 0; i < l; i++) {
+			var option = options[i];
+			Facade.publish("NativeSelectBox").setSelectedOption(option.getValue());
+			this.refresh();
+			var elem = Facade.publish("Wrapper:getElement");
+			var width = elem.offsetWidth;
+			width += Facade.publish("ArrowContainer:getWidth");
+			if (width > widest) {
+				widest = width;
+			}
+		}
+		Facade.publish("NativeSelectBox").setSelectedOption(origOption.value);
+		this.refresh();
+		return widest;
 	}
 
 	this.refresh = function() {
@@ -1440,6 +1461,12 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
     function onClick(e) {
         if (this.locked === true)
             return;
+        if (Facade.publish("OptionsMenu") === undefined) {
+            var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
+            var optionsMenuElem = optionsMenu.render();
+            document.body.appendChild(optionsMenuElem);
+            Facade.publish("OptionsMenu").hide();
+        }
         var nativeSelectBox = Facade.publish("NativeSelectBox");
         if (nativeSelectBox.isDisabled() === false)
             Facade.publish("OptionsMenu").toggle();
@@ -1501,9 +1528,6 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
-        var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
-        var optionsMenuElem = optionsMenu.render();
-        document.body.appendChild(optionsMenuElem);
         if (isNaN(this.pollingInterval))
             this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
 
@@ -1643,20 +1667,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
         }
         renderWidget();
-        if (this.width !== undefined) {
-            this.setWidth(this.width);
-            var optionMenuWidth = userDefinedSettings.optionMenuWidth;
-            if (optionMenuWidth === undefined) {
-                var width = this.element.offsetWidth;
-                Facade.publish("OptionsMenu").setWidth(width);
-            }
-            else
-                Facade.publish("OptionsMenu").setWidth(optionMenuWidth);
-        }
-        else {
-            var width = Facade.publish("OptionsMenu").getWidth();
-            this.setWidth(width);
-        }
+        if (SELECT.UTILS.isEmpty(this.width) || !isNaN(this.width))
+            this.width = Facade.publish("ValueContainer:getWidthByWidestOption");
+        this.setWidth(this.width);
         return this.element;
     }
 
@@ -1664,7 +1677,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         var widgetWrapperInstance = Facade.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Facade));
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
-        Facade.publish("OptionsMenu").hide();
     }
 
     this.getTheme = function() {

@@ -14,6 +14,7 @@
 	border-radius: 0;
 	box-shadow: none;
 	color: #b9b9b9;
+	display: inline-block;
 }
 
 .dark .widget-wrapper {
