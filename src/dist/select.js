@@ -583,7 +583,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
     	this.element.setDataAttribute("index", this.index);
 
 		var imageUrl = this.nativeSelectOption.getImageUrl();
-		if (imageUrl !== undefined && imageUrl !== null) {
+		if (!SELECT.UTILS.isEmpty(imageUrl)) {
 			this.itemImage = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(Facade, imageUrl);
 			var elem = this.itemImage.render();
 			this.element.appendChild(elem);
@@ -592,7 +592,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
     	this.element.appendChild(childElem);
 
 		var description = this.nativeSelectOption.getDescription();
-		if (description !== undefined && description !== null) {
+		if (!SELECT.UTILS.isEmpty(description)) {
 			this.optionsMenuItemDescription = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Facade, description);
 			var optionsMenuItemDescriptionElem = this.optionsMenuItemDescription.render();
 			this.element.appendChild(optionsMenuItemDescriptionElem);
@@ -809,7 +809,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 	}
 
     // http://stackoverflow.com/questions/2802341/javascript-natural-sort-of-alphanumerical-strings
-    function naturalSort(as, bs) {
+    function sortByDesc(as, bs) {
         as = as.getText();
         bs = bs.getText();
         var a, b, a1, b1, i= 0, n, L,
@@ -831,24 +831,26 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         return b[i]? -1:0;
     }
 
-    function sortByDesc(optionA, optionB) {
-        var a = optionA.getText();
-        var b = optionB.getText();
-        if (a > b)
-            return 1;
-        if (a < b)
-            return -1;
-        return 0;
-    }
-
-    function sortByAsc(optionA, optionB) {
-        var a = optionA.getText();
-        var b = optionB.getText();       
-        if (a > b)
-            return -1;
-        if (a < b)
-            return 1;
-        return 0;
+    function sortByAsc(as, bs) {
+        as = as.getText();
+        bs = bs.getText();
+        var a, b, a1, b1, i= 0, n, L,
+        rx=/(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
+        if(as=== bs) return 0;
+        a= as.toLowerCase().match(rx);
+        b= bs.toLowerCase().match(rx);
+        L= a.length;
+        while(i<L){
+            if(!b[i]) return -1;
+            a1= a[i],
+            b1= b[i++];
+            if(a1!== b1){
+                n= a1-b1;
+                if(!isNaN(n)) return n;
+                return a1>b1? -1:1;
+            }
+        }
+        return b[i]? 1:0;
     }
 
     function getNextOption(option) {
@@ -1502,7 +1504,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
         var optionsMenuElem = optionsMenu.render();
         document.body.appendChild(optionsMenuElem);
-        this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
+        if (isNaN(this.pollingInterval))
+            this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
 
         return this.element;
     }

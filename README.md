@@ -22,7 +22,7 @@ theme|String|"default"|Defines what theme is to be used. Basically this will sim
 width|String|-|Width for the select box. If not defined widgets width is based on the widest option
 orientation|String|"right"|Defines the side where arrow points
 placeholder|String|-|Sets a placeholder text
-sort|String/function|-|Sorts options. Options are "asc", "desc" & "naturalSort"
+sort|String/function|-|Sorts options. Options are "asc" & "desc"
 optionMenuWidth|String|-|Determines the width of option menu. Overrides the width of the widget
 closeWhenCursorOut|Boolean|True|Determines if option menu will be closed when cursor leaves select box
 loadingText|String|"Loading"|The text which is used in loading mode
@@ -31,7 +31,7 @@ searchInputPlaceholder|String|""|Sets search inputs placeholder text
 noResultsMessage|String|"No results"|No results message
 usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. See <a href="#monitoring">Monitoring</a> below
 pollingInterval|Integer|100|polling interval speed in ms
-optionMenuPositionRefreshRate|Integer|500|Option menu position refresh rate in ms
+optionMenuPositionRefreshRate|Integer|-|Option menu position refresh rate in ms. Handy if the widget is in a scrollable element
 
 Public functions
 ===============

@@ -19,7 +19,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
     	this.element.setDataAttribute("index", this.index);
 
 		var imageUrl = this.nativeSelectOption.getImageUrl();
-		if (imageUrl !== undefined && imageUrl !== null) {
+		if (!SELECT.UTILS.isEmpty(imageUrl)) {
 			this.itemImage = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(Facade, imageUrl);
 			var elem = this.itemImage.render();
 			this.element.appendChild(elem);
@@ -28,7 +28,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
     	this.element.appendChild(childElem);
 
 		var description = this.nativeSelectOption.getDescription();
-		if (description !== undefined && description !== null) {
+		if (!SELECT.UTILS.isEmpty(description)) {
 			this.optionsMenuItemDescription = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Facade, description);
 			var optionsMenuItemDescriptionElem = this.optionsMenuItemDescription.render();
 			this.element.appendChild(optionsMenuItemDescriptionElem);
