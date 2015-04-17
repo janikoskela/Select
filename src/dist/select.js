@@ -80,7 +80,10 @@
 		}
 
 		this.isOptionMenuOpen = function() {
-			return !Facade.publish("OptionsMenu:isHidden");
+			var result = !Facade.publish("OptionsMenu:isHidden");
+			if (SELECT.UTILS.isEmpty(result))
+				return false;
+			return result;
 		}
 	}
 
@@ -1297,8 +1300,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
 	this.getWidthByWidestOption = function(callback) {
 		var options = Facade.publish("NativeSelectBox").getOptions();
 		var origOption = Facade.publish("NativeSelectBox").getSelectedOption();
-    	var l = options.length;
-    	var widest = 0;
+		var l = options.length;
+		var widest = 0;
 		for (var i = 0; i < l; i++) {
 			var option = options[i];
 			Facade.publish("NativeSelectBox").setSelectedOption(option.getValue());

@@ -80,7 +80,10 @@
 		}
 
 		this.isOptionMenuOpen = function() {
-			return !Facade.publish("OptionsMenu:isHidden");
+			var result = !Facade.publish("OptionsMenu:isHidden");
+			if (SELECT.UTILS.isEmpty(result))
+				return false;
+			return result;
 		}
 	}
 
