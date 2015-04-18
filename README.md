@@ -33,7 +33,7 @@ usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. S
 pollingInterval|Integer|100|polling interval speed in ms
 optionMenuPositionRefreshRate|Integer|-|Option menu position refresh rate in ms. Handy if the widget is in a scrollable element
 
-Public functions
+API
 ===============
 Name|Parameters|Description
 ----|----------|------|-----------
@@ -46,6 +46,7 @@ disable|-|Disabled widget
 toggleLoadingMode|-|Enables or disables loading mode
 toggleInputSearch|-|Enables or disables input search
 isOptionMenuOpen|-|Returns true if option menu is open, false if not
+setTheme|String|Sets theme
 
 Monitoring
 ===============

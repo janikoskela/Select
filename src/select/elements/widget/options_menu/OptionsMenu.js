@@ -2,7 +2,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	var that = this;
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
-	this.className = "options-container " + Facade.publish("Wrapper:getTheme");
+	this.commonClassName = "options-container";
+	this.className = this.commonClassName + " " + Facade.publish("Wrapper:getTheme");
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
@@ -34,6 +35,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
             });
         }
     	return this.element;
+	}
+
+	this.setTheme = function(className) {
+		this.className = this.commonClassName + " " + className;
+		this.element.setClass(this.className);
 	}
 
 	function renderOptionsMenuSearchWrapper() {

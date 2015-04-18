@@ -85,6 +85,12 @@
 				return false;
 			return result;
 		}
+
+		this.setTheme = function(theme) {
+			Facade.publish("Wrapper:setTheme", theme);
+			Facade.publish("OptionsMenu:setTheme", theme);
+			return this;
+		}
 	}
 
 SELECT.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Select#constructor-parameters";SELECT.ELEMENTS.Element = function() {};
@@ -413,7 +419,8 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	var that = this;
 	var userDefinedSettings = Facade.publish("UserDefinedSettings");
 	this.type = "div";
-	this.className = "options-container " + Facade.publish("Wrapper:getTheme");
+	this.commonClassName = "options-container";
+	this.className = this.commonClassName + " " + Facade.publish("Wrapper:getTheme");
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
@@ -445,6 +452,11 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
             });
         }
     	return this.element;
+	}
+
+	this.setTheme = function(className) {
+		this.className = this.commonClassName + " " + className;
+		this.element.setClass(this.className);
 	}
 
 	function renderOptionsMenuSearchWrapper() {
@@ -1638,9 +1650,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.theme = userDefinedSettings.theme || "default";
 
-    this.className = this.theme;
-
     this.commonClassName = "select-widget";
+
+    this.className = this.theme + " " + this.commonClassName;
 
     this.width = userDefinedSettings.width;
 
@@ -1653,7 +1665,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
     this.loadingMode = false;
 
     this.render = function() {
-        this.element = SELECT.UTILS.createElement(this.type, this.className + " " + this.commonClassName);
+        this.element = SELECT.UTILS.createElement(this.type, this.className);
         var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
@@ -1754,6 +1766,12 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.element.remove();
+    }
+
+    this.setTheme = function(theme) {
+        this.theme = theme;
+        this.className = theme + " " + this.commonClassName;
+        this.element.setClass(this.className);
     }
 };
 SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.EXCEPTIONS.InvalidOptionsErrorException = function() {

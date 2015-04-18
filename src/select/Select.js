@@ -85,6 +85,12 @@
 				return false;
 			return result;
 		}
+
+		this.setTheme = function(theme) {
+			Facade.publish("Wrapper:setTheme", theme);
+			Facade.publish("OptionsMenu:setTheme", theme);
+			return this;
+		}
 	}
 
 }(jQuery || {}));
