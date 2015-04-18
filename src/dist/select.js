@@ -435,6 +435,10 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement;
+                if (SELECT.UTILS.isEmpty(toElem)) {
+                    Facade.publish("OptionsMenu:hide");
+                    return;
+                }
                 var widgetWrapperElem = Facade.publish("WidgetWrapper:getElement");
                 if (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem)
                     Facade.publish("OptionsMenu:hide");
