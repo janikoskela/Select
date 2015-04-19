@@ -1486,8 +1486,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
             document.body.appendChild(optionsMenuElem);
             Facade.publish("OptionsMenu").hide();
         }
-        var nativeSelectBox = Facade.publish("NativeSelectBox");
-        if (nativeSelectBox.isDisabled() === false)
+        if (Facade.publish("NativeSelectBox:isDisabled") === false)
             Facade.publish("OptionsMenu").toggle();
     }
 
