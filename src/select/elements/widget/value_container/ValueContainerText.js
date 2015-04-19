@@ -1,5 +1,5 @@
-SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	var that = this;
 	this.type = "span";
 	this.className = "value-container-text";
@@ -13,7 +13,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Facade) {
 	}
 
 	this.refresh = function() {
-		var text = Facade.publish("NativeSelectBox").getSelectedOptionText();
+		var text = Sandbox.publish("NativeSelectBox").getSelectedOptionText();
 		if (text === undefined || text === null && this.placeholder !== undefined)
 			this.setText(this.placeholder);
 		else if (text.length  === 0 && this.placeholder !== undefined)

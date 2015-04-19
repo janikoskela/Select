@@ -1,5 +1,5 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	var that = this;
 	this.type = "ul";
 	this.className = "options-container-list";
@@ -29,7 +29,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 	}
 
 	this.refresh = function() {
-        var options = Facade.publish("NativeSelectBox").getOptions();
+        var options = Sandbox.publish("NativeSelectBox").getOptions();
 		switch(this.sortType) {
     		case "asc":
     			options.sort(sortByAsc);
@@ -44,7 +44,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
         if (typeof this.sortType === "function")
             options.sort(this.sortType);
 		renderOptionItems(options);
-		Facade.publish("ValueContainer").refresh();
+		Sandbox.publish("ValueContainer").refresh();
 	}
 
 	function renderOptionItems(options) {
@@ -54,14 +54,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
         var l = options.length;
 		for (var i = 0; i < l; i++) {
 			var option = options[i];
-			var item = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(Facade, option, i);
+			var item = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(Sandbox, option, i);
 			that.optionItems.push(item);
 			var elem = item.render();
 			var optionGroup = option.getOptionGroup();
 			if (optionGroup !== undefined) {
 				var optionGroupLabel = optionGroup.label;
 				if (that.optionGroups[optionGroupLabel] === undefined) {
-					that.optionGroups[optionGroupLabel] = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup(Facade, optionGroup);
+					that.optionGroups[optionGroupLabel] = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup(Sandbox, optionGroup);
 		    		var li = that.optionGroups[optionGroupLabel].render();
 		    		that.element.appendChild(li);
 				}
@@ -163,7 +163,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     }
 
     this.hoverPreviousOption = function() {
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
@@ -198,11 +198,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     		b[0].addClass("hovered");
     	}
 		this.element.scrollTop = 0;
-		Facade.publish("WidgetWrapper:focus");
+		Sandbox.publish("WidgetWrapper:focus");
 	}
 
     this.hoverNextOption = function() {
-		var optionsMenu = Facade.publish("OptionsMenu");
+		var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
@@ -222,22 +222,22 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 			option.setSelected();
 		}
 		else {
-			this.element.scrollTop = option.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
+			this.element.scrollTop = option.getElement().offsetTop - Sandbox.publish("OptionsMenuSearchWrapper:getHeight");
 		}
     }
 
     this.selectHoveredOption = function() {
-		var optionsMenu = Facade.publish("OptionsMenu");
+		var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.setSelected();
-		Facade.publish("OptionsMenu:hide");
+		Sandbox.publish("OptionsMenu:hide");
     }
 
     function findOptionByFirstCharFromStart(firstChar) {
-		var optionsMenu = Facade.publish("OptionsMenu");
+		var optionsMenu = Sandbox.publish("OptionsMenu");
     	var optionItemsCount = that.optionItems.length;
     	for (var i = 0; i < optionItemsCount; i++) {
 			var itemText = that.optionItems[i].getText();
@@ -253,7 +253,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     }
 
     function isNextOptionFirstCharMatch(optionItem, firstChar) {
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
     	var text = optionItem.getText();
     	if (text[0].toLowerCase() === firstChar) {
     		that.clearOptionItemHovers();
@@ -261,7 +261,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     		if (optionsMenu.isHidden())
     			optionItem.setSelected();
     		else
-				that.element.scrollTop = optionItem.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
+				that.element.scrollTop = optionItem.getElement().offsetTop - Sandbox.publish("OptionsMenuSearchWrapper:getHeight");
 			return true;
     	}
     	return false;
@@ -273,9 +273,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
 
     this.searchByInputString = function(query) {
     	this.inputSearchEnabled = true;
-    	var options = Facade.publish("NativeSelectBox:getOptions");
+    	var options = Sandbox.publish("NativeSelectBox:getOptions");
     	var l = options.length;
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
     	var matchedOptions = [];
     	for (var i = 0; i < l; i++) {
     		var option = options[i];
@@ -292,7 +292,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
     }
 
 	this.searchByFirstChar = function(firstChar) {
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
 		var hovered = this.getHoveredOption();

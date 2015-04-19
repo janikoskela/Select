@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(Facade, option) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(Sandbox, option) {
 	this.option = option;
 	this.type = "span";
 	this.element;

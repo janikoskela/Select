@@ -1,6 +1,6 @@
-SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	var that = this;
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.optionItems = [];
 	this.observer;
 	this.element = el;
@@ -16,7 +16,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 		this.optionsCount = optionsLength;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
-			var optionItem = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem(Facade, option);
+			var optionItem = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem(Sandbox, option);
 			this.optionItems.push(optionItem);
 		}
 		//if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
@@ -49,24 +49,24 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
 		if (isHidden !== this.isElemHidden) {
 			this.isElemHidden = isHidden;
 			if (isHidden)
-				Facade.publish("Wrapper:hide");
+				Sandbox.publish("Wrapper:hide");
 			else
-				Facade.publish("Wrapper:show");
+				Sandbox.publish("Wrapper:show");
 		}
 		var isDisabled = this.element.isDisabled();
 		if (isDisabled !== this.isElemDisabled) {
 			this.isElemDisabled = isDisabled;
 			if (isDisabled)
-				Facade.publish("Wrapper:disable");
+				Sandbox.publish("Wrapper:disable");
 			else
-				Facade.publish("Wrapper:enable");
+				Sandbox.publish("Wrapper:enable");
 		}
 		//if (this.observer === undefined) { //mutation observer does not detech attribute changes on <select>
 			var optionsCount = this.element.options.length;
 			if (optionsCount !== this.optionsCount) {
 				this.optionsCount = optionsCount;
 				this.attach();
-				Facade.publish("OptionsMenuList").refresh();
+				Sandbox.publish("OptionsMenuList").refresh();
 			}
 		//}
 	}
@@ -82,7 +82,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
     			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
     			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
     				that.attach();
-    				Facade.publish("OptionsMenuList").refresh();
+    				Sandbox.publish("OptionsMenuList").refresh();
     			}
       		});
     	});

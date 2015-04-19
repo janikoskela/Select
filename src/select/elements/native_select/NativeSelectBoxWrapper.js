@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper = function(Facade) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper = function(Sandbox) {
 
 	this.type = "div";
 	this.element;

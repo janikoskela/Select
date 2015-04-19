@@ -1,6 +1,6 @@
-SELECT.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
+SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
 
-    var userDefinedSettings = Facade.publish("UserDefinedSettings");
+    var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 
     var ORIENTATION_LEFT = "left";
 
@@ -20,10 +20,10 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
 
-        var arrowContainer = Facade.subscribe("ArrowContainer", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(Facade));
+        var arrowContainer = Sandbox.subscribe("ArrowContainer", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(Sandbox));
         var arrowContainerElem = arrowContainer.render();
 
-        var valueContainer = Facade.subscribe("ValueContainer", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(Facade));
+        var valueContainer = Sandbox.subscribe("ValueContainer", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(Sandbox));
         var valueContainerElem = valueContainer.render();
 
         switch (this.orientation) {
@@ -56,14 +56,14 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
     function onClick(e) {
         if (this.locked === true)
             return;
-        if (Facade.publish("OptionsMenu") === undefined) {
-            var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
+        if (Sandbox.publish("OptionsMenu") === undefined) {
+            var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
             var optionsMenuElem = optionsMenu.render();
             document.body.appendChild(optionsMenuElem);
-            Facade.publish("OptionsMenu").hide();
+            Sandbox.publish("OptionsMenu").hide();
         }
-        if (Facade.publish("NativeSelectBox:isDisabled") === false)
-            Facade.publish("OptionsMenu").toggle();
+        if (Sandbox.publish("NativeSelectBox:isDisabled") === false)
+            Sandbox.publish("OptionsMenu").toggle();
     }
 
 };

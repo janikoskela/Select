@@ -26,7 +26,7 @@
 
 	Select = function(userDefinedSettings) {
 
-		var Facade = new SELECT.Facade();
+		var Sandbox = new SELECT.Sandbox();
 		var that = this;
 		init();
 
@@ -35,60 +35,60 @@
 				throw new SELECT.EXCEPTIONS.InvalidOptionsErrorException();
 			if (userDefinedSettings.el instanceof jQuery)
 				userDefinedSettings.el = $(userDefinedSettings.el)[0];
-			Facade.subscribe("UserDefinedSettings", userDefinedSettings);
-			Facade.subscribe("Wrapper", new SELECT.ELEMENTS.Wrapper(Facade));
+			Sandbox.subscribe("UserDefinedSettings", userDefinedSettings);
+			Sandbox.subscribe("Wrapper", new SELECT.ELEMENTS.Wrapper(Sandbox));
 		}
 
 		this.attach = function() {
-			Facade.publish("Wrapper:render");
+			Sandbox.publish("Wrapper:render");
 			return this;
 		}
 
 		this.hide = function() {
-			Facade.publish("Wrapper:hide");
+			Sandbox.publish("Wrapper:hide");
 			return this;
 		}
 
 		this.show = function() {
-			Facade.publish("Wrapper:show");
+			Sandbox.publish("Wrapper:show");
 			return this;
 		}
 
 		this.detach = function() {
-			Facade.publish("Wrapper:detach");
+			Sandbox.publish("Wrapper:detach");
 			return this;
 		}
 
 		this.disable = function() {
-			Facade.publish("Wrapper:disable");
+			Sandbox.publish("Wrapper:disable");
 			return this;
 		}
 
 		this.enable = function() {
-			Facade.publish("Wrapper:enable");
+			Sandbox.publish("Wrapper:enable");
 			return this;
 		}
 
 		this.toggleLoadingMode = function() {
-			Facade.publish("Wrapper:toggleLoadingMode");
+			Sandbox.publish("Wrapper:toggleLoadingMode");
 			return this;
 		}
 
 		this.toggleInputSearch = function() {
-			Facade.publish("OptionsMenu:toggleInputSearch");
+			Sandbox.publish("OptionsMenu:toggleInputSearch");
 			return this;
 		}
 
 		this.isOptionMenuOpen = function() {
-			var result = !Facade.publish("OptionsMenu:isHidden");
+			var result = !Sandbox.publish("OptionsMenu:isHidden");
 			if (SELECT.UTILS.isEmpty(result))
 				return false;
 			return result;
 		}
 
 		this.setTheme = function(theme) {
-			Facade.publish("Wrapper:setTheme", theme);
-			Facade.publish("OptionsMenu:setTheme", theme);
+			Sandbox.publish("Wrapper:setTheme", theme);
+			Sandbox.publish("OptionsMenu:setTheme", theme);
 			return this;
 		}
 	}
@@ -157,9 +157,9 @@ SELECT.ELEMENTS.Element.prototype.hasChildren = function() {
 
 SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
     this.element.setAttribute("tabindex", "-1");
-};SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Facade, el) {
+};SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	var that = this;
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.optionItems = [];
 	this.observer;
 	this.element = el;
@@ -175,7 +175,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		this.optionsCount = optionsLength;
 		for (var i = 0; i < optionsLength; i++) {
 			var option = this.element.options[i];
-			var optionItem = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem(Facade, option);
+			var optionItem = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem(Sandbox, option);
 			this.optionItems.push(optionItem);
 		}
 		//if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
@@ -208,24 +208,24 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		if (isHidden !== this.isElemHidden) {
 			this.isElemHidden = isHidden;
 			if (isHidden)
-				Facade.publish("Wrapper:hide");
+				Sandbox.publish("Wrapper:hide");
 			else
-				Facade.publish("Wrapper:show");
+				Sandbox.publish("Wrapper:show");
 		}
 		var isDisabled = this.element.isDisabled();
 		if (isDisabled !== this.isElemDisabled) {
 			this.isElemDisabled = isDisabled;
 			if (isDisabled)
-				Facade.publish("Wrapper:disable");
+				Sandbox.publish("Wrapper:disable");
 			else
-				Facade.publish("Wrapper:enable");
+				Sandbox.publish("Wrapper:enable");
 		}
 		//if (this.observer === undefined) { //mutation observer does not detech attribute changes on <select>
 			var optionsCount = this.element.options.length;
 			if (optionsCount !== this.optionsCount) {
 				this.optionsCount = optionsCount;
 				this.attach();
-				Facade.publish("OptionsMenuList").refresh();
+				Sandbox.publish("OptionsMenuList").refresh();
 			}
 		//}
 	}
@@ -241,7 +241,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
     			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
     			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
     				that.attach();
-    				Facade.publish("OptionsMenuList").refresh();
+    				Sandbox.publish("OptionsMenuList").refresh();
     			}
       		});
     	});
@@ -299,7 +299,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 
 };
 
-SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Facade, optionElement) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Sandbox, optionElement) {
 	this.element = optionElement;
 	this.type = "option";
 
@@ -320,9 +320,9 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.E
 	}
 
 	this.setSelected = function() {
-		Facade.publish("NativeSelectBox").setSelectedIndex(this.element.index);
-		Facade.publish("NativeSelectBox").setValue(this.getValue());
-		Facade.publish("NativeSelectBox").triggerChange();
+		Sandbox.publish("NativeSelectBox").setSelectedIndex(this.element.index);
+		Sandbox.publish("NativeSelectBox").setValue(this.getValue());
+		Sandbox.publish("NativeSelectBox").triggerChange();
 		this.element.setSelectedAttribute();
 	}
 
@@ -350,7 +350,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.E
 	}
 };
 
-SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper = function(Facade) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper = function(Sandbox) {
 
 	this.type = "div";
 	this.element;
@@ -364,7 +364,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem.prototype = Object.create(SELE
 	}
 };
 
-SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Facade) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer = function(Sandbox) {
 
 	this.type = "div";
 	this.element;
@@ -373,14 +373,14 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper.prototype = Object.create(S
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type);
 		this.element.setClass(this.className);
-		var arrowContainerContentInstance = Facade.subscribe("ArrowContainerContent", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent(Facade));
+		var arrowContainerContentInstance = Sandbox.subscribe("ArrowContainerContent", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent(Sandbox));
 		var elem = arrowContainerContentInstance.render();
 		this.element.appendChild(elem);
 		return this.element;
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Facade) {
+SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Sandbox) {
 
 	var CLASS_NAME_ARROW_DOWN = "arrow-down";
 	var CLASS_NAME_ARROW_UP = "arrow-up";
@@ -415,12 +415,12 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer.prototype = Object.create(
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
+SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	var that = this;
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
 	this.commonClassName = "options-container";
-	this.className = this.commonClassName + " " + Facade.publish("Wrapper:getTheme");
+	this.className = this.commonClassName + " " + Sandbox.publish("Wrapper:getTheme");
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
@@ -430,7 +430,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuList = Facade.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Facade));
+    	var optionsMenuList = Sandbox.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Sandbox));
     	var optionsMenuListElem = optionsMenuList.render();
         if (this.useSearchInput === true) {
         	renderOptionsMenuSearchWrapper();
@@ -443,12 +443,12 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement;
                 if (SELECT.UTILS.isEmpty(toElem)) {
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
                     return;
                 }
-                var widgetWrapperElem = Facade.publish("WidgetWrapper:getElement");
+                var widgetWrapperElem = Sandbox.publish("WidgetWrapper:getElement");
                 if (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem)
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
             });
         }
     	return this.element;
@@ -460,19 +460,19 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	}
 
 	function renderOptionsMenuSearchWrapper() {
-    	that.optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
+    	that.optionsMenuSearchWrapper = Sandbox.subscribe("OptionsMenuSearchWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Sandbox));
     	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
 		that.element.appendFirst(optionsMenuSearchWrapperElem);
 	}
 
 	this.onNoOptionsFound = function() {
-		Facade.publish("OptionsMenuList:hide");
-		Facade.publish("OptionsMenuSearchNoResults:show");
+		Sandbox.publish("OptionsMenuList:hide");
+		Sandbox.publish("OptionsMenuSearchNoResults:show");
 	}
 
 	this.onOptionsFound = function() {
-		Facade.publish("OptionsMenuList:show");
-		Facade.publish("OptionsMenuSearchNoResults:hide");
+		Sandbox.publish("OptionsMenuList:show");
+		Sandbox.publish("OptionsMenuSearchNoResults:hide");
 	}
 
 	this.isLocked = function() {
@@ -500,7 +500,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			width = this.element.offsetWidth;
 			this.element.hide();
 		}
-		width += Facade.publish("ArrowContainer").getWidth();
+		width += Sandbox.publish("ArrowContainer").getWidth();
 		this.setWidth(width);
 		return width;
 	}
@@ -514,19 +514,19 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		if (this.element.isHidden())
 			return;
 		this.element.hide();
-		Facade.publish("OptionsMenuSearchInput:clear");
-		Facade.publish("OptionsMenuSearchInput:blur");
-		Facade.publish("OptionsMenuSearchNoResults:hide");
-		Facade.publish("OptionsMenuList:refresh");
-		Facade.publish("ArrowContainerContent").down();
+		Sandbox.publish("OptionsMenuSearchInput:clear");
+		Sandbox.publish("OptionsMenuSearchInput:blur");
+		Sandbox.publish("OptionsMenuSearchNoResults:hide");
+		Sandbox.publish("OptionsMenuList:refresh");
+		Sandbox.publish("ArrowContainerContent").down();
 	}
 
 	this.show = function() {
 		if (this.locked === true || this.isHidden() === false)
 			return;
-		Facade.publish("NativeSelectBox:triggerFocus");
+		Sandbox.publish("NativeSelectBox:triggerFocus");
 		this.element.show();
-		Facade.publish("OptionsMenuList:show");
+		Sandbox.publish("OptionsMenuList:show");
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
 		var top = this.element.getStyle("top") || 0;
@@ -535,7 +535,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		var windowInnerHeight = window.innerHeight;
 		var remainingWindowHeight = windowInnerHeight - this.element.getBoundingClientRect().top;
 		this.element.hide();
-		var widgetWrapper = Facade.publish("WidgetWrapper");
+		var widgetWrapper = Sandbox.publish("WidgetWrapper");
 		if (remainingWindowHeight < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
 			this.element.addClass("options-container-up");
 			this.element.setStyle("top", h * -1);
@@ -544,12 +544,12 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			this.element.addClass("options-container-down");
 		}
 		this.element.show();
-		Facade.publish("ArrowContainerContent").up();*/
+		Sandbox.publish("ArrowContainerContent").up();*/
 		if (this.useSearchInput === true)
-			Facade.publish("OptionsMenuSearchInput:focus");
-		var pos = Facade.publish("WidgetWrapper:getPosition");
+			Sandbox.publish("OptionsMenuSearchInput:focus");
+		var pos = Sandbox.publish("WidgetWrapper:getPosition");
 		this.setPosition(pos.left, pos.top);
-		var elem = Facade.publish("Wrapper:getElement");
+		var elem = Sandbox.publish("Wrapper:getElement");
 		this.setWidth(elem.offsetWidth);
 	}
 
@@ -568,11 +568,11 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.toggleInputSearch = function() {
         if (this.useSearchInput === true) {
         	this.useSearchInput = false;
-        	Facade.publish("OptionsMenuSearchWrapper:hide");
+        	Sandbox.publish("OptionsMenuSearchWrapper:hide");
         }
         else {
         	if (this.optionsMenuSearchWrapper !== undefined)
-        		Facade.publish("OptionsMenuSearchWrapper:show");
+        		Sandbox.publish("OptionsMenuSearchWrapper:show");
         	else {
         		renderOptionsMenuSearchWrapper();
         	}
@@ -581,7 +581,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
     }
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSelectOption, index) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSelectOption, index) {
 	var that = this;
 	this.nativeSelectOption = nativeSelectOption;
 	this.selected = nativeSelectOption.isSelected();
@@ -592,7 +592,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	this.index = index;
 
 	this.render = function() {
-		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Facade, nativeSelectOption);
+		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Sandbox, nativeSelectOption);
 		var childElem = this.itemValue.render();
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.element.addEventListener("click", onClick.bind(this));
@@ -603,7 +603,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 
 		var imageUrl = this.nativeSelectOption.getImageUrl();
 		if (!SELECT.UTILS.isEmpty(imageUrl)) {
-			this.itemImage = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(Facade, imageUrl);
+			this.itemImage = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(Sandbox, imageUrl);
 			var elem = this.itemImage.render();
 			this.element.appendChild(elem);
 		}
@@ -612,7 +612,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 
 		var description = this.nativeSelectOption.getDescription();
 		if (!SELECT.UTILS.isEmpty(description)) {
-			this.optionsMenuItemDescription = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Facade, description);
+			this.optionsMenuItemDescription = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Sandbox, description);
 			var optionsMenuItemDescriptionElem = this.optionsMenuItemDescription.render();
 			this.element.appendChild(optionsMenuItemDescriptionElem);
 		}
@@ -650,16 +650,16 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	}
 
 	this.setInitialSelected = function() {
-		Facade.publish("OptionsMenuList:clearSelected");
+		Sandbox.publish("OptionsMenuList:clearSelected");
 		this.element.addClass("selected");
-		Facade.publish("ValueContainer:refresh");
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.setSelected = function() {
-		Facade.publish("OptionsMenuList:clearSelected");
+		Sandbox.publish("OptionsMenuList:clearSelected");
 		this.nativeSelectOption.setSelected();
 		this.element.addClass("selected");
-		Facade.publish("ValueContainer:refresh");
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.getNextSibling = function() {
@@ -686,7 +686,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 		switch (e.keyCode) {
 			case KEY_CODES.ENTER:
 				//this.setSelected();
-				//Facade.publish("OptionsMenu:hide");
+				//Sandbox.publish("OptionsMenu:hide");
 				break;
 		}
 	}
@@ -696,12 +696,12 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	}
 
 	function onMouseOver(e) {
-		Facade.publish("OptionsMenuList:clearOptionItemHovers");
+		Sandbox.publish("OptionsMenuList:clearOptionItemHovers");
 		this.element.addClass("hovered");
 	}
 
 	function onClick(e) {
-		var optionsMenuList = Facade.publish("OptionsMenuList");
+		var optionsMenuList = Sandbox.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
 		if (prevSelected === undefined) {
 			this.setSelected();
@@ -709,11 +709,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 		else if (prevSelected.getIndex() !== this.getIndex()) {
 			this.setSelected();
 		}
-		Facade.publish("OptionsMenu:hide");
+		Sandbox.publish("OptionsMenu:hide");
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription = function(Facade, description) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription = function(Sandbox, description) {
 	this.type = "div";
 	this.description = description;
 	this.className = "options-container-list-item-description";
@@ -727,7 +727,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem.prototype = Object.create(SE
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(Facade, imageUrl) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage = function(Sandbox, imageUrl) {
 	this.type = "img";
 	this.imageUrl = imageUrl;
 	this.element;
@@ -739,7 +739,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription.prototype = Objec
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(Facade, option) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue = function(Sandbox, option) {
 	this.option = option;
 	this.type = "span";
 	this.element;
@@ -753,8 +753,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage.prototype = Object.crea
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	var that = this;
 	this.type = "ul";
 	this.className = "options-container-list";
@@ -784,7 +784,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 	}
 
 	this.refresh = function() {
-        var options = Facade.publish("NativeSelectBox").getOptions();
+        var options = Sandbox.publish("NativeSelectBox").getOptions();
 		switch(this.sortType) {
     		case "asc":
     			options.sort(sortByAsc);
@@ -799,7 +799,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         if (typeof this.sortType === "function")
             options.sort(this.sortType);
 		renderOptionItems(options);
-		Facade.publish("ValueContainer").refresh();
+		Sandbox.publish("ValueContainer").refresh();
 	}
 
 	function renderOptionItems(options) {
@@ -809,14 +809,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         var l = options.length;
 		for (var i = 0; i < l; i++) {
 			var option = options[i];
-			var item = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(Facade, option, i);
+			var item = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem(Sandbox, option, i);
 			that.optionItems.push(item);
 			var elem = item.render();
 			var optionGroup = option.getOptionGroup();
 			if (optionGroup !== undefined) {
 				var optionGroupLabel = optionGroup.label;
 				if (that.optionGroups[optionGroupLabel] === undefined) {
-					that.optionGroups[optionGroupLabel] = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup(Facade, optionGroup);
+					that.optionGroups[optionGroupLabel] = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup(Sandbox, optionGroup);
 		    		var li = that.optionGroups[optionGroupLabel].render();
 		    		that.element.appendChild(li);
 				}
@@ -918,7 +918,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     }
 
     this.hoverPreviousOption = function() {
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
@@ -953,11 +953,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     		b[0].addClass("hovered");
     	}
 		this.element.scrollTop = 0;
-		Facade.publish("WidgetWrapper:focus");
+		Sandbox.publish("WidgetWrapper:focus");
 	}
 
     this.hoverNextOption = function() {
-		var optionsMenu = Facade.publish("OptionsMenu");
+		var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
@@ -977,22 +977,22 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 			option.setSelected();
 		}
 		else {
-			this.element.scrollTop = option.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
+			this.element.scrollTop = option.getElement().offsetTop - Sandbox.publish("OptionsMenuSearchWrapper:getHeight");
 		}
     }
 
     this.selectHoveredOption = function() {
-		var optionsMenu = Facade.publish("OptionsMenu");
+		var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.setSelected();
-		Facade.publish("OptionsMenu:hide");
+		Sandbox.publish("OptionsMenu:hide");
     }
 
     function findOptionByFirstCharFromStart(firstChar) {
-		var optionsMenu = Facade.publish("OptionsMenu");
+		var optionsMenu = Sandbox.publish("OptionsMenu");
     	var optionItemsCount = that.optionItems.length;
     	for (var i = 0; i < optionItemsCount; i++) {
 			var itemText = that.optionItems[i].getText();
@@ -1008,7 +1008,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     }
 
     function isNextOptionFirstCharMatch(optionItem, firstChar) {
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
     	var text = optionItem.getText();
     	if (text[0].toLowerCase() === firstChar) {
     		that.clearOptionItemHovers();
@@ -1016,7 +1016,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     		if (optionsMenu.isHidden())
     			optionItem.setSelected();
     		else
-				that.element.scrollTop = optionItem.getElement().offsetTop - Facade.publish("OptionsMenuSearchWrapper:getHeight");
+				that.element.scrollTop = optionItem.getElement().offsetTop - Sandbox.publish("OptionsMenuSearchWrapper:getHeight");
 			return true;
     	}
     	return false;
@@ -1028,9 +1028,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 
     this.searchByInputString = function(query) {
     	this.inputSearchEnabled = true;
-    	var options = Facade.publish("NativeSelectBox:getOptions");
+    	var options = Sandbox.publish("NativeSelectBox:getOptions");
     	var l = options.length;
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
     	var matchedOptions = [];
     	for (var i = 0; i < l; i++) {
     		var option = options[i];
@@ -1047,7 +1047,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     }
 
 	this.searchByFirstChar = function(firstChar) {
-    	var optionsMenu = Facade.publish("OptionsMenu");
+    	var optionsMenu = Sandbox.publish("OptionsMenu");
 		if (optionsMenu.isLocked())
 			return;
 		var hovered = this.getHoveredOption();
@@ -1122,7 +1122,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Facade, optionGroup) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Sandbox, optionGroup) {
 	this.type = "li";
 	this.className = "options-menu-list-item-group";
 	this.element;
@@ -1132,9 +1132,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList.prototype = Object.create(SE
 
 	this.render = function() {
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	this.title = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle(Facade, this.optionGroup.label);
+    	this.title = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle(Sandbox, this.optionGroup.label);
     	var titleElem = this.title.render();
-    	this.list = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList(Facade);
+    	this.list = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList(Sandbox);
     	var listElem = this.list.render();
     	this.element.appendChild(titleElem);
     	this.element.appendChild(listElem);
@@ -1147,7 +1147,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList.prototype = Object.create(SE
 
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList = function(Facade) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList = function(Sandbox) {
 	this.type = "ul";
 	this.className = "options-menu-list-item-group-list";
 	this.element;
@@ -1158,7 +1158,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup.prototype = Object.
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Facade, text) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Sandbox, text) {
 	this.type = "h2";
 	this.className = "options-menu-list-item-group-title";
 	this.text = text;
@@ -1173,8 +1173,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Obj
 
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "input";
 	this.className = "options-menu-search-input";
 	this.tabIndex = -1;
@@ -1199,8 +1199,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
 
 	this.focusOut = function(e) {
 		if (this.allowClose) {
-			Facade.publish("OptionsMenu:hide");
-			Facade.publish("WidgetWrapper:blur");
+			Sandbox.publish("OptionsMenu:hide");
+			Sandbox.publish("WidgetWrapper:blur");
 		}
 	}
 
@@ -1210,31 +1210,31 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
         switch(e.keyCode) {
         	case KEY_CODES.DOWN:
         		this.allowClose = false;
-        		Facade.publish("OptionsMenuList").hoverFirstOption();
+        		Sandbox.publish("OptionsMenuList").hoverFirstOption();
         		this.blur();
         		break;
         	default:
         		this.allowClose = true;
 				var value = this.element.value;
 				if (value.length === 0) {
-					Facade.publish("OptionsMenuList:refresh");
-					Facade.publish("OptionsMenuList:show");
-					Facade.publish("OptionsMenuSearchNoResults:hide");
+					Sandbox.publish("OptionsMenuList:refresh");
+					Sandbox.publish("OptionsMenuList:show");
+					Sandbox.publish("OptionsMenuSearchNoResults:hide");
 				}
 				else
-					Facade.publish("OptionsMenuList:searchByInputString", value);
+					Sandbox.publish("OptionsMenuList:searchByInputString", value);
         }
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper = function(Facade) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper = function(Sandbox) {
 	this.type = "div";
 	this.className = "options-menu-search-input-wrapper";
 	this.element;
 
 	this.render = function() {
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuSearchInput = Facade.subscribe("OptionsMenuSearchInput", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput(Facade));
+    	var optionsMenuSearchInput = Sandbox.subscribe("OptionsMenuSearchInput", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput(Sandbox));
     	var optionsMenuSearchInputElem = optionsMenuSearchInput.render();
     	this.element.appendChild(optionsMenuSearchInputElem);
     	return this.element;
@@ -1242,8 +1242,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput.prototype = Object.cr
 
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-menu-search-no-results";
 	this.element;
@@ -1259,19 +1259,19 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper.prototype = Ob
 
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-menu-search-wrapper";
 	this.element;
 
 	this.render = function() {
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuSearchInputWrapper = Facade.subscribe("OptionsMenuSearchInputWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper(Facade));
+    	var optionsMenuSearchInputWrapper = Sandbox.subscribe("OptionsMenuSearchInputWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper(Sandbox));
     	var optionsMenuSearchInputWrapperElem = optionsMenuSearchInputWrapper.render();
     	this.element.appendChild(optionsMenuSearchInputWrapperElem);
     	
-    	var optionsMenuSearchNoResults = Facade.subscribe("OptionsMenuSearchNoResults", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(Facade));
+    	var optionsMenuSearchNoResults = Sandbox.subscribe("OptionsMenuSearchNoResults", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(Sandbox));
     	this.element.appendChild(optionsMenuSearchNoResults.render());
     	return this.element;
 	}
@@ -1287,9 +1287,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults.prototype = Objec
 
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Sandbox) {
 	var that = this;
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "value-container";
 	this.element;
@@ -1298,55 +1298,55 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
 
-        var valueContainerImage = Facade.subscribe("ValueContainerImage", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage(Facade));
+        var valueContainerImage = Sandbox.subscribe("ValueContainerImage", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage(Sandbox));
 		var valueContainerImageElem = valueContainerImage.render();
 		this.element.appendChild(valueContainerImageElem);
-		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
+		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
 		if (SELECT.UTILS.isEmpty(imageUrl))
 			valueContainerImage.hide();
 		else
 			valueContainerImage.setImageUrl(imageUrl);
 
-    	var valueContainerText = Facade.subscribe("ValueContainerText", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText(Facade));
+    	var valueContainerText = Sandbox.subscribe("ValueContainerText", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText(Sandbox));
     	var valueContainerTextElem = valueContainerText.render();
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
 	}
 
 	this.getWidthByWidestOption = function(callback) {
-		var options = Facade.publish("NativeSelectBox").getOptions();
-		var origOption = Facade.publish("NativeSelectBox").getSelectedOption();
+		var options = Sandbox.publish("NativeSelectBox").getOptions();
+		var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
 		var l = options.length;
 		var widest = 0;
 		for (var i = 0; i < l; i++) {
 			var option = options[i];
-			Facade.publish("NativeSelectBox").setSelectedOption(option.getValue());
+			Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
 			this.refresh();
-			var elem = Facade.publish("Wrapper:getElement");
+			var elem = Sandbox.publish("Wrapper:getElement");
 			var width = elem.offsetWidth;
-			width += Facade.publish("ArrowContainer:getWidth");
+			width += Sandbox.publish("ArrowContainer:getWidth");
 			if (width > widest) {
 				widest = width;
 			}
 		}
-		Facade.publish("NativeSelectBox").setSelectedOption(origOption.value);
+		Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
 		this.refresh();
 		return widest;
 	}
 
 	this.refresh = function() {
-		Facade.publish("ValueContainerText").refresh();
-		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
+		Sandbox.publish("ValueContainerText").refresh();
+		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
 		if (imageUrl !== undefined && imageUrl !== null) {
-			Facade.publish("ValueContainerImage").setImageUrl(imageUrl);
-			Facade.publish("ValueContainerImage").show();
+			Sandbox.publish("ValueContainerImage").setImageUrl(imageUrl);
+			Sandbox.publish("ValueContainerImage").show();
 		}
 		else
-			Facade.publish("ValueContainerImage").hide();	
+			Sandbox.publish("ValueContainerImage").hide();	
 	}
 
 	this.enableLoadingMode = function() {
-		Facade.publish("ValueContainerText").setText(this.loadingText);
+		Sandbox.publish("ValueContainerText").setText(this.loadingText);
 		enableDotDotDotInterval();
 	}
 
@@ -1357,17 +1357,17 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
 				dots = ".";
 			else
 				dots += ".";
-			Facade.publish("ValueContainerText").setText(that.loadingText + dots);
+			Sandbox.publish("ValueContainerText").setText(that.loadingText + dots);
 		}, 500);
 	}
 
 	this.disableLoadingMode = function() {
 		clearInterval(this.timeInterval);
-		Facade.publish("ValueContainerText").refresh();
+		Sandbox.publish("ValueContainerText").refresh();
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Facade) {
+SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 	this.type = "img";
 	this.imageUrl;
 	this.element;
@@ -1387,8 +1387,8 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	var that = this;
 	this.type = "span";
 	this.className = "value-container-text";
@@ -1402,7 +1402,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage.prototype = Object.cr
 	}
 
 	this.refresh = function() {
-		var text = Facade.publish("NativeSelectBox").getSelectedOptionText();
+		var text = Sandbox.publish("NativeSelectBox").getSelectedOptionText();
 		if (text === undefined || text === null && this.placeholder !== undefined)
 			this.setText(this.placeholder);
 		else if (text.length  === 0 && this.placeholder !== undefined)
@@ -1422,9 +1422,9 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage.prototype = Object.cr
 	}
 };
 
-SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.SubWrapper = function(Facade) {
+SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
 
-    var userDefinedSettings = Facade.publish("UserDefinedSettings");
+    var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 
     var ORIENTATION_LEFT = "left";
 
@@ -1444,10 +1444,10 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
 
-        var arrowContainer = Facade.subscribe("ArrowContainer", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(Facade));
+        var arrowContainer = Sandbox.subscribe("ArrowContainer", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(Sandbox));
         var arrowContainerElem = arrowContainer.render();
 
-        var valueContainer = Facade.subscribe("ValueContainer", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(Facade));
+        var valueContainer = Sandbox.subscribe("ValueContainer", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer(Sandbox));
         var valueContainerElem = valueContainer.render();
 
         switch (this.orientation) {
@@ -1480,21 +1480,21 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
     function onClick(e) {
         if (this.locked === true)
             return;
-        if (Facade.publish("OptionsMenu") === undefined) {
-            var optionsMenu = Facade.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Facade));
+        if (Sandbox.publish("OptionsMenu") === undefined) {
+            var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
             var optionsMenuElem = optionsMenu.render();
             document.body.appendChild(optionsMenuElem);
-            Facade.publish("OptionsMenu").hide();
+            Sandbox.publish("OptionsMenu").hide();
         }
-        if (Facade.publish("NativeSelectBox:isDisabled") === false)
-            Facade.publish("OptionsMenu").toggle();
+        if (Sandbox.publish("NativeSelectBox:isDisabled") === false)
+            Sandbox.publish("OptionsMenu").toggle();
     }
 
 };
 
-SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
+SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
 
-    var userDefinedSettings = Facade.publish("UserDefinedSettings");
+    var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 
     this.type = "div";
 
@@ -1502,7 +1502,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
     this.element;
 
-    this.tabIndex = Facade.publish("NativeSelectBox").getTabIndex() || 0;
+    this.tabIndex = Sandbox.publish("NativeSelectBox").getTabIndex() || 0;
 
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
 
@@ -1523,16 +1523,16 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement;
                 if (SELECT.UTILS.isEmpty(toElem)) {
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
                     return;
                 }
-                var optionsMenuElem = Facade.publish("OptionsMenu:getElement");
+                var optionsMenuElem = Sandbox.publish("OptionsMenu:getElement");
                 if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
             });
         }
         document.addEventListener("click", function(e) {
-            Facade.publish("OptionsMenu:hide");
+            Sandbox.publish("OptionsMenu:hide");
         });
         this.element.addEventListener("click", function(e) {
             e.stopPropagation();
@@ -1542,7 +1542,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         this.element.addEventListener("touchmove", touchScroll.bind(this));
         this.element.addEventListener("scroll", touchScroll.bind(this));
 
-        var widgetSubWrapper = Facade.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Facade));
+        var widgetSubWrapper = Sandbox.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Sandbox));
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
@@ -1566,7 +1566,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         if (this.positionLeft === undefined)
             this.positionLeft = left;
         if (top !== this.positionTop || left != this.positionLeft) {
-            Facade.publish("OptionsMenu").setPosition(left, top);
+            Sandbox.publish("OptionsMenu").setPosition(left, top);
             this.positionLeft = left;
             this.positionTop = top;
         }
@@ -1611,17 +1611,17 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
             return false;
         switch(e.keyCode) {
             case KEY_CODES.UP:
-                Facade.publish("OptionsMenuList").hoverPreviousOption();
+                Sandbox.publish("OptionsMenuList").hoverPreviousOption();
                 break;
             case KEY_CODES.DOWN:
-                Facade.publish("OptionsMenuList").hoverNextOption();
+                Sandbox.publish("OptionsMenuList").hoverNextOption();
                 break;
             case KEY_CODES.ENTER:
-                Facade.publish("OptionsMenuList").selectHoveredOption();
+                Sandbox.publish("OptionsMenuList").selectHoveredOption();
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                Facade.publish("OptionsMenuList").searchByFirstChar(firstChar);
+                Sandbox.publish("OptionsMenuList").searchByFirstChar(firstChar);
         }
         e.stopPropagation();
         e.preventDefault();
@@ -1629,7 +1629,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
     }
 
     function onMouseLeave(e) {
-        Facade.publish("OptionsMenu:hide");
+        Sandbox.publish("OptionsMenu:hide");
     }
 
     this.setTabIndex = function(tabIndex) {
@@ -1639,9 +1639,9 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
 };
 
-SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.Wrapper = function(Facade) {
+SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
-    var userDefinedSettings = Facade.publish("UserDefinedSettings");
+    var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 
     var that = this;
 
@@ -1669,13 +1669,13 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
                 var parentsParent = this.el.parentNode;
-                var instance = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox(Facade, this.el);
-                Facade.subscribe("NativeSelectBox", instance).attach();
+                var instance = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox(Sandbox, this.el);
+                Sandbox.subscribe("NativeSelectBox", instance).attach();
                 if (instance.isDisabled())
                     this.disable();
                 parentsParent.insertBefore(this.element, this.el);
                 this.element.appendChild(this.el);
-                var nativeSelectBoxWrapper = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper(Facade);
+                var nativeSelectBoxWrapper = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper(Sandbox);
                 var nativeSelectBoxWrapperEl = nativeSelectBoxWrapper.render();
                 this.el.parentNode.replaceChild(nativeSelectBoxWrapperEl, this.el);
                 nativeSelectBoxWrapperEl.appendChild(this.el);
@@ -1686,13 +1686,13 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         }
         renderWidget();
         if (SELECT.UTILS.isEmpty(this.width) || !isNaN(this.width))
-            this.width = Facade.publish("ValueContainer:getWidthByWidestOption");
+            this.width = Sandbox.publish("ValueContainer:getWidthByWidestOption");
         this.setWidth(this.width);
         return this.element;
     }
 
     function renderWidget() {
-        var widgetWrapperInstance = Facade.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Facade));
+        var widgetWrapperInstance = Sandbox.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Sandbox));
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
     }
@@ -1714,20 +1714,20 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.enableLoadingMode = function() {
         this.loadingMode = true;
-        Facade.publish("OptionsMenu:lock");
-        Facade.publish("ValueContainer:enableLoadingMode");
-        Facade.publish("WidgetWrapper:lock");
-        Facade.publish("WidgetSubWrapper:lock");
-        Facade.publish("ValueContainerImage:hide");
+        Sandbox.publish("OptionsMenu:lock");
+        Sandbox.publish("ValueContainer:enableLoadingMode");
+        Sandbox.publish("WidgetWrapper:lock");
+        Sandbox.publish("WidgetSubWrapper:lock");
+        Sandbox.publish("ValueContainerImage:hide");
     }
 
     this.disableLoadingMode = function() {
         this.loadingMode = false;
-        Facade.publish("OptionsMenu:unLock");
-        Facade.publish("ValueContainer:disableLoadingMode");
-        Facade.publish("WidgetWrapper:unLock");
-        Facade.publish("WidgetSubWrapper:unLock");
-        Facade.publish("ValueContainerImage:show");
+        Sandbox.publish("OptionsMenu:unLock");
+        Sandbox.publish("ValueContainer:disableLoadingMode");
+        Sandbox.publish("WidgetWrapper:unLock");
+        Sandbox.publish("WidgetSubWrapper:unLock");
+        Sandbox.publish("ValueContainerImage:show");
     }
 
     this.show = function() {
@@ -1740,18 +1740,18 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.enable = function() {
         this.element.removeAttribute("disabled");
-        Facade.publish("WidgetWrapper:unLock");
-        Facade.publish("WidgetSubWrapper:unLock");
-        Facade.publish("OptionsMenu:unLock");
-        Facade.publish("WidgetWrapper:enableTabNavigation");
+        Sandbox.publish("WidgetWrapper:unLock");
+        Sandbox.publish("WidgetSubWrapper:unLock");
+        Sandbox.publish("OptionsMenu:unLock");
+        Sandbox.publish("WidgetWrapper:enableTabNavigation");
     }
 
     this.disable = function() {
         this.element.setAttribute("disabled", true);
-        Facade.publish("WidgetWrapper:lock");
-        Facade.publish("WidgetSubWrapper:lock");
-        Facade.publish("OptionsMenu:lock");
-        Facade.publish("WidgetWrapper:disableTabNavigation");
+        Sandbox.publish("WidgetWrapper:lock");
+        Sandbox.publish("WidgetSubWrapper:lock");
+        Sandbox.publish("OptionsMenu:lock");
+        Sandbox.publish("WidgetWrapper:disableTabNavigation");
     }
 
     this.setWidth = function(width) {
@@ -1760,8 +1760,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
     }
 
     this.detach = function() {
-        Facade.publish("NativeSelectBox:detach");
-        Facade.publish("WidgetWrapper:detach");
+        Sandbox.publish("NativeSelectBox:detach");
+        Sandbox.publish("WidgetWrapper:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.element.remove();
@@ -1788,24 +1788,6 @@ SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.protot
 	    message:     "el should be <select> or <input type='select'>",  
 	    htmlMessage: "Error detected",
 	    toString:    function(){return this.name + ": " + this.message;} 
-	}
-};SELECT.Facade = function() {
-	this.subscribe = function(name, instance) {
-		this[name] = instance;
-		return instance;
-	}
-
-	this.publish = function(name, args) {
-		var parts = name.split(":");
-		if (parts.length > 1) {
-			var instance = this[parts[0]];
-			if (instance !== undefined) {
-				var func = instance[parts[1]];
-				if (typeof func === "function")
-					return func.call(instance, args);
-			}
-		}
-		return this[name];
 	}
 };SELECT.HELPERS.getOptionByValue = function(options, value) {
 	for (var i = 0; i < options.length; i++) {
@@ -1930,6 +1912,24 @@ Element.prototype.appendFirst = function(childNode){
 };
 Element.prototype.isDisabled = function() {
     return (this.getAttribute("disabled") === null) ? false : true;
+};SELECT.Sandbox = function() {
+	this.subscribe = function(name, instance) {
+		this[name] = instance;
+		return instance;
+	}
+
+	this.publish = function(name, args) {
+		var parts = name.split(":");
+		if (parts.length > 1) {
+			var instance = this[parts[0]];
+			if (instance !== undefined) {
+				var func = instance[parts[1]];
+				if (typeof func === "function")
+					return func.call(instance, args);
+			}
+		}
+		return this[name];
+	}
 };SELECT.UTILS.createElement = function(type, classes) {
 	var elem = document.createElement(type);
 	if (typeof classes === "string")

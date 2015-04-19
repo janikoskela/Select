@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Facade) {
+SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 	this.type = "img";
 	this.imageUrl;
 	this.element;

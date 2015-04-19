@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Facade) {
+SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent = function(Sandbox) {
 
 	var CLASS_NAME_ARROW_DOWN = "arrow-down";
 	var CLASS_NAME_ARROW_UP = "arrow-up";

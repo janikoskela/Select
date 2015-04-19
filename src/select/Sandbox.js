@@ -1,4 +1,4 @@
-SELECT.Facade = function() {
+SELECT.Sandbox = function() {
 	this.subscribe = function(name, instance) {
 		this[name] = instance;
 		return instance;

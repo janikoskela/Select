@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList = function(Facade) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList = function(Sandbox) {
 	this.type = "ul";
 	this.className = "options-menu-list-item-group-list";
 	this.element;

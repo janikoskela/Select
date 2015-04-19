@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Facade, optionGroup) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Sandbox, optionGroup) {
 	this.type = "li";
 	this.className = "options-menu-list-item-group";
 	this.element;
@@ -8,9 +8,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroup = function(Facade, 
 
 	this.render = function() {
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	this.title = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle(Facade, this.optionGroup.label);
+    	this.title = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle(Sandbox, this.optionGroup.label);
     	var titleElem = this.title.render();
-    	this.list = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList(Facade);
+    	this.list = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList(Sandbox);
     	var listElem = this.list.render();
     	this.element.appendChild(titleElem);
     	this.element.appendChild(listElem);

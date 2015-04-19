@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSelectOption, index) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSelectOption, index) {
 	var that = this;
 	this.nativeSelectOption = nativeSelectOption;
 	this.selected = nativeSelectOption.isSelected();
@@ -9,7 +9,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
 	this.index = index;
 
 	this.render = function() {
-		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Facade, nativeSelectOption);
+		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Sandbox, nativeSelectOption);
 		var childElem = this.itemValue.render();
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.element.addEventListener("click", onClick.bind(this));
@@ -20,7 +20,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
 
 		var imageUrl = this.nativeSelectOption.getImageUrl();
 		if (!SELECT.UTILS.isEmpty(imageUrl)) {
-			this.itemImage = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(Facade, imageUrl);
+			this.itemImage = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemImage(Sandbox, imageUrl);
 			var elem = this.itemImage.render();
 			this.element.appendChild(elem);
 		}
@@ -29,7 +29,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
 
 		var description = this.nativeSelectOption.getDescription();
 		if (!SELECT.UTILS.isEmpty(description)) {
-			this.optionsMenuItemDescription = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Facade, description);
+			this.optionsMenuItemDescription = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemDescription(Sandbox, description);
 			var optionsMenuItemDescriptionElem = this.optionsMenuItemDescription.render();
 			this.element.appendChild(optionsMenuItemDescriptionElem);
 		}
@@ -67,16 +67,16 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
 	}
 
 	this.setInitialSelected = function() {
-		Facade.publish("OptionsMenuList:clearSelected");
+		Sandbox.publish("OptionsMenuList:clearSelected");
 		this.element.addClass("selected");
-		Facade.publish("ValueContainer:refresh");
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.setSelected = function() {
-		Facade.publish("OptionsMenuList:clearSelected");
+		Sandbox.publish("OptionsMenuList:clearSelected");
 		this.nativeSelectOption.setSelected();
 		this.element.addClass("selected");
-		Facade.publish("ValueContainer:refresh");
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.getNextSibling = function() {
@@ -103,7 +103,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
 		switch (e.keyCode) {
 			case KEY_CODES.ENTER:
 				//this.setSelected();
-				//Facade.publish("OptionsMenu:hide");
+				//Sandbox.publish("OptionsMenu:hide");
 				break;
 		}
 	}
@@ -113,12 +113,12 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
 	}
 
 	function onMouseOver(e) {
-		Facade.publish("OptionsMenuList:clearOptionItemHovers");
+		Sandbox.publish("OptionsMenuList:clearOptionItemHovers");
 		this.element.addClass("hovered");
 	}
 
 	function onClick(e) {
-		var optionsMenuList = Facade.publish("OptionsMenuList");
+		var optionsMenuList = Sandbox.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
 		if (prevSelected === undefined) {
 			this.setSelected();
@@ -126,7 +126,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Facade, nativeSel
 		else if (prevSelected.getIndex() !== this.getIndex()) {
 			this.setSelected();
 		}
-		Facade.publish("OptionsMenu:hide");
+		Sandbox.publish("OptionsMenu:hide");
 	}
 };
 

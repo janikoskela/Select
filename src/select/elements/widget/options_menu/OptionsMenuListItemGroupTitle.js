@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Facade, text) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle = function(Sandbox, text) {
 	this.type = "h2";
 	this.className = "options-menu-list-item-group-title";
 	this.text = text;

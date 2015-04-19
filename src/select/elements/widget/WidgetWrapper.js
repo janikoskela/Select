@@ -1,6 +1,6 @@
-SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
+SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
 
-    var userDefinedSettings = Facade.publish("UserDefinedSettings");
+    var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 
     this.type = "div";
 
@@ -8,7 +8,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
 
     this.element;
 
-    this.tabIndex = Facade.publish("NativeSelectBox").getTabIndex() || 0;
+    this.tabIndex = Sandbox.publish("NativeSelectBox").getTabIndex() || 0;
 
     this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || true;
 
@@ -29,16 +29,16 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement;
                 if (SELECT.UTILS.isEmpty(toElem)) {
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
                     return;
                 }
-                var optionsMenuElem = Facade.publish("OptionsMenu:getElement");
+                var optionsMenuElem = Sandbox.publish("OptionsMenu:getElement");
                 if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
             });
         }
         document.addEventListener("click", function(e) {
-            Facade.publish("OptionsMenu:hide");
+            Sandbox.publish("OptionsMenu:hide");
         });
         this.element.addEventListener("click", function(e) {
             e.stopPropagation();
@@ -48,7 +48,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         this.element.addEventListener("touchmove", touchScroll.bind(this));
         this.element.addEventListener("scroll", touchScroll.bind(this));
 
-        var widgetSubWrapper = Facade.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Facade));
+        var widgetSubWrapper = Sandbox.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Sandbox));
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
@@ -72,7 +72,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
         if (this.positionLeft === undefined)
             this.positionLeft = left;
         if (top !== this.positionTop || left != this.positionLeft) {
-            Facade.publish("OptionsMenu").setPosition(left, top);
+            Sandbox.publish("OptionsMenu").setPosition(left, top);
             this.positionLeft = left;
             this.positionTop = top;
         }
@@ -117,17 +117,17 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
             return false;
         switch(e.keyCode) {
             case KEY_CODES.UP:
-                Facade.publish("OptionsMenuList").hoverPreviousOption();
+                Sandbox.publish("OptionsMenuList").hoverPreviousOption();
                 break;
             case KEY_CODES.DOWN:
-                Facade.publish("OptionsMenuList").hoverNextOption();
+                Sandbox.publish("OptionsMenuList").hoverNextOption();
                 break;
             case KEY_CODES.ENTER:
-                Facade.publish("OptionsMenuList").selectHoveredOption();
+                Sandbox.publish("OptionsMenuList").selectHoveredOption();
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                Facade.publish("OptionsMenuList").searchByFirstChar(firstChar);
+                Sandbox.publish("OptionsMenuList").searchByFirstChar(firstChar);
         }
         e.stopPropagation();
         e.preventDefault();
@@ -135,7 +135,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Facade) {
     }
 
     function onMouseLeave(e) {
-        Facade.publish("OptionsMenu:hide");
+        Sandbox.publish("OptionsMenu:hide");
     }
 
     this.setTabIndex = function(tabIndex) {

@@ -1,16 +1,16 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "options-menu-search-wrapper";
 	this.element;
 
 	this.render = function() {
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuSearchInputWrapper = Facade.subscribe("OptionsMenuSearchInputWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper(Facade));
+    	var optionsMenuSearchInputWrapper = Sandbox.subscribe("OptionsMenuSearchInputWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInputWrapper(Sandbox));
     	var optionsMenuSearchInputWrapperElem = optionsMenuSearchInputWrapper.render();
     	this.element.appendChild(optionsMenuSearchInputWrapperElem);
     	
-    	var optionsMenuSearchNoResults = Facade.subscribe("OptionsMenuSearchNoResults", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(Facade));
+    	var optionsMenuSearchNoResults = Sandbox.subscribe("OptionsMenuSearchNoResults", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults(Sandbox));
     	this.element.appendChild(optionsMenuSearchNoResults.render());
     	return this.element;
 	}

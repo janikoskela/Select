@@ -1,4 +1,4 @@
-SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Facade, optionElement) {
+SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Sandbox, optionElement) {
 	this.element = optionElement;
 	this.type = "option";
 
@@ -19,9 +19,9 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Facade, optionEleme
 	}
 
 	this.setSelected = function() {
-		Facade.publish("NativeSelectBox").setSelectedIndex(this.element.index);
-		Facade.publish("NativeSelectBox").setValue(this.getValue());
-		Facade.publish("NativeSelectBox").triggerChange();
+		Sandbox.publish("NativeSelectBox").setSelectedIndex(this.element.index);
+		Sandbox.publish("NativeSelectBox").setValue(this.getValue());
+		Sandbox.publish("NativeSelectBox").triggerChange();
 		this.element.setSelectedAttribute();
 	}
 

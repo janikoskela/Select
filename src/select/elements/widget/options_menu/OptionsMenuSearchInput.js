@@ -1,5 +1,5 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "input";
 	this.className = "options-menu-search-input";
 	this.tabIndex = -1;
@@ -24,8 +24,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
 
 	this.focusOut = function(e) {
 		if (this.allowClose) {
-			Facade.publish("OptionsMenu:hide");
-			Facade.publish("WidgetWrapper:blur");
+			Sandbox.publish("OptionsMenu:hide");
+			Sandbox.publish("WidgetWrapper:blur");
 		}
 	}
 
@@ -35,19 +35,19 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Facade) {
         switch(e.keyCode) {
         	case KEY_CODES.DOWN:
         		this.allowClose = false;
-        		Facade.publish("OptionsMenuList").hoverFirstOption();
+        		Sandbox.publish("OptionsMenuList").hoverFirstOption();
         		this.blur();
         		break;
         	default:
         		this.allowClose = true;
 				var value = this.element.value;
 				if (value.length === 0) {
-					Facade.publish("OptionsMenuList:refresh");
-					Facade.publish("OptionsMenuList:show");
-					Facade.publish("OptionsMenuSearchNoResults:hide");
+					Sandbox.publish("OptionsMenuList:refresh");
+					Sandbox.publish("OptionsMenuList:show");
+					Sandbox.publish("OptionsMenuSearchNoResults:hide");
 				}
 				else
-					Facade.publish("OptionsMenuList:searchByInputString", value);
+					Sandbox.publish("OptionsMenuList:searchByInputString", value);
         }
 	}
 };

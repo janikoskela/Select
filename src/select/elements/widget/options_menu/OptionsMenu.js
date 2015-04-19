@@ -1,9 +1,9 @@
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	var that = this;
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
 	this.commonClassName = "options-container";
-	this.className = this.commonClassName + " " + Facade.publish("Wrapper:getTheme");
+	this.className = this.commonClassName + " " + Sandbox.publish("Wrapper:getTheme");
 	this.element;
 	this.width = userDefinedSettings.optionsMenuWidth;
 	this.height = undefined;
@@ -13,7 +13,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuList = Facade.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Facade));
+    	var optionsMenuList = Sandbox.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Sandbox));
     	var optionsMenuListElem = optionsMenuList.render();
         if (this.useSearchInput === true) {
         	renderOptionsMenuSearchWrapper();
@@ -26,12 +26,12 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement;
                 if (SELECT.UTILS.isEmpty(toElem)) {
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
                     return;
                 }
-                var widgetWrapperElem = Facade.publish("WidgetWrapper:getElement");
+                var widgetWrapperElem = Sandbox.publish("WidgetWrapper:getElement");
                 if (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem)
-                    Facade.publish("OptionsMenu:hide");
+                    Sandbox.publish("OptionsMenu:hide");
             });
         }
     	return this.element;
@@ -43,19 +43,19 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	}
 
 	function renderOptionsMenuSearchWrapper() {
-    	that.optionsMenuSearchWrapper = Facade.subscribe("OptionsMenuSearchWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Facade));
+    	that.optionsMenuSearchWrapper = Sandbox.subscribe("OptionsMenuSearchWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Sandbox));
     	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
 		that.element.appendFirst(optionsMenuSearchWrapperElem);
 	}
 
 	this.onNoOptionsFound = function() {
-		Facade.publish("OptionsMenuList:hide");
-		Facade.publish("OptionsMenuSearchNoResults:show");
+		Sandbox.publish("OptionsMenuList:hide");
+		Sandbox.publish("OptionsMenuSearchNoResults:show");
 	}
 
 	this.onOptionsFound = function() {
-		Facade.publish("OptionsMenuList:show");
-		Facade.publish("OptionsMenuSearchNoResults:hide");
+		Sandbox.publish("OptionsMenuList:show");
+		Sandbox.publish("OptionsMenuSearchNoResults:hide");
 	}
 
 	this.isLocked = function() {
@@ -83,7 +83,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 			width = this.element.offsetWidth;
 			this.element.hide();
 		}
-		width += Facade.publish("ArrowContainer").getWidth();
+		width += Sandbox.publish("ArrowContainer").getWidth();
 		this.setWidth(width);
 		return width;
 	}
@@ -97,19 +97,19 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		if (this.element.isHidden())
 			return;
 		this.element.hide();
-		Facade.publish("OptionsMenuSearchInput:clear");
-		Facade.publish("OptionsMenuSearchInput:blur");
-		Facade.publish("OptionsMenuSearchNoResults:hide");
-		Facade.publish("OptionsMenuList:refresh");
-		Facade.publish("ArrowContainerContent").down();
+		Sandbox.publish("OptionsMenuSearchInput:clear");
+		Sandbox.publish("OptionsMenuSearchInput:blur");
+		Sandbox.publish("OptionsMenuSearchNoResults:hide");
+		Sandbox.publish("OptionsMenuList:refresh");
+		Sandbox.publish("ArrowContainerContent").down();
 	}
 
 	this.show = function() {
 		if (this.locked === true || this.isHidden() === false)
 			return;
-		Facade.publish("NativeSelectBox:triggerFocus");
+		Sandbox.publish("NativeSelectBox:triggerFocus");
 		this.element.show();
-		Facade.publish("OptionsMenuList:show");
+		Sandbox.publish("OptionsMenuList:show");
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
 		var top = this.element.getStyle("top") || 0;
@@ -118,7 +118,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 		var windowInnerHeight = window.innerHeight;
 		var remainingWindowHeight = windowInnerHeight - this.element.getBoundingClientRect().top;
 		this.element.hide();
-		var widgetWrapper = Facade.publish("WidgetWrapper");
+		var widgetWrapper = Sandbox.publish("WidgetWrapper");
 		if (remainingWindowHeight < h && widgetWrapper.getElement().getBoundingClientRect().top > h) {
 			this.element.addClass("options-container-up");
 			this.element.setStyle("top", h * -1);
@@ -127,12 +127,12 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 			this.element.addClass("options-container-down");
 		}
 		this.element.show();
-		Facade.publish("ArrowContainerContent").up();*/
+		Sandbox.publish("ArrowContainerContent").up();*/
 		if (this.useSearchInput === true)
-			Facade.publish("OptionsMenuSearchInput:focus");
-		var pos = Facade.publish("WidgetWrapper:getPosition");
+			Sandbox.publish("OptionsMenuSearchInput:focus");
+		var pos = Sandbox.publish("WidgetWrapper:getPosition");
 		this.setPosition(pos.left, pos.top);
-		var elem = Facade.publish("Wrapper:getElement");
+		var elem = Sandbox.publish("Wrapper:getElement");
 		this.setWidth(elem.offsetWidth);
 	}
 
@@ -151,11 +151,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Facade) {
 	this.toggleInputSearch = function() {
         if (this.useSearchInput === true) {
         	this.useSearchInput = false;
-        	Facade.publish("OptionsMenuSearchWrapper:hide");
+        	Sandbox.publish("OptionsMenuSearchWrapper:hide");
         }
         else {
         	if (this.optionsMenuSearchWrapper !== undefined)
-        		Facade.publish("OptionsMenuSearchWrapper:show");
+        		Sandbox.publish("OptionsMenuSearchWrapper:show");
         	else {
         		renderOptionsMenuSearchWrapper();
         	}

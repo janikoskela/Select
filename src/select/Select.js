@@ -26,7 +26,7 @@
 
 	Select = function(userDefinedSettings) {
 
-		var Facade = new SELECT.Facade();
+		var Sandbox = new SELECT.Sandbox();
 		var that = this;
 		init();
 
@@ -35,60 +35,60 @@
 				throw new SELECT.EXCEPTIONS.InvalidOptionsErrorException();
 			if (userDefinedSettings.el instanceof jQuery)
 				userDefinedSettings.el = $(userDefinedSettings.el)[0];
-			Facade.subscribe("UserDefinedSettings", userDefinedSettings);
-			Facade.subscribe("Wrapper", new SELECT.ELEMENTS.Wrapper(Facade));
+			Sandbox.subscribe("UserDefinedSettings", userDefinedSettings);
+			Sandbox.subscribe("Wrapper", new SELECT.ELEMENTS.Wrapper(Sandbox));
 		}
 
 		this.attach = function() {
-			Facade.publish("Wrapper:render");
+			Sandbox.publish("Wrapper:render");
 			return this;
 		}
 
 		this.hide = function() {
-			Facade.publish("Wrapper:hide");
+			Sandbox.publish("Wrapper:hide");
 			return this;
 		}
 
 		this.show = function() {
-			Facade.publish("Wrapper:show");
+			Sandbox.publish("Wrapper:show");
 			return this;
 		}
 
 		this.detach = function() {
-			Facade.publish("Wrapper:detach");
+			Sandbox.publish("Wrapper:detach");
 			return this;
 		}
 
 		this.disable = function() {
-			Facade.publish("Wrapper:disable");
+			Sandbox.publish("Wrapper:disable");
 			return this;
 		}
 
 		this.enable = function() {
-			Facade.publish("Wrapper:enable");
+			Sandbox.publish("Wrapper:enable");
 			return this;
 		}
 
 		this.toggleLoadingMode = function() {
-			Facade.publish("Wrapper:toggleLoadingMode");
+			Sandbox.publish("Wrapper:toggleLoadingMode");
 			return this;
 		}
 
 		this.toggleInputSearch = function() {
-			Facade.publish("OptionsMenu:toggleInputSearch");
+			Sandbox.publish("OptionsMenu:toggleInputSearch");
 			return this;
 		}
 
 		this.isOptionMenuOpen = function() {
-			var result = !Facade.publish("OptionsMenu:isHidden");
+			var result = !Sandbox.publish("OptionsMenu:isHidden");
 			if (SELECT.UTILS.isEmpty(result))
 				return false;
 			return result;
 		}
 
 		this.setTheme = function(theme) {
-			Facade.publish("Wrapper:setTheme", theme);
-			Facade.publish("OptionsMenu:setTheme", theme);
+			Sandbox.publish("Wrapper:setTheme", theme);
+			Sandbox.publish("OptionsMenu:setTheme", theme);
 			return this;
 		}
 	}

@@ -1,6 +1,6 @@
-SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
+SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Sandbox) {
 	var that = this;
-	var userDefinedSettings = Facade.publish("UserDefinedSettings");
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
 	this.className = "value-container";
 	this.element;
@@ -9,55 +9,55 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
 
-        var valueContainerImage = Facade.subscribe("ValueContainerImage", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage(Facade));
+        var valueContainerImage = Sandbox.subscribe("ValueContainerImage", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage(Sandbox));
 		var valueContainerImageElem = valueContainerImage.render();
 		this.element.appendChild(valueContainerImageElem);
-		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
+		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
 		if (SELECT.UTILS.isEmpty(imageUrl))
 			valueContainerImage.hide();
 		else
 			valueContainerImage.setImageUrl(imageUrl);
 
-    	var valueContainerText = Facade.subscribe("ValueContainerText", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText(Facade));
+    	var valueContainerText = Sandbox.subscribe("ValueContainerText", new SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText(Sandbox));
     	var valueContainerTextElem = valueContainerText.render();
     	this.element.appendChild(valueContainerTextElem);
 		return this.element;
 	}
 
 	this.getWidthByWidestOption = function(callback) {
-		var options = Facade.publish("NativeSelectBox").getOptions();
-		var origOption = Facade.publish("NativeSelectBox").getSelectedOption();
+		var options = Sandbox.publish("NativeSelectBox").getOptions();
+		var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
 		var l = options.length;
 		var widest = 0;
 		for (var i = 0; i < l; i++) {
 			var option = options[i];
-			Facade.publish("NativeSelectBox").setSelectedOption(option.getValue());
+			Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
 			this.refresh();
-			var elem = Facade.publish("Wrapper:getElement");
+			var elem = Sandbox.publish("Wrapper:getElement");
 			var width = elem.offsetWidth;
-			width += Facade.publish("ArrowContainer:getWidth");
+			width += Sandbox.publish("ArrowContainer:getWidth");
 			if (width > widest) {
 				widest = width;
 			}
 		}
-		Facade.publish("NativeSelectBox").setSelectedOption(origOption.value);
+		Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
 		this.refresh();
 		return widest;
 	}
 
 	this.refresh = function() {
-		Facade.publish("ValueContainerText").refresh();
-		var imageUrl = Facade.publish("NativeSelectBox").getSelectedOptionImageUrl();
+		Sandbox.publish("ValueContainerText").refresh();
+		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
 		if (imageUrl !== undefined && imageUrl !== null) {
-			Facade.publish("ValueContainerImage").setImageUrl(imageUrl);
-			Facade.publish("ValueContainerImage").show();
+			Sandbox.publish("ValueContainerImage").setImageUrl(imageUrl);
+			Sandbox.publish("ValueContainerImage").show();
 		}
 		else
-			Facade.publish("ValueContainerImage").hide();	
+			Sandbox.publish("ValueContainerImage").hide();	
 	}
 
 	this.enableLoadingMode = function() {
-		Facade.publish("ValueContainerText").setText(this.loadingText);
+		Sandbox.publish("ValueContainerText").setText(this.loadingText);
 		enableDotDotDotInterval();
 	}
 
@@ -68,13 +68,13 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Facade) {
 				dots = ".";
 			else
 				dots += ".";
-			Facade.publish("ValueContainerText").setText(that.loadingText + dots);
+			Sandbox.publish("ValueContainerText").setText(that.loadingText + dots);
 		}, 500);
 	}
 
 	this.disableLoadingMode = function() {
 		clearInterval(this.timeInterval);
-		Facade.publish("ValueContainerText").refresh();
+		Sandbox.publish("ValueContainerText").refresh();
 	}
 };
 
