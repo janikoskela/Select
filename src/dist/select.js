@@ -224,9 +224,9 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		if (optionsCount !== this.optionsCount) {
 			this.optionsCount = optionsCount;
 			this.attach();
-			Sandbox.publish("OptionsMenuList").refresh();
+			Sandbox.publish("OptionsMenuList:refresh");
 		}
-		Sandbox.publish("ValueContainer:refresh")
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.getOptions = function() {
@@ -240,7 +240,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
     			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
     			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
     				that.attach();
-    				Sandbox.publish("OptionsMenuList").refresh();
+    				Sandbox.publish("OptionsMenuList:refresh");
     			}
       		});
     	});

@@ -65,7 +65,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		if (optionsCount !== this.optionsCount) {
 			this.optionsCount = optionsCount;
 			this.attach();
-			Sandbox.publish("OptionsMenuList").refresh();
+			Sandbox.publish("OptionsMenuList:refresh");
 		}
 		Sandbox.publish("ValueContainer:refresh");
 	}
@@ -81,7 +81,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
     			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
     			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
     				that.attach();
-    				Sandbox.publish("OptionsMenuList").refresh();
+    				Sandbox.publish("OptionsMenuList:refresh");
     			}
       		});
     	});
