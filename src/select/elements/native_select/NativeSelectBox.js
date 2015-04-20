@@ -61,14 +61,13 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 			else
 				Sandbox.publish("Wrapper:enable");
 		}
-		//if (this.observer === undefined) { //mutation observer does not detech attribute changes on <select>
-			var optionsCount = this.element.options.length;
-			if (optionsCount !== this.optionsCount) {
-				this.optionsCount = optionsCount;
-				this.attach();
-				Sandbox.publish("OptionsMenuList").refresh();
-			}
-		//}
+		var optionsCount = this.element.options.length;
+		if (optionsCount !== this.optionsCount) {
+			this.optionsCount = optionsCount;
+			this.attach();
+			Sandbox.publish("OptionsMenuList").refresh();
+		}
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.getOptions = function() {
