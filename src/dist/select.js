@@ -93,6 +93,10 @@
 			Sandbox.publish("OptionsMenu:setTheme", theme);
 			return this;
 		}
+
+		this.remove = function() {
+			Sandbox.publish("Wrapper:remove");
+		}
 	}
 
 SELECT.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Select#constructor-parameters";SELECT.ELEMENTS.Element = function() {};
@@ -454,6 +458,10 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
             });
         }
     	return this.element;
+	}
+
+	this.remove = function() {
+		this.element.remove();
 	}
 
 	this.setTheme = function(className) {
@@ -1356,7 +1364,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type);
-		this.element.addEventListener("load", this.onLoad.bind(this));
+		this.element.addEventListener("load", this.onLoad.bind(this), false);
 		return this.element;
 	}
 
@@ -1765,13 +1773,21 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         Sandbox.publish("NativeSelectBox:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
-        this.element.remove();
+        this.remove();
     }
 
     this.setTheme = function(theme) {
         this.theme = theme;
         this.className = theme + " " + this.commonClassName;
         this.element.setClass(this.className);
+    }
+
+    this.remove = function() {
+        Sandbox.publish("NativeSelectBox:detach");
+        SELECT.UTILS.purge(Sandbox.publish("OptionsMenu:getElement")); //this isn't a child of wrapper
+        SELECT.UTILS.purge(this.element);
+        Sandbox.publish("OptionsMenu:remove");
+        this.element.remove();
     }
 };
 SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.EXCEPTIONS.InvalidOptionsErrorException = function() {
@@ -2032,4 +2048,26 @@ SELECT.UTILS.extractDelta = function(e) {
 	    }
 	}
 	return 0;
+};
+
+//removes elements and its childrens references
+SELECT.UTILS.purge = function(elem) {
+    if (elem == undefined || elem == null)
+        return;
+    var a = elem.attributes, i, l, n;
+    if (a) {
+        for (i = a.length - 1; i >= 0; i -= 1) {
+            n = a[i].name;
+            if (typeof elem[n] === 'function') {
+                elem[n] = null;
+            }
+        }
+    }
+    a = elem.childNodes;
+    if (a) {
+        l = a.length;
+        for (i = 0; i < l; i += 1) {
+            this.purge(elem.childNodes[i]);
+        }
+    }
 };}(jQuery || {}));

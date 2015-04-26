@@ -37,6 +37,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
     	return this.element;
 	}
 
+	this.remove = function() {
+		this.element.remove();
+	}
+
 	this.setTheme = function(className) {
 		this.className = this.commonClassName + " " + className;
 		this.element.setClass(this.className);

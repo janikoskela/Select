@@ -100,3 +100,25 @@ SELECT.UTILS.extractDelta = function(e) {
 	}
 	return 0;
 };
+
+//removes elements and its childrens references
+SELECT.UTILS.purge = function(elem) {
+    if (elem == undefined || elem == null)
+        return;
+    var a = elem.attributes, i, l, n;
+    if (a) {
+        for (i = a.length - 1; i >= 0; i -= 1) {
+            n = a[i].name;
+            if (typeof elem[n] === 'function') {
+                elem[n] = null;
+            }
+        }
+    }
+    a = elem.childNodes;
+    if (a) {
+        l = a.length;
+        for (i = 0; i < l; i += 1) {
+            this.purge(elem.childNodes[i]);
+        }
+    }
+};

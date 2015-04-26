@@ -93,6 +93,10 @@
 			Sandbox.publish("OptionsMenu:setTheme", theme);
 			return this;
 		}
+
+		this.remove = function() {
+			Sandbox.publish("Wrapper:remove");
+		}
 	}
 
 }(jQuery || {}));

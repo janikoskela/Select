@@ -124,13 +124,21 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         Sandbox.publish("NativeSelectBox:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
-        this.element.remove();
+        this.remove();
     }
 
     this.setTheme = function(theme) {
         this.theme = theme;
         this.className = theme + " " + this.commonClassName;
         this.element.setClass(this.className);
+    }
+
+    this.remove = function() {
+        Sandbox.publish("NativeSelectBox:detach");
+        SELECT.UTILS.purge(Sandbox.publish("OptionsMenu:getElement")); //this isn't a child of wrapper
+        SELECT.UTILS.purge(this.element);
+        Sandbox.publish("OptionsMenu:remove");
+        this.element.remove();
     }
 };
 SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);

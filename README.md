@@ -37,7 +37,7 @@ API
 Name|Parameters|Description
 ----|----------|------|-----------
 attach|-|Attaches & renders widget
-detach|-|Detaches & removes widget
+detach|-|Detaches & removes widget and its references
 show|-|Shows widget
 hide|-|Hides widget
 enable|-|Enables widget
@@ -46,6 +46,7 @@ toggleLoadingMode|-|Enables or disables loading mode
 toggleInputSearch|-|Enables or disables input search
 isOptionMenuOpen|-|Returns true if option menu is open, false if not
 setTheme|String|Sets theme
+remove|-|Removes widget and the given select. Removes all references also
 
 Monitoring
 ===============
