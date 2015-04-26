@@ -24,8 +24,8 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 			var width = Sandbox.publish("Wrapper:getWidth");
 			width += this.getWidth();
 			Sandbox.publish("Wrapper:setWidth", width);
+			loaded = true;
 		}
-		loaded = true;
 	}
 };
 
