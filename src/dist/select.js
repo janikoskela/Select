@@ -228,6 +228,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 			this.attach();
 			Sandbox.publish("OptionsMenuList:refresh");
 		}
+		Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}
 
@@ -1499,13 +1500,9 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
     this.locked = false;
 
-    this.poller;
-
     this.positionLeft;
 
     this.positionTop;
-
-    this.pollingInterval = userDefinedSettings.optionMenuPositionRefreshRate || 500;
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -1537,18 +1534,10 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
-        if (isNaN(this.pollingInterval))
-            this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
-
         return this.element;
     }
 
-    this.detach = function() {
-        if (this.poller !== undefined)
-            clearInterval(this.poller);
-    }
-
-    this.poll = function() {
+    this.refresh = function() {
         var pos = this.getPosition();
         var top = pos.top;
         var left = pos.left;
@@ -1628,6 +1617,26 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         this.element.setAttribute("tabindex", tabIndex);
     }
 
+    this.getWidthByLongestOption = function() {
+        var options = Sandbox.publish("NativeSelectBox").getOptions();
+        var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
+        var l = options.length;
+        var widest = 0;
+        for (var i = 0; i < l; i++) {
+            var option = options[i];
+            Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
+            Sandbox.publish("ValueContainer:refresh");
+            var width = Sandbox.publish("Wrapper:getElement").offsetWidth;
+            if (width > widest) {
+                widest = width;
+            }
+        }
+        console.log(widest)
+        Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
+        Sandbox.publish("ValueContainer:refresh");
+        return widest;
+    }
+
 };
 
 SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.Wrapper = function(Sandbox) {
@@ -1677,7 +1686,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         }
         renderWidget();
         if (SELECT.UTILS.isEmpty(this.width)) {
-            this.width = getWidthByLongestOption();
+            this.width = Sandbox.publish("WidgetWrapper:getWidthByLongestOption");
         }
         if (this.width > 0)
             this.setWidth(this.width);
@@ -1754,7 +1763,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.detach = function() {
         Sandbox.publish("NativeSelectBox:detach");
-        Sandbox.publish("WidgetWrapper:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.element.remove();
@@ -1764,25 +1772,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         this.theme = theme;
         this.className = theme + " " + this.commonClassName;
         this.element.setClass(this.className);
-    }
-
-    function getWidthByLongestOption() {
-        var options = Sandbox.publish("NativeSelectBox").getOptions();
-        var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
-        var l = options.length;
-        var widest = 0;
-        for (var i = 0; i < l; i++) {
-            var option = options[i];
-            Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
-            Sandbox.publish("ValueContainer:refresh");
-            var width = this.element.offsetWidth;
-            if (width > widest) {
-                widest = width;
-            }
-        }
-        Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
-        Sandbox.publish("ValueContainer:refresh");
-        return widest;
     }
 };
 SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.EXCEPTIONS.InvalidOptionsErrorException = function() {

@@ -14,13 +14,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
 
     this.locked = false;
 
-    this.poller;
-
     this.positionLeft;
 
     this.positionTop;
-
-    this.pollingInterval = userDefinedSettings.optionMenuPositionRefreshRate || 500;
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -52,18 +48,10 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
 
-        if (isNaN(this.pollingInterval))
-            this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
-
         return this.element;
     }
 
-    this.detach = function() {
-        if (this.poller !== undefined)
-            clearInterval(this.poller);
-    }
-
-    this.poll = function() {
+    this.refresh = function() {
         var pos = this.getPosition();
         var top = pos.top;
         var left = pos.left;
@@ -141,6 +129,26 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
     this.setTabIndex = function(tabIndex) {
         this.tabIndex = tabIndex;
         this.element.setAttribute("tabindex", tabIndex);
+    }
+
+    this.getWidthByLongestOption = function() {
+        var options = Sandbox.publish("NativeSelectBox").getOptions();
+        var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
+        var l = options.length;
+        var widest = 0;
+        for (var i = 0; i < l; i++) {
+            var option = options[i];
+            Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
+            Sandbox.publish("ValueContainer:refresh");
+            var width = Sandbox.publish("Wrapper:getElement").offsetWidth;
+            if (width > widest) {
+                widest = width;
+            }
+        }
+        console.log(widest)
+        Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
+        Sandbox.publish("ValueContainer:refresh");
+        return widest;
     }
 
 };

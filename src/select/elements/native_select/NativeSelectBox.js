@@ -67,6 +67,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 			this.attach();
 			Sandbox.publish("OptionsMenuList:refresh");
 		}
+		Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}
 

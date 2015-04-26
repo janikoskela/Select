@@ -45,7 +45,7 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         }
         renderWidget();
         if (SELECT.UTILS.isEmpty(this.width)) {
-            this.width = getWidthByLongestOption();
+            this.width = Sandbox.publish("WidgetWrapper:getWidthByLongestOption");
         }
         if (this.width > 0)
             this.setWidth(this.width);
@@ -122,7 +122,6 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.detach = function() {
         Sandbox.publish("NativeSelectBox:detach");
-        Sandbox.publish("WidgetWrapper:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.element.remove();
@@ -132,25 +131,6 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         this.theme = theme;
         this.className = theme + " " + this.commonClassName;
         this.element.setClass(this.className);
-    }
-
-    function getWidthByLongestOption() {
-        var options = Sandbox.publish("NativeSelectBox").getOptions();
-        var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
-        var l = options.length;
-        var widest = 0;
-        for (var i = 0; i < l; i++) {
-            var option = options[i];
-            Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
-            Sandbox.publish("ValueContainer:refresh");
-            var width = this.element.offsetWidth;
-            if (width > widest) {
-                widest = width;
-            }
-        }
-        Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
-        Sandbox.publish("ValueContainer:refresh");
-        return widest;
     }
 };
 SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);
