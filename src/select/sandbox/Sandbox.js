@@ -1,4 +1,4 @@
-SELECT.Sandbox = function() {
+SELECT.SANDBOX.Sandbox = function() {
 	this.subscribe = function(name, instance) {
 		this[name] = instance;
 		return instance;

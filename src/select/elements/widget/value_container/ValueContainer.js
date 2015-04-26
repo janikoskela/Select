@@ -24,27 +24,6 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Sandbox) {
 		return this.element;
 	}
 
-	this.getWidthByWidestOption = function(callback) {
-		var options = Sandbox.publish("NativeSelectBox").getOptions();
-		var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
-		var l = options.length;
-		var widest = 0;
-		for (var i = 0; i < l; i++) {
-			var option = options[i];
-			Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
-			this.refresh();
-			var elem = Sandbox.publish("Wrapper:getElement");
-			var width = elem.offsetWidth;
-			width += Sandbox.publish("ArrowContainer:getWidth");
-			if (width > widest) {
-				widest = width;
-			}
-		}
-		Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
-		this.refresh();
-		return widest;
-	}
-
 	this.refresh = function() {
 		Sandbox.publish("ValueContainerText").refresh();
 		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();

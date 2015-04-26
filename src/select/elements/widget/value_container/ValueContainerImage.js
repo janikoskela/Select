@@ -2,9 +2,11 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 	this.type = "img";
 	this.imageUrl;
 	this.element;
+	var loaded = false;
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type);
+		this.element.addEventListener("load", this.onLoad.bind(this));
 		return this.element;
 	}
 
@@ -15,6 +17,15 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 
 	this.show = function() {
 		this.element.setStyle("display", "inline-block");
+	}
+
+	this.onLoad = function() {
+		if (!loaded) {
+			var width = Sandbox.publish("Wrapper:getWidth");
+			width += this.getWidth();
+			Sandbox.publish("Wrapper:setWidth", width);
+		}
+		loaded = true;
 	}
 };
 

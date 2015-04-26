@@ -14,6 +14,7 @@
 	SELECT.HELPERS = {};
 	SELECT.SETTINGS = {};
 	SELECT.ELEMENTS = {};
+	SELECT.SANDBOX = {};
 	SELECT.ELEMENTS.WIDGET = {};
 	SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER = {};
 	SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
@@ -26,8 +27,9 @@
 
 	Select = function(userDefinedSettings) {
 
-		var Sandbox = new SELECT.Sandbox();
+		var Sandbox = new SELECT.SANDBOX.Sandbox();
 		var that = this;
+
 		init();
 
 		function init() {

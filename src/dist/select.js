@@ -14,6 +14,7 @@
 	SELECT.HELPERS = {};
 	SELECT.SETTINGS = {};
 	SELECT.ELEMENTS = {};
+	SELECT.SANDBOX = {};
 	SELECT.ELEMENTS.WIDGET = {};
 	SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER = {};
 	SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER = {};
@@ -26,8 +27,9 @@
 
 	Select = function(userDefinedSettings) {
 
-		var Sandbox = new SELECT.Sandbox();
+		var Sandbox = new SELECT.SANDBOX.Sandbox();
 		var that = this;
+
 		init();
 
 		function init() {
@@ -1312,27 +1314,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
 		return this.element;
 	}
 
-	this.getWidthByWidestOption = function(callback) {
-		var options = Sandbox.publish("NativeSelectBox").getOptions();
-		var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
-		var l = options.length;
-		var widest = 0;
-		for (var i = 0; i < l; i++) {
-			var option = options[i];
-			Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
-			this.refresh();
-			var elem = Sandbox.publish("Wrapper:getElement");
-			var width = elem.offsetWidth;
-			width += Sandbox.publish("ArrowContainer:getWidth");
-			if (width > widest) {
-				widest = width;
-			}
-		}
-		Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
-		this.refresh();
-		return widest;
-	}
-
 	this.refresh = function() {
 		Sandbox.publish("ValueContainerText").refresh();
 		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
@@ -1370,9 +1351,11 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 	this.type = "img";
 	this.imageUrl;
 	this.element;
+	var loaded = false;
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type);
+		this.element.addEventListener("load", this.onLoad.bind(this));
 		return this.element;
 	}
 
@@ -1383,6 +1366,15 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 
 	this.show = function() {
 		this.element.setStyle("display", "inline-block");
+	}
+
+	this.onLoad = function() {
+		if (!loaded) {
+			var width = Sandbox.publish("Wrapper:getWidth");
+			width += this.getWidth();
+			Sandbox.publish("Wrapper:setWidth", width);
+		}
+		loaded = true;
 	}
 };
 
@@ -1684,9 +1676,11 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
         }
         renderWidget();
-        if (SELECT.UTILS.isEmpty(this.width) || !isNaN(this.width))
-            this.width = Sandbox.publish("ValueContainer:getWidthByWidestOption");
-        this.setWidth(this.width);
+        if (SELECT.UTILS.isEmpty(this.width)) {
+            this.width = getWidthByLongestOption();
+        }
+        if (this.width > 0)
+            this.setWidth(this.width);
         return this.element;
     }
 
@@ -1770,6 +1764,25 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         this.theme = theme;
         this.className = theme + " " + this.commonClassName;
         this.element.setClass(this.className);
+    }
+
+    function getWidthByLongestOption() {
+        var options = Sandbox.publish("NativeSelectBox").getOptions();
+        var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
+        var l = options.length;
+        var widest = 0;
+        for (var i = 0; i < l; i++) {
+            var option = options[i];
+            Sandbox.publish("NativeSelectBox").setSelectedOption(option.getValue());
+            Sandbox.publish("ValueContainer:refresh");
+            var width = this.element.offsetWidth;
+            if (width > widest) {
+                widest = width;
+            }
+        }
+        Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
+        Sandbox.publish("ValueContainer:refresh");
+        return widest;
     }
 };
 SELECT.ELEMENTS.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.EXCEPTIONS.InvalidOptionsErrorException = function() {
@@ -1911,7 +1924,7 @@ Element.prototype.appendFirst = function(childNode){
 };
 Element.prototype.isDisabled = function() {
     return (this.getAttribute("disabled") === null) ? false : true;
-};SELECT.Sandbox = function() {
+};SELECT.SANDBOX.Sandbox = function() {
 	this.subscribe = function(name, instance) {
 		this[name] = instance;
 		return instance;
