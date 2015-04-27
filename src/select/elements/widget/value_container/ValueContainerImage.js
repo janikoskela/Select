@@ -2,7 +2,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 	this.type = "img";
 	this.imageUrl;
 	this.element;
-	var loaded = false;
+	this.loaded = false;
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type);
@@ -20,11 +20,13 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 	}
 
 	this.onLoad = function() {
-		if (!loaded) {
+		if (!this.loaded) {
+			if (Sandbox.publish("Wrapper:isWidthDefinedByUser"))
+				return;
 			var width = Sandbox.publish("Wrapper:getWidth");
 			width += this.getWidth();
 			Sandbox.publish("Wrapper:setWidth", width);
-			loaded = true;
+			this.loaded = true;
 		}
 	}
 };

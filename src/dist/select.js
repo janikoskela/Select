@@ -1362,7 +1362,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 	this.type = "img";
 	this.imageUrl;
 	this.element;
-	var loaded = false;
+	this.loaded = false;
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type);
@@ -1380,11 +1380,13 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 	}
 
 	this.onLoad = function() {
-		if (!loaded) {
+		if (!this.loaded) {
+			if (Sandbox.publish("Wrapper:isWidthDefinedByUser"))
+				return;
 			var width = Sandbox.publish("Wrapper:getWidth");
 			width += this.getWidth();
 			Sandbox.publish("Wrapper:setWidth", width);
-			loaded = true;
+			this.loaded = true;
 		}
 	}
 };
@@ -1641,7 +1643,6 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                 widest = width;
             }
         }
-        console.log(widest)
         Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
         Sandbox.publish("ValueContainer:refresh");
         return widest;
@@ -1673,6 +1674,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.loadingMode = false;
 
+    this.isWidthDefinedByUser;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         var tagName = this.el.tagName.toLowerCase();
@@ -1698,8 +1701,11 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         renderWidget();
         if (SELECT.UTILS.isEmpty(this.width)) {
             this.width = Sandbox.publish("WidgetWrapper:getWidthByLongestOption");
+            this.isWidthDefinedByUser = false;
         }
-        if (this.width > 0)
+        else
+            this.isWidthDefinedByUser = true;
+        if (this.width)
             this.setWidth(this.width);
         return this.element;
     }
@@ -1708,6 +1714,10 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         var widgetWrapperInstance = Sandbox.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Sandbox));
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
+    }
+
+    this.isWidthDefinedByUser = function() {
+        return this.isWidthDefinedByUser;
     }
 
     this.getTheme = function() {

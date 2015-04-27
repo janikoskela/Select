@@ -22,6 +22,8 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.loadingMode = false;
 
+    this.isWidthDefinedByUser;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         var tagName = this.el.tagName.toLowerCase();
@@ -47,8 +49,11 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         renderWidget();
         if (SELECT.UTILS.isEmpty(this.width)) {
             this.width = Sandbox.publish("WidgetWrapper:getWidthByLongestOption");
+            this.isWidthDefinedByUser = false;
         }
-        if (this.width > 0)
+        else
+            this.isWidthDefinedByUser = true;
+        if (this.width)
             this.setWidth(this.width);
         return this.element;
     }
@@ -57,6 +62,10 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         var widgetWrapperInstance = Sandbox.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Sandbox));
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
+    }
+
+    this.isWidthDefinedByUser = function() {
+        return this.isWidthDefinedByUser;
     }
 
     this.getTheme = function() {

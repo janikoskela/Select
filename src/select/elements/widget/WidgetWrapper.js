@@ -145,7 +145,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
                 widest = width;
             }
         }
-        console.log(widest)
         Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
         Sandbox.publish("ValueContainer:refresh");
         return widest;
