@@ -122,7 +122,7 @@ SELECT.ELEMENTS.Element.prototype.blur = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.getClass = function() {
-	return this.element.className();
+	return this.element.className;
 };
 
 SELECT.ELEMENTS.Element.prototype.getWidth = function() {
@@ -210,6 +210,8 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	}
 
 	this.poll = function() {
+		if (SELECT.UTILS.isEmpty(this.element))
+			Sandbox.publish("Wrapper:remove");
 		var isHidden = this.element.isHidden();
 		if (isHidden !== this.isElemHidden) {
 			this.isElemHidden = isHidden;
@@ -1688,6 +1690,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
                 this.el.parentNode.replaceChild(nativeSelectBoxWrapperEl, this.el);
                 nativeSelectBoxWrapperEl.appendChild(this.el);
                 this.element.appendChild(nativeSelectBoxWrapperEl);
+                this.element.addClass(Sandbox.publish("NativeSelectBox:getClass"));
                 break;
             default:
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
