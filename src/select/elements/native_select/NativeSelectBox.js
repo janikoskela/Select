@@ -45,6 +45,8 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	}
 
 	this.poll = function() {
+		if (SELECT.UTILS.isEmpty(this.element))
+			Sandbox.publish("Wrapper:remove");
 		var isHidden = this.element.isHidden();
 		if (isHidden !== this.isElemHidden) {
 			this.isElemHidden = isHidden;
