@@ -132,6 +132,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
     }
 
     this.getWidthByLongestOption = function() {
+        var paddingRight = 3;
         var options = Sandbox.publish("NativeSelectBox").getOptions();
         var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
         var l = options.length;
@@ -147,7 +148,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         }
         Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
         Sandbox.publish("ValueContainer:refresh");
-        return widest;
+        return widest + paddingRight;
     }
 
 };
