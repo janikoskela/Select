@@ -1,6 +1,7 @@
 SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	var that = this;
 	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
+	var dataAttrPrefix = "selectjs";
 	this.optionItems = [];
 	this.observer;
 	this.element = el;
@@ -21,9 +22,8 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		}
 		//if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
 		//	attachDomObserver();
-		if (this.usePolling)
-			this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
 		if (this.usePolling) {
+			this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
 			this.isElemHidden = this.isHidden();
 			this.isElemDisabled = this.isDisabled();
 		}
@@ -69,6 +69,9 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 			this.attach();
 			Sandbox.publish("OptionsMenuList:refresh");
 		}
+		var theme = this.getPrefixedDataAttribute("theme");
+		if (!SELECT.UTILS.isEmpty(theme) && theme != Sandbox.publish("Wrapper:getTheme"))
+			Sandbox.publish("Wrapper:setTheme", theme);
 		Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}
@@ -138,6 +141,10 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 
 	this.getSelectedOption = function() {
 		return this.element.options[this.element.selectedIndex];
+	}
+
+	this.getPrefixedDataAttribute = function(name) {
+		return this.element.getDataAttribute(dataAttrPrefix + "-" + name);
 	}
 
 };
