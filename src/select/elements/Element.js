@@ -21,7 +21,7 @@ SELECT.ELEMENTS.Element.prototype.blur = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.getClass = function() {
-	return this.element.className();
+	return this.element.className;
 };
 
 SELECT.ELEMENTS.Element.prototype.getWidth = function() {
