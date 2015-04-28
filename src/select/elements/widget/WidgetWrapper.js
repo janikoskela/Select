@@ -60,7 +60,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         if (this.positionLeft === undefined)
             this.positionLeft = left;
         if (top !== this.positionTop || left != this.positionLeft) {
-            Sandbox.publish("OptionsMenu").setPosition(left, top);
+            var optionsMenu = Sandbox.publish("OptionsMenu");
+            if (!SELECT.UTILS.isEmpty(optionsMenu))
+                optionsMenu.setPosition(left, top);
             this.positionLeft = left;
             this.positionTop = top;
         }
