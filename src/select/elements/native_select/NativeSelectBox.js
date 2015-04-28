@@ -10,6 +10,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	this.isElemHidden;
 	this.isElemDisabled;
 	this.optionsCount;
+	this.loadingMode;
 
 	this.attach = function() {
 		this.optionItems = [];
@@ -72,6 +73,20 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		var theme = this.getPrefixedDataAttribute("theme");
 		if (!SELECT.UTILS.isEmpty(theme) && theme != Sandbox.publish("Wrapper:getTheme"))
 			Sandbox.publish("Wrapper:setTheme", theme);
+		var loading = this.getPrefixedDataAttribute("loading-mode");
+		if (!SELECT.UTILS.isEmpty(loading)) {
+			loading = (loading == "true");
+			if (this.loadingMode != loading) {
+				console.log(this.loadingMode, loading)
+				this.loadingMode = loading;
+				if (loading) {
+					Sandbox.publish("Wrapper:enableLoadingMode");
+				}
+				else {
+					Sandbox.publish("Wrapper:disableLoadingMode");
+				}
+			}
+		}
 		Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}

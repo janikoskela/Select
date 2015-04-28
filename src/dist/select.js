@@ -175,6 +175,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	this.isElemHidden;
 	this.isElemDisabled;
 	this.optionsCount;
+	this.loadingMode;
 
 	this.attach = function() {
 		this.optionItems = [];
@@ -237,6 +238,20 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		var theme = this.getPrefixedDataAttribute("theme");
 		if (!SELECT.UTILS.isEmpty(theme) && theme != Sandbox.publish("Wrapper:getTheme"))
 			Sandbox.publish("Wrapper:setTheme", theme);
+		var loading = this.getPrefixedDataAttribute("loading-mode");
+		if (!SELECT.UTILS.isEmpty(loading)) {
+			loading = (loading == "true");
+			if (this.loadingMode != loading) {
+				console.log(this.loadingMode, loading)
+				this.loadingMode = loading;
+				if (loading) {
+					Sandbox.publish("Wrapper:enableLoadingMode");
+				}
+				else {
+					Sandbox.publish("Wrapper:disableLoadingMode");
+				}
+			}
+		}
 		Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}
@@ -1333,6 +1348,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
 	}
 
 	this.refresh = function() {
+		if (Sandbox.publish("Wrapper:getLoadingMode"))
+			return;
 		Sandbox.publish("ValueContainerText").refresh();
 		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
 		if (imageUrl !== undefined && imageUrl !== null) {
@@ -1743,6 +1760,10 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
             this.enableLoadingMode();
         else
             this.disableLoadingMode();
+    }
+
+    this.getLoadingMode = function() {
+        return this.loadingMode;
     }
 
     this.enableLoadingMode = function() {

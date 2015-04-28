@@ -83,6 +83,10 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
             this.disableLoadingMode();
     }
 
+    this.getLoadingMode = function() {
+        return this.loadingMode;
+    }
+
     this.enableLoadingMode = function() {
         this.loadingMode = true;
         Sandbox.publish("OptionsMenu:lock");
