@@ -62,10 +62,10 @@
 
 .default .value-container {
 	float: left;
-    width: -moz-calc(100% - 30px);
-    width: -webkit-calc(100% - 30px);
-    width: -o-calc(100% - 30px);
-    width: calc(100% - 30px);
+    width: -moz-calc(100% - 2em);
+    width: -webkit-calc(100% - 2em);
+    width: -o-calc(100% - 2em);
+    width: calc(100% - 2em);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -93,8 +93,7 @@
 
 .default .arrow-container {
 	float: left;
-	width: 30px;
-	height: 32px;
+	width: 2em;
 }
 
 .default .arrow-container div {
