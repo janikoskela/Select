@@ -176,6 +176,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	this.isElemDisabled;
 	this.optionsCount;
 	this.loadingMode;
+	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
 	this.attach = function() {
 		this.optionItems = [];
@@ -252,7 +253,8 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 				}
 			}
 		}
-		Sandbox.publish("WidgetWrapper:refresh");
+		if (this.renderOptionMenuToBody)
+			Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}
 
@@ -457,6 +459,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.locked = false;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
+	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -575,10 +578,13 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		}
 		this.element.show();
 		Sandbox.publish("ArrowContainerContent").up();*/
+		Sandbox.publish("ArrowContainerContent").up();
 		if (this.useSearchInput === true)
 			Sandbox.publish("OptionsMenuSearchInput:focus");
-		var pos = Sandbox.publish("WidgetWrapper:getPosition");
-		this.setPosition(pos.left, pos.top);
+		if (this.renderOptionMenuToBody) {
+			var pos = Sandbox.publish("WidgetWrapper:getPosition");
+			this.setPosition(pos.left, pos.top);
+		}
 		var elem = Sandbox.publish("Wrapper:getElement");
 		this.setWidth(elem.offsetWidth);
 	}
@@ -1464,6 +1470,8 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
 
     this.locked = false;
 
+    this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -1507,7 +1515,11 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
         if (Sandbox.publish("OptionsMenu") === undefined) {
             var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
             var optionsMenuElem = optionsMenu.render();
-            document.body.appendChild(optionsMenuElem);
+            if (this.renderOptionMenuToBody) {
+                document.body.appendChild(optionsMenuElem);
+            }
+            else
+                Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
             Sandbox.publish("OptionsMenu").hide();
         }
         if (Sandbox.publish("NativeSelectBox:isDisabled") === false)

@@ -121,6 +121,11 @@
 	opacity: .4;
 }
 
+/* if options-container is rendered within the widget */
+.dark .options-container {
+	margin: -.5em 0 0 0 !important;
+}
+
 .dark.options-container {
     position: absolute;
     left: 0;

@@ -10,6 +10,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.locked = false;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
+	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -128,10 +129,13 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		}
 		this.element.show();
 		Sandbox.publish("ArrowContainerContent").up();*/
+		Sandbox.publish("ArrowContainerContent").up();
 		if (this.useSearchInput === true)
 			Sandbox.publish("OptionsMenuSearchInput:focus");
-		var pos = Sandbox.publish("WidgetWrapper:getPosition");
-		this.setPosition(pos.left, pos.top);
+		if (this.renderOptionMenuToBody) {
+			var pos = Sandbox.publish("WidgetWrapper:getPosition");
+			this.setPosition(pos.left, pos.top);
+		}
 		var elem = Sandbox.publish("Wrapper:getElement");
 		this.setWidth(elem.offsetWidth);
 	}

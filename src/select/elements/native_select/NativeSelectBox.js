@@ -11,6 +11,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	this.isElemDisabled;
 	this.optionsCount;
 	this.loadingMode;
+	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
 	this.attach = function() {
 		this.optionItems = [];
@@ -87,7 +88,8 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 				}
 			}
 		}
-		Sandbox.publish("WidgetWrapper:refresh");
+		if (this.renderOptionMenuToBody)
+			Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}
 

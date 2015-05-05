@@ -122,6 +122,11 @@
 	opacity: .4;
 }
 
+/* if options-container is rendered within the widget */
+.default .options-container {
+	margin: -.5em 0 0 0 !important;
+}
+
 .default.options-container {
 	margin: 2.8em 0 0 0;
     position: absolute;

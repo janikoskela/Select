@@ -16,6 +16,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
 
     this.locked = false;
 
+    this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -59,7 +61,11 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
         if (Sandbox.publish("OptionsMenu") === undefined) {
             var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
             var optionsMenuElem = optionsMenu.render();
-            document.body.appendChild(optionsMenuElem);
+            if (this.renderOptionMenuToBody) {
+                document.body.appendChild(optionsMenuElem);
+            }
+            else
+                Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
             Sandbox.publish("OptionsMenu").hide();
         }
         if (Sandbox.publish("NativeSelectBox:isDisabled") === false)
