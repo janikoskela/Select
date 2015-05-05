@@ -206,7 +206,7 @@
 }
 
 .dark.options-container .options-menu-search-wrapper {
-	width: calc(100% - 10px);
+	width: calc(100% - 1em);
 	margin: auto;
 	text-align: center;
 
