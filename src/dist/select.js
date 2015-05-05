@@ -471,13 +471,9 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
-                var toElem = e.toElement;
-                if (SELECT.UTILS.isEmpty(toElem)) {
-                    Sandbox.publish("OptionsMenu:hide");
-                    return;
-                }
+                var toElem = e.toElement || e.relatedTarget;
                 var widgetWrapperElem = Sandbox.publish("WidgetWrapper:getElement");
-                if (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem)
+                if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem))
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
@@ -1545,13 +1541,9 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         this.element.setAttribute("tabindex", this.tabIndex);
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
-                var toElem = e.toElement;
-                if (SELECT.UTILS.isEmpty(toElem)) {
-                    Sandbox.publish("OptionsMenu:hide");
-                    return;
-                }
+                var toElem = e.toElement || e.relatedTarget;
                 var optionsMenuElem = Sandbox.publish("OptionsMenu:getElement");
-                if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
+                if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
                     Sandbox.publish("OptionsMenu:hide");
             });
         }

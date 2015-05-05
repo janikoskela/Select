@@ -23,13 +23,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         this.element.setAttribute("tabindex", this.tabIndex);
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
-                var toElem = e.toElement;
-                if (SELECT.UTILS.isEmpty(toElem)) {
-                    Sandbox.publish("OptionsMenu:hide");
-                    return;
-                }
+                var toElem = e.toElement || e.relatedTarget;
                 var optionsMenuElem = Sandbox.publish("OptionsMenu:getElement");
-                if (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem)
+                if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
