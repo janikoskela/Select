@@ -2041,31 +2041,14 @@ SELECT.UTILS.isEmpty = function(obj) {
     return true;
 };
 
-SELECT.UTILS.getElementPosition = function(elem) {
-	var isIE = navigator.appName.indexOf('Microsoft Internet Explorer') != -1;
-    var currentOffsetLeft = 0;
-    var currentOffsetTop = 0;
-    var currentOffsetTopscroll = 0;
-    var currentOffsetLeftscroll = 0;
-    var offsetX = isIE ? document.body.scrollLeft : window.pageXOffset;
-    var offsetY = isIE ? document.body.scrollTop : window.pageYOffset;
-
-    if (elem.offsetParent) {
-        currentOffsetLeft = elem.offsetLeft;
-        currentOffsetTop = elem.offsetTop;
-        var elScroll = elem;
-        while (elScroll = elScroll.parentNode) {
-            currentOffsetTopscroll = elScroll.scrollTop ? elScroll.scrollTop : 0;
-            currentOffsetLeftscroll = elScroll.scrollLeft ? elScroll.scrollLeft : 0;
-            currentOffsetLeft -= currentOffsetLeftscroll;
-            currentOffsetTop -= currentOffsetTopscroll;
-        }
-        while (elem = elem.offsetParent) {
-            currentOffsetLeft += elem.offsetLeft;
-            currentOffsetTop += elem.offsetTop;
-        }
-    }
-    return { top: currentOffsetTop + offsetY, left: currentOffsetLeft + offsetX };
+SELECT.UTILS.getElementPosition = function(element) {
+    var rect = element.getBoundingClientRect();
+    var elementLeft,elementTop; //x and y
+    var scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+    var scrollLeft = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft;
+    elementTop = rect.top+scrollTop;
+    elementLeft = rect.left+scrollLeft;
+    return {top: elementTop, left: elementLeft}
 }
 
 SELECT.UTILS.extractDelta = function(e) {
