@@ -122,21 +122,28 @@
 
 /* if options-container is rendered within the widget */
 .dark .options-container {
-	margin: -.5em 0 0 0 !important;
+	margin: -.9em 0 0 0 !important;
 }
 
 .dark.options-container {
-    position: absolute;
-    left: 0;
-    z-index: 1;
+	margin: 0;
 	padding: 0;
-	margin: 2.8em 0 0 0;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+	position: absolute;
+	z-index: 1;
+	margin: 2.3em 0 0 0;
+}
+
+.dark.options-container .options-container-wrapper {
+	position: relative;
+	margin: 0;
+	left: 0;
+	padding: 0;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	overflow: hidden;
-    border: 1px solid #000;
-    border-top: 0;
-    -webkit-border-bottom-right-radius: 5px;
+	border: 1px solid #000;
+	border-top: 0;
+	-webkit-border-bottom-right-radius: 5px;
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-moz-border-radius-bottomleft: 5px;
@@ -209,7 +216,7 @@
 	width: calc(100% - 1em);
 	margin: auto;
 	text-align: center;
-
+	padding-top: .4em;
 }
 
 .dark.options-container .options-menu-search-input-wrapper {
@@ -218,6 +225,7 @@
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
+	margin: 0;
 }
 
 .dark.options-container .options-menu-search-input {

@@ -14,6 +14,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
     	this.element.setAttribute("placeholder", this.placeholder);
     	this.element.addEventListener("blur", this.focusOut);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
+    	this.element.addEventListener("click", onClick.bind(this));
     	return this.element;
 	}
 
@@ -27,6 +28,12 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
 			Sandbox.publish("OptionsMenu:hide");
 			Sandbox.publish("WidgetWrapper:blur");
 		}
+	}
+
+	function onClick(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
 	}
 
 	function onKeyUp(e) {

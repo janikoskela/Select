@@ -14,12 +14,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuList = Sandbox.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Sandbox));
-    	var optionsMenuListElem = optionsMenuList.render();
-        if (this.useSearchInput === true) {
-        	renderOptionsMenuSearchWrapper();
-        }
-    	this.element.appendChild(optionsMenuListElem);
+    	var optionsMenuWrapper = Sandbox.subscribe("OptionsMenuWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper(Sandbox));
+    	var optionsMenuWrapperElem = optionsMenuWrapper.render();
+    	this.element.appendChild(optionsMenuWrapperElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
 
@@ -41,12 +38,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.setTheme = function(className) {
 		this.className = this.commonClassName + " " + className;
 		this.element.setClass(this.className);
-	}
-
-	function renderOptionsMenuSearchWrapper() {
-    	that.optionsMenuSearchWrapper = Sandbox.subscribe("OptionsMenuSearchWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Sandbox));
-    	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
-		that.element.appendFirst(optionsMenuSearchWrapperElem);
 	}
 
 	this.onNoOptionsFound = function() {
@@ -130,8 +121,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		this.element.show();
 		Sandbox.publish("ArrowContainerContent").up();*/
 		Sandbox.publish("ArrowContainerContent").up();
-		if (this.useSearchInput === true)
+		if (this.useSearchInput === true) {
+			Sandbox.publish("OptionsMenu:focus");
 			Sandbox.publish("OptionsMenuSearchInput:focus");
+		}
 		if (this.renderOptionMenuToBody) {
 			var pos = Sandbox.publish("WidgetWrapper:getPosition");
 			this.setPosition(pos.left, pos.top);

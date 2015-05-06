@@ -118,6 +118,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 	}
 
 	function onClick(e) {
+		e.preventDefault();
+		e.stopPropagation();
 		var optionsMenuList = Sandbox.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
 		if (prevSelected === undefined) {
@@ -127,6 +129,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 			this.setSelected();
 		}
 		Sandbox.publish("OptionsMenu:hide");
+		return false;
 	}
 };
 

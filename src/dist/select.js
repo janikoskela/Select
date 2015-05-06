@@ -463,12 +463,9 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	var optionsMenuList = Sandbox.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Sandbox));
-    	var optionsMenuListElem = optionsMenuList.render();
-        if (this.useSearchInput === true) {
-        	renderOptionsMenuSearchWrapper();
-        }
-    	this.element.appendChild(optionsMenuListElem);
+    	var optionsMenuWrapper = Sandbox.subscribe("OptionsMenuWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper(Sandbox));
+    	var optionsMenuWrapperElem = optionsMenuWrapper.render();
+    	this.element.appendChild(optionsMenuWrapperElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
 
@@ -490,12 +487,6 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.setTheme = function(className) {
 		this.className = this.commonClassName + " " + className;
 		this.element.setClass(this.className);
-	}
-
-	function renderOptionsMenuSearchWrapper() {
-    	that.optionsMenuSearchWrapper = Sandbox.subscribe("OptionsMenuSearchWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Sandbox));
-    	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
-		that.element.appendFirst(optionsMenuSearchWrapperElem);
 	}
 
 	this.onNoOptionsFound = function() {
@@ -579,8 +570,10 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		this.element.show();
 		Sandbox.publish("ArrowContainerContent").up();*/
 		Sandbox.publish("ArrowContainerContent").up();
-		if (this.useSearchInput === true)
+		if (this.useSearchInput === true) {
+			Sandbox.publish("OptionsMenu:focus");
 			Sandbox.publish("OptionsMenuSearchInput:focus");
+		}
 		if (this.renderOptionMenuToBody) {
 			var pos = Sandbox.publish("WidgetWrapper:getPosition");
 			this.setPosition(pos.left, pos.top);
@@ -737,6 +730,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	}
 
 	function onClick(e) {
+		e.preventDefault();
+		e.stopPropagation();
 		var optionsMenuList = Sandbox.publish("OptionsMenuList");
 		var prevSelected = optionsMenuList.getSelectedOption();
 		if (prevSelected === undefined) {
@@ -746,6 +741,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 			this.setSelected();
 		}
 		Sandbox.publish("OptionsMenu:hide");
+		return false;
 	}
 };
 
@@ -1225,6 +1221,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
     	this.element.setAttribute("placeholder", this.placeholder);
     	this.element.addEventListener("blur", this.focusOut);
     	this.element.addEventListener("keyup", onKeyUp.bind(this));
+    	this.element.addEventListener("click", onClick.bind(this));
     	return this.element;
 	}
 
@@ -1238,6 +1235,12 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
 			Sandbox.publish("OptionsMenu:hide");
 			Sandbox.publish("WidgetWrapper:blur");
 		}
+	}
+
+	function onClick(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
 	}
 
 	function onKeyUp(e) {
@@ -1323,7 +1326,35 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchNoResults.prototype = Objec
 
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Sandbox) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper = function(Sandbox) {
+	var that = this;
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
+	this.type = "div";
+	this.className = "options-container-wrapper";
+	this.useSearchInput = userDefinedSettings.useSearchInput || false;
+	this.element;
+
+	this.render = function() {
+        this.element = SELECT.UTILS.createElement(this.type, this.className);
+    	var optionsMenuList = Sandbox.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Sandbox));
+    	var optionsMenuListElem = optionsMenuList.render();
+        if (this.useSearchInput === true) {
+        	renderOptionsMenuSearchWrapper();
+        }
+    	this.element.appendChild(optionsMenuListElem);
+    	if (this.width !== undefined)
+			this.setWidth(this.width);
+    	return this.element;
+	}
+
+	function renderOptionsMenuSearchWrapper() {
+    	that.optionsMenuSearchWrapper = Sandbox.subscribe("OptionsMenuSearchWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper(Sandbox));
+    	var optionsMenuSearchWrapperElem = that.optionsMenuSearchWrapper.render();
+		that.element.appendFirst(optionsMenuSearchWrapperElem);
+	}
+};
+
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Sandbox) {
 	var that = this;
 	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "div";
@@ -1564,6 +1595,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         });
         this.element.addEventListener("click", function(e) {
             e.stopPropagation();
+            e.preventDefault();
+            return false;
         });
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));

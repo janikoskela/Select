@@ -34,6 +34,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         });
         this.element.addEventListener("click", function(e) {
             e.stopPropagation();
+            e.preventDefault();
+            return false;
         });
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));

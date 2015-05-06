@@ -123,22 +123,28 @@
 
 /* if options-container is rendered within the widget */
 .default .options-container {
-	margin: -.5em 0 0 0 !important;
+	margin: -.9em 0 0 0 !important;
 }
 
 .default.options-container {
-	margin: 2.8em 0 0 0;
-    position: absolute;
-    left: 0;
-    z-index: 1;
+	margin: 0;
 	padding: 0;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-	overflow: hidden;
+	position: absolute;
+	z-index: 1;
+	margin: 2.3em 0 0 0;
+}
+
+.default.options-container .options-container-wrapper {
+	position: relative;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	background-color: #fff;
-    border: 1px solid #000;
-    border-top: 0;
-    -webkit-border-bottom-right-radius: 5px;
+	border: 1px solid #000;
+	border-top: 0;
+	-webkit-border-bottom-right-radius: 5px;
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-moz-border-radius-bottomleft: 5px;
@@ -148,14 +154,6 @@
 	-moz-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
 	box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
 	height: auto;
-}
-
-.default .options-container-down {
-    top: 2.8em; /* same as .widget-sub-wrapper's height (including its border) */
-}
-
-.default .options-container-up {
-
 }
 
 .default.options-container .options-container-list {
@@ -212,7 +210,7 @@
 	width: calc(100% - 1em);
 	margin: auto;
 	text-align: center;
-
+  	padding-top: .4em;
 }
 
 .default.options-container .options-menu-search-input-wrapper {
@@ -221,6 +219,7 @@
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
+	margin: 0;
 }
 
 .default.options-container .options-menu-search-input {
