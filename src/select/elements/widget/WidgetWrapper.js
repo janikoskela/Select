@@ -18,6 +18,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
 
     this.positionTop;
 
+    this.openOptionMenuUponHover = userDefinedSettings.openOptionMenuUponHover || false;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
@@ -41,7 +43,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         this.element.addEventListener("keydown", onKeyDown.bind(this));
         this.element.addEventListener("touchmove", touchScroll.bind(this));
         this.element.addEventListener("scroll", touchScroll.bind(this));
-
+        if (this.openOptionMenuUponHover)
+            this.element.addEventListener("mouseover", mouseOver.bind(this));
         var widgetSubWrapper = Sandbox.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Sandbox));
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
@@ -80,6 +83,13 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
 
     this.enableTabNavigation = function() {
         this.element.setAttribute("tabindex", this.tabIndex);
+    }
+
+    function mouseOver(e) {
+        if (SELECT.UTILS.isEmpty(Sandbox.publish("OptionsMenu"))) {
+            Sandbox.publish("WidgetSubWrapper:renderOptionMenu");
+        }
+        Sandbox.publish("OptionsMenu:show");
     }
 
     function touchScroll(e) {

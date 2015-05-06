@@ -31,7 +31,8 @@ searchInputPlaceholder|String|""|Sets search inputs placeholder text
 noResultsMessage|String|"No results"|No results message
 usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. See <a href="#monitoring">Monitoring</a> below
 pollingInterval|Integer|100|polling interval speed in ms
-renderOptionMenuToBody|Boolean|false|If true option menu is appended to body element. If false option menu is rendered inside widget.
+renderOptionMenuToBody|Boolean|false|If true option menu is appended to body element. If false option menu is rendered inside widget
+openOptionMenuUponHover|Boolean|false|If true option menu is opened when widget is hovered
 
 API
 ===============

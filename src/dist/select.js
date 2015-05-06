@@ -1540,18 +1540,22 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
         this.locked = false;
     }
 
+    this.renderOptionMenu = function() {
+        var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
+        var optionsMenuElem = optionsMenu.render();
+        if (this.renderOptionMenuToBody) {
+            document.body.appendChild(optionsMenuElem);
+        }
+        else
+            Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
+        Sandbox.publish("OptionsMenu").hide();
+    }
+
     function onClick(e) {
         if (this.locked === true)
             return;
         if (Sandbox.publish("OptionsMenu") === undefined) {
-            var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
-            var optionsMenuElem = optionsMenu.render();
-            if (this.renderOptionMenuToBody) {
-                document.body.appendChild(optionsMenuElem);
-            }
-            else
-                Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
-            Sandbox.publish("OptionsMenu").hide();
+            this.renderOptionMenu();
         }
         if (Sandbox.publish("NativeSelectBox:isDisabled") === false)
             Sandbox.publish("OptionsMenu").toggle();
@@ -1579,6 +1583,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
     this.positionTop;
 
+    this.openOptionMenuUponHover = userDefinedSettings.openOptionMenuUponHover || false;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
@@ -1602,7 +1608,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         this.element.addEventListener("keydown", onKeyDown.bind(this));
         this.element.addEventListener("touchmove", touchScroll.bind(this));
         this.element.addEventListener("scroll", touchScroll.bind(this));
-
+        if (this.openOptionMenuUponHover)
+            this.element.addEventListener("mouseover", mouseOver.bind(this));
         var widgetSubWrapper = Sandbox.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Sandbox));
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
@@ -1641,6 +1648,13 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
     this.enableTabNavigation = function() {
         this.element.setAttribute("tabindex", this.tabIndex);
+    }
+
+    function mouseOver(e) {
+        if (SELECT.UTILS.isEmpty(Sandbox.publish("OptionsMenu"))) {
+            Sandbox.publish("WidgetSubWrapper:renderOptionMenu");
+        }
+        Sandbox.publish("OptionsMenu:show");
     }
 
     function touchScroll(e) {
