@@ -15,6 +15,7 @@
 	box-shadow: none;
 	color: #b9b9b9;
 	display: inline-block;
+	min-width: 5em;
 }
 
 .dark .widget-wrapper {
