@@ -6,7 +6,7 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.type = "div";
 
-    this.theme = userDefinedSettings.theme || "default";
+    this.theme = userDefinedSettings.theme || "select-js-theme-light";
 
     this.commonClassName = "select-widget";
 

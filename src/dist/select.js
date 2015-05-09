@@ -1739,7 +1739,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.type = "div";
 
-    this.theme = userDefinedSettings.theme || "default";
+    this.theme = userDefinedSettings.theme || "select-js-theme-light";
 
     this.commonClassName = "select-widget";
 

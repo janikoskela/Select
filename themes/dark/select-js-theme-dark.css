@@ -1,4 +1,4 @@
-.default {
+.select-js-theme-dark {
 	-webkit-touch-callout: none; 
 	-webkit-user-select: none; 
 	-khtml-user-select: none; 
@@ -13,30 +13,31 @@
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
+	color: #b9b9b9;
 	display: inline-block;
-	min-width: 5em;
+	min-width: 3em;
 }
 
-.default .widget-wrapper {
+.select-js-theme-dark .widget-wrapper {
+	background-color: #252525;
 	position: relative;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
 
-.default .widget-wrapper:focus {
+.select-js-theme-dark .widget-wrapper:focus {
 	outline-width: 0px;
 	-webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
 	-moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
 	box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
 }
 
-.default .widget-wrapper:focus .widget-sub-wrapper {
+.select-js-theme-dark .widget-wrapper:focus .widget-sub-wrapper {
     outline:none; /*or outline-color:#FFFFFF; if the first doesn't work*/
 }
 
-.default .widget-sub-wrapper {
-	background-color: #fff;
+.select-js-theme-dark .widget-sub-wrapper {
 	height: 3em;
 	line-height: 2em;
 	position: relative;
@@ -47,21 +48,20 @@
 	border: 1px solid #000;
 }
 
-.default[disabled=true] .widget-sub-wrapper {
-	background-color: #fff;
+.select-js-theme-dark[disabled=true] .widget-sub-wrapper {
 	height: 3.5em;
 	line-height: 2em;
 	position: relative;
 	cursor: default;
 }
 
-.default .widget-sub-wrapper div {
+.select-js-theme-dark .widget-sub-wrapper div {
 	height: 100%;
 	margin: 0;
 	padding: 0;
 }
 
-.default .value-container {
+.select-js-theme-dark .value-container {
 	float: left;
     width: -moz-calc(100% - 2em);
     width: -webkit-calc(100% - 2em);
@@ -73,41 +73,40 @@
 	font-size: 16px;
 }
 
-.default .value-container span {
+.select-js-theme-dark .value-container span {
 	margin-left: .5em;
 	line-height: 35px;
-	color: #000;
 	font-weight: 400;
 	vertical-align: middle;
 }
 
-.default .value-container img {
+.select-js-theme-dark .value-container img {
 	display: inline-block;
 	vertical-align: middle;
 	height: 1.2em;
 	margin-left: .3em;
 }
 
-.default[disabled=true] .value-container span {
+.select-js-theme-dark[disabled=true] .value-container span {
 	opacity: .4;
 }
 
-.default .arrow-container {
+.select-js-theme-dark .arrow-container {
 	float: left;
 	width: 2em;
 }
 
-.default .arrow-container div {
+.select-js-theme-dark .arrow-container div {
 	background-repeat: no-repeat;
   	background-size: 16px 16px;
   	background-position:center; 
 }
 
-.default .arrow-down {
+.select-js-theme-dark .arrow-down {
 	background-image: url(arrow.png);
 }
 
-.default .arrow-up {
+.select-js-theme-dark .arrow-up {
 	background-image: url(arrow.png);
     -moz-transform: scaleY(-1);
     -o-transform: scaleY(-1);
@@ -117,17 +116,17 @@
     -ms-filter: "FlipV";
 }
 
-.default[disabled=true] .arrow-down {
+.select-js-theme-dark[disabled=true] .arrow-down {
 	background-image: url(arrow.png);
 	opacity: .4;
 }
 
 /* if options-container is rendered within the widget */
-.default .options-container {
+.select-js-theme-dark .options-container {
 	margin: -.9em 0 0 0 !important;
 }
 
-.default.options-container {
+.select-js-theme-dark.options-container {
 	margin: 0;
 	padding: 0;
 	position: absolute;
@@ -135,14 +134,14 @@
 	margin: 2.3em 0 0 0;
 }
 
-.default.options-container .options-container-wrapper {
+.select-js-theme-dark.options-container .options-container-wrapper {
 	position: relative;
-	left: 0;
 	margin: 0;
+	left: 0;
 	padding: 0;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	background-color: #fff;
+	overflow: hidden;
 	border: 1px solid #000;
 	border-top: 0;
 	-webkit-border-bottom-right-radius: 5px;
@@ -154,10 +153,19 @@
 	-webkit-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
 	-moz-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
 	box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.45);
+	background-color: #252525;
 	height: auto;
 }
 
-.default.options-container .options-container-list {
+.select-js-theme-dark.options-container .options-container-down {
+    top: 2.8em; /* same as .widget-sub-wrapper's height (including its border) */
+}
+
+.select-js-theme-dark.options-container .options-container-up {
+
+}
+
+.select-js-theme-dark.options-container .options-container-list {
 	padding: 0;
 	margin: 0 0 .5em 0;
 	list-style-type: none;
@@ -169,52 +177,50 @@
 	border-radius: 0;
 	border: 0;
 	box-shadow: none;
-	background: #fff;
 	overflow-x: hidden;
 	overflow-y: auto;
 }
 
-.default.options-container .options-container-list li {
+.select-js-theme-dark.options-container .options-container-list li {
 	white-space: nowrap;
 	border: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding: .4em;
 	font-size: 12px;
-	color: #000;
 	float: none;
 	width: 100%;
 	height: auto;
 	display: list-item;
 }
 
-.defaul.options-container .options-container-list li span {
+.select-js-theme-dark.options-container .options-container-list li span {
 	padding: 0 0 0 .1em;
 	display: inline-block;
 	vertical-align: middle;
 	font-weight: 400;
 }
 
-.default.options-container .options-container-list li.hovered { 
-	background: #F2F2F2; 
+.select-js-theme-dark.options-container .options-container-list li.hovered { 
+	background: #000; 
 	cursor: pointer;
 }
 
-.default.options-container .options-container-list li img {
+.select-js-theme-dark.options-container .options-container-list li img {
 	height: 20px;
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 1em;
 }
 
-.default.options-container .options-menu-search-wrapper {
+.select-js-theme-dark.options-container .options-menu-search-wrapper {
 	width: calc(100% - 1em);
 	margin: auto;
 	text-align: center;
-  	padding-top: .4em;
+	padding-top: .4em;
 }
 
-.default.options-container .options-menu-search-input-wrapper {
+.select-js-theme-dark.options-container .options-menu-search-input-wrapper {
 	border: 1px solid #808080;
 	padding: .3em;
 	-webkit-border-radius: 2px;
@@ -223,24 +229,25 @@
 	margin: 0;
 }
 
-.default.options-container .options-menu-search-input {
+.select-js-theme-dark.options-container .options-menu-search-input {
 	width: 95%;
 	-webkit-appearance:textfield;
 	border: 0;
+	background: transparent;
+	color: #b9b9b9;
 }
 
-.default.options-container .options-menu-search-input:focus {
+.select-js-theme-dark.options-container .options-menu-search-input:focus {
 	outline-width: 0;	
 }
 
-.default.options-container .options-menu-search-no-results {
+.select-js-theme-dark.options-container .options-menu-search-no-results {
 	margin: .5em 0 .5em 0;
 	text-align: left;
 }
 
-.default.options-container .options-menu-list-item-group-list {
+.select-js-theme-dark.options-container .options-menu-list-item-group-list {
 	padding: 0;
-	background: #fff;
 	padding-left: 1em;
 	margin: 0;
 	height: auto;
@@ -250,7 +257,7 @@
 	width: auto;
 }
 
-.default.options-container .options-menu-list-item-group-title {
+.select-js-theme-dark.options-container .options-menu-list-item-group-title {
 	font-weight: 500;
 	font-size: 12px;
 	cursor: default;
@@ -262,24 +269,24 @@
 	user-select: none; 
 }
 
-.default ::-webkit-scrollbar {
+.select-js-theme-dark ::-webkit-scrollbar {
     overflow: visible;
     background: transparent;
     width: 6px;
 }
 
-.default ::-webkit-scrollbar-track {
+.select-js-theme-dark ::-webkit-scrollbar-track {
 	border-radius: 2px;
 	width: 2px;
-	background: #F2F2F2;
+	background: #000;
 }
 
-.default ::-webkit-scrollbar-thumb {
+.select-js-theme-dark ::-webkit-scrollbar-thumb {
     border-radius: 5px;
     width: 5px;
     background: #808080;
 }
 
-.default ::-webkit-scrollbar:window-inactive {
+.select-js-theme-dark ::-webkit-scrollbar:window-inactive {
     background-color: transparent;
 }

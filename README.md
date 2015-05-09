@@ -18,7 +18,7 @@ Optional widget settings
 ===============
 Name| Type | Default | Description
 ---|---|---------------|-----|------------|------
-theme|String|"default"|Defines what theme is to be used. Basically this will simply define the class of the root element
+theme|String|"select-js-theme-light"|Defines what theme is to be used. Basically this will simply define the class of the root element
 width|String|-|Width for the select box. If not defined widgets width is based on the widest option
 orientation|String|"right"|Defines the side where arrow points
 placeholder|String|-|Sets a placeholder text
