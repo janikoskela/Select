@@ -24,8 +24,12 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.isWidthDefinedByUser;
 
+    this.animationsEnabled = userDefinedSettings.animationsEnabled;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
+        if (this.animationsEnabled === true || this.animationsEnabled === undefined)
+            this.element.setDataAttribute("animations-enabled", true);
         var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:

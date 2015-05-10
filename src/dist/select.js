@@ -460,9 +460,12 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
+	this.animationsEnabled = userDefinedSettings.animationsEnabled;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
+        if ((this.animationsEnabled === true || this.animationsEnabled === undefined) && this.renderOptionMenuToBody === true)
+            this.element.setDataAttribute("animations-enabled", true);
     	var optionsMenuWrapper = Sandbox.subscribe("OptionsMenuWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper(Sandbox));
     	var optionsMenuWrapperElem = optionsMenuWrapper.render();
     	this.element.appendChild(optionsMenuWrapperElem);
@@ -477,6 +480,11 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
+		this.element.addEventListener("mouseover", function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		});
     	return this.element;
 	}
 
@@ -517,18 +525,6 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		this.element.setStyle("width", this.width);
 	}
 
-	this.getWidth = function() {
-		var width = this.element.offsetWidth;
-		if (this.element.isHidden()) {
-			this.element.show();
-			width = this.element.offsetWidth;
-			this.element.hide();
-		}
-		width += Sandbox.publish("ArrowContainer").getWidth();
-		this.setWidth(width);
-		return width;
-	}
-
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
@@ -537,7 +533,9 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.hide = function() {
 		if (this.element.isHidden())
 			return;
-		this.element.hide();
+		Sandbox.publish("OptionsMenuWrapper:getElement").style.maxHeight = 0;
+		if (!this.animationsEnabled)
+			this.element.setDataAttribute("open", false);
 		Sandbox.publish("OptionsMenuSearchInput:clear");
 		Sandbox.publish("OptionsMenuSearchInput:blur");
 		Sandbox.publish("OptionsMenuSearchNoResults:hide");
@@ -549,7 +547,9 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		if (this.locked === true || this.isHidden() === false)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		this.element.show();
+		Sandbox.publish("OptionsMenuWrapper:getElement").style.maxHeight = "100%";
+		if (!this.animationsEnabled)
+			this.element.setDataAttribute("open", true);
 		Sandbox.publish("OptionsMenuList:show");
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
@@ -587,8 +587,13 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		this.element.setStyle("left", left);
 	}
 
+	this.isHidden = function() {
+		var h = this.element.style.maxHeight;
+		return (h == 0 || h == "0px") ? true : false;
+	}
+
 	this.toggle = function() {
-		if (this.element.isHidden())
+		if (this.isHidden())
 			this.show();
 		else
 			this.hide();
@@ -1332,12 +1337,15 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
 	this.type = "div";
 	this.className = "options-container-wrapper";
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
+	this.animationsEnabled = userDefinedSettings.animationsEnabled;
 	this.element;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
     	var optionsMenuList = Sandbox.subscribe("OptionsMenuList", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList(Sandbox));
     	var optionsMenuListElem = optionsMenuList.render();
+    	if (this.animationsEnabled === true || this.animationsEnabled === undefined)
+    		this.element.addEventListener("webkitTransitionEnd", onTransitionEnd.bind(this));
         if (this.useSearchInput === true) {
         	renderOptionsMenuSearchWrapper();
         }
@@ -1345,6 +1353,15 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
     	if (this.width !== undefined)
 			this.setWidth(this.width);
     	return this.element;
+	}
+
+	function onTransitionEnd(e) {
+		var maxHeight = this.element.getStyle("maxHeight");
+		if (maxHeight == "0px" || maxHeight == 0)
+			Sandbox.publish("OptionsMenu:getElement").setDataAttribute("open", false);
+		else
+			Sandbox.publish("OptionsMenu:getElement").setDataAttribute("open", true);
+		return false;
 	}
 
 	function renderOptionsMenuSearchWrapper() {
@@ -1757,8 +1774,12 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.isWidthDefinedByUser;
 
+    this.animationsEnabled = userDefinedSettings.animationsEnabled;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
+        if (this.animationsEnabled === true || this.animationsEnabled === undefined)
+            this.element.setDataAttribute("animations-enabled", true);
         var tagName = this.el.tagName.toLowerCase();
         switch(tagName) {
             case ALLOWED_TARGET_ELEMENT_TAG_NAME_SELECT:
