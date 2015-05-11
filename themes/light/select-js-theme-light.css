@@ -161,7 +161,7 @@
 	overflow: hidden;
 }
 
-.select-js-theme-light[data-animations-enabled=true].options-container .options-container-wrapper {
+.select-js-theme-light[data-animations-enabled=true] .options-container-wrapper {
     -webkit-transition: max-height 0.2s ease-out;
     -moz-transition: max-height 0.2s ease-out;
     -o-transition: max-height 0.2s ease-out;
