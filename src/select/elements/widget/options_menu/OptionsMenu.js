@@ -11,12 +11,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
-	this.animationsEnabled = userDefinedSettings.animationsEnabled;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-        if ((this.animationsEnabled === true || this.animationsEnabled === undefined) && this.renderOptionMenuToBody === true)
-            this.element.setDataAttribute("animations-enabled", true);
     	var optionsMenuWrapper = Sandbox.subscribe("OptionsMenuWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper(Sandbox));
     	var optionsMenuWrapperElem = optionsMenuWrapper.render();
     	this.element.appendChild(optionsMenuWrapperElem);
@@ -31,11 +28,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
-		this.element.addEventListener("mouseover", function(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			return false;
-		});
     	return this.element;
 	}
 
@@ -76,6 +68,18 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		this.element.setStyle("width", this.width);
 	}
 
+	this.getWidth = function() {
+		var width = this.element.offsetWidth;
+		if (this.element.isHidden()) {
+			this.element.show();
+			width = this.element.offsetWidth;
+			this.element.hide();
+		}
+		width += Sandbox.publish("ArrowContainer").getWidth();
+		this.setWidth(width);
+		return width;
+	}
+
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
@@ -84,9 +88,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.hide = function() {
 		if (this.element.isHidden())
 			return;
-		Sandbox.publish("OptionsMenuWrapper:getElement").style.maxHeight = 0;
-		if (!this.animationsEnabled)
-			this.element.setDataAttribute("open", false);
+		this.element.hide();
 		Sandbox.publish("OptionsMenuSearchInput:clear");
 		Sandbox.publish("OptionsMenuSearchInput:blur");
 		Sandbox.publish("OptionsMenuSearchNoResults:hide");
@@ -98,9 +100,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		if (this.locked === true || this.isHidden() === false)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		Sandbox.publish("OptionsMenuWrapper:getElement").style.maxHeight = "100%";
-		if (!this.animationsEnabled)
-			this.element.setDataAttribute("open", true);
+		this.element.show();
 		Sandbox.publish("OptionsMenuList:show");
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
@@ -138,13 +138,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		this.element.setStyle("left", left);
 	}
 
-	this.isHidden = function() {
-		var h = this.element.style.maxHeight;
-		return (h == 0 || h == "0px") ? true : false;
-	}
-
 	this.toggle = function() {
-		if (this.isHidden())
+		if (this.element.isHidden())
 			this.show();
 		else
 			this.hide();

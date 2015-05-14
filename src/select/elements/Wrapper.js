@@ -24,8 +24,6 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.isWidthDefinedByUser;
 
-    this.animationsEnabled = userDefinedSettings.animationsEnabled;
-
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         if (this.animationsEnabled === true || this.animationsEnabled === undefined)
