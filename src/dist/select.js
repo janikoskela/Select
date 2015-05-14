@@ -125,7 +125,135 @@ SELECT.ELEMENTS.Element.prototype.getClass = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.getWidth = function() {
-	return this.element.offsetWidth;
+    var style = window.getComputedStyle(this.element);
+    var display = style.display;
+    var position = style.position;
+    var visibility = style.visibility;
+    var maxWidth = style.maxWidth.replace('px', '').replace('%', '');
+    var wantedWidth = 0;
+
+    // if its not hidden we just return normal height
+    if (display !== 'none' && maxWidth !== '0') {
+        return this.element.offsetWidth;
+    }
+
+    // the element is hidden so:
+    // making the el block so we can meassure its height but still be hidden
+    this.element.style.position   = 'absolute';
+    this.element.style.visibility = 'hidden';
+    this.element.style.display    = 'block';
+
+    wantedWidth     = this.element.offsetWidth;
+
+    // reverting to the original values
+    this.element.style.display = display;
+    this.element.style.position   = position;
+    this.element.style.visibility = visibility;
+    return wantedWidth;
+};
+
+SELECT.ELEMENTS.Element.prototype.getHeight = function() {
+    var style = window.getComputedStyle(this.element);
+    var display = style.display;
+    var position = style.position;
+    var visibility = style.visibility;
+    var maxHeight = style.maxHeight.replace('px', '').replace('%', '');
+    var wantedHeight = 0;
+
+    // if its not hidden we just return normal height
+    if (display !== 'none' && maxHeight !== '0') {
+        return this.element.offsetHeight;
+    }
+
+    // the element is hidden so:
+    // making the el block so we can meassure its height but still be hidden
+    this.element.style.position   = 'absolute';
+    this.element.style.visibility = 'hidden';
+    this.element.style.display    = 'block';
+
+    wantedHeight     = this.element.offsetHeight;
+
+    // reverting to the original values
+    this.element.style.display = display;
+    this.element.style.position   = position;
+    this.element.style.visibility = visibility;
+    return wantedHeight;
+};
+
+SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
+    var el_max_height = 0;
+    var el = this.element;
+    if (speed == undefined)
+        speed = 200;
+    speed /= 1000;
+    if(el.getAttribute('data-max-height')) {
+        this.element.setDataAttribute("slide", "up");
+            el.style.maxHeight = '0';
+    } else {
+        el_max_height                  = this.getHeight() + 'px';
+        el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
+        el.style.overflowY             = 'hidden';
+        el.style.maxHeight             = '0';
+        el.setAttribute('data-max-height', el_max_height);
+        el.style.display               = 'block';
+
+        // we use setTimeout to modify maxHeight later than display (to we have the transition effect)
+        setTimeout(function() {
+            el.style.maxHeight = el_max_height;
+        }, 10);
+    }
+};
+
+SELECT.ELEMENTS.Element.prototype.slideDown = function(speed) {
+    var el_max_height = 0;
+    var el = this.element;
+    if (speed == undefined)
+        speed = 0.2;
+    if(el.getAttribute('data-max-height')) {
+        this.element.setDataAttribute("slide", "down");
+        el.style.maxHeight = el.getAttribute('data-max-height');
+    } else {
+        el_max_height                  = this.getHeight() + 'px';
+        el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
+        el.style.overflowY             = 'hidden';
+        el.style.maxHeight             = '0';
+        el.setAttribute('data-max-height', el_max_height);
+        el.style.display               = 'block';
+
+        // we use setTimeout to modify maxHeight later than display (to we have the transition effect)
+        setTimeout(function() {
+            el.style.maxHeight = el_max_height;
+        }, 10);
+    }
+};
+
+SELECT.ELEMENTS.Element.prototype.slideToggle = function(speed) {
+    var el_max_height = 0;
+    var el = this.element;
+    if (speed == undefined)
+        speed = 0.3;
+    if(el.getAttribute('data-max-height')) {
+        // we've already used this before, so everything is setup
+        if(el.style.maxHeight.replace('px', '').replace('%', '') === '0') {
+            console.log("auki")
+            el.style.maxHeight = el.getAttribute('data-max-height');
+        } else {
+            console.log("sulkee")
+            el.style.maxHeight = '0';
+        }
+    } else {
+        el_max_height                  = this.getHeight() + 'px';
+        el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
+        el.style.overflowY             = 'hidden';
+        el.style.maxHeight             = '0';
+        el.setAttribute('data-max-height', el_max_height);
+        el.style.display               = 'block';
+
+        // we use setTimeout to modify maxHeight later than display (to we have the transition effect)
+        setTimeout(function() {
+            el.style.maxHeight = el_max_height;
+        }, 10);
+    }
 };
 
 SELECT.ELEMENTS.Element.prototype.isHidden = function() {
@@ -459,6 +587,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
+	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -516,27 +645,30 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		this.element.setStyle("width", this.width);
 	}
 
-	this.getWidth = function() {
-		var width = this.element.offsetWidth;
-		if (this.element.isHidden()) {
-			this.element.show();
-			width = this.element.offsetWidth;
-			this.element.hide();
-		}
-		width += Sandbox.publish("ArrowContainer").getWidth();
-		this.setWidth(width);
-		return width;
-	}
-
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
 	}
 
 	this.hide = function() {
-		if (this.element.isHidden())
+		if (this.isHidden())
 			return;
-		this.element.hide();
+		if (this.animationSpeed !== 0) {
+			this.slideUp(this.animationSpeed);
+
+			//to animate options menu right after its rendered
+			if (this.renderOptionMenuToBody) {
+				var pos = Sandbox.publish("WidgetWrapper:getPosition");
+				this.setPosition(pos.left, pos.top);
+			}
+			if (userDefinedSettings.optionsMenuWidth === undefined) {
+				var wrapperWidth = Sandbox.publish("Wrapper:getWidth");
+				if (wrapperWidth != this.getWidth())
+					this.setWidth(wrapperWidth);
+			}
+		}
+		else
+			this.element.hide();
 		Sandbox.publish("OptionsMenuSearchInput:clear");
 		Sandbox.publish("OptionsMenuSearchInput:blur");
 		Sandbox.publish("OptionsMenuSearchNoResults:hide");
@@ -548,7 +680,10 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		if (this.locked === true || this.isHidden() === false)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		this.element.show();
+		if (this.animationSpeed !== 0)
+			this.slideDown(this.animationSpeed);
+		else
+			this.element.show();
 		Sandbox.publish("OptionsMenuList:show");
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
@@ -577,8 +712,11 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			var pos = Sandbox.publish("WidgetWrapper:getPosition");
 			this.setPosition(pos.left, pos.top);
 		}
-		var elem = Sandbox.publish("Wrapper:getElement");
-		this.setWidth(elem.offsetWidth);
+		if (userDefinedSettings.optionsMenuWidth === undefined) {
+			var wrapperWidth = Sandbox.publish("Wrapper:getWidth");
+			if (wrapperWidth != this.getWidth())
+				this.setWidth(wrapperWidth);
+		}
 	}
 
 	this.setPosition = function(left, top) {
@@ -586,8 +724,17 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		this.element.setStyle("left", left);
 	}
 
+	this.isHidden = function() {
+		if (this.animationSpeed !== 0) {
+			var maxHeight = this.element.getStyle("maxHeight");
+			return (maxHeight == '0px') ? true : false;
+		}
+		else
+			return this.element.isHidden();
+	}
+
 	this.toggle = function() {
-		if (this.element.isHidden())
+		if (this.isHidden())
 			this.show();
 		else
 			this.hide();
@@ -1547,17 +1694,15 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
         }
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
-        Sandbox.publish("OptionsMenu").hide();
     }
 
     function onClick(e) {
-        if (this.locked === true)
+        if (this.locked === true || Sandbox.publish("NativeSelectBox:isDisabled"))
             return;
         if (Sandbox.publish("OptionsMenu") === undefined) {
             this.renderOptionMenu();
         }
-        if (Sandbox.publish("NativeSelectBox:isDisabled") === false)
-            Sandbox.publish("OptionsMenu").toggle();
+        Sandbox.publish("OptionsMenu:toggle");
     }
 
 };
@@ -1716,7 +1861,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
             var optionValue = option.getValue();
             Sandbox.publish("NativeSelectBox").setSelectedOption(optionValue);
             Sandbox.publish("ValueContainer:refresh");
-            var width = Sandbox.publish("Wrapper:getElement").offsetWidth;
+            var width = Sandbox.publish("WidgetWrapper:getWidth");
             if (optionValue.length > width)
                 width = optionValue;
             if (width > widest) {

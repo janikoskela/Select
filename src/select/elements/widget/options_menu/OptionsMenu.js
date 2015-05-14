@@ -11,6 +11,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
+	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -68,27 +69,30 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		this.element.setStyle("width", this.width);
 	}
 
-	this.getWidth = function() {
-		var width = this.element.offsetWidth;
-		if (this.element.isHidden()) {
-			this.element.show();
-			width = this.element.offsetWidth;
-			this.element.hide();
-		}
-		width += Sandbox.publish("ArrowContainer").getWidth();
-		this.setWidth(width);
-		return width;
-	}
-
 	this.setHeight = function(height) {
 		this.height = height;
 		this.element.setStyle("height", this.height);
 	}
 
 	this.hide = function() {
-		if (this.element.isHidden())
+		if (this.isHidden())
 			return;
-		this.element.hide();
+		if (this.animationSpeed !== 0) {
+			this.slideUp(this.animationSpeed);
+
+			//to animate options menu right after its rendered
+			if (this.renderOptionMenuToBody) {
+				var pos = Sandbox.publish("WidgetWrapper:getPosition");
+				this.setPosition(pos.left, pos.top);
+			}
+			if (userDefinedSettings.optionsMenuWidth === undefined) {
+				var wrapperWidth = Sandbox.publish("Wrapper:getWidth");
+				if (wrapperWidth != this.getWidth())
+					this.setWidth(wrapperWidth);
+			}
+		}
+		else
+			this.element.hide();
 		Sandbox.publish("OptionsMenuSearchInput:clear");
 		Sandbox.publish("OptionsMenuSearchInput:blur");
 		Sandbox.publish("OptionsMenuSearchNoResults:hide");
@@ -100,7 +104,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		if (this.locked === true || this.isHidden() === false)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		this.element.show();
+		if (this.animationSpeed !== 0)
+			this.slideDown(this.animationSpeed);
+		else
+			this.element.show();
 		Sandbox.publish("OptionsMenuList:show");
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
@@ -129,8 +136,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 			var pos = Sandbox.publish("WidgetWrapper:getPosition");
 			this.setPosition(pos.left, pos.top);
 		}
-		var elem = Sandbox.publish("Wrapper:getElement");
-		this.setWidth(elem.offsetWidth);
+		if (userDefinedSettings.optionsMenuWidth === undefined) {
+			var wrapperWidth = Sandbox.publish("Wrapper:getWidth");
+			if (wrapperWidth != this.getWidth())
+				this.setWidth(wrapperWidth);
+		}
 	}
 
 	this.setPosition = function(left, top) {
@@ -138,8 +148,17 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		this.element.setStyle("left", left);
 	}
 
+	this.isHidden = function() {
+		if (this.animationSpeed !== 0) {
+			var maxHeight = this.element.getStyle("maxHeight");
+			return (maxHeight == '0px') ? true : false;
+		}
+		else
+			return this.element.isHidden();
+	}
+
 	this.toggle = function() {
-		if (this.element.isHidden())
+		if (this.isHidden())
 			this.show();
 		else
 			this.hide();

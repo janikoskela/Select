@@ -63,17 +63,15 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
         }
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
-        Sandbox.publish("OptionsMenu").hide();
     }
 
     function onClick(e) {
-        if (this.locked === true)
+        if (this.locked === true || Sandbox.publish("NativeSelectBox:isDisabled"))
             return;
         if (Sandbox.publish("OptionsMenu") === undefined) {
             this.renderOptionMenu();
         }
-        if (Sandbox.publish("NativeSelectBox:isDisabled") === false)
-            Sandbox.publish("OptionsMenu").toggle();
+        Sandbox.publish("OptionsMenu:toggle");
     }
 
 };

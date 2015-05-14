@@ -152,7 +152,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
             var optionValue = option.getValue();
             Sandbox.publish("NativeSelectBox").setSelectedOption(optionValue);
             Sandbox.publish("ValueContainer:refresh");
-            var width = Sandbox.publish("Wrapper:getElement").offsetWidth;
+            var width = Sandbox.publish("WidgetWrapper:getWidth");
             if (optionValue.length > width)
                 width = optionValue;
             if (width > widest) {

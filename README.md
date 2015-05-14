@@ -33,6 +33,7 @@ usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. S
 pollingInterval|Integer|100|polling interval speed in ms
 renderOptionMenuToBody|Boolean|false|If true option menu is appended to body element. If false option menu is rendered inside widget
 openOptionMenuUponHover|Boolean|false|If true option menu is opened when widget is hovered
+animationSpeed|Integer|150|Animation speed in ms. 0 disables animations
 
 API
 ===============
