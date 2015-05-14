@@ -499,7 +499,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox.prototype = Object.create(SELECT.E
 
 	this.getOptionGroup = function() {
 		var parentNode = this.element.parentNode;
-		if (SELECT.UTILS.isEmpty(parentNode))
+		if (!SELECT.UTILS.isElement(parentNode))
 			return;
 		var tagName = parentNode.tagName;
 		if (tagName !== null && tagName !== undefined) {

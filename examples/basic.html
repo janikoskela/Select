@@ -147,11 +147,27 @@
       <option value="h">hhhhh</option>
       <option value="i">iiiii</option>
     </select>
+
+    <select id="bar" tabindex="4">
+      <option value="CA" >Canada</option>
+      <optgroup label="North America">
+        <option value="CA">Canada</option>
+      </optgroup>
+      <optgroup label="foo">
+        <option selected value="FI" >Finland</option>
+        <option value="SE" >Sweden</option>
+        <option value="NO" >Norway</option>
+      </optgroup>
+    </select>
 <script type="text/javascript">
+
+$(document).ready(function() {
+
+});
 
   var settings = {
     //el: document.getElementById("countries"),
-    el: $('#poison'),
+    el: $('#countries'),
     noResultsMessage: "No countries found",
     sort: "desc",
     useSearchInput: true,
@@ -159,7 +175,7 @@
     closeWhenCursorOut: false,
     usePolling: true,
     optionsMenuWidth: undefined,
-    renderOptionMenuToBody: false,
+    renderOptionMenuToBody: true,
     animationSpeed: 100,
     pollingInterval: 1
   };

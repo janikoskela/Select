@@ -39,7 +39,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem = function(Sandbox, optionElem
 
 	this.getOptionGroup = function() {
 		var parentNode = this.element.parentNode;
-		if (SELECT.UTILS.isEmpty(parentNode))
+		if (!SELECT.UTILS.isElement(parentNode))
 			return;
 		var tagName = parentNode.tagName;
 		if (tagName !== null && tagName !== undefined) {
