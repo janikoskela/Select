@@ -211,14 +211,14 @@
     var themeInstance = new Select({
       el: themesSelect,
       theme: "select-js-theme-dark"
-    }).attach();
+    });
+    themeInstance.attach();
 
     $(themesSelect).change(function() {
-      var val = $(this).val();
-      if (val == "default")
-        $(this).parent().parent().removeClass("select-js-theme-dark").addClass(val);
+      if (themeInstance.getTheme() == "select-js-theme-dark")
+        themeInstance.setTheme("select-js-theme-light");
       else
-        $(this).parent().parent().removeClass("select-js-theme-light").addClass(val);
+        themeInstance.setTheme("select-js-theme-dark");
     });
   
   });
