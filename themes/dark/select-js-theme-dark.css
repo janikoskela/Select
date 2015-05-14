@@ -16,6 +16,10 @@
 	color: #b9b9b9;
 	display: inline-block;
 	min-width: 3em;
+    vertical-align: middle;
+	outline: 0;
+	font-weight: normal;
+	font-style: normal;
 }
 
 .select-js-theme-dark .widget-wrapper {
