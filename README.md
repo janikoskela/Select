@@ -49,6 +49,7 @@ toggleLoadingMode|-|Enables or disables loading mode
 toggleInputSearch|-|Enables or disables input search
 isOptionMenuOpen|-|Returns true if option menu is open, false if not
 setTheme|String|Sets theme
+getTheme|-|Gets current theme
 remove|-|Removes widget and the given select. Removes all references also
 
 Monitoring

@@ -93,6 +93,10 @@
 			return this;
 		}
 
+		this.getTheme = function() {
+			return Sandbox.publish("Wrapper:getTheme");
+		}
+
 		this.remove = function() {
 			Sandbox.publish("Wrapper:remove");
 		}
