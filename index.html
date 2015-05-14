@@ -210,15 +210,15 @@
 
     var themeInstance = new Select({
       el: themesSelect,
-      theme: "dark"
+      theme: "select-js-theme-dark"
     }).attach();
 
     $(themesSelect).change(function() {
       var val = $(this).val();
       if (val == "default")
-        $(this).parent().parent().removeClass("dark").addClass(val);
+        $(this).parent().parent().removeClass("select-js-theme-dark").addClass(val);
       else
-        $(this).parent().parent().removeClass("default").addClass(val);
+        $(this).parent().parent().removeClass("select-js-theme-light").addClass(val);
     });
   
   });
