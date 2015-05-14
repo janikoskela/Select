@@ -1851,7 +1851,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
     }
 
     this.getWidthByLongestOption = function() {
-        var paddingRight = 3;
+        var paddingRight = 12;
         var options = Sandbox.publish("NativeSelectBox").getOptions();
         var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
         var l = options.length;
