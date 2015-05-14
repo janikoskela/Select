@@ -42,8 +42,7 @@
 		}
 
 		this.attach = function() {
-			Sandbox.publish("Wrapper:render");
-			return this;
+			return Sandbox.publish("Wrapper:render");
 		}
 
 		this.hide = function() {

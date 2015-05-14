@@ -22,12 +22,13 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 			var optionItem = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem(Sandbox, option);
 			this.optionItems.push(optionItem);
 		}
-		//if (MUTATION_OBSERVER !== undefined && this.observer === undefined)
-		//	attachDomObserver();
 		if (this.usePolling) {
-			this.poller = setInterval(this.poll.bind(this), this.pollingInterval);
+			this.poller = setInterval(this.observeForChanges.bind(this), this.pollingInterval);
 			this.isElemHidden = this.isHidden();
 			this.isElemDisabled = this.isDisabled();
+		}
+		else if (MUTATION_OBSERVER !== undefined && this.observer === undefined) {
+			attachDomObserver();
 		}
 		return this.element;
 	}
@@ -46,7 +47,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		this.element.value = value;
 	}
 
-	this.poll = function() {
+	this.observeForChanges = function() {
 		if (SELECT.UTILS.isEmpty(this.element))
 			Sandbox.publish("Wrapper:remove");
 		var isHidden = this.element.isHidden();
@@ -78,7 +79,6 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		if (!SELECT.UTILS.isEmpty(loading)) {
 			loading = (loading == "true");
 			if (this.loadingMode != loading) {
-				console.log(this.loadingMode, loading)
 				this.loadingMode = loading;
 				if (loading) {
 					Sandbox.publish("Wrapper:enableLoadingMode");
@@ -98,26 +98,26 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	}
 
 	function attachDomObserver() {
-    	that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
-    		mutations.forEach(function (mutation) {
-    			var addedNodesLength = (mutation.addedNodes === undefined) ? 0 : mutation.addedNodes.length;
-    			var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
-    			if (addedNodesLength > 0 || removedNodesLength.length > 0) {
-    				that.attach();
-    				Sandbox.publish("OptionsMenuList:refresh");
-    			}
-      		});
-    	});
-    	var config = { 
-    		attributes: true, 
-    		childList: true, 
-    		characterData : false,  
-    		subtree : false,
-    		attributeOldValue: false,
-    		attributeFilter: [],
-    		characterDataOldValue: false,
-    	};
-    	that.observer.observe(that.element, config);
+		that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
+			mutations.forEach(function (mutation) {
+				var addedNodesLength = (mutation.addedNodes === undefined) ? 0 : mutation.addedNodes.length;
+				var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
+				if (addedNodesLength > 0 || removedNodesLength.length > 0) {
+					that.attach();
+					Sandbox.publish("OptionsMenuList:refresh");
+				}
+				});
+		});
+		var config = { 
+			attributes: true, 
+			childList: true, 
+			characterData : false,  
+			subtree : false,
+			attributeOldValue: false,
+			attributeFilter: [],
+			characterDataOldValue: false,
+		};
+		that.observer.observe(that.element, config);
 	}
 
 	this.setSelectedOption = function(value) {
