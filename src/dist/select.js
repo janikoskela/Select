@@ -1949,7 +1949,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
                 this.el.parentNode.replaceChild(nativeSelectBoxWrapperEl, this.el);
                 nativeSelectBoxWrapperEl.appendChild(this.el);
                 this.element.appendChild(nativeSelectBoxWrapperEl);
-                this.element.addClass(Sandbox.publish("NativeSelectBox:getClass"));
+                if (userDefinedSettings.copyNativeClasses === true)
+                    this.element.addClass(Sandbox.publish("NativeSelectBox:getClass"));
                 break;
             default:
                 throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
