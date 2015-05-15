@@ -199,12 +199,13 @@
        direction: "vertical"            // You can now define the direction of the One Page Scroll animation. Options available are "vertical" and "horizontal". The default value is "vertical".  
     });
 
-    new Select({
+    var ins = new Select({
       el: document.getElementById("countries-select"),
       placeholder: "Choose country",
       searchInputPlaceholder: "Filter countries",
       useSearchInput: true
-    }).attach();
+    });
+    ins.attach();
 
     var themesSelect = document.getElementById("themes-select");
 
