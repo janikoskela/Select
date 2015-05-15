@@ -20,6 +20,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
 
     this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
 
+    this.useNativeOptionList = false;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -57,6 +59,10 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
         this.locked = false;
     }
 
+    this.isNativeOptionListUsed = function() {
+        return this.useNativeOptionList;
+    }
+
     this.renderOptionMenu = function() {
         var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
         var optionsMenuElem = optionsMenu.render();
@@ -72,6 +78,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
             return;
         if (this.responsiveFallback > 0) {
             if (SELECT.UTILS.isTouchDevice() && (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback)) {
+                this.useNativeOptionList = true;
                 Sandbox.publish("NativeSelectBox:open");
                 return;
             }
