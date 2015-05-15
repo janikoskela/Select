@@ -135,10 +135,8 @@ SELECT.ELEMENTS.Element.prototype.slideToggle = function(speed) {
     if(el.getAttribute('data-max-height')) {
         // we've already used this before, so everything is setup
         if(el.style.maxHeight.replace('px', '').replace('%', '') === '0') {
-            console.log("auki")
             el.style.maxHeight = el.getAttribute('data-max-height');
         } else {
-            console.log("sulkee")
             el.style.maxHeight = '0';
         }
     } else {

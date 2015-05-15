@@ -239,10 +239,8 @@ SELECT.ELEMENTS.Element.prototype.slideToggle = function(speed) {
     if(el.getAttribute('data-max-height')) {
         // we've already used this before, so everything is setup
         if(el.style.maxHeight.replace('px', '').replace('%', '') === '0') {
-            console.log("auki")
             el.style.maxHeight = el.getAttribute('data-max-height');
         } else {
-            console.log("sulkee")
             el.style.maxHeight = '0';
         }
     } else {
@@ -326,7 +324,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		else if (MUTATION_OBSERVER !== undefined && this.observer === undefined) {
 			attachDomObserver();
 		}
-		if (Sandbox.publish("WidgetSubWrapper:isNativeOptionListUsed"))
+		if (Sandbox.publish("Wrapper").responsiveFallback > 0 && SELECT.UTILS.isTouchDevice())
 			this.element.addEventListener("change", onChange.bind(this));
 		return this.element;
 	}
@@ -1668,10 +1666,6 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
 
     this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
-    this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
-
-    this.useNativeOptionList = false;
-
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -1726,12 +1720,9 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
     function onClick(e) {
         if (this.locked === true || Sandbox.publish("NativeSelectBox:isDisabled"))
             return;
-        if (this.responsiveFallback > 0) {
-            if (SELECT.UTILS.isTouchDevice() && (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback)) {
-                this.useNativeOptionList = true;
-                Sandbox.publish("NativeSelectBox:open");
-                return;
-            }
+        if (Sandbox.publish("Wrapper:isNativeOptionListUsed")) {
+            Sandbox.publish("NativeSelectBox:open");
+            return;
         }
         if (Sandbox.publish("OptionsMenu") === undefined) {
             this.renderOptionMenu();
@@ -1935,6 +1926,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.isWidthDefinedByUser;
 
+    this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         if (!SELECT.UTILS.isElement(this.el))
@@ -1971,6 +1964,15 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         if (this.width)
             this.setWidth(this.width);
         return this.element;
+    }
+
+    this.isNativeOptionListUsed = function() {
+        if (this.responsiveFallback > 0) {
+            if (SELECT.UTILS.isTouchDevice() && (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function renderWidget() {
@@ -2257,7 +2259,6 @@ SELECT.UTILS.triggerEvent = function(type, targetElem) {
 };
 
 SELECT.UTILS.isTouchDevice = function() {
-    console.log(document.documentElement)
     return (document.documentElement['ontouchstart'] === undefined) ? false : true;
 };
 

@@ -24,6 +24,8 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.isWidthDefinedByUser;
 
+    this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         if (!SELECT.UTILS.isElement(this.el))
@@ -60,6 +62,15 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         if (this.width)
             this.setWidth(this.width);
         return this.element;
+    }
+
+    this.isNativeOptionListUsed = function() {
+        if (this.responsiveFallback > 0) {
+            if (SELECT.UTILS.isTouchDevice() && (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function renderWidget() {

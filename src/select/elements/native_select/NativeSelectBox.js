@@ -30,7 +30,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		else if (MUTATION_OBSERVER !== undefined && this.observer === undefined) {
 			attachDomObserver();
 		}
-		if (Sandbox.publish("WidgetSubWrapper:isNativeOptionListUsed"))
+		if (Sandbox.publish("Wrapper").responsiveFallback > 0 && SELECT.UTILS.isTouchDevice())
 			this.element.addEventListener("change", onChange.bind(this));
 		return this.element;
 	}
