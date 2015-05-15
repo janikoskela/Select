@@ -18,6 +18,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
 
     this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
+    this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -68,6 +70,12 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
     function onClick(e) {
         if (this.locked === true || Sandbox.publish("NativeSelectBox:isDisabled"))
             return;
+        if (this.responsiveFallback > 0) {
+            if (SELECT.UTILS.isTouchDevice() && (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback)) {
+                Sandbox.publish("NativeSelectBox:open");
+                return;
+            }
+        }
         if (Sandbox.publish("OptionsMenu") === undefined) {
             this.renderOptionMenu();
         }

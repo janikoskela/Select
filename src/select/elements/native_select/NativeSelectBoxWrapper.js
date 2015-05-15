@@ -7,7 +7,6 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper = function(Sandbox) {
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type);
 		this.element.setClass(this.className);
-		this.element.hide();
 		return this.element;
 	}
 };

@@ -30,7 +30,21 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		else if (MUTATION_OBSERVER !== undefined && this.observer === undefined) {
 			attachDomObserver();
 		}
+		if (userDefinedSettings.useNative === true)
+			this.element.addEventListener("change", onChange.bind(this));
 		return this.element;
+	}
+
+	function onChange(e) {
+		Sandbox.publish("ValueContainer:refresh");
+	}
+
+	this.open = function() {
+        setTimeout(function() {
+            var event = document.createEvent("MouseEvents");
+            event.initEvent("mousedown", true, true);
+            that.element.dispatchEvent(event);
+        });
 	}
 
 	this.detach = function() {

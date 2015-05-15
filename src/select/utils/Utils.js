@@ -27,6 +27,11 @@ SELECT.UTILS.triggerEvent = function(type, targetElem) {
 	}
 };
 
+SELECT.UTILS.isTouchDevice = function() {
+    console.log(document.documentElement)
+    return (document.documentElement['ontouchstart'] === undefined) ? false : true;
+};
+
 SELECT.UTILS.isDescendant = function(parent, child) {
     var node = child.parentNode;
     while (node != null) {

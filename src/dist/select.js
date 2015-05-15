@@ -326,7 +326,21 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		else if (MUTATION_OBSERVER !== undefined && this.observer === undefined) {
 			attachDomObserver();
 		}
+		if (userDefinedSettings.useNative === true)
+			this.element.addEventListener("change", onChange.bind(this));
 		return this.element;
+	}
+
+	function onChange(e) {
+		Sandbox.publish("ValueContainer:refresh");
+	}
+
+	this.open = function() {
+        setTimeout(function() {
+            var event = document.createEvent("MouseEvents");
+            event.initEvent("mousedown", true, true);
+            that.element.dispatchEvent(event);
+        });
 	}
 
 	this.detach = function() {
@@ -522,7 +536,6 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxItem.prototype = Object.create(SELE
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type);
 		this.element.setClass(this.className);
-		this.element.hide();
 		return this.element;
 	}
 };
@@ -673,6 +686,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		}
 		else
 			this.element.hide();
+		Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
 		Sandbox.publish("OptionsMenuSearchInput:clear");
 		Sandbox.publish("OptionsMenuSearchInput:blur");
 		Sandbox.publish("OptionsMenuSearchNoResults:hide");
@@ -689,6 +703,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		else
 			this.element.show();
 		Sandbox.publish("OptionsMenuList:show");
+		Sandbox.publish("Wrapper:getElement").setDataAttribute("open", true);
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
 		var top = this.element.getStyle("top") || 0;
@@ -1653,6 +1668,8 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
 
     this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
+    this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -1703,6 +1720,12 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
     function onClick(e) {
         if (this.locked === true || Sandbox.publish("NativeSelectBox:isDisabled"))
             return;
+        if (this.responsiveFallback > 0) {
+            if (SELECT.UTILS.isTouchDevice() && (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback)) {
+                Sandbox.publish("NativeSelectBox:open");
+                return;
+            }
+        }
         if (Sandbox.publish("OptionsMenu") === undefined) {
             this.renderOptionMenu();
         }
@@ -1907,8 +1930,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-        if (this.animationsEnabled === true || this.animationsEnabled === undefined)
-            this.element.setDataAttribute("animations-enabled", true);
         if (!SELECT.UTILS.isElement(this.el))
             throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
         var tagName = this.el.tagName.toLowerCase();
@@ -1923,6 +1944,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
                     parentsParent.insertBefore(this.element, this.el);
                 this.element.appendChild(this.el);
                 var nativeSelectBoxWrapper = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper(Sandbox);
+                Sandbox.subscribe("NativeSelectBoxWrapper", nativeSelectBoxWrapper);
                 var nativeSelectBoxWrapperEl = nativeSelectBoxWrapper.render();
                 this.el.parentNode.replaceChild(nativeSelectBoxWrapperEl, this.el);
                 nativeSelectBoxWrapperEl.appendChild(this.el);
@@ -2225,6 +2247,11 @@ SELECT.UTILS.triggerEvent = function(type, targetElem) {
 	        targetElem.fireEvent('on' + type.toLowerCase(), e);
 	    } catch(err){ }
 	}
+};
+
+SELECT.UTILS.isTouchDevice = function() {
+    console.log(document.documentElement)
+    return (document.documentElement['ontouchstart'] === undefined) ? false : true;
 };
 
 SELECT.UTILS.isDescendant = function(parent, child) {

@@ -273,6 +273,13 @@
 	user-select: none; 
 }
 
+.select-js-theme-dark .native-select-wrapper {
+	opacity: 0;
+	max-height: 0;
+	max-width: 0;
+	float: left;
+}
+
 .select-js-theme-dark ::-webkit-scrollbar {
     overflow: visible;
     background: transparent;

@@ -26,8 +26,6 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-        if (this.animationsEnabled === true || this.animationsEnabled === undefined)
-            this.element.setDataAttribute("animations-enabled", true);
         if (!SELECT.UTILS.isElement(this.el))
             throw new SELECT.EXCEPTIONS.InvalidTargetElementErrorException();
         var tagName = this.el.tagName.toLowerCase();
@@ -42,6 +40,7 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
                     parentsParent.insertBefore(this.element, this.el);
                 this.element.appendChild(this.el);
                 var nativeSelectBoxWrapper = new SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBoxWrapper(Sandbox);
+                Sandbox.subscribe("NativeSelectBoxWrapper", nativeSelectBoxWrapper);
                 var nativeSelectBoxWrapperEl = nativeSelectBoxWrapper.render();
                 this.el.parentNode.replaceChild(nativeSelectBoxWrapperEl, this.el);
                 nativeSelectBoxWrapperEl.appendChild(this.el);

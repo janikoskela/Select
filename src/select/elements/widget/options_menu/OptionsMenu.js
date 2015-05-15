@@ -93,6 +93,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		}
 		else
 			this.element.hide();
+		Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
 		Sandbox.publish("OptionsMenuSearchInput:clear");
 		Sandbox.publish("OptionsMenuSearchInput:blur");
 		Sandbox.publish("OptionsMenuSearchNoResults:hide");
@@ -109,6 +110,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		else
 			this.element.show();
 		Sandbox.publish("OptionsMenuList:show");
+		Sandbox.publish("Wrapper:getElement").setDataAttribute("open", true);
 		/*this.element.removeClass("options-container-down");
 		this.element.removeClass("options-container-up");
 		var top = this.element.getStyle("top") || 0;
