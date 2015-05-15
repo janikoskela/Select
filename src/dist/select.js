@@ -326,7 +326,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		else if (MUTATION_OBSERVER !== undefined && this.observer === undefined) {
 			attachDomObserver();
 		}
-		if (userDefinedSettings.useNative === true)
+		if (userDefinedSettings.responsiveFallback > 0)
 			this.element.addEventListener("change", onChange.bind(this));
 		return this.element;
 	}
