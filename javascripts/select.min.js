@@ -104,12 +104,16 @@
 
 SELECT.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Select#constructor-parameters";SELECT.ELEMENTS.Element = function() {};
 
+SELECT.ELEMENTS.Element.prototype.callFunction = function(obj, functionName, args) {
+    return SELECT.UTILS.callFunc(obj, functionName, args);
+};
+
 SELECT.ELEMENTS.Element.prototype.hide = function() {
-	this.element.hide();
+    return this.callFunction(this.element, "hide");
 };
 
 SELECT.ELEMENTS.Element.prototype.show = function() {
-	this.element.show();
+    return this.callFunction(this.element, "show");
 };
 
 SELECT.ELEMENTS.Element.prototype.getElement = function() {
@@ -117,11 +121,11 @@ SELECT.ELEMENTS.Element.prototype.getElement = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.focus = function() {
-	return this.element.focus();
+    return this.callFunction(this.element, "focus");
 };
 
 SELECT.ELEMENTS.Element.prototype.blur = function() {
-	return this.element.blur();
+    return this.callFunction(this.element, "blur");
 };
 
 SELECT.ELEMENTS.Element.prototype.getClass = function() {
@@ -259,23 +263,23 @@ SELECT.ELEMENTS.Element.prototype.slideToggle = function(speed) {
 };
 
 SELECT.ELEMENTS.Element.prototype.isHidden = function() {
-	return this.element.isHidden();
+    return this.callFunction(this.element, "isHidden");
 };
 
 SELECT.ELEMENTS.Element.prototype.disable = function() {
-	this.element.setAttribute("disabled", true);
+    return this.callFunction(this.element, "setAttribute", ["setAttribute", true]);
 };
 
 SELECT.ELEMENTS.Element.prototype.enable = function() {
-	this.element.removeAttribute("disabled");
+    return this.callFunction(this.element, "removeAttribute", "disabled");
 };
 
 SELECT.ELEMENTS.Element.prototype.isDisabled = function() {
-	return this.element.isDisabled();
+    return this.callFunction(this.element, "isDisabled");
 };
 
 SELECT.ELEMENTS.Element.prototype.getTabIndex = function() {
-	return this.element.getAttribute("tabindex");
+    return this.callFunction(this.element, "getAttribute", "tabindex");
 };
 
 SELECT.ELEMENTS.Element.prototype.setSelectedIndex = function(index) {
@@ -283,15 +287,18 @@ SELECT.ELEMENTS.Element.prototype.setSelectedIndex = function(index) {
 };
 
 SELECT.ELEMENTS.Element.prototype.empty = function() {
-	this.element.removeChildren();
+    return this.callFunction(this.element, "removeChildren");
 };
 
 SELECT.ELEMENTS.Element.prototype.hasChildren = function() {
-	return (this.element.getChildren().length > 0);
+    var children = this.callFunction(this.element, "getChildren");
+    if (SELECT.UTILS.isArray(children))
+        return children.length > 0;
+    return false;
 };
 
 SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
-    this.element.setAttribute("tabindex", "-1");
+    return this.callFunction(this.element, "setAttribute", ["tabindex", "-1"]);
 };SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 	var that = this;
 	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
@@ -2222,11 +2229,7 @@ Element.prototype.isDisabled = function() {
 		var parts = name.split(":");
 		if (parts.length > 1) {
 			var instance = this[parts[0]];
-			if (instance !== undefined) {
-				var func = instance[parts[1]];
-				if (typeof func === "function")
-					return func.call(instance, args);
-			}
+			return SELECT.UTILS.callFunc(instance, parts[1], args);
 		}
 		return this[name];
 	}
@@ -2235,6 +2238,23 @@ Element.prototype.isDisabled = function() {
 	if (typeof classes === "string")
 		elem.setClass(classes);
 	return elem;
+};
+
+SELECT.UTILS.callFunc = function(obj, functionName, args) {
+    if (typeof obj == "object") {
+        var func = obj[functionName];
+        if (typeof func == "function") {
+            if (!SELECT.UTILS.isArray(args))
+                return func.call(obj, args);
+            else
+                return func.apply(obj, args);
+        }
+    }
+    return obj;
+};
+
+SELECT.UTILS.isArray = function(obj) {
+    return ('isArray' in Array) ? Array.isArray(obj) : Object.prototype.toString.call(obj) == '[object Array]';
 };
 
 SELECT.UTILS.isElement = function(o) {
