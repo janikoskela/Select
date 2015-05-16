@@ -176,6 +176,7 @@
 	background: #fff;
 	overflow-x: hidden;
 	overflow-y: auto;
+	-ms-overflow-style: none;
 }
 
 .select-js-theme-light.options-container .options-container-list li {
