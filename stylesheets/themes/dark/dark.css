@@ -183,6 +183,7 @@
 	box-shadow: none;
 	overflow-x: hidden;
 	overflow-y: auto;
+	-ms-overflow-style: none;
 }
 
 .select-js-theme-dark.options-container .options-container-list li {
