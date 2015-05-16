@@ -19,6 +19,7 @@
 	outline: 0;
 	font-weight: normal;
 	font-style: normal;
+	scrollbar-base-color: #fff;
 }
 
 .select-js-theme-light .widget-wrapper {
@@ -176,7 +177,6 @@
 	background: #fff;
 	overflow-x: hidden;
 	overflow-y: auto;
-	-ms-overflow-style: none;
 }
 
 .select-js-theme-light.options-container .options-container-list li {
