@@ -61,6 +61,14 @@ When polling is enabled widget monitors given <i>select</i> to look for changed 
  - whether it becomes enabled or disabled
  - whether options are added or removed
 
+Browser compatibility
+===============
+Tested functional with:
+ - IE 9 (animations not supported), 10, 11. IE 8 not supported
+ - Chrome 42
+ - Firefox 37
+ - Opera 29
+
 Licence
 =============
 See the <a href="https://github.com/janikoskela/SimpleSelectBox/blob/master/LICENSE">LICENCE</a>
