@@ -5,6 +5,23 @@ SELECT.UTILS.createElement = function(type, classes) {
 	return elem;
 };
 
+SELECT.UTILS.callFunc = function(obj, functionName, args) {
+    if (typeof obj == "object") {
+        var func = obj[functionName];
+        if (typeof func == "function") {
+            if (!SELECT.UTILS.isArray(args))
+                return func.call(obj, args);
+            else
+                return func.apply(obj, args);
+        }
+    }
+    return obj;
+};
+
+SELECT.UTILS.isArray = function(obj) {
+    return ('isArray' in Array) ? Array.isArray(obj) : Object.prototype.toString.call(obj) == '[object Array]';
+};
+
 SELECT.UTILS.isElement = function(o) {
 	//Returns true if it is a DOM element    
   	return (
