@@ -275,7 +275,10 @@ SELECT.ELEMENTS.Element.prototype.enable = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.isDisabled = function() {
-    return this.callFunction(this.element, "isDisabled");
+    var result = this.callFunction(this.element, "isDisabled");
+    if (result === undefined)
+        return false;
+    return result;
 };
 
 SELECT.ELEMENTS.Element.prototype.getTabIndex = function() {
@@ -2229,7 +2232,10 @@ Element.prototype.isDisabled = function() {
 		var parts = name.split(":");
 		if (parts.length > 1) {
 			var instance = this[parts[0]];
-			return SELECT.UTILS.callFunc(instance, parts[1], args);
+			var result = SELECT.UTILS.callFunc(instance, parts[1], args);
+			if (result === undefined)
+				return instance;
+			return result;
 		}
 		return this[name];
 	}
@@ -2250,7 +2256,6 @@ SELECT.UTILS.callFunc = function(obj, functionName, args) {
                 return func.apply(obj, args);
         }
     }
-    return obj;
 };
 
 SELECT.UTILS.isArray = function(obj) {

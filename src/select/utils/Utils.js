@@ -15,7 +15,6 @@ SELECT.UTILS.callFunc = function(obj, functionName, args) {
                 return func.apply(obj, args);
         }
     }
-    return obj;
 };
 
 SELECT.UTILS.isArray = function(obj) {

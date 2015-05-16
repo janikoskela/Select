@@ -8,7 +8,10 @@ SELECT.SANDBOX.Sandbox = function() {
 		var parts = name.split(":");
 		if (parts.length > 1) {
 			var instance = this[parts[0]];
-			return SELECT.UTILS.callFunc(instance, parts[1], args);
+			var result = SELECT.UTILS.callFunc(instance, parts[1], args);
+			if (result === undefined)
+				return instance;
+			return result;
 		}
 		return this[name];
 	}
