@@ -20,7 +20,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
     	this.element.appendChild(optionsMenuWrapperElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
-
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement || e.relatedTarget;
@@ -77,7 +76,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.hide = function() {
 		if (this.isHidden())
 			return;
-		if (this.animationSpeed !== 0) {
+		if (this.animationSpeed > 0) {
 			this.slideUp(this.animationSpeed);
 
 			//to animate options menu right after its rendered
@@ -139,7 +138,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 			this.setPosition(pos.left, pos.top);
 		}
 		if (userDefinedSettings.optionsMenuWidth === undefined) {
-			var wrapperWidth = Sandbox.publish("Wrapper:getWidth");
+			var wrapperWidth = Sandbox.publish("Wrapper:getElement").offsetWidth;
 			if (wrapperWidth != this.getWidth())
 				this.setWidth(wrapperWidth);
 		}
@@ -153,7 +152,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.isHidden = function() {
 		if (this.animationSpeed !== 0) {
 			var maxHeight = this.element.getStyle("maxHeight");
-			return (maxHeight == '0px') ? true : false;
+			return (maxHeight == '0px' || maxHeight.length == 0) ? true : false;
 		}
 		else
 			return this.element.isHidden();

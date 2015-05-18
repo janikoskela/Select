@@ -93,6 +93,7 @@ SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
     if(el.getAttribute('data-max-height')) {
         this.element.setDataAttribute("slide", "up");
             el.style.maxHeight = '0';
+            el.style.overflowY = 'hidden';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
@@ -116,6 +117,7 @@ SELECT.ELEMENTS.Element.prototype.slideDown = function(speed) {
     if(el.getAttribute('data-max-height')) {
         this.element.setDataAttribute("slide", "down");
         el.style.maxHeight = el.getAttribute('data-max-height');
+        el.style.overflowY = 'visible';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';

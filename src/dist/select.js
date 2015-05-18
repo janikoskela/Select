@@ -197,6 +197,7 @@ SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
     if(el.getAttribute('data-max-height')) {
         this.element.setDataAttribute("slide", "up");
             el.style.maxHeight = '0';
+            el.style.overflowY = 'hidden';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
@@ -220,6 +221,7 @@ SELECT.ELEMENTS.Element.prototype.slideDown = function(speed) {
     if(el.getAttribute('data-max-height')) {
         this.element.setDataAttribute("slide", "down");
         el.style.maxHeight = el.getAttribute('data-max-height');
+        el.style.overflowY = 'visible';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
@@ -621,7 +623,6 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
     	this.element.appendChild(optionsMenuWrapperElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
-
         if (userDefinedSettings.closeWhenCursorOut === true) {
             this.element.addEventListener("mouseleave", function(e) {
                 var toElem = e.toElement || e.relatedTarget;
@@ -678,7 +679,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.hide = function() {
 		if (this.isHidden())
 			return;
-		if (this.animationSpeed !== 0) {
+		if (this.animationSpeed > 0) {
 			this.slideUp(this.animationSpeed);
 
 			//to animate options menu right after its rendered
@@ -740,7 +741,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			this.setPosition(pos.left, pos.top);
 		}
 		if (userDefinedSettings.optionsMenuWidth === undefined) {
-			var wrapperWidth = Sandbox.publish("Wrapper:getWidth");
+			var wrapperWidth = Sandbox.publish("Wrapper:getElement").offsetWidth;
 			if (wrapperWidth != this.getWidth())
 				this.setWidth(wrapperWidth);
 		}
@@ -754,7 +755,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.isHidden = function() {
 		if (this.animationSpeed !== 0) {
 			var maxHeight = this.element.getStyle("maxHeight");
-			return (maxHeight == '0px') ? true : false;
+			return (maxHeight == '0px' || maxHeight.length == 0) ? true : false;
 		}
 		else
 			return this.element.isHidden();
@@ -1725,6 +1726,8 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
         }
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
+        if (Sandbox.publish("OptionsMenu").animationSpeed > 0)
+            Sandbox.publish("OptionsMenu:slideUp"); //animations wont work otherwise
     }
 
     function onClick(e) {
