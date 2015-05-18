@@ -63,11 +63,14 @@ When polling is enabled widget monitors given <i>select</i> to look for changed 
 
 Browser compatibility
 ===============
-Tested functional with:
- - IE 9 (animations not supported), 10, 11. IE 8 not supported
+Supported browsers:
+ - IE 9 (animations not supported), 10, 11
  - Chrome 42
  - Firefox 37
  - Opera 29
+
+Unsupported browsers:
+ - IE 8
 
 Licence
 =============
