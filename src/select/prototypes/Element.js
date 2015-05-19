@@ -28,7 +28,8 @@ Element.prototype.removeStyle = function(name) {
 
 Element.prototype.remove = function() {
   var parent = this.parentNode;
-  parent.removeChild(this);
+  if (!SELECT.UTILS.isElement(parent))
+    parent.removeChild(this);
 };
 
 Element.prototype.getStyle = function(name) {

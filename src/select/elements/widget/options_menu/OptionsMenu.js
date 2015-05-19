@@ -12,6 +12,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
+	this.useAnimations = (userDefinedSettings.useAnimations === undefined) ? true : userDefinedSettings.useAnimations;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -28,7 +29,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
-    	return this.element;
+		return this.element;
 	}
 
 	this.remove = function() {
@@ -76,7 +77,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.hide = function() {
 		if (this.isHidden())
 			return;
-		if (this.animationSpeed > 0) {
+		if (this.useAnimations === true) {
 			this.slideUp(this.animationSpeed);
 
 			//to animate options menu right after its rendered
@@ -101,10 +102,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	}
 
 	this.show = function() {
-		if (this.locked === true || this.isHidden() === false)
+		if (this.locked === true)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		if (this.animationSpeed !== 0)
+		if (this.useAnimations === true)
 			this.slideDown(this.animationSpeed);
 		else
 			this.element.show();
@@ -150,7 +151,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	}
 
 	this.isHidden = function() {
-		if (this.animationSpeed !== 0) {
+		if (this.useAnimations === true) {
 			var maxHeight = this.element.getStyle("maxHeight");
 			return (maxHeight == '0px' || maxHeight.length == 0) ? true : false;
 		}

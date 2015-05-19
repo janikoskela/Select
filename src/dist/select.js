@@ -196,8 +196,8 @@ SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
     speed /= 1000;
     if(el.getAttribute('data-max-height')) {
         this.element.setDataAttribute("slide", "up");
-            el.style.maxHeight = '0';
-            el.style.overflowY = 'hidden';
+        el.style.overflowY = 'hidden';
+        el.style.maxHeight = '0';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
@@ -217,42 +217,16 @@ SELECT.ELEMENTS.Element.prototype.slideDown = function(speed) {
     var el_max_height = 0;
     var el = this.element;
     if (speed == undefined)
-        speed = 0.2;
+        speed = 200;
+    speed /= 1000;
     if(el.getAttribute('data-max-height')) {
+        el.style.overflowY = 'visible';
         this.element.setDataAttribute("slide", "down");
         el.style.maxHeight = el.getAttribute('data-max-height');
-        el.style.overflowY = 'visible';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
-        el.style.overflowY             = 'hidden';
-        el.style.maxHeight             = '0';
-        el.setAttribute('data-max-height', el_max_height);
-        el.style.display               = 'block';
-
-        // we use setTimeout to modify maxHeight later than display (to we have the transition effect)
-        setTimeout(function() {
-            el.style.maxHeight = el_max_height;
-        }, 10);
-    }
-};
-
-SELECT.ELEMENTS.Element.prototype.slideToggle = function(speed) {
-    var el_max_height = 0;
-    var el = this.element;
-    if (speed == undefined)
-        speed = 0.3;
-    if(el.getAttribute('data-max-height')) {
-        // we've already used this before, so everything is setup
-        if(el.style.maxHeight.replace('px', '').replace('%', '') === '0') {
-            el.style.maxHeight = el.getAttribute('data-max-height');
-        } else {
-            el.style.maxHeight = '0';
-        }
-    } else {
-        el_max_height                  = this.getHeight() + 'px';
-        el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
-        el.style.overflowY             = 'hidden';
+        el.style.overflowY             = 'visible';
         el.style.maxHeight             = '0';
         el.setAttribute('data-max-height', el_max_height);
         el.style.display               = 'block';
@@ -615,6 +589,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
+	this.useAnimations = (userDefinedSettings.useAnimations === undefined) ? true : userDefinedSettings.useAnimations;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -631,7 +606,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
-    	return this.element;
+		return this.element;
 	}
 
 	this.remove = function() {
@@ -679,7 +654,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.hide = function() {
 		if (this.isHidden())
 			return;
-		if (this.animationSpeed > 0) {
+		if (this.useAnimations === true) {
 			this.slideUp(this.animationSpeed);
 
 			//to animate options menu right after its rendered
@@ -704,10 +679,10 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	}
 
 	this.show = function() {
-		if (this.locked === true || this.isHidden() === false)
+		if (this.locked === true)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		if (this.animationSpeed !== 0)
+		if (this.useAnimations === true)
 			this.slideDown(this.animationSpeed);
 		else
 			this.element.show();
@@ -753,7 +728,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	}
 
 	this.isHidden = function() {
-		if (this.animationSpeed !== 0) {
+		if (this.useAnimations === true) {
 			var maxHeight = this.element.getStyle("maxHeight");
 			return (maxHeight == '0px' || maxHeight.length == 0) ? true : false;
 		}
@@ -1726,7 +1701,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
         }
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
-        if (Sandbox.publish("OptionsMenu").animationSpeed > 0)
+        if (Sandbox.publish("OptionsMenu").useAnimations === true)
             Sandbox.publish("OptionsMenu:slideUp"); //animations wont work otherwise
     }
 
@@ -2138,7 +2113,8 @@ Element.prototype.removeStyle = function(name) {
 
 Element.prototype.remove = function() {
   var parent = this.parentNode;
-  parent.removeChild(this);
+  if (!SELECT.UTILS.isElement(parent))
+    parent.removeChild(this);
 };
 
 Element.prototype.getStyle = function(name) {

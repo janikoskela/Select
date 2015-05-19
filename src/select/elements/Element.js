@@ -87,13 +87,11 @@ SELECT.ELEMENTS.Element.prototype.getHeight = function() {
 SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
     var el_max_height = 0;
     var el = this.element;
-    if (speed == undefined)
-        speed = 200;
     speed /= 1000;
     if(el.getAttribute('data-max-height')) {
         this.element.setDataAttribute("slide", "up");
-            el.style.maxHeight = '0';
-            el.style.overflowY = 'hidden';
+        el.style.overflowY = 'hidden';
+        el.style.maxHeight = '0';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
@@ -112,43 +110,15 @@ SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
 SELECT.ELEMENTS.Element.prototype.slideDown = function(speed) {
     var el_max_height = 0;
     var el = this.element;
-    if (speed == undefined)
-        speed = 0.2;
+    speed /= 1000;
     if(el.getAttribute('data-max-height')) {
+        el.style.overflowY = 'visible';
         this.element.setDataAttribute("slide", "down");
         el.style.maxHeight = el.getAttribute('data-max-height');
-        el.style.overflowY = 'visible';
     } else {
         el_max_height                  = this.getHeight() + 'px';
         el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
-        el.style.overflowY             = 'hidden';
-        el.style.maxHeight             = '0';
-        el.setAttribute('data-max-height', el_max_height);
-        el.style.display               = 'block';
-
-        // we use setTimeout to modify maxHeight later than display (to we have the transition effect)
-        setTimeout(function() {
-            el.style.maxHeight = el_max_height;
-        }, 10);
-    }
-};
-
-SELECT.ELEMENTS.Element.prototype.slideToggle = function(speed) {
-    var el_max_height = 0;
-    var el = this.element;
-    if (speed == undefined)
-        speed = 0.3;
-    if(el.getAttribute('data-max-height')) {
-        // we've already used this before, so everything is setup
-        if(el.style.maxHeight.replace('px', '').replace('%', '') === '0') {
-            el.style.maxHeight = el.getAttribute('data-max-height');
-        } else {
-            el.style.maxHeight = '0';
-        }
-    } else {
-        el_max_height                  = this.getHeight() + 'px';
-        el.style['transition']         = 'max-height ' + speed + 's ease-in-out';
-        el.style.overflowY             = 'hidden';
+        el.style.overflowY             = 'visible';
         el.style.maxHeight             = '0';
         el.setAttribute('data-max-height', el_max_height);
         el.style.display               = 'block';

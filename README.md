@@ -33,7 +33,8 @@ usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. S
 pollingInterval|Integer|100|polling interval speed in ms
 renderOptionMenuToBody|Boolean|false|If true option menu is appended to body element. If false option menu is rendered inside widget
 openOptionMenuUponHover|Boolean|false|If true option menu is opened when widget is hovered
-animationSpeed|Integer|150|Animation speed in ms. 0 disables animations
+useAnimations|Boolean|true|Indicates whether animations are enabled or disabled
+animationSpeed|Integer|150|Animation speed in ms
 responsiveFallback|Integer|640|If screen width or height goes below this threshold (in pixels) native select option list is displayed. This is disabled if value is not a positive number
 copyNativeClasses|Boolean|false|If true copies given selects classes to widget root element
 
