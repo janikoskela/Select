@@ -29,6 +29,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
+        if (this.useAnimations !== true)
+        	this.element.hide();
 		return this.element;
 	}
 

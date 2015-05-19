@@ -68,7 +68,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
         if (Sandbox.publish("OptionsMenu").useAnimations === true)
-            Sandbox.publish("OptionsMenu:slideUp"); //animations wont work otherwise
+            Sandbox.publish("OptionsMenu:slideUp", Sandbox.publish("OptionsMenu").animationSpeed); //animations wont work otherwise
     }
 
     function onClick(e) {

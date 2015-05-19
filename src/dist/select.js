@@ -191,8 +191,6 @@ SELECT.ELEMENTS.Element.prototype.getHeight = function() {
 SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
     var el_max_height = 0;
     var el = this.element;
-    if (speed == undefined)
-        speed = 200;
     speed /= 1000;
     if(el.getAttribute('data-max-height')) {
         this.element.setDataAttribute("slide", "up");
@@ -216,8 +214,6 @@ SELECT.ELEMENTS.Element.prototype.slideUp = function(speed) {
 SELECT.ELEMENTS.Element.prototype.slideDown = function(speed) {
     var el_max_height = 0;
     var el = this.element;
-    if (speed == undefined)
-        speed = 200;
     speed /= 1000;
     if(el.getAttribute('data-max-height')) {
         el.style.overflowY = 'visible';
@@ -606,6 +602,8 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
+        if (this.useAnimations !== true)
+        	this.element.hide();
 		return this.element;
 	}
 
@@ -1702,7 +1700,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
         if (Sandbox.publish("OptionsMenu").useAnimations === true)
-            Sandbox.publish("OptionsMenu:slideUp"); //animations wont work otherwise
+            Sandbox.publish("OptionsMenu:slideUp", Sandbox.publish("OptionsMenu").animationSpeed); //animations wont work otherwise
     }
 
     function onClick(e) {
