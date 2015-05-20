@@ -113,14 +113,11 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 
 	function attachDomObserver() {
 		that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
-			mutations.forEach(function (mutation) {
-				var addedNodesLength = (mutation.addedNodes === undefined) ? 0 : mutation.addedNodes.length;
-				var removedNodesLength = (mutation.removedNodes === undefined) ? 0 : mutation.removedNodes.length;
-				if (addedNodesLength > 0 || removedNodesLength.length > 0) {
-					that.attach();
-					Sandbox.publish("OptionsMenuList:refresh");
-				}
-				});
+			if (mutations.length > 0) {
+				that.attach();
+				Sandbox.publish("OptionsMenuList:refresh");
+				Sandbox.publish("ValueContainer:refresh");
+			}
 		});
 		var config = { 
 			attributes: true, 
