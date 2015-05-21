@@ -1979,7 +1979,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         //we cannot allow tabindex to remain in given select since it would popup native option menu when not intended
         var tabIndex = Sandbox.publish("NativeSelectBox:getTabIndex");
         if (!SELECT.UTILS.isEmpty(tabIndex)) {
-            Sandbox.publish("Wrapper:getElement").setAttribute("tabindex", tabIndex);
             Sandbox.publish("NativeSelectBox:removeTabIndex");
         }
     }
@@ -2126,11 +2125,8 @@ Element.prototype.removeStyle = function(name) {
 
 Element.prototype.remove = function() {
   var parent = this.parentNode;
-  console.log(SELECT.UTILS.isElement(parent))
-  if (SELECT.UTILS.isElement(parent)) {
-    console.log(this)
+  if (SELECT.UTILS.isElement(parent))
     parent.removeChild(this);
-  }
 };
 
 Element.prototype.getStyle = function(name) {

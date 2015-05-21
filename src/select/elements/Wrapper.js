@@ -82,7 +82,6 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         //we cannot allow tabindex to remain in given select since it would popup native option menu when not intended
         var tabIndex = Sandbox.publish("NativeSelectBox:getTabIndex");
         if (!SELECT.UTILS.isEmpty(tabIndex)) {
-            Sandbox.publish("Wrapper:getElement").setAttribute("tabindex", tabIndex);
             Sandbox.publish("NativeSelectBox:removeTabIndex");
         }
     }
