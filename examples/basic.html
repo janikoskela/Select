@@ -16,7 +16,7 @@
 
 <body>
   <div style="max-height:10em;overflow-y:auto;">
-  <div style="height:20em;">
+  <div style="height:20em;width:40em;">
     <select class="foo" id="countries" tabindex="1">
       <option value="CA" data-image-url="images/Canada.png">Canada</option>
       <optgroup label="North America">
@@ -176,7 +176,8 @@ $(document).ready(function() {
     usePolling: true,
     responsiveFallback: 640,
     optionsMenuWidth: undefined,
-    renderOptionMenuToBody: true,
+    appendOptionMenuTo: $('body'),
+    width: "100%",
     useAnimations: true,
     pollingInterval: 100
   };

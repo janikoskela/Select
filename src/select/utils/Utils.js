@@ -5,6 +5,12 @@ SELECT.UTILS.createElement = function(type, classes) {
 	return elem;
 };
 
+SELECT.UTILS.getElement = function(elem) {
+    if (elem instanceof jQuery)
+        return $(elem)[0];
+    return elem;
+};
+
 SELECT.UTILS.callFunc = function(obj, functionName, args) {
     if (typeof obj == "object") {
         var func = obj[functionName];
@@ -22,7 +28,8 @@ SELECT.UTILS.isArray = function(obj) {
 };
 
 SELECT.UTILS.isElement = function(o) {
-	//Returns true if it is a DOM element    
+	//Returns true if it is a DOM element   
+    o = SELECT.UTILS.getElement(o); 
   	return (
     	typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2 
     	o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"

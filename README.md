@@ -31,7 +31,7 @@ searchInputPlaceholder|String|""|Sets search inputs placeholder text
 noResultsMessage|String|"No results"|No results message
 usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. See <a href="#monitoring">Monitoring</a> below
 pollingInterval|Integer|100|polling interval speed in ms
-renderOptionMenuToBody|Boolean|false|If true option menu is appended to body element. If false option menu is rendered inside widget
+appendOptionMenuTo|Element|-|Element where option menu is to be rendered. Might come useful for example if widgets parent hides overflows
 openOptionMenuUponHover|Boolean|false|If true option menu is opened when widget is hovered
 useAnimations|Boolean|true|Indicates whether animations are enabled or disabled
 animationSpeed|Integer|150|Animation speed in ms

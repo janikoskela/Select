@@ -287,7 +287,6 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	this.isElemDisabled;
 	this.optionsCount;
 	this.loadingMode;
-	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 
 	this.attach = function() {
 		this.optionItems = [];
@@ -378,7 +377,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 				}
 			}
 		}
-		if (this.renderOptionMenuToBody)
+		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) 
 			Sandbox.publish("WidgetWrapper:refresh");
 		Sandbox.publish("ValueContainer:refresh");
 	}
@@ -580,7 +579,6 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.locked = false;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
-	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
 	this.useAnimations = (userDefinedSettings.useAnimations === undefined) ? true : userDefinedSettings.useAnimations;
 
@@ -653,7 +651,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			this.slideUp(this.animationSpeed);
 
 			//to animate options menu right after its rendered
-			if (this.renderOptionMenuToBody) {
+			if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) {
 				var pos = Sandbox.publish("WidgetWrapper:getPosition");
 				this.setPosition(pos.left, pos.top);
 			}
@@ -706,7 +704,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			Sandbox.publish("OptionsMenu:focus");
 			Sandbox.publish("OptionsMenuSearchInput:focus");
 		}
-		if (this.renderOptionMenuToBody) {
+		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) {
 			var pos = Sandbox.publish("WidgetWrapper:getPosition");
 			this.setPosition(pos.left, pos.top);
 		}
@@ -1645,8 +1643,6 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
 
     this.locked = false;
 
-    this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
-
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -1691,8 +1687,9 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
     this.renderOptionMenu = function() {
         var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
         var optionsMenuElem = optionsMenu.render();
-        if (this.renderOptionMenuToBody) {
-            document.body.appendChild(optionsMenuElem);
+        var appendOptionsMenuTo = SELECT.UTILS.getElement(userDefinedSettings.appendOptionMenuTo);
+        if (SELECT.UTILS.isElement(appendOptionsMenuTo)) {
+            appendOptionsMenuTo.appendChild(optionsMenuElem);
         }
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
@@ -2220,6 +2217,12 @@ Element.prototype.isDisabled = function() {
 	return elem;
 };
 
+SELECT.UTILS.getElement = function(elem) {
+    if (elem instanceof jQuery)
+        return $(elem)[0];
+    return elem;
+};
+
 SELECT.UTILS.callFunc = function(obj, functionName, args) {
     if (typeof obj == "object") {
         var func = obj[functionName];
@@ -2237,7 +2240,8 @@ SELECT.UTILS.isArray = function(obj) {
 };
 
 SELECT.UTILS.isElement = function(o) {
-	//Returns true if it is a DOM element    
+	//Returns true if it is a DOM element   
+    o = SELECT.UTILS.getElement(o); 
   	return (
     	typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2 
     	o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"

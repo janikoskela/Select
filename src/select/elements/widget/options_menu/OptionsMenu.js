@@ -10,7 +10,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.locked = false;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
-	this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
 	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
 	this.useAnimations = (userDefinedSettings.useAnimations === undefined) ? true : userDefinedSettings.useAnimations;
 
@@ -83,7 +82,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 			this.slideUp(this.animationSpeed);
 
 			//to animate options menu right after its rendered
-			if (this.renderOptionMenuToBody) {
+			if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) {
 				var pos = Sandbox.publish("WidgetWrapper:getPosition");
 				this.setPosition(pos.left, pos.top);
 			}
@@ -136,7 +135,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 			Sandbox.publish("OptionsMenu:focus");
 			Sandbox.publish("OptionsMenuSearchInput:focus");
 		}
-		if (this.renderOptionMenuToBody) {
+		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) {
 			var pos = Sandbox.publish("WidgetWrapper:getPosition");
 			this.setPosition(pos.left, pos.top);
 		}

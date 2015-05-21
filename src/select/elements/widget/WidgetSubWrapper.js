@@ -16,8 +16,6 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
 
     this.locked = false;
 
-    this.renderOptionMenuToBody = userDefinedSettings.renderOptionMenuToBody || false;
-
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.addEventListener("click", onClick.bind(this));
@@ -62,8 +60,9 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
     this.renderOptionMenu = function() {
         var optionsMenu = Sandbox.subscribe("OptionsMenu", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu(Sandbox));
         var optionsMenuElem = optionsMenu.render();
-        if (this.renderOptionMenuToBody) {
-            document.body.appendChild(optionsMenuElem);
+        var appendOptionsMenuTo = SELECT.UTILS.getElement(userDefinedSettings.appendOptionMenuTo);
+        if (SELECT.UTILS.isElement(appendOptionsMenuTo)) {
+            appendOptionsMenuTo.appendChild(optionsMenuElem);
         }
         else
             Sandbox.publish("WidgetWrapper:getElement").appendChild(optionsMenuElem);
