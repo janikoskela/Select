@@ -153,6 +153,10 @@ SELECT.ELEMENTS.Element.prototype.getTabIndex = function() {
     return this.callFunction(this.element, "getAttribute", "tabindex");
 };
 
+SELECT.ELEMENTS.Element.prototype.removeTabIndex = function() {
+    return this.callFunction(this.element, "removeAttribute", "tabindex");
+};
+
 SELECT.ELEMENTS.Element.prototype.setSelectedIndex = function(index) {
 	this.element.selectedIndex = index;
 };

@@ -78,6 +78,13 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
         var widgetWrapperInstance = Sandbox.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Sandbox));
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
+
+        //we cannot allow tabindex to remain in given select since it would popup native option menu when not intended
+        var tabIndex = Sandbox.publish("NativeSelectBox:getTabIndex");
+        if (!SELECT.UTILS.isEmpty(tabIndex)) {
+            Sandbox.publish("Wrapper:getElement").setAttribute("tabindex", tabIndex);
+            Sandbox.publish("NativeSelectBox:removeTabIndex");
+        }
     }
 
     this.isWidthDefinedByUser = function() {
@@ -151,7 +158,6 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
     }
 
     this.detach = function() {
-        Sandbox.publish("NativeSelectBox:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.remove();

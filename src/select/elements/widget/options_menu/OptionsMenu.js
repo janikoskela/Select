@@ -154,7 +154,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.isHidden = function() {
 		if (this.useAnimations === true) {
 			var maxHeight = this.element.getStyle("maxHeight");
-			return (maxHeight == '0px' || maxHeight.length == 0) ? true : false;
+			return (maxHeight == '0px' || maxHeight.length == 0 || this.element.isHidden()) ? true : false;
 		}
 		else
 			return this.element.isHidden();

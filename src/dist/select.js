@@ -257,6 +257,10 @@ SELECT.ELEMENTS.Element.prototype.getTabIndex = function() {
     return this.callFunction(this.element, "getAttribute", "tabindex");
 };
 
+SELECT.ELEMENTS.Element.prototype.removeTabIndex = function() {
+    return this.callFunction(this.element, "removeAttribute", "tabindex");
+};
+
 SELECT.ELEMENTS.Element.prototype.setSelectedIndex = function(index) {
 	this.element.selectedIndex = index;
 };
@@ -326,6 +330,9 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		this.observer = undefined;
 		if (this.poller !== undefined)
 			clearInterval(this.poller);
+		var tabIndex = Sandbox.publish("Wrapper:getTabIndex");
+		if (!SELECT.UTILS.isEmpty(tabIndex))
+			this.element.setAttribute("tabindex", tabIndex);
 	}
 
 	this.triggerFocus = function() {
@@ -727,7 +734,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.isHidden = function() {
 		if (this.useAnimations === true) {
 			var maxHeight = this.element.getStyle("maxHeight");
-			return (maxHeight == '0px' || maxHeight.length == 0) ? true : false;
+			return (maxHeight == '0px' || maxHeight.length == 0 || this.element.isHidden()) ? true : false;
 		}
 		else
 			return this.element.isHidden();
@@ -1831,20 +1838,24 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
     function onKeyUp(e) {
         if (this.locked === true)
             return false;
+        if (Sandbox.publish("OptionsMenu") === undefined) {
+            Sandbox.publish("WidgetSubWrapper:renderOptionMenu");
+        }
         switch(e.keyCode) {
             case KEY_CODES.UP:
-                Sandbox.publish("OptionsMenuList").hoverPreviousOption();
+                Sandbox.publish("OptionsMenuList:hoverPreviousOption");
                 break;
             case KEY_CODES.DOWN:
-                Sandbox.publish("OptionsMenuList").hoverNextOption();
+                Sandbox.publish("OptionsMenuList:hoverNextOption");
                 break;
             case KEY_CODES.ENTER:
-                Sandbox.publish("OptionsMenuList").selectHoveredOption();
+                Sandbox.publish("OptionsMenuList:selectHoveredOption");
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                Sandbox.publish("OptionsMenuList").searchByFirstChar(firstChar);
+                Sandbox.publish("OptionsMenuList:searchByFirstChar", firstChar);
         }
+        Sandbox.publish("OptionsMenu:getElement").hide();
         e.stopPropagation();
         e.preventDefault();
         return false;
@@ -1964,6 +1975,13 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
         var widgetWrapperInstance = Sandbox.subscribe("WidgetWrapper", new SELECT.ELEMENTS.WIDGET.Wrapper(Sandbox));
         var widgetWrapperElem = widgetWrapperInstance.render();
         that.element.appendChild(widgetWrapperElem);
+
+        //we cannot allow tabindex to remain in given select since it would popup native option menu when not intended
+        var tabIndex = Sandbox.publish("NativeSelectBox:getTabIndex");
+        if (!SELECT.UTILS.isEmpty(tabIndex)) {
+            Sandbox.publish("Wrapper:getElement").setAttribute("tabindex", tabIndex);
+            Sandbox.publish("NativeSelectBox:removeTabIndex");
+        }
     }
 
     this.isWidthDefinedByUser = function() {
@@ -2037,7 +2055,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
     }
 
     this.detach = function() {
-        Sandbox.publish("NativeSelectBox:detach");
         var parent = this.element.parentNode;
         parent.insertBefore(this.el, this.element);
         this.remove();
@@ -2109,8 +2126,11 @@ Element.prototype.removeStyle = function(name) {
 
 Element.prototype.remove = function() {
   var parent = this.parentNode;
-  if (!SELECT.UTILS.isElement(parent))
+  console.log(SELECT.UTILS.isElement(parent))
+  if (SELECT.UTILS.isElement(parent)) {
+    console.log(this)
     parent.removeChild(this);
+  }
 };
 
 Element.prototype.getStyle = function(name) {

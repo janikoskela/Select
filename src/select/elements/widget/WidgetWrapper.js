@@ -113,20 +113,24 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
     function onKeyUp(e) {
         if (this.locked === true)
             return false;
+        if (Sandbox.publish("OptionsMenu") === undefined) {
+            Sandbox.publish("WidgetSubWrapper:renderOptionMenu");
+        }
         switch(e.keyCode) {
             case KEY_CODES.UP:
-                Sandbox.publish("OptionsMenuList").hoverPreviousOption();
+                Sandbox.publish("OptionsMenuList:hoverPreviousOption");
                 break;
             case KEY_CODES.DOWN:
-                Sandbox.publish("OptionsMenuList").hoverNextOption();
+                Sandbox.publish("OptionsMenuList:hoverNextOption");
                 break;
             case KEY_CODES.ENTER:
-                Sandbox.publish("OptionsMenuList").selectHoveredOption();
+                Sandbox.publish("OptionsMenuList:selectHoveredOption");
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
-                Sandbox.publish("OptionsMenuList").searchByFirstChar(firstChar);
+                Sandbox.publish("OptionsMenuList:searchByFirstChar", firstChar);
         }
+        Sandbox.publish("OptionsMenu:getElement").hide();
         e.stopPropagation();
         e.preventDefault();
         return false;
