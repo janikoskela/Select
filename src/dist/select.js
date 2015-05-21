@@ -379,7 +379,11 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) 
 			Sandbox.publish("WidgetWrapper:refresh");
-		Sandbox.publish("ValueContainer:refresh");
+		var selectedOptionValue = this.getSelectedOptionValue();
+		if (this.selectedValue !== undefined)
+			this.selectedValue == selectedOptionValue;
+		if (selectedOptionValue != this.selectedValue)
+			Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.getOptions = function() {
