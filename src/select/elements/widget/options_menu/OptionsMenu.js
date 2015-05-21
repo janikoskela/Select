@@ -88,7 +88,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 				this.setPosition(pos.left, pos.top);
 			}
 			if (userDefinedSettings.optionsMenuWidth === undefined) {
-				var wrapperWidth = Sandbox.publish("Wrapper:getWidth");
+				var wrapperWidth = Sandbox.publish("Wrapper:getElement").offsetWidth;
 				if (wrapperWidth != this.getWidth())
 					this.setWidth(wrapperWidth);
 			}
