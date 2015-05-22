@@ -115,6 +115,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
             return false;
         if (Sandbox.publish("OptionsMenu") === undefined) {
             Sandbox.publish("WidgetSubWrapper:renderOptionMenu");
+            Sandbox.publish("OptionsMenu:getElement").hide();
         }
         switch(e.keyCode) {
             case KEY_CODES.UP:
@@ -130,7 +131,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
                 Sandbox.publish("OptionsMenuList:searchByFirstChar", firstChar);
         }
-        Sandbox.publish("OptionsMenu:getElement").hide();
         e.stopPropagation();
         e.preventDefault();
         return false;

@@ -81,7 +81,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
         if(as=== bs) return 0;
         a= as.toLowerCase().match(rx);
         b= bs.toLowerCase().match(rx);
-        L= a.length;
+        L= (a == null) ? 0 : a.length;
         while(i<L){
             if(!b[i]) return 1;
             a1= a[i],
@@ -103,7 +103,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
         if(as=== bs) return 0;
         a= as.toLowerCase().match(rx);
         b= bs.toLowerCase().match(rx);
-        L= a.length;
+        L= (a == null) ? 0 : a.length;
         while(i<L){
             if(!b[i]) return -1;
             a1= a[i],
@@ -119,11 +119,18 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 
     function getNextOption(option) {
     	var nextSibling = option.getNextSibling();
+        var optionGroup;
     	if (nextSibling !== null && nextSibling !== undefined) {
-    		var index = nextSibling.getDataAttribute("index");
-    		return getOptionByIndex(index);
+            if (nextSibling.hasClass("options-container-list-item")) {
+                var index = nextSibling.getDataAttribute("index");
+                return getOptionByIndex(index);
+            }
+            else if (nextSibling.hasClass("options-menu-list-item-group")) {
+                optionGroup = nextSibling;
+            }
     	}
-    	var optionGroup = option.getOptionGroup();
+        if (optionGroup === undefined)
+    	   optionGroup = option.getOptionGroup();
     	if (optionGroup !== undefined) {
 	    	var nextOptionGroup = optionGroup.nextSibling;
 	    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
@@ -154,12 +161,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     }
 
     function getPreviousOption(option) {
-    	var i = option.getIndex();
-    	if (i === 0)
-    		return that.optionItems[that.optionItems.length - 1];
-    	if (that.optionItems.length - 1 >= i)
-    		return that.optionItems[i - 1];
-    	return that.optionItems[that.optionItems.length - 1];
+        var previousSibling = option.getElement().previousSibling;
+        if (previousSibling == null)
+            return that.optionItems[that.optionItems.length - 1];
+        return getOptionByIndex(previousSibling.getDataAttribute("index"));
     }
 
     this.hoverPreviousOption = function() {
@@ -182,7 +187,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 		if (optionsMenu.isHidden())
 			option.setSelected();
 		else
-			this.element.scrollTop = option.getElement().offsetTop;
+            option.getElement().scrollIntoView();
     }
 
     this.hoverFirstOption = function() {
@@ -202,8 +207,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 	}
 
     this.hoverNextOption = function() {
-		var optionsMenu = Sandbox.publish("OptionsMenu");
-		if (optionsMenu.isLocked())
+		if (Sandbox.publish("OptionsMenu:isLocked"))
 			return;
     	var hovered = this.getHoveredOption();
     	var option;
@@ -218,7 +222,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     		option = this.optionItems[0];
     	this.clearOptionItemHovers();
 		option.setHovered();
-		if (optionsMenu.isHidden()) {
+		if (Sandbox.publish("OptionsMenu:isHidden")) {
 			option.setSelected();
 		}
 		else {
@@ -227,8 +231,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     }
 
     this.selectHoveredOption = function() {
-		var optionsMenu = Sandbox.publish("OptionsMenu");
-		if (optionsMenu.isLocked())
+		if (Sandbox.publish("OptionsMenu:isLocked"))
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
@@ -241,6 +244,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     	var optionItemsCount = that.optionItems.length;
     	for (var i = 0; i < optionItemsCount; i++) {
 			var itemText = that.optionItems[i].getText();
+            if (SELECT.UTILS.isEmpty(itemText))
+                continue;
 			if (firstChar === itemText[0].toLowerCase()) {
 				that.optionItems[i].setHovered();
 				if (optionsMenu.isHidden())
@@ -255,6 +260,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     function isNextOptionFirstCharMatch(optionItem, firstChar) {
     	var optionsMenu = Sandbox.publish("OptionsMenu");
     	var text = optionItem.getText();
+        if (SELECT.UTILS.isEmpty(text)) {
+            return false;
+        }
     	if (text[0].toLowerCase() === firstChar) {
     		that.clearOptionItemHovers();
     		optionItem.setHovered();

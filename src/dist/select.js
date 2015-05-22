@@ -686,8 +686,11 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		if (this.locked === true)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		if (this.useAnimations === true)
+		if (this.useAnimations === true) {
 			this.slideDown(this.animationSpeed);
+			if (this.element.isHidden())
+				this.element.show();
+		}
 		else
 			this.element.show();
 		Sandbox.publish("OptionsMenuList:show");
@@ -1021,7 +1024,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         if(as=== bs) return 0;
         a= as.toLowerCase().match(rx);
         b= bs.toLowerCase().match(rx);
-        L= a.length;
+        L= (a == null) ? 0 : a.length;
         while(i<L){
             if(!b[i]) return 1;
             a1= a[i],
@@ -1043,7 +1046,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         if(as=== bs) return 0;
         a= as.toLowerCase().match(rx);
         b= bs.toLowerCase().match(rx);
-        L= a.length;
+        L= (a == null) ? 0 : a.length;
         while(i<L){
             if(!b[i]) return -1;
             a1= a[i],
@@ -1059,11 +1062,18 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 
     function getNextOption(option) {
     	var nextSibling = option.getNextSibling();
+        var optionGroup;
     	if (nextSibling !== null && nextSibling !== undefined) {
-    		var index = nextSibling.getDataAttribute("index");
-    		return getOptionByIndex(index);
+            if (nextSibling.hasClass("options-container-list-item")) {
+                var index = nextSibling.getDataAttribute("index");
+                return getOptionByIndex(index);
+            }
+            else if (nextSibling.hasClass("options-menu-list-item-group")) {
+                optionGroup = nextSibling;
+            }
     	}
-    	var optionGroup = option.getOptionGroup();
+        if (optionGroup === undefined)
+    	   optionGroup = option.getOptionGroup();
     	if (optionGroup !== undefined) {
 	    	var nextOptionGroup = optionGroup.nextSibling;
 	    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
@@ -1094,12 +1104,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     }
 
     function getPreviousOption(option) {
-    	var i = option.getIndex();
-    	if (i === 0)
-    		return that.optionItems[that.optionItems.length - 1];
-    	if (that.optionItems.length - 1 >= i)
-    		return that.optionItems[i - 1];
-    	return that.optionItems[that.optionItems.length - 1];
+        var previousSibling = option.getElement().previousSibling;
+        if (previousSibling == null)
+            return that.optionItems[that.optionItems.length - 1];
+        return getOptionByIndex(previousSibling.getDataAttribute("index"));
     }
 
     this.hoverPreviousOption = function() {
@@ -1122,7 +1130,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 		if (optionsMenu.isHidden())
 			option.setSelected();
 		else
-			this.element.scrollTop = option.getElement().offsetTop;
+            option.getElement().scrollIntoView();
     }
 
     this.hoverFirstOption = function() {
@@ -1142,8 +1150,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 	}
 
     this.hoverNextOption = function() {
-		var optionsMenu = Sandbox.publish("OptionsMenu");
-		if (optionsMenu.isLocked())
+		if (Sandbox.publish("OptionsMenu:isLocked"))
 			return;
     	var hovered = this.getHoveredOption();
     	var option;
@@ -1158,7 +1165,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     		option = this.optionItems[0];
     	this.clearOptionItemHovers();
 		option.setHovered();
-		if (optionsMenu.isHidden()) {
+		if (Sandbox.publish("OptionsMenu:isHidden")) {
 			option.setSelected();
 		}
 		else {
@@ -1167,8 +1174,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     }
 
     this.selectHoveredOption = function() {
-		var optionsMenu = Sandbox.publish("OptionsMenu");
-		if (optionsMenu.isLocked())
+		if (Sandbox.publish("OptionsMenu:isLocked"))
 			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
@@ -1181,6 +1187,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     	var optionItemsCount = that.optionItems.length;
     	for (var i = 0; i < optionItemsCount; i++) {
 			var itemText = that.optionItems[i].getText();
+            if (SELECT.UTILS.isEmpty(itemText))
+                continue;
 			if (firstChar === itemText[0].toLowerCase()) {
 				that.optionItems[i].setHovered();
 				if (optionsMenu.isHidden())
@@ -1195,6 +1203,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     function isNextOptionFirstCharMatch(optionItem, firstChar) {
     	var optionsMenu = Sandbox.publish("OptionsMenu");
     	var text = optionItem.getText();
+        if (SELECT.UTILS.isEmpty(text)) {
+            return false;
+        }
     	if (text[0].toLowerCase() === firstChar) {
     		that.clearOptionItemHovers();
     		optionItem.setHovered();
@@ -1368,14 +1379,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
 	this.placeholder = userDefinedSettings.searchInputPlaceholder || "";
 
 	this.render = function() {
-    	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	this.element.setAttribute("type", "text");
-    	this.element.setAttribute("tabindex", this.tabIndex);
-    	this.element.setAttribute("placeholder", this.placeholder);
-    	this.element.addEventListener("blur", this.focusOut);
-    	this.element.addEventListener("keyup", onKeyUp.bind(this));
-    	this.element.addEventListener("click", onClick.bind(this));
-    	return this.element;
+		this.element = SELECT.UTILS.createElement(this.type, this.className);
+		this.element.setAttribute("type", "text");
+		this.element.setAttribute("tabindex", this.tabIndex);
+		this.element.setAttribute("placeholder", this.placeholder);
+		this.element.addEventListener("blur", this.focusOut);
+		this.element.addEventListener("keyup", onKeyUp.bind(this));
+		this.element.addEventListener("click", onClick.bind(this));
+		return this.element;
 	}
 
 	this.clear = function() {
@@ -1399,14 +1410,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
 	function onKeyUp(e) {
 		e.preventDefault();
 		e.stopPropagation();
-        switch(e.keyCode) {
-        	case KEY_CODES.DOWN:
-        		this.allowClose = false;
-        		Sandbox.publish("OptionsMenuList").hoverFirstOption();
-        		this.blur();
-        		break;
-        	default:
-        		this.allowClose = true;
+		switch(e.keyCode) {
+			case KEY_CODES.DOWN:
+				this.allowClose = false;
+				Sandbox.publish("OptionsMenuList").hoverFirstOption();
+				this.blur();
+				break;
+			default:
+				this.allowClose = true;
 				var value = this.element.value;
 				if (value.length === 0) {
 					Sandbox.publish("OptionsMenuList:refresh");
@@ -1415,7 +1426,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
 				}
 				else
 					Sandbox.publish("OptionsMenuList:searchByInputString", value);
-        }
+		}
 	}
 };
 
@@ -1840,6 +1851,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
             return false;
         if (Sandbox.publish("OptionsMenu") === undefined) {
             Sandbox.publish("WidgetSubWrapper:renderOptionMenu");
+            Sandbox.publish("OptionsMenu:getElement").hide();
         }
         switch(e.keyCode) {
             case KEY_CODES.UP:
@@ -1855,7 +1867,6 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();
                 Sandbox.publish("OptionsMenuList:searchByFirstChar", firstChar);
         }
-        Sandbox.publish("OptionsMenu:getElement").hide();
         e.stopPropagation();
         e.preventDefault();
         return false;

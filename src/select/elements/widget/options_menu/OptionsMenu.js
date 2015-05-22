@@ -106,8 +106,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		if (this.locked === true)
 			return;
 		Sandbox.publish("NativeSelectBox:triggerFocus");
-		if (this.useAnimations === true)
+		if (this.useAnimations === true) {
 			this.slideDown(this.animationSpeed);
+			if (this.element.isHidden())
+				this.element.show();
+		}
 		else
 			this.element.show();
 		Sandbox.publish("OptionsMenuList:show");
