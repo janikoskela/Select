@@ -126,7 +126,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
                 return getOptionByIndex(index);
             }
             else if (nextSibling.hasClass("options-menu-list-item-group")) {
-                optionGroup = nextSibling;
+                return getFirstOptionFromOptionGroup(nextSibling);
             }
         }
         if (optionGroup === undefined)
@@ -151,6 +151,13 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     	return getOptionByIndex(index);
     }
 
+    function getLastOptionFromOptionGroup(optionGroup) {
+        var children = optionGroup.getChildren();
+        children = children[1].getChildren();
+        var index = children[children.length - 1].getDataAttribute("index");
+        return getOptionByIndex(index);
+    }
+
     function getOptionByIndex(index) {
     	var l = that.optionItems.length;
     	for (var i = 0; i < l; i++) {
@@ -160,11 +167,53 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     	}
     }
 
-    function getPreviousOption(option) {
-        var previousSibling = option.getPreviousSibling();
-        if (previousSibling == null)
+    function getLastOption() {
+        if (SELECT.UTILS.isEmpty(that.optionGroups))
             return that.optionItems[that.optionItems.length - 1];
-        return getOptionByIndex(previousSibling.getDataAttribute("index"));
+        var keys = Object.keys(that.optionGroups);
+        var lastKey = keys[keys.length - 1];
+        var list = that.optionGroups[lastKey].getList();
+        var children = list.getElement().children;
+        var last = children[children.length - 1];
+        return getOptionByIndex(last.getDataAttribute("index"));
+    }
+
+    function getFirstOption() {
+        if (SELECT.UTILS.isEmpty(that.optionGroups))
+            return that.optionItems[0];
+        var keys = Object.keys(that.optionGroups);
+        var firstKey = keys[0];
+        var list = that.optionGroups[firstKey].getList();
+        var children = list.getElement().children;
+        var first = children[0];
+        return getOptionByIndex(first.getDataAttribute("index"));
+    }
+
+    function getPreviousOption(option) {
+        var nextSibling = option.getPreviousSibling();
+        var optionGroup;
+        if (nextSibling !== null && nextSibling !== undefined) {
+            if (nextSibling.hasClass("options-container-list-item")) {
+                var index = nextSibling.getDataAttribute("index");
+                return getOptionByIndex(index);
+            }
+            else if (nextSibling.hasClass("options-menu-list-item-group")) {
+                return getLastOptionFromOptionGroup(nextSibling);
+            }
+        }
+        if (optionGroup === undefined)
+           optionGroup = option.getOptionGroup();
+        if (optionGroup !== undefined) {
+            var nextOptionGroup = optionGroup.previousSibling;
+            if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
+                if (nextOptionGroup.hasClass("options-container-list-item")) {
+                    var index = nextOptionGroup.getDataAttribute("index");
+                    return getOptionByIndex(index);
+                }
+                else
+                    return getLastOptionFromOptionGroup(nextOptionGroup);
+            }
+        }
     }
 
     this.hoverPreviousOption = function() {
@@ -181,7 +230,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     	else
     		option = getPreviousOption(hovered);
     	if (option === undefined)
-    		option = this.optionItems[this.optionItems.length - 1];
+    		option = getLastOption();
     	this.clearOptionItemHovers();
 		option.setHovered();
 		if (optionsMenu.isHidden())
@@ -219,7 +268,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     	else
     		option = getNextOption(hovered);
     	if (option === undefined)
-    		option = this.optionItems[0];
+    		option = getFirstOption();
     	this.clearOptionItemHovers();
 		option.setHovered();
 		if (Sandbox.publish("OptionsMenu:isHidden")) {
