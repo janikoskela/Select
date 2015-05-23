@@ -176,7 +176,7 @@
 	list-style-type: none;
 	max-height: 20em;
 	margin-top: .5em;
-	width: 97%;
+	width: calc(100% - 5px);
 	height: auto;
 	float: none;
 	border-radius: 0;
