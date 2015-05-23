@@ -83,6 +83,10 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 		return this.element.getNextSibling();
 	}
 
+	this.getPreviousSibling = function() {
+		return this.element.getPreviousSibling();
+	}
+
 	this.removeSelected = function() {
 		this.element.removeClass("selected");
 	}

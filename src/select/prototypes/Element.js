@@ -10,6 +10,10 @@ Element.prototype.getNextSibling = function() {
   return this.nextSibling;
 };
 
+Element.prototype.getPreviousSibling = function() {
+  return this.previousSibling;
+};
+
 Element.prototype.removeChildren = function() {
   this.innerHTML = "";
 };

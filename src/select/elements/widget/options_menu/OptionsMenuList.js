@@ -118,9 +118,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     }
 
     function getNextOption(option) {
-    	var nextSibling = option.getNextSibling();
+        var nextSibling = option.getNextSibling();
         var optionGroup;
-    	if (nextSibling !== null && nextSibling !== undefined) {
+        if (nextSibling !== null && nextSibling !== undefined) {
             if (nextSibling.hasClass("options-container-list-item")) {
                 var index = nextSibling.getDataAttribute("index");
                 return getOptionByIndex(index);
@@ -128,20 +128,20 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
             else if (nextSibling.hasClass("options-menu-list-item-group")) {
                 optionGroup = nextSibling;
             }
-    	}
+        }
         if (optionGroup === undefined)
-    	   optionGroup = option.getOptionGroup();
-    	if (optionGroup !== undefined) {
-	    	var nextOptionGroup = optionGroup.nextSibling;
-	    	if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
-	    		if (nextOptionGroup.hasClass("options-container-list-item")) {
-	    			var index = nextOptionGroup.getDataAttribute("index");
-	    			return getOptionByIndex(index);
-	    		}
-	    		else
-	    			return getFirstOptionFromOptionGroup(nextOptionGroup);
-	    	}
-	    }
+           optionGroup = option.getOptionGroup();
+        if (optionGroup !== undefined) {
+            var nextOptionGroup = optionGroup.nextSibling;
+            if (nextOptionGroup !== null && nextOptionGroup !== undefined) {
+                if (nextOptionGroup.hasClass("options-container-list-item")) {
+                    var index = nextOptionGroup.getDataAttribute("index");
+                    return getOptionByIndex(index);
+                }
+                else
+                    return getFirstOptionFromOptionGroup(nextOptionGroup);
+            }
+        }
     }
 
     function getFirstOptionFromOptionGroup(optionGroup) {
@@ -161,7 +161,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     }
 
     function getPreviousOption(option) {
-        var previousSibling = option.getElement().previousSibling;
+        var previousSibling = option.getPreviousSibling();
         if (previousSibling == null)
             return that.optionItems[that.optionItems.length - 1];
         return getOptionByIndex(previousSibling.getDataAttribute("index"));
