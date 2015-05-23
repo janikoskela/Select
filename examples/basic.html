@@ -148,8 +148,8 @@
       <option value="i">iiiii</option>
     </select>
 
-    <select id="bar" tabindex="4">
-      <option value="CA" >Canada</option>
+    <select id="bar">
+      <!--<option value="CA" >Canada</option>
       <optgroup label="North America">
         <option value="CA">Canada</option>
       </optgroup>
@@ -157,7 +157,7 @@
         <option selected value="FI" >Finland</option>
         <option value="SE" >Sweden</option>
         <option value="NO" >Norway</option>
-      </optgroup>
+      </optgroup>-->
     </select>
 <script type="text/javascript">
 
@@ -167,7 +167,7 @@ $(document).ready(function() {
 
   var settings = {
     //el: document.getElementById("countries"),
-    el: $('#poison'),
+    el: $('#bar'),
     noResultsMessage: "No countries found",
     sort: "desc",
     useSearchInput: true,
@@ -187,6 +187,7 @@ $(document).ready(function() {
   console.log(defaultInstance.isOptionMenuOpen())
 
   setTimeout(function() {
+    $("#bar").html('<option value="CA" >Canada</option><optgroup label="North America"><option value="CA">Canada</option></optgroup><optgroup label="foo"><option selected value="FI" >Finland</option><option value="SE" >Sweden</option><option value="NO" >Norway</option></optgroup>');
       console.log(defaultInstance.getTheme())
       //console.log(new Date().getTime());
       //console.log(defaultInstance.isOptionMenuOpen())

@@ -344,7 +344,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 	}
 
 	this.observeForChanges = function() {
-		if (SELECT.UTILS.isEmpty(this.element))
+		if (SELECT.UTILS.isEmpty(this.element) && !SELECT.UTILS.isElement(this.element))
 			Sandbox.publish("Wrapper:remove");
 		var isHidden = this.element.isHidden();
 		if (isHidden !== this.isElemHidden) {
