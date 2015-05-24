@@ -184,10 +184,12 @@ $(document).ready(function() {
 
   var defaultInstance = new Select(settings);
   defaultInstance.attach();
+  defaultInstance.toggleLoadingMode();
   console.log(defaultInstance.isOptionMenuOpen())
 
   setTimeout(function() {
     $("#bar").html('<option value="CA" >Canada</option><optgroup label="North America"><option value="CA">Canada</option></optgroup><optgroup label="foo"><option selected value="FI" >Finland</option><option value="SE" >Sweden</option><option value="NO" >Norway</option></optgroup>');
+    defaultInstance.toggleLoadingMode();
       console.log(defaultInstance.getTheme())
       //console.log(new Date().getTime());
       //console.log(defaultInstance.isOptionMenuOpen())

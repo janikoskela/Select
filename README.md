@@ -30,6 +30,7 @@ useSearchInput|boolean|false|Renders search input if true
 searchInputPlaceholder|String|""|Sets search inputs placeholder text
 noResultsMessage|String|"No results"|No results message
 usePolling|Boolean|false|Given <i>select</i> is polled to monitor its changes. See <a href="#monitoring">Monitoring</a> below
+useMutationObserver|Boolean|true|Given <i>select</i> is observed for option additions and removals. This is ignored if usePolling is true. If user browser doesn't support mutation observer it is replaced with polling
 pollingInterval|Integer|100|polling interval speed in ms
 appendOptionMenuTo|Element|-|Element where option menu is to be rendered. Might come useful for example if widgets parent hides overflows
 openOptionMenuUponHover|Boolean|false|If true option menu is opened when widget is hovered
