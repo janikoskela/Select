@@ -55,6 +55,8 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		this.observer = undefined;
 		if (this.poller !== undefined)
 			clearInterval(this.poller);
+		if (this.mutationObserverReplacement !== undefined)
+			clearInterval(this.mutationObserverReplacement);
 		var tabIndex = Sandbox.publish("Wrapper:getTabIndex");
 		if (!SELECT.UTILS.isEmpty(tabIndex))
 			this.element.setAttribute("tabindex", tabIndex);
