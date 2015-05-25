@@ -621,6 +621,11 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
         }
         if (this.useAnimations !== true)
         	this.element.hide();
+        else {
+        	this.element.addEventListener("webkitTransitionEnd", onTransitionEnd);
+        	this.element.addEventListener("transitionend", onTransitionEnd);
+        	this.element.addEventListener("oTransitionEnd", onTransitionEnd);
+        }
 		return this.element;
 	}
 
@@ -666,6 +671,18 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		this.element.setStyle("height", this.height);
 	}
 
+	function onTransitionEnd() {
+		var isOpen = Sandbox.publish("Wrapper:getElement").getDataAttribute("open");
+		if (isOpen) {
+			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
+			Sandbox.publish("OptionsMenuSearchInput:clear");
+			Sandbox.publish("OptionsMenuSearchInput:blur");
+			Sandbox.publish("OptionsMenuSearchNoResults:hide");
+			Sandbox.publish("OptionsMenuList:refresh");
+			Sandbox.publish("ArrowContainerContent").down();
+		}
+	}
+
 	this.hide = function() {
 		if (this.isHidden())
 			return;
@@ -683,14 +700,15 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 					this.setWidth(wrapperWidth);
 			}
 		}
-		else
+		else {
 			this.element.hide();
-		Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
-		Sandbox.publish("OptionsMenuSearchInput:clear");
-		Sandbox.publish("OptionsMenuSearchInput:blur");
-		Sandbox.publish("OptionsMenuSearchNoResults:hide");
-		Sandbox.publish("OptionsMenuList:refresh");
-		Sandbox.publish("ArrowContainerContent").down();
+			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
+			Sandbox.publish("OptionsMenuSearchInput:clear");
+			Sandbox.publish("OptionsMenuSearchInput:blur");
+			Sandbox.publish("OptionsMenuSearchNoResults:hide");
+			Sandbox.publish("OptionsMenuList:refresh");
+			Sandbox.publish("ArrowContainerContent").down();
+		}
 	}
 
 	this.show = function() {

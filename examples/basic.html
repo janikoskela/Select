@@ -16,7 +16,7 @@
 
 <body>
   <div style="max-height:10em;overflow-y:auto;">
-  <div style="height:20em;width:40em;">
+  <div style="height:20em;width:40em;padding-top:5em;">
     <select class="foo" id="countries" tabindex="1">
       <option value="CA" data-image-url="images/Canada.png"></option>
       <optgroup label="North America">
@@ -167,7 +167,7 @@ $(document).ready(function() {
 
   var settings = {
     //el: document.getElementById("countries"),
-    el: $('#bar'),
+    el: $('#poison'),
     noResultsMessage: "No countries found",
     sort: "desc",
     useSearchInput: true,
@@ -184,12 +184,10 @@ $(document).ready(function() {
 
   var defaultInstance = new Select(settings);
   defaultInstance.attach();
-  defaultInstance.toggleLoadingMode();
   console.log(defaultInstance.isOptionMenuOpen())
 
   setTimeout(function() {
     $("#bar").html('<option value="CA" >Canada</option><optgroup label="North America"><option value="CA">Canada</option></optgroup><optgroup label="foo"><option selected value="FI" >Finland</option><option value="SE" >Sweden</option><option value="NO" >Norway</option></optgroup>');
-    defaultInstance.toggleLoadingMode();
       console.log(defaultInstance.getTheme())
       //console.log(new Date().getTime());
       //console.log(defaultInstance.isOptionMenuOpen())
