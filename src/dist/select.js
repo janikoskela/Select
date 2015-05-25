@@ -744,7 +744,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		Sandbox.publish("ArrowContainerContent").up();*/
 		Sandbox.publish("ArrowContainerContent").up();
 		if (this.useSearchInput === true) {
-			Sandbox.publish("OptionsMenu:focus");
+			//Sandbox.publish("OptionsMenu:focus");
 			Sandbox.publish("OptionsMenuSearchInput:focus");
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) {
