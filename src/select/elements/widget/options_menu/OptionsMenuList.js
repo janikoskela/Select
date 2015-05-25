@@ -275,7 +275,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 			option.setSelected();
 		}
 		else {
-			this.element.scrollTop = option.getElement().offsetTop - Sandbox.publish("OptionsMenuSearchWrapper:getHeight");
+            option.getElement().scrollIntoView();
 		}
     }
 

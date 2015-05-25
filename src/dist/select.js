@@ -1251,7 +1251,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 			option.setSelected();
 		}
 		else {
-			this.element.scrollTop = option.getElement().offsetTop - Sandbox.publish("OptionsMenuSearchWrapper:getHeight");
+            option.getElement().scrollIntoView();
 		}
     }
 
