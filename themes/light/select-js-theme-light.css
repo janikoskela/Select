@@ -29,7 +29,7 @@
 	border-radius: 5px;
 }
 
-.select-js-theme-light .widget-wrapper:focus {
+.select-js-theme-light .widget-wrapper:focus, .select-js-theme-light[data-open=true] .widget-wrapper {
 	outline-width: 0px;
 	-webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
 	-moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
