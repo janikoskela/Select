@@ -622,9 +622,9 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
         if (this.useAnimations !== true)
         	this.element.hide();
         else {
-        	this.element.addEventListener("webkitTransitionEnd", onTransitionEnd);
-        	this.element.addEventListener("transitionend", onTransitionEnd);
-        	this.element.addEventListener("oTransitionEnd", onTransitionEnd);
+        	this.element.addEventListener("webkitTransitionEnd", onTransitionEnd.bind(this));
+        	this.element.addEventListener("transitionend", onTransitionEnd.bind(this));
+        	this.element.addEventListener("oTransitionEnd", onTransitionEnd.bind(this));
         }
 		return this.element;
 	}
@@ -673,7 +673,8 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 
 	function onTransitionEnd() {
 		var isOpen = Sandbox.publish("Wrapper:getElement").getDataAttribute("open");
-		if (isOpen) {
+		var slide = this.element.getDataAttribute("slide");
+		if (isOpen && slide == "up") {
 			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
 			Sandbox.publish("OptionsMenuSearchInput:clear");
 			Sandbox.publish("OptionsMenuSearchInput:blur");
@@ -744,7 +745,6 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		Sandbox.publish("ArrowContainerContent").up();*/
 		Sandbox.publish("ArrowContainerContent").up();
 		if (this.useSearchInput === true) {
-			//Sandbox.publish("OptionsMenu:focus");
 			Sandbox.publish("OptionsMenuSearchInput:focus");
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) {
@@ -832,6 +832,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 		}
     	if (this.selected === true)
     		this.setInitialSelected();
+    	else
+    		this.removeSelected();
     	return this.element;
 	}
 
@@ -856,7 +858,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	}
 
 	this.isSelected = function() {
-		return (this.element.hasClass("selected"));
+		return this.element.getDataAttribute("selected");
 	}
 
 	this.setHovered = function() {
@@ -865,14 +867,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 
 	this.setInitialSelected = function() {
 		Sandbox.publish("OptionsMenuList:clearSelected");
-		this.element.addClass("selected");
+		this.element.setDataAttribute("selected", true);
 		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.setSelected = function() {
 		Sandbox.publish("OptionsMenuList:clearSelected");
 		this.nativeSelectOption.setSelected();
-		this.element.addClass("selected");
+		this.element.setDataAttribute("selected", true);
 		Sandbox.publish("ValueContainer:refresh");
 	}
 
@@ -885,7 +887,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	}
 
 	this.removeSelected = function() {
-		this.element.removeClass("selected");
+		this.element.setDataAttribute("selected", false);
 	}
 
 	this.getOptionGroup = function() {
@@ -921,14 +923,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	function onClick(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		var optionsMenuList = Sandbox.publish("OptionsMenuList");
-		var prevSelected = optionsMenuList.getSelectedOption();
-		if (prevSelected === undefined) {
+		if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") != this.getValue())
 			this.setSelected();
-		}
-		else if (prevSelected.getIndex() !== this.getIndex()) {
-			this.setSelected();
-		}
 		Sandbox.publish("OptionsMenu:hide");
 		return false;
 	}
@@ -1212,7 +1208,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 		if (optionsMenu.isHidden())
 			option.setSelected();
 		else
-            option.getElement().scrollIntoView();
+            this.element.scrollTop = option.getElement().offsetTop - option.getElement().parentNode.offsetTop;
     }
 
     this.hoverFirstOption = function() {
@@ -1251,7 +1247,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 			option.setSelected();
 		}
 		else {
-            option.getElement().scrollIntoView();
+            this.element.scrollTop = option.getElement().offsetTop - option.getElement().parentNode.offsetTop;
 		}
     }
 

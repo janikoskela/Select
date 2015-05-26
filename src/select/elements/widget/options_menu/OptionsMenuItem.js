@@ -35,6 +35,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 		}
     	if (this.selected === true)
     		this.setInitialSelected();
+    	else
+    		this.removeSelected();
     	return this.element;
 	}
 
@@ -59,7 +61,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 	}
 
 	this.isSelected = function() {
-		return (this.element.hasClass("selected"));
+		return this.element.getDataAttribute("selected");
 	}
 
 	this.setHovered = function() {
@@ -68,14 +70,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 
 	this.setInitialSelected = function() {
 		Sandbox.publish("OptionsMenuList:clearSelected");
-		this.element.addClass("selected");
+		this.element.setDataAttribute("selected", true);
 		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.setSelected = function() {
 		Sandbox.publish("OptionsMenuList:clearSelected");
 		this.nativeSelectOption.setSelected();
-		this.element.addClass("selected");
+		this.element.setDataAttribute("selected", true);
 		Sandbox.publish("ValueContainer:refresh");
 	}
 
@@ -88,7 +90,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 	}
 
 	this.removeSelected = function() {
-		this.element.removeClass("selected");
+		this.element.setDataAttribute("selected", false);
 	}
 
 	this.getOptionGroup = function() {
@@ -124,14 +126,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 	function onClick(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		var optionsMenuList = Sandbox.publish("OptionsMenuList");
-		var prevSelected = optionsMenuList.getSelectedOption();
-		if (prevSelected === undefined) {
+		if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") != this.getValue())
 			this.setSelected();
-		}
-		else if (prevSelected.getIndex() !== this.getIndex()) {
-			this.setSelected();
-		}
 		Sandbox.publish("OptionsMenu:hide");
 		return false;
 	}

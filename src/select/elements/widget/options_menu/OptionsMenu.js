@@ -31,9 +31,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
         if (this.useAnimations !== true)
         	this.element.hide();
         else {
-        	this.element.addEventListener("webkitTransitionEnd", onTransitionEnd);
-        	this.element.addEventListener("transitionend", onTransitionEnd);
-        	this.element.addEventListener("oTransitionEnd", onTransitionEnd);
+        	this.element.addEventListener("webkitTransitionEnd", onTransitionEnd.bind(this));
+        	this.element.addEventListener("transitionend", onTransitionEnd.bind(this));
+        	this.element.addEventListener("oTransitionEnd", onTransitionEnd.bind(this));
         }
 		return this.element;
 	}
@@ -82,7 +82,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 
 	function onTransitionEnd() {
 		var isOpen = Sandbox.publish("Wrapper:getElement").getDataAttribute("open");
-		if (isOpen) {
+		var slide = this.element.getDataAttribute("slide");
+		if (isOpen && slide == "up") {
 			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
 			Sandbox.publish("OptionsMenuSearchInput:clear");
 			Sandbox.publish("OptionsMenuSearchInput:blur");

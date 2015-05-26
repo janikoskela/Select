@@ -236,7 +236,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 		if (optionsMenu.isHidden())
 			option.setSelected();
 		else
-            option.getElement().scrollIntoView();
+            this.element.scrollTop = option.getElement().offsetTop - option.getElement().parentNode.offsetTop;
     }
 
     this.hoverFirstOption = function() {
@@ -275,7 +275,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 			option.setSelected();
 		}
 		else {
-            option.getElement().scrollIntoView();
+            this.element.scrollTop = option.getElement().offsetTop - option.getElement().parentNode.offsetTop;
 		}
     }
 
