@@ -1977,8 +1977,10 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                 widest = width;
             }
         }
-        Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
-        Sandbox.publish("ValueContainer:refresh");
+        if (!SELECT.UTILS.isEmpty(origOption)) {
+            Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
+            Sandbox.publish("ValueContainer:refresh");
+        }
         return widest + paddingRight;
     }
 
