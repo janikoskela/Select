@@ -596,7 +596,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.commonClassName = "options-container";
 	this.className = this.commonClassName + " " + Sandbox.publish("Wrapper:getTheme");
 	this.element;
-	this.width = userDefinedSettings.optionsMenuWidth;
+	this.width = userDefinedSettings.optionMenuWidth;
 	this.height = undefined;
 	this.locked = false;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
@@ -695,7 +695,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 				var pos = Sandbox.publish("WidgetWrapper:getPosition");
 				this.setPosition(pos.left, pos.top);
 			}
-			if (userDefinedSettings.optionsMenuWidth === undefined) {
+			if (userDefinedSettings.optionMenuWidth === undefined) {
 				var wrapperWidth = Sandbox.publish("Wrapper:getElement").offsetWidth;
 				if (wrapperWidth != this.getWidth())
 					this.setWidth(wrapperWidth);
@@ -751,7 +751,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			var pos = Sandbox.publish("WidgetWrapper:getPosition");
 			this.setPosition(pos.left, pos.top);
 		}
-		if (userDefinedSettings.optionsMenuWidth === undefined) {
+		if (userDefinedSettings.optionMenuWidth === undefined) {
 			var wrapperWidth = Sandbox.publish("Wrapper:getElement").offsetWidth;
 			if (wrapperWidth != this.getWidth())
 				this.setWidth(wrapperWidth);
