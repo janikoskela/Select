@@ -163,6 +163,11 @@
 
 $(document).ready(function() {
 
+  new Select({
+    el: $('#poison'),
+    useAnimations: false
+  }).attach();
+
 });
 
   var settings = {
@@ -177,7 +182,6 @@ $(document).ready(function() {
     responsiveFallback: 640,
     optionsMenuWidth: 'auto',
     appendOptionMenuTo: $('body'),
-    width: "100%",
     useAnimations: true,
     pollingInterval: 100
   };
@@ -201,17 +205,6 @@ $(document).ready(function() {
   $('#countries').change(function() {
     console.log("change")
   })
-/*instance = new Selex({
-  el: document.getElementById("poison"),
-  theme: "poison",
-  sort: "desc",
-  orientation: "right",
-  placeholder: "Choose an option",
-  closeWhenCursorOut: true,
-  useSearchInput: true,
-});
-instance.attach();
-//instance.toggleLoadingMode();*/
 </script>
 </div></div>
 </body>

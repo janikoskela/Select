@@ -1846,12 +1846,10 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
             });
         }
         document.addEventListener("click", function(e) {
-            Sandbox.publish("OptionsMenu:hide");
-        });
-        this.element.addEventListener("click", function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
+            var toElem = e.toElement || e.relatedTarget;
+            var optionsMenuElem = Sandbox.publish("Wrapper:getElement");
+            if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
+                Sandbox.publish("OptionsMenu:hide");
         });
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
