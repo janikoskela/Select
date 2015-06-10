@@ -232,6 +232,7 @@
 	width: 95%;
 	-webkit-appearance:textfield;
 	border: 0;
+	max-width: none !important;
 }
 
 .select-js-theme-light.options-container .options-menu-search-input:focus {

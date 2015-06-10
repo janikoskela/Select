@@ -240,6 +240,7 @@
 	border: 0;
 	background: transparent;
 	color: #b9b9b9;
+	max-width: none !important;
 }
 
 .select-js-theme-dark.options-container .options-menu-search-input:focus {
