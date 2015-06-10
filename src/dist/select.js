@@ -397,11 +397,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) 
 			Sandbox.publish("WidgetWrapper:refresh");
-		var selectedOptionValue = this.getSelectedOptionValue();
-		if (this.selectedValue !== undefined)
-			this.selectedValue == selectedOptionValue;
-		if (selectedOptionValue != this.selectedValue)
-			Sandbox.publish("ValueContainer:refresh");
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.getOptions = function() {
@@ -1706,6 +1702,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage.prototype = Object.cr
 
 	this.refresh = function() {
 		var text = Sandbox.publish("NativeSelectBox").getSelectedOptionText();
+		console.log(text)
 		if (text === undefined || text === null && this.placeholder !== undefined)
 			this.setText(this.placeholder);
 		else if (text.length  === 0 && this.placeholder !== undefined)
@@ -1968,8 +1965,10 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         for (var i = 0; i < l; i++) {
             var option = options[i];
             var optionValue = option.getValue();
-            Sandbox.publish("NativeSelectBox").setSelectedOption(optionValue);
-            Sandbox.publish("ValueContainer:refresh");
+            var optionText = option.getText();
+            var optionImgUrl = option.getImageUrl();
+            Sandbox.publish("ValueContainerText:setText", optionText);
+            Sandbox.publish("ValueContainerImage:setImageUrl", optionImgUrl);
             var width = Sandbox.publish("WidgetWrapper:getWidth");
             if (optionValue.length > width)
                 width = optionValue;
@@ -1977,9 +1976,9 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                 widest = width;
             }
         }
-        if (!SELECT.UTILS.isEmpty(origOption)) {
-            Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
-            Sandbox.publish("ValueContainer:refresh");
+        if (SELECT.UTILS.isElement(origOption) || !SELECT.UTILS.isEmpty(origOption)) {
+            Sandbox.publish("ValueContainerText:setText", origOption.text);
+            Sandbox.publish("ValueContainerImage:setImageUrl", origOption.getDataAttribute("image-url"));
         }
         return widest + paddingRight;
     }

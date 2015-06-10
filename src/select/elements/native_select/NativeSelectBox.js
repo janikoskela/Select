@@ -117,11 +117,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) 
 			Sandbox.publish("WidgetWrapper:refresh");
-		var selectedOptionValue = this.getSelectedOptionValue();
-		if (this.selectedValue !== undefined)
-			this.selectedValue == selectedOptionValue;
-		if (selectedOptionValue != this.selectedValue)
-			Sandbox.publish("ValueContainer:refresh");
+		Sandbox.publish("ValueContainer:refresh");
 	}
 
 	this.getOptions = function() {

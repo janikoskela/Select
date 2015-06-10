@@ -154,8 +154,10 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         for (var i = 0; i < l; i++) {
             var option = options[i];
             var optionValue = option.getValue();
-            Sandbox.publish("NativeSelectBox").setSelectedOption(optionValue);
-            Sandbox.publish("ValueContainer:refresh");
+            var optionText = option.getText();
+            var optionImgUrl = option.getImageUrl();
+            Sandbox.publish("ValueContainerText:setText", optionText);
+            Sandbox.publish("ValueContainerImage:setImageUrl", optionImgUrl);
             var width = Sandbox.publish("WidgetWrapper:getWidth");
             if (optionValue.length > width)
                 width = optionValue;
@@ -163,9 +165,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
                 widest = width;
             }
         }
-        if (!SELECT.UTILS.isEmpty(origOption)) {
-            Sandbox.publish("NativeSelectBox").setSelectedOption(origOption.value);
-            Sandbox.publish("ValueContainer:refresh");
+        if (SELECT.UTILS.isElement(origOption) || !SELECT.UTILS.isEmpty(origOption)) {
+            Sandbox.publish("ValueContainerText:setText", origOption.text);
+            Sandbox.publish("ValueContainerImage:setImageUrl", origOption.getDataAttribute("image-url"));
         }
         return widest + paddingRight;
     }
