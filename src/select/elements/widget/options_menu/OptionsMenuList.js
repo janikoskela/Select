@@ -83,7 +83,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
         b= bs.toLowerCase().match(rx);
         L= (a == null) ? 0 : a.length;
         while(i<L){
-            if(!b[i]) return 1;
+            if(b == null || !b[i]) return 1;
             a1= a[i],
             b1= b[i++];
             if(a1!== b1){
@@ -105,7 +105,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
         b= bs.toLowerCase().match(rx);
         L= (a == null) ? 0 : a.length;
         while(i<L){
-            if(!b[i]) return -1;
+            if(b == null || !b[i]) return -1;
             a1= a[i],
             b1= b[i++];
             if(a1!== b1){

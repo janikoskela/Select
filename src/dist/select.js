@@ -1055,7 +1055,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         b= bs.toLowerCase().match(rx);
         L= (a == null) ? 0 : a.length;
         while(i<L){
-            if(!b[i]) return 1;
+            if(b == null || !b[i]) return 1;
             a1= a[i],
             b1= b[i++];
             if(a1!== b1){
@@ -1077,7 +1077,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
         b= bs.toLowerCase().match(rx);
         L= (a == null) ? 0 : a.length;
         while(i<L){
-            if(!b[i]) return -1;
+            if(b == null || !b[i]) return -1;
             a1= a[i],
             b1= b[i++];
             if(a1!== b1){
@@ -1845,12 +1845,14 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
-        document.addEventListener("click", function(e) {
-            var toElem = e.toElement || e.relatedTarget;
-            var optionsMenuElem = Sandbox.publish("Wrapper:getElement");
-            if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
-                Sandbox.publish("OptionsMenu:hide");
-        });
+        else {
+            document.addEventListener("click", function(e) {
+                var toElem = e.toElement || e.relatedTarget;
+                var optionsMenuElem = Sandbox.publish("Wrapper:getElement");
+                if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
+                    Sandbox.publish("OptionsMenu:hide");
+            });
+        }
         this.element.addEventListener("keyup", onKeyUp.bind(this));
         this.element.addEventListener("keydown", onKeyDown.bind(this));
         this.element.addEventListener("touchmove", touchScroll.bind(this));
