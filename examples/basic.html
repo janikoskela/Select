@@ -177,7 +177,7 @@ $(document).ready(function() {
     sort: "desc",
     useSearchInput: true,
     orientation: "right",
-    closeWhenCursorOut: false,
+    closeWhenCursorOut: true,
     usePolling: true,
     responsiveFallback: 640,
     optionsMenuWidth: 'auto',
@@ -190,7 +190,7 @@ $(document).ready(function() {
   defaultInstance.attach();
   console.log(defaultInstance.isOptionMenuOpen())
 
-  setTimeout(function() {
+  /*setTimeout(function() {
     $("#bar").html('<option value="CA" >Canada</option><optgroup label="North America"><option value="CA">Canada</option></optgroup><optgroup label="foo"><option selected value="FI" >Finland</option><option value="SE" >Sweden</option><option value="NO" >Norway</option></optgroup>');
       console.log(defaultInstance.getTheme())
       //console.log(new Date().getTime());
@@ -204,7 +204,7 @@ $(document).ready(function() {
 
   $('#countries').change(function() {
     console.log("change")
-  })
+  })*/
 </script>
 </div></div>
 </body>
