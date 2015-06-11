@@ -54,7 +54,6 @@
 
 .select-js-theme-light[disabled=true] .widget-sub-wrapper {
 	background-color: #fff;
-	height: 3.5em;
 	line-height: 2em;
 	position: relative;
 	cursor: default;
@@ -93,7 +92,7 @@
 	margin-left: .3em;
 }
 
-.select-js-theme-light[disabled=true] .value-container span {
+.select-js-theme-light[disabled=true] .value-container {
 	opacity: .4;
 }
 

@@ -117,7 +117,11 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) 
 			Sandbox.publish("WidgetWrapper:refresh");
-		Sandbox.publish("ValueContainer:refresh");
+		var currentValue = this.getSelectedOptionValue();
+		if (currentValue !== this.currentValue) {
+			this.currentValue = currentValue;
+			Sandbox.publish("ValueContainer:refresh");
+		}
 	}
 
 	this.getOptions = function() {

@@ -190,13 +190,13 @@ $(document).ready(function() {
   defaultInstance.attach();
   console.log(defaultInstance.isOptionMenuOpen())
 
-  /*setTimeout(function() {
+  setTimeout(function() {
     $("#bar").html('<option value="CA" >Canada</option><optgroup label="North America"><option value="CA">Canada</option></optgroup><optgroup label="foo"><option selected value="FI" >Finland</option><option value="SE" >Sweden</option><option value="NO" >Norway</option></optgroup>');
       console.log(defaultInstance.getTheme())
       //console.log(new Date().getTime());
       //console.log(defaultInstance.isOptionMenuOpen())
     //$('#countries').attr("data-selectjs-loading-mode", true)
-
+    $('#countries').val("US");
     //$('#countries').prop("disabled", "disabled");
 
     //$('#countries').hide();
@@ -204,7 +204,7 @@ $(document).ready(function() {
 
   $('#countries').change(function() {
     console.log("change")
-  })*/
+  })
 </script>
 </div></div>
 </body>

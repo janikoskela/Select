@@ -54,7 +54,6 @@
 }
 
 .select-js-theme-dark[disabled=true] .widget-sub-wrapper {
-	height: 3.5em;
 	line-height: 2em;
 	position: relative;
 	cursor: default;
@@ -92,7 +91,7 @@
 	margin-left: .3em;
 }
 
-.select-js-theme-dark[disabled=true] .value-container span {
+.select-js-theme-dark[disabled=true] .value-container {
 	opacity: .4;
 }
 

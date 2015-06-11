@@ -397,7 +397,11 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) 
 			Sandbox.publish("WidgetWrapper:refresh");
-		Sandbox.publish("ValueContainer:refresh");
+		var currentValue = this.getSelectedOptionValue();
+		if (currentValue !== this.currentValue) {
+			this.currentValue = currentValue;
+			Sandbox.publish("ValueContainer:refresh");
+		}
 	}
 
 	this.getOptions = function() {
@@ -1702,7 +1706,6 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage.prototype = Object.cr
 
 	this.refresh = function() {
 		var text = Sandbox.publish("NativeSelectBox").getSelectedOptionText();
-		console.log(text)
 		if (text === undefined || text === null && this.placeholder !== undefined)
 			this.setText(this.placeholder);
 		else if (text.length  === 0 && this.placeholder !== undefined)
@@ -1957,7 +1960,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
     }
 
     this.getWidthByLongestOption = function() {
-        var paddingRight = 12;
+        var paddingRight = 28; //to avoid text having ellipsis. todo: calculate this
         var options = Sandbox.publish("NativeSelectBox").getOptions();
         var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
         var l = options.length;

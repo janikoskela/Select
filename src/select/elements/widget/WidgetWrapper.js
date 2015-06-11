@@ -146,7 +146,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
     }
 
     this.getWidthByLongestOption = function() {
-        var paddingRight = 12;
+        var paddingRight = 28; //to avoid text having ellipsis. todo: calculate this
         var options = Sandbox.publish("NativeSelectBox").getOptions();
         var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
         var l = options.length;
