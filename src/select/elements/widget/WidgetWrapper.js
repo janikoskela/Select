@@ -146,7 +146,6 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
     }
 
     this.getWidthByLongestOption = function() {
-        var paddingRight = 28; //to avoid text having ellipsis. todo: calculate this
         var options = Sandbox.publish("NativeSelectBox").getOptions();
         var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
         var l = options.length;
@@ -169,7 +168,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
             Sandbox.publish("ValueContainerText:setText", origOption.text);
             Sandbox.publish("ValueContainerImage:setImageUrl", origOption.getDataAttribute("image-url"));
         }
-        return widest + paddingRight;
+        return widest;
     }
 
 };
