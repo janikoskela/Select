@@ -61,6 +61,10 @@ When polling is enabled widget monitors given <i>select</i> to look for changed 
  - whether it becomes enabled or disabled
  - whether options are added or removed
 
+Implementations
+===============
+ - <a href="https://kauppa.louhi.fi">Louhi Shop</a>
+
 Browser compatibility
 ===============
 Supported browsers:
