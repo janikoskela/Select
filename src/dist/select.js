@@ -128,6 +128,16 @@ SELECT.ELEMENTS.Element.prototype.blur = function() {
     return this.callFunction(this.element, "blur");
 };
 
+SELECT.ELEMENTS.Element.prototype.getOuterWidth = function() {
+// we're assuming a reference to your element in a variable called 'element'
+var style = this.element.currentStyle || window.getComputedStyle(this.element),
+    width = this.element.offsetWidth, // or use style.width
+    margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight),
+    padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight),
+    border = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+    return width + margin + padding + border;
+};
+
 SELECT.ELEMENTS.Element.prototype.getClass = function() {
 	return this.element.className;
 };
@@ -1680,10 +1690,10 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 
 	this.onLoad = function() {
 		if (!this.loaded) {
-			if (Sandbox.publish("Wrapper:isWidthDefinedByUser"))
+			if (Sandbox.publish("Wrapper").isWidthDefinedByUser)
 				return;
 			var width = Sandbox.publish("Wrapper:getWidth");
-			width += this.getWidth();
+			width += this.getOuterWidth();
 			Sandbox.publish("Wrapper:setWidth", width);
 			this.loaded = true;
 		}
@@ -1960,6 +1970,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
     }
 
     this.getWidthByLongestOption = function() {
+        var ellipsisCharAmount = 3;
         var options = Sandbox.publish("NativeSelectBox").getOptions();
         var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
         var l = options.length;
@@ -1967,7 +1978,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         for (var i = 0; i < l; i++) {
             var option = options[i];
             var optionValue = option.getValue();
-            var optionText = option.getText();
+            var optionText = option.getText() + ellipsisCharAmount;
             var optionImgUrl = option.getImageUrl();
             Sandbox.publish("ValueContainerText:setText", optionText);
             if (!SELECT.UTILS.isEmpty(optionImgUrl)) {

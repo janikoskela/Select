@@ -24,6 +24,15 @@ SELECT.ELEMENTS.Element.prototype.blur = function() {
     return this.callFunction(this.element, "blur");
 };
 
+SELECT.ELEMENTS.Element.prototype.getOuterWidth = function() {
+var style = this.element.currentStyle || window.getComputedStyle(this.element),
+    width = this.element.offsetWidth, // or use style.width
+    margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight),
+    padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight),
+    border = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+    return width + margin + padding + border;
+};
+
 SELECT.ELEMENTS.Element.prototype.getClass = function() {
 	return this.element.className;
 };

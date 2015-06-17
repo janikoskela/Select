@@ -21,10 +21,10 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 
 	this.onLoad = function() {
 		if (!this.loaded) {
-			if (Sandbox.publish("Wrapper:isWidthDefinedByUser"))
+			if (Sandbox.publish("Wrapper").isWidthDefinedByUser)
 				return;
 			var width = Sandbox.publish("Wrapper:getWidth");
-			width += this.getWidth();
+			width += this.getOuterWidth();
 			Sandbox.publish("Wrapper:setWidth", width);
 			this.loaded = true;
 		}

@@ -146,6 +146,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
     }
 
     this.getWidthByLongestOption = function() {
+        var ellipsisCharAmount = 3;
         var options = Sandbox.publish("NativeSelectBox").getOptions();
         var origOption = Sandbox.publish("NativeSelectBox").getSelectedOption();
         var l = options.length;
@@ -153,7 +154,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         for (var i = 0; i < l; i++) {
             var option = options[i];
             var optionValue = option.getValue();
-            var optionText = option.getText();
+            var optionText = option.getText() + ellipsisCharAmount;
             var optionImgUrl = option.getImageUrl();
             Sandbox.publish("ValueContainerText:setText", optionText);
             if (!SELECT.UTILS.isEmpty(optionImgUrl)) {
