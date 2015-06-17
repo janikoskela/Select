@@ -156,7 +156,9 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
             var optionText = option.getText();
             var optionImgUrl = option.getImageUrl();
             Sandbox.publish("ValueContainerText:setText", optionText);
-            Sandbox.publish("ValueContainerImage:setImageUrl", optionImgUrl);
+            if (!SELECT.UTILS.isEmpty(optionImgUrl)) {
+                Sandbox.publish("ValueContainerImage:setImageUrl", optionImgUrl);
+            }
             var width = Sandbox.publish("WidgetWrapper:getWidth");
             if (optionValue.length > width)
                 width = optionValue;
@@ -166,7 +168,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         }
         if (SELECT.UTILS.isElement(origOption) || !SELECT.UTILS.isEmpty(origOption)) {
             Sandbox.publish("ValueContainerText:setText", origOption.text);
-            Sandbox.publish("ValueContainerImage:setImageUrl", origOption.getDataAttribute("image-url"));
+            if (!SELECT.UTILS.isEmpty(origOption.getDataAttribute("image-url")))
+                Sandbox.publish("ValueContainerImage:setImageUrl", origOption.getDataAttribute("image-url"));
         }
         return widest;
     }

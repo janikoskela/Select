@@ -29,7 +29,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer = function(Sandbox) {
 			return;
 		Sandbox.publish("ValueContainerText").refresh();
 		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
-		if (imageUrl !== undefined && imageUrl !== null) {
+		if (!SELECT.UTILS.isEmpty(imageUrl)) {
 			Sandbox.publish("ValueContainerImage").setImageUrl(imageUrl);
 			Sandbox.publish("ValueContainerImage").show();
 		}

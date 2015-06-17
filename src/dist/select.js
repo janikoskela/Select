@@ -1627,7 +1627,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper.prototype = Object.create
 			return;
 		Sandbox.publish("ValueContainerText").refresh();
 		var imageUrl = Sandbox.publish("NativeSelectBox").getSelectedOptionImageUrl();
-		if (imageUrl !== undefined && imageUrl !== null) {
+		if (!SELECT.UTILS.isEmpty(imageUrl)) {
 			Sandbox.publish("ValueContainerImage").setImageUrl(imageUrl);
 			Sandbox.publish("ValueContainerImage").show();
 		}
@@ -1970,7 +1970,9 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
             var optionText = option.getText();
             var optionImgUrl = option.getImageUrl();
             Sandbox.publish("ValueContainerText:setText", optionText);
-            Sandbox.publish("ValueContainerImage:setImageUrl", optionImgUrl);
+            if (!SELECT.UTILS.isEmpty(optionImgUrl)) {
+                Sandbox.publish("ValueContainerImage:setImageUrl", optionImgUrl);
+            }
             var width = Sandbox.publish("WidgetWrapper:getWidth");
             if (optionValue.length > width)
                 width = optionValue;
@@ -1980,7 +1982,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         }
         if (SELECT.UTILS.isElement(origOption) || !SELECT.UTILS.isEmpty(origOption)) {
             Sandbox.publish("ValueContainerText:setText", origOption.text);
-            Sandbox.publish("ValueContainerImage:setImageUrl", origOption.getDataAttribute("image-url"));
+            if (!SELECT.UTILS.isEmpty(origOption.getDataAttribute("image-url")))
+                Sandbox.publish("ValueContainerImage:setImageUrl", origOption.getDataAttribute("image-url"));
         }
         return widest;
     }
