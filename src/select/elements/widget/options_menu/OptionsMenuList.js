@@ -280,8 +280,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     }
 
     this.selectHoveredOption = function() {
-		if (Sandbox.publish("OptionsMenu:isLocked"))
-			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.setSelected();

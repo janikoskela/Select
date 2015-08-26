@@ -20,6 +20,8 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
 
     this.openOptionMenuUponHover = userDefinedSettings.openOptionMenuUponHover || false;
 
+    this.allowSelectedOptionToTriggerChange = userDefinedSettings.allowSelectedOptionToTriggerChange || false;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
@@ -125,7 +127,16 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
                 Sandbox.publish("OptionsMenuList:hoverNextOption");
                 break;
             case KEY_CODES.ENTER:
-                Sandbox.publish("OptionsMenuList:selectHoveredOption");
+                if (!Sandbox.publish("OptionsMenu:isLocked")) {
+                    var hovered = Sandbox.publish("OptionsMenuList:getHoveredOption");
+                    if (!SELECT.UTILS.isEmpty(hovered)) {
+                        var hoveredValue = (typeof hovered.getValue == "function") ? hovered.getValue() : false;
+                        var currentValue = Sandbox.publish("NativeSelectBox:getSelectedOptionValue");
+                        if (hoveredValue != false && (hoveredValue != currentValue || this.allowSelectedOptionToTriggerChange)) {
+                            Sandbox.publish("OptionsMenuList:selectHoveredOption"); 
+                        }
+                    }
+                }
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();

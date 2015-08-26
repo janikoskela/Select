@@ -129,7 +129,6 @@ SELECT.ELEMENTS.Element.prototype.blur = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.getOuterWidth = function() {
-// we're assuming a reference to your element in a variable called 'element'
 var style = this.element.currentStyle || window.getComputedStyle(this.element),
     width = this.element.offsetWidth, // or use style.width
     margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight),
@@ -814,6 +813,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	this.itemValue;
 	this.className = "options-container-list-item";
 	this.index = index;
+	this.allowSelectedOptionToTriggerChange = Sandbox.publish("UserDefinedSettings").allowSelectedOptionToTriggerChange || false;
 
 	this.render = function() {
 		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Sandbox, nativeSelectOption);
@@ -933,7 +933,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 	function onClick(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") != this.getValue())
+		if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") != this.getValue() || this.allowSelectedOptionToTriggerChange)
 			this.setSelected();
 		Sandbox.publish("OptionsMenu:hide");
 		return false;
@@ -1262,8 +1262,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
     }
 
     this.selectHoveredOption = function() {
-		if (Sandbox.publish("OptionsMenu:isLocked"))
-			return;
     	var hovered = this.getHoveredOption();
     	if (hovered !== undefined)
     		hovered.setSelected();
@@ -1844,6 +1842,8 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
 
     this.openOptionMenuUponHover = userDefinedSettings.openOptionMenuUponHover || false;
 
+    this.allowSelectedOptionToTriggerChange = userDefinedSettings.allowSelectedOptionToTriggerChange || false;
+
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
@@ -1949,7 +1949,16 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                 Sandbox.publish("OptionsMenuList:hoverNextOption");
                 break;
             case KEY_CODES.ENTER:
-                Sandbox.publish("OptionsMenuList:selectHoveredOption");
+                if (!Sandbox.publish("OptionsMenu:isLocked")) {
+                    var hovered = Sandbox.publish("OptionsMenuList:getHoveredOption");
+                    if (!SELECT.UTILS.isEmpty(hovered)) {
+                        var hoveredValue = (typeof hovered.getValue == "function") ? hovered.getValue() : false;
+                        var currentValue = Sandbox.publish("NativeSelectBox:getSelectedOptionValue");
+                        if (hoveredValue != false && (hoveredValue != currentValue || this.allowSelectedOptionToTriggerChange)) {
+                            Sandbox.publish("OptionsMenuList:selectHoveredOption"); 
+                        }
+                    }
+                }
                 break;
             default:
                 var firstChar = String.fromCharCode(e.which)[0].toLowerCase();

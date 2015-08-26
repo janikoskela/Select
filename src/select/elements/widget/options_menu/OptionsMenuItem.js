@@ -7,6 +7,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 	this.itemValue;
 	this.className = "options-container-list-item";
 	this.index = index;
+	this.allowSelectedOptionToTriggerChange = Sandbox.publish("UserDefinedSettings").allowSelectedOptionToTriggerChange || false;
 
 	this.render = function() {
 		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Sandbox, nativeSelectOption);
@@ -126,7 +127,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 	function onClick(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") != this.getValue())
+		if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") != this.getValue() || this.allowSelectedOptionToTriggerChange)
 			this.setSelected();
 		Sandbox.publish("OptionsMenu:hide");
 		return false;
