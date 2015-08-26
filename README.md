@@ -65,6 +65,7 @@ When polling is enabled widget monitors given <i>select</i> to look for changed 
 Implementations
 ===============
  - <a href="https://kauppa.louhi.fi">Louhi Shop</a>
+ - <a href="https://shop.pilvi.com">Pilvi Shop</a>
 
 Browser compatibility
 ===============
