@@ -100,6 +100,14 @@
 		this.remove = function() {
 			Sandbox.publish("Wrapper:remove");
 		}
+
+		this.changeOption = function(optionValue) {
+			Sandbox.publish("NativeSelectBox:setSelectedOption", optionValue);
+			if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") == optionValue) {
+				Sandbox.publish("NativeSelectBox:triggerChange");
+				Sandbox.publish("ValueContainer:refresh");
+			}
+		}
 	}
 
 }(jQuery || {}));

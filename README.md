@@ -54,6 +54,7 @@ isOptionMenuOpen|-|Returns true if option menu is open, false if not
 setTheme|String|Sets theme
 getTheme|-|Gets current theme
 remove|-|Removes widget and the given select. Removes all references also
+changeOption|option value|Changes option if given value is found. If found triggers a change event to native select.
 
 Monitoring
 ===============
