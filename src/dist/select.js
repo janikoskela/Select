@@ -101,10 +101,11 @@
 			Sandbox.publish("Wrapper:remove");
 		}
 
-		this.changeOption = function(optionValue) {
+		this.changeOption = function(optionValue, triggerChange) {
 			Sandbox.publish("NativeSelectBox:setSelectedOption", optionValue);
 			if (Sandbox.publish("NativeSelectBox:getSelectedOptionValue") == optionValue) {
-				Sandbox.publish("NativeSelectBox:triggerChange");
+				if (triggerChange)
+					Sandbox.publish("NativeSelectBox:triggerChange");
 				Sandbox.publish("ValueContainer:refresh");
 			}
 		}
