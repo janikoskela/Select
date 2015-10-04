@@ -67,6 +67,7 @@ Implementations
 ===============
  - <a href="https://kauppa.louhi.fi">Louhi Shop</a>
  - <a href="https://shop.pilvi.com">Pilvi Shop</a>
+ - <a href="https://pilvi.atea.fi">Atea Shop</a>
 
 Browser compatibility
 ===============
