@@ -9,6 +9,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 	this.sortType = userDefinedSettings.sort;
 	this.inputSearchEnabled = false;
 	this.optionGroups = {};
+    this.elementScrollValue; //to prevent onOptionListReachedBottom-callback from being triggered multiple times
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -16,8 +17,27 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
     	this.element.addEventListener("mousewheel", preventScrollEventFromBubbling.bind(this));
         this.element.addEventListener("onmousewheel", preventScrollEventFromBubbling.bind(this));
     	this.element.addEventListener("DOMMouseScroll", preventScrollEventFromBubbling.bind(this));
+        if (SELECT.UTILS.isFunction(userDefinedSettings.onOptionListReachedBottom)) {
+            this.element.addEventListener("mousewheel", foo.bind(this));
+            this.element.addEventListener("onmousewheel", foo.bind(this));
+            this.element.addEventListener("DOMMouseScroll", foo.bind(this));
+        }
 		return this.element;
 	}
+
+    function foo(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.element.scrollHeight - this.element.scrollTop == this.element.offsetHeight) {
+            if (this.elementScrollValue != this.element.scrollHeight)
+                userDefinedSettings.onOptionListReachedBottom();
+            if (SELECT.UTILS.isEmpty(this.elementScrollValue))
+                this.elementScrollValue = this.element.scrollHeight;
+        }
+        else
+            this.elementScrollValue = 0;
+        return false;
+    }
 
 	function preventScrollEventFromBubbling(e) {
 		var scrollingSpeed = 30;

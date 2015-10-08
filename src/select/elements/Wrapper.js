@@ -67,7 +67,7 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.isNativeOptionListUsed = function() {
         if (this.responsiveFallback > 0) {
-            if (SELECT.UTILS.isTouchDevice() && (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback)) {
+            if (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback) {
                 return true;
             }
         }

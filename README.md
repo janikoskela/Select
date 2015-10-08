@@ -38,6 +38,7 @@ responsiveFallback|Integer|640|If screen width or height goes below this thresho
 copyNativeClasses|Boolean|false|If true copies given selects classes to widget root element
 allowSelectedOptionToTriggerChange|Boolean|false|If true triggers option change when selected option is selected again
 onSearch|Function|-|Gets called when users search query changes
+onOptionListReachedBottom|Function|-|Gets called when option list is scrolled bottom
 
 API
 ===============
