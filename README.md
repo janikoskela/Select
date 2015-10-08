@@ -37,6 +37,7 @@ animationSpeed|Integer|150|Animation speed in ms
 responsiveFallback|Integer|640|If screen width or height goes below this threshold (in pixels) native select option list is displayed. This is disabled if value is not a positive number
 copyNativeClasses|Boolean|false|If true copies given selects classes to widget root element
 allowSelectedOptionToTriggerChange|Boolean|false|If true triggers option change when selected option is selected again
+onSearch|Function|-|Gets called when users search query changes
 
 API
 ===============

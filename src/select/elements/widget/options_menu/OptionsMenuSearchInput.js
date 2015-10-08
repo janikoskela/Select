@@ -6,6 +6,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
 	this.element;
 	this.allowClose = true;
 	this.placeholder = userDefinedSettings.searchInputPlaceholder || "";
+	this.query;
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -46,8 +47,15 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
 				this.blur();
 				break;
 			default:
-				this.allowClose = true;
 				var value = this.element.value;
+				if (value == this.query)
+					return;
+				this.query = value;
+				if (SELECT.UTILS.isFunction(userDefinedSettings.onSearch)) {
+					userDefinedSettings.onSearch(value);
+					return;					
+				}
+				this.allowClose = true;
 				if (value.length === 0) {
 					Sandbox.publish("OptionsMenuList:refresh");
 					Sandbox.publish("OptionsMenuList:show");

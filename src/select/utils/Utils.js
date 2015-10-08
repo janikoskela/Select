@@ -11,6 +11,12 @@ SELECT.UTILS.getElement = function(elem) {
     return elem;
 };
 
+SELECT.UTILS.isFunction = function(func) {
+    if (typeof func == "function")
+        return true;
+    return false;
+};
+
 SELECT.UTILS.callFunc = function(obj, functionName, args) {
     if (typeof obj == "object") {
         var func = obj[functionName];

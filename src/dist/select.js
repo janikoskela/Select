@@ -1472,6 +1472,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
 	this.element;
 	this.allowClose = true;
 	this.placeholder = userDefinedSettings.searchInputPlaceholder || "";
+	this.query;
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -1512,8 +1513,15 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Ob
 				this.blur();
 				break;
 			default:
-				this.allowClose = true;
 				var value = this.element.value;
+				if (value == this.query)
+					return;
+				this.query = value;
+				if (SELECT.UTILS.isFunction(userDefinedSettings.onSearch)) {
+					userDefinedSettings.onSearch(value);
+					return;					
+				}
+				this.allowClose = true;
 				if (value.length === 0) {
 					Sandbox.publish("OptionsMenuList:refresh");
 					Sandbox.publish("OptionsMenuList:show");
@@ -2369,6 +2377,12 @@ SELECT.UTILS.getElement = function(elem) {
     if (elem instanceof jQuery)
         return $(elem)[0];
     return elem;
+};
+
+SELECT.UTILS.isFunction = function(func) {
+    if (typeof func == "function")
+        return true;
+    return false;
 };
 
 SELECT.UTILS.callFunc = function(obj, functionName, args) {
