@@ -34,7 +34,7 @@ appendOptionMenuTo|Element|-|Element where option menu is to be rendered. Might 
 openOptionMenuUponHover|Boolean|false|If true option menu is opened when widget is hovered
 useAnimations|Boolean|true|Indicates whether animations are enabled or disabled
 animationSpeed|Integer|150|Animation speed in ms
-responsiveFallback|Integer|640|If screen width or height goes below this threshold (in pixels) native select option list is displayed. This is disabled if value is not a positive number
+responsiveFallback|Integer|640|If screen width or height goes below this threshold (in pixels) native select option list is displayed. Pass true if you want to use native option list at all times. Passing false disables this feature
 copyNativeClasses|Boolean|false|If true copies given selects classes to widget root element
 allowSelectedOptionToTriggerChange|Boolean|false|If true triggers option change when selected option is selected again
 onSearch|Function|-|Gets called when users search query changes

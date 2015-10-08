@@ -66,6 +66,8 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
     }
 
     this.isNativeOptionListUsed = function() {
+        if (this.responsiveFallback === true)
+            return true;
         if (this.responsiveFallback > 0) {
             if (window.innerHeigth <= this.responsiveFallback || window.innerWidth <= this.responsiveFallback) {
                 return true;
