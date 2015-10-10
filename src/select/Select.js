@@ -75,6 +75,13 @@
 			return this;
 		}
 
+		this.toggleNoSearchResultsMessage = function() {
+			if (Sandbox.publish("OptionsMenuSearchNoResults:isHidden"))
+				Sandbox.publish("OptionsMenuSearchNoResults:show");
+			else
+				Sandbox.publish("OptionsMenuSearchNoResults:hide");
+		}
+
 		this.toggleInputSearch = function() {
 			Sandbox.publish("OptionsMenu:toggleInputSearch");
 			return this;
