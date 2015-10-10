@@ -735,6 +735,8 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 			Sandbox.publish("OptionsMenuList:refresh");
 			Sandbox.publish("ArrowContainerContent").down();
 		}
+		if (SELECT.UTILS.isFunction(userDefinedSettings.onOptionMenuCloses))
+			userDefinedSettings.onOptionMenuCloses();
 	}
 
 	this.show = function() {

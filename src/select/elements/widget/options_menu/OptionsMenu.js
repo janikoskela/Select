@@ -119,6 +119,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 			Sandbox.publish("OptionsMenuList:refresh");
 			Sandbox.publish("ArrowContainerContent").down();
 		}
+		if (SELECT.UTILS.isFunction(userDefinedSettings.onOptionMenuCloses))
+			userDefinedSettings.onOptionMenuCloses();
 	}
 
 	this.show = function() {

@@ -39,6 +39,7 @@ copyNativeClasses|Boolean|false|If true copies given selects classes to widget r
 allowSelectedOptionToTriggerChange|Boolean|false|If true triggers option change when selected option is selected again
 onSearch|Function|-|Gets called when users search query changes
 onOptionListReachedBottom|Function|-|Gets called when option list is scrolled bottom
+onOptionMenuCloses|Function|-|Gets called when option menu is closed
 
 API
 ===============
@@ -57,6 +58,7 @@ setTheme|String|Sets theme
 getTheme|-|Gets current theme
 remove|-|Removes widget and the given select. Removes all references also
 changeOption|option value, trigger change (boolean)|Changes option if given value is found. If found and given boolean is true triggers a change event to native select.
+toggleNoSearchResultsMessage|-|Toggles no search results message
 
 Monitoring
 ===============
