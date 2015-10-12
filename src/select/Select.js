@@ -124,6 +124,14 @@
 				Sandbox.publish("ValueContainer:refresh");
 			}
 		}
+
+		this.hideOptionMenuLoader = function() {
+			Sandbox.publish("OptionsMenuLoadingWrapper:hide");
+		}
+
+		this.showOptionMenuLoader = function() {
+			Sandbox.publish("OptionsMenuLoadingWrapper:show");
+		}
 	}
 
 }(jQuery || {}));

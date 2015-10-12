@@ -62,6 +62,8 @@ changeOption|option value, trigger change (boolean)|Changes option if given valu
 toggleNoSearchResultsMessage|-|Toggles no search results message
 showNoResultsMessage|-|Shows no search results message
 hideNoResultsMessage|-|Hides no search results message
+hideOptionMenuLoader|-|Hides option menu loader
+showOptionMenuLoader|-|Shows option menu loader
 
 Monitoring
 ===============

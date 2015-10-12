@@ -124,6 +124,14 @@
 				Sandbox.publish("ValueContainer:refresh");
 			}
 		}
+
+		this.hideOptionMenuLoader = function() {
+			Sandbox.publish("OptionsMenuLoadingWrapper:hide");
+		}
+
+		this.showOptionMenuLoader = function() {
+			Sandbox.publish("OptionsMenuLoadingWrapper:show");
+		}
 	}
 
 SELECT.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Select#constructor-parameters";SELECT.ELEMENTS.Element = function() {};
@@ -710,7 +718,6 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		var slide = this.element.getDataAttribute("slide");
 		if (isOpen && slide == "up") {
 			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
-			console.log(this.clearSearchInputOnOptionMenuCloses)
 			if (this.clearSearchInputOnOptionMenuCloses)
 				Sandbox.publish("OptionsMenuSearchInput:clear");
 			Sandbox.publish("OptionsMenuSearchInput:blur");
@@ -1505,7 +1512,20 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupList.prototype = Obj
 
 };
 
-SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuListItemGroupTitle.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuLoadingWrapper = function(Sandbox) {
+	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
+	this.type = "div";
+	this.className = "options-menu-loading-wrapper";
+	this.element;
+
+	this.render = function() {
+    	this.element = SELECT.UTILS.createElement(this.type, this.className);
+    	this.hide();
+    	return this.element;
+	}
+};
+
+SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuLoadingWrapper.prototype = Object.create(SELECT.ELEMENTS.Element.prototype);SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
 	var userDefinedSettings = Sandbox.publish("UserDefinedSettings");
 	this.type = "input";
 	this.className = "options-menu-search-input";
@@ -1650,6 +1670,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchWrapper.prototype = Object.
         	renderOptionsMenuSearchWrapper();
         }
     	this.element.appendChild(optionsMenuListElem);
+    	this.optionsMenuLoadingWrapper = Sandbox.subscribe("OptionsMenuLoadingWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuLoadingWrapper(Sandbox));
+    	var optionsMenuLoadingWrapperElem = that.optionsMenuLoadingWrapper.render();
+    	this.element.appendChild(optionsMenuLoadingWrapperElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
     	return this.element;

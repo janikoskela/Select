@@ -14,6 +14,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuWrapper = function(Sandbox) {
         	renderOptionsMenuSearchWrapper();
         }
     	this.element.appendChild(optionsMenuListElem);
+    	this.optionsMenuLoadingWrapper = Sandbox.subscribe("OptionsMenuLoadingWrapper", new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuLoadingWrapper(Sandbox));
+    	var optionsMenuLoadingWrapperElem = that.optionsMenuLoadingWrapper.render();
+    	this.element.appendChild(optionsMenuLoadingWrapperElem);
     	if (this.width !== undefined)
 			this.setWidth(this.width);
     	return this.element;

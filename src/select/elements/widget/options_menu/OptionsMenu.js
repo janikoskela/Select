@@ -86,7 +86,6 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		var slide = this.element.getDataAttribute("slide");
 		if (isOpen && slide == "up") {
 			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
-			console.log(this.clearSearchInputOnOptionMenuCloses)
 			if (this.clearSearchInputOnOptionMenuCloses)
 				Sandbox.publish("OptionsMenuSearchInput:clear");
 			Sandbox.publish("OptionsMenuSearchInput:blur");
