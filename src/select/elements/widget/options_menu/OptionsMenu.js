@@ -12,6 +12,7 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
 	this.useAnimations = (userDefinedSettings.useAnimations === undefined) ? true : userDefinedSettings.useAnimations;
+	this.clearSearchInputOnOptionMenuCloses = (userDefinedSettings.clearSearchInputOnOptionMenuCloses === undefined) ? true : userDefinedSettings.clearSearchInputOnOptionMenuCloses;
 
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
@@ -85,7 +86,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		var slide = this.element.getDataAttribute("slide");
 		if (isOpen && slide == "up") {
 			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
-			Sandbox.publish("OptionsMenuSearchInput:clear");
+			console.log(this.clearSearchInputOnOptionMenuCloses)
+			if (this.clearSearchInputOnOptionMenuCloses)
+				Sandbox.publish("OptionsMenuSearchInput:clear");
 			Sandbox.publish("OptionsMenuSearchInput:blur");
 			Sandbox.publish("OptionsMenuSearchNoResults:hide");
 			Sandbox.publish("OptionsMenuList:refresh");
@@ -113,7 +116,8 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 		else {
 			this.element.hide();
 			Sandbox.publish("Wrapper:getElement").setDataAttribute("open", false);
-			Sandbox.publish("OptionsMenuSearchInput:clear");
+			if (this.clearSearchInputOnOptionMenuCloses)
+				Sandbox.publish("OptionsMenuSearchInput:clear");
 			Sandbox.publish("OptionsMenuSearchInput:blur");
 			Sandbox.publish("OptionsMenuSearchNoResults:hide");
 			Sandbox.publish("OptionsMenuList:refresh");
