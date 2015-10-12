@@ -24,7 +24,7 @@ SELECT.ELEMENTS.Wrapper = function(Sandbox) {
 
     this.isWidthDefinedByUser;
 
-    this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
+    this.responsiveFallback = (userDefinedSettings.responsiveFallback === undefined) ? 640 : userDefinedSettings.responsiveFallback;
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);

@@ -2094,7 +2094,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper.prototype = Object.create(SELECT.ELEMENTS.Element
 
     this.isWidthDefinedByUser;
 
-    this.responsiveFallback = userDefinedSettings.responsiveFallback || 640;
+    this.responsiveFallback = (userDefinedSettings.responsiveFallback === undefined) ? 640 : userDefinedSettings.responsiveFallback;
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
