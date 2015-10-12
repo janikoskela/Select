@@ -59,6 +59,8 @@ getTheme|-|Gets current theme
 remove|-|Removes widget and the given select. Removes all references also
 changeOption|option value, trigger change (boolean)|Changes option if given value is found. If found and given boolean is true triggers a change event to native select.
 toggleNoSearchResultsMessage|-|Toggles no search results message
+showNoResultsMessage|-|Shows no search results message
+hideNoResultsMessage|-|Hides no search results message
 
 Monitoring
 ===============

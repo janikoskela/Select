@@ -75,6 +75,14 @@
 			return this;
 		}
 
+		this.showNoResultsMessage = function() {
+			Sandbox.publish("OptionsMenuSearchNoResults:show");
+		}
+
+		this.hideNoResultsMessage = function() {
+			Sandbox.publish("OptionsMenuSearchNoResults:hide");
+		}
+
 		this.toggleNoSearchResultsMessage = function() {
 			if (Sandbox.publish("OptionsMenuSearchNoResults:isHidden"))
 				Sandbox.publish("OptionsMenuSearchNoResults:show");
