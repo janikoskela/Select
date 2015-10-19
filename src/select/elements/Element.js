@@ -152,10 +152,7 @@ SELECT.ELEMENTS.Element.prototype.enable = function() {
 };
 
 SELECT.ELEMENTS.Element.prototype.isDisabled = function() {
-    var result = this.callFunction(this.element, "isDisabled");
-    if (result === undefined)
-        return false;
-    return result;
+    return this.element.disabled;
 };
 
 SELECT.ELEMENTS.Element.prototype.getTabIndex = function() {
