@@ -90,7 +90,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 			else
 				Sandbox.publish("Wrapper:show");
 		}
-		var isDisabled = this.element.isDisabled();
+		var isDisabled = this.isDisabled();
 		if (isDisabled !== this.isElemDisabled) {
 			this.isElemDisabled = isDisabled;
 			if (isDisabled)
