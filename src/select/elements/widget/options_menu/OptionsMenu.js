@@ -22,19 +22,17 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
     	if (this.width !== undefined)
 			this.setWidth(this.width);
         if (userDefinedSettings.closeWhenCursorOut === true) {
-            this.element.addEventListener("mouseleave", function(e) {
-                var toElem = e.toElement || e.relatedTarget || e.target;
+        	this.attachOnMouseLeaveEventListener(function(e) {
+        		var toElem = e.toElement || e.relatedTarget || e.target;
                 var widgetWrapperElem = Sandbox.publish("WidgetWrapper:getElement");
                 if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem))
                     Sandbox.publish("OptionsMenu:hide");
-            });
+        	});
         }
         if (this.useAnimations !== true)
         	this.element.hide();
         else {
-        	this.element.addEventListener("webkitTransitionEnd", onTransitionEnd.bind(this));
-        	this.element.addEventListener("transitionend", onTransitionEnd.bind(this));
-        	this.element.addEventListener("oTransitionEnd", onTransitionEnd.bind(this));
+        	this.attachOnTransitionEndEventListener(onTransitionEnd.bind(this));
         }
 		return this.element;
 	}

@@ -136,6 +136,70 @@
 
 SELECT.CONFIG.CONSTRUCTOR_PARAMS_URL = "https://github.com/janikoskela/Select#constructor-parameters";SELECT.ELEMENTS.Element = function() {};
 
+SELECT.ELEMENTS.Element.prototype.attachOnMouseWheelEventListener = function(callback, useCapture) {
+    if (SELECT.UTILS.isEventSupported("mousewheel"))
+        return this.attachEventListener("mousewheel", callback);
+    if (SELECT.UTILS.isEventSupported("onmousewheel"))
+        return this.attachEventListener("onmousewheel", callback);
+    if (SELECT.UTILS.isEventSupported("DOMMouseScroll"))
+        return this.attachEventListener("DOMMouseScroll", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnTransitionEndEventListener = function(callback, useCapture) {
+    if (SELECT.UTILS.isEventSupported("webkitTransitionEnd"))
+        return this.attachEventListener("webkitTransitionEnd", callback);
+    if (SELECT.UTILS.isEventSupported("transitionend"))
+        return this.attachEventListener("transitionend", callback);
+    if (SELECT.UTILS.isEventSupported("oTransitionEnd"))
+        return this.attachEventListener("oTransitionEnd", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnClickEventListener = function(callback, useCapture) {
+    return this.attachEventListener("click", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnLoadEventListener = function(callback, useCapture) {
+    return this.attachEventListener("load", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnMouseOverEventListener = function(callback, useCapture) {
+    return this.attachEventListener("mouseover", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnBlurEventListener = function(callback, useCapture) {
+    return this.attachEventListener("blur", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnKeyUpEventListener = function(callback, useCapture) {
+    return this.attachEventListener("keyup", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnKeyDownEventListener = function(callback, useCapture) {
+    return this.attachEventListener("keydown", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnTouchMoveEventListener = function(callback, useCapture) {
+    return this.attachEventListener("touchmove", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnScrollEventListener = function(callback, useCapture) {
+    return this.attachEventListener("scroll", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnChangeEventListener = function(callback, useCapture) {
+    return this.attachEventListener("change", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnMouseLeaveEventListener = function(callback, useCapture) {
+    return this.attachEventListener("mouseleave", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachEventListener = function(name, callback, useCapture) {
+    if (SELECT.UTILS.isFunction(callback))
+        return this.element.addEventListener(name, callback, useCapture);
+    return false;
+};
+
 SELECT.ELEMENTS.Element.prototype.callFunction = function(obj, functionName, args) {
     return SELECT.UTILS.callFunc(obj, functionName, args);
 };
@@ -356,7 +420,7 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 			this.mutationObserverReplacement = setInterval(this.observeForOptionMutations.bind(this), this.pollingInterval);
 		}
 		if (Sandbox.publish("Wrapper").responsiveFallback > 0 || Sandbox.publish("Wrapper").responsiveFallback == true)
-			this.element.addEventListener("change", onChange.bind(this));
+			this.attachOnChangeEventListener(onChange.bind(this));
 		return this.element;
 	}
 
@@ -654,19 +718,17 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
     	if (this.width !== undefined)
 			this.setWidth(this.width);
         if (userDefinedSettings.closeWhenCursorOut === true) {
-            this.element.addEventListener("mouseleave", function(e) {
-                var toElem = e.toElement || e.relatedTarget || e.target;
+        	this.attachOnMouseLeaveEventListener(function(e) {
+        		var toElem = e.toElement || e.relatedTarget || e.target;
                 var widgetWrapperElem = Sandbox.publish("WidgetWrapper:getElement");
                 if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(widgetWrapperElem, toElem) && toElem != widgetWrapperElem))
                     Sandbox.publish("OptionsMenu:hide");
-            });
+        	});
         }
         if (this.useAnimations !== true)
         	this.element.hide();
         else {
-        	this.element.addEventListener("webkitTransitionEnd", onTransitionEnd.bind(this));
-        	this.element.addEventListener("transitionend", onTransitionEnd.bind(this));
-        	this.element.addEventListener("oTransitionEnd", onTransitionEnd.bind(this));
+        	this.attachOnTransitionEndEventListener(onTransitionEnd.bind(this));
         }
 		return this.element;
 	}
@@ -856,9 +918,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu.prototype = Object.create(SELECT
 		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Sandbox, nativeSelectOption);
 		var childElem = this.itemValue.render();
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	this.element.addEventListener("click", onClick.bind(this));
-    	this.element.addEventListener("mouseover", onMouseOver.bind(this));
-    	this.element.addEventListener("keyup", onKeyUp.bind(this));
+    	this.attachOnClickEventListener(onClick.bind(this));
+    	this.attachOnMouseOverEventListener(onMouseOver.bind(this));
+    	this.attachOnKeyUpEventListener(onKeyUp.bind(this));
     	this.element.setDataAttribute("value", nativeSelectOption.getValue());
     	this.element.setDataAttribute("index", this.index);
 
@@ -1033,18 +1095,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue.prototype = Object.crea
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.refresh();
-    	this.element.addEventListener("mousewheel", preventScrollEventFromBubbling.bind(this));
-        this.element.addEventListener("onmousewheel", preventScrollEventFromBubbling.bind(this));
-    	this.element.addEventListener("DOMMouseScroll", preventScrollEventFromBubbling.bind(this));
+        this.attachOnMouseWheelEventListener(preventScrollEventFromBubbling.bind(this));
         if (SELECT.UTILS.isFunction(userDefinedSettings.onOptionListReachedBottom)) {
-            this.element.addEventListener("mousewheel", foo.bind(this));
-            this.element.addEventListener("onmousewheel", foo.bind(this));
-            this.element.addEventListener("DOMMouseScroll", foo.bind(this));
+            this.attachOnMouseWheelEventListener(checkIfListIsScrolledBottom.bind(this));
         }
 		return this.element;
 	}
 
-    function foo(e) {
+    function checkIfListIsScrolledBottom(e) {
         e.preventDefault();
         e.stopPropagation();
         if (this.element.scrollHeight - this.element.scrollTop == this.element.offsetHeight) {
@@ -1540,9 +1598,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuLoadingWrapper.prototype = Object
 		this.element.setAttribute("type", "text");
 		this.element.setAttribute("tabindex", this.tabIndex);
 		this.element.setAttribute("placeholder", this.placeholder);
-		this.element.addEventListener("blur", this.focusOut);
-		this.element.addEventListener("keyup", onKeyUp.bind(this));
-		this.element.addEventListener("click", onClick.bind(this));
+		this.attachOnKeyUpEventListener(onKeyUp.bind(this));
+		this.attachOnClickEventListener(onClick.bind(this));
+		this.attachOnBlurEventListener(this.focusOut);
 		return this.element;
 	}
 
@@ -1754,7 +1812,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainer.prototype = Object.create(
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type);
-		this.element.addEventListener("load", this.onLoad.bind(this), false);
+		this.attachOnLoadEventListener(this.onLoad.bind(this), false);
 		return this.element;
 	}
 
@@ -1834,7 +1892,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerText.prototype = Object.cre
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-        this.element.addEventListener("click", onClick.bind(this));
+        this.attachOnClickEventListener(onClick.bind(this));
 
         var arrowContainer = Sandbox.subscribe("ArrowContainer", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(Sandbox));
         var arrowContainerElem = arrowContainer.render();
@@ -1929,7 +1987,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
         if (userDefinedSettings.closeWhenCursorOut === true) {
-            this.element.addEventListener("mouseleave", function(e) {
+            this.attachOnMouseLeaveEventListener(function(e) {
                 var toElem = e.toElement || e.relatedTarget || e.target;
                 var optionsMenuElem = Sandbox.publish("OptionsMenu:getElement");
                 if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
@@ -1944,12 +2002,12 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
-        this.element.addEventListener("keyup", onKeyUp.bind(this));
-        this.element.addEventListener("keydown", onKeyDown.bind(this));
-        this.element.addEventListener("touchmove", touchScroll.bind(this));
-        this.element.addEventListener("scroll", touchScroll.bind(this));
+        this.attachOnKeyUpEventListener(onKeyUp.bind(this));
+        this.attachOnKeyDownEventListener(onKeyDown.bind(this));
+        this.attachOnTouchMoveEventListener(touchScroll.bind(this));
+        this.attachOnScrollEventListener(touchScroll.bind(this));
         if (this.openOptionMenuUponHover)
-            this.element.addEventListener("mouseover", mouseOver.bind(this));
+            this.attachOnMouseOverEventListener(mouseOver.bind(this));
         var widgetSubWrapper = Sandbox.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Sandbox));
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
@@ -2432,7 +2490,24 @@ Element.prototype.isDisabled = function() {
 		}
 		return this[name];
 	}
-};SELECT.UTILS.createElement = function(type, classes) {
+};SELECT.UTILS.isEventSupported = function(eventName) {
+    var tagNames = {
+      'select':'input','change':'input',
+      'submit':'form','reset':'form',
+      'error':'img','load':'img','abort':'img'
+    }
+    var el = document.createElement(tagNames[eventName] || 'div');
+    eventName = 'on' + eventName;
+    var isSupported = (eventName in el);
+    if (!isSupported) {
+        el.setAttribute(eventName, 'return;');
+        isSupported = typeof el[eventName] == 'function';
+    }
+    el = null;
+    return isSupported;
+};
+
+SELECT.UTILS.createElement = function(type, classes) {
 	var elem = document.createElement(type);
 	if (typeof classes === "string")
 		elem.setClass(classes);

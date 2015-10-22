@@ -18,7 +18,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper = function(Sandbox) {
 
     this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
-        this.element.addEventListener("click", onClick.bind(this));
+        this.attachOnClickEventListener(onClick.bind(this));
 
         var arrowContainer = Sandbox.subscribe("ArrowContainer", new SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainer(Sandbox));
         var arrowContainerElem = arrowContainer.render();

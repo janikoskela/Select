@@ -14,18 +14,14 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuList = function(Sandbox) {
 	this.render = function() {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
     	this.refresh();
-    	this.element.addEventListener("mousewheel", preventScrollEventFromBubbling.bind(this));
-        this.element.addEventListener("onmousewheel", preventScrollEventFromBubbling.bind(this));
-    	this.element.addEventListener("DOMMouseScroll", preventScrollEventFromBubbling.bind(this));
+        this.attachOnMouseWheelEventListener(preventScrollEventFromBubbling.bind(this));
         if (SELECT.UTILS.isFunction(userDefinedSettings.onOptionListReachedBottom)) {
-            this.element.addEventListener("mousewheel", foo.bind(this));
-            this.element.addEventListener("onmousewheel", foo.bind(this));
-            this.element.addEventListener("DOMMouseScroll", foo.bind(this));
+            this.attachOnMouseWheelEventListener(checkIfListIsScrolledBottom.bind(this));
         }
 		return this.element;
 	}
 
-    function foo(e) {
+    function checkIfListIsScrolledBottom(e) {
         e.preventDefault();
         e.stopPropagation();
         if (this.element.scrollHeight - this.element.scrollTop == this.element.offsetHeight) {

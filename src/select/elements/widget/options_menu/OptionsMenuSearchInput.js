@@ -13,9 +13,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuSearchInput = function(Sandbox) {
 		this.element.setAttribute("type", "text");
 		this.element.setAttribute("tabindex", this.tabIndex);
 		this.element.setAttribute("placeholder", this.placeholder);
-		this.element.addEventListener("blur", this.focusOut);
-		this.element.addEventListener("keyup", onKeyUp.bind(this));
-		this.element.addEventListener("click", onClick.bind(this));
+		this.attachOnKeyUpEventListener(onKeyUp.bind(this));
+		this.attachOnClickEventListener(onClick.bind(this));
+		this.attachOnBlurEventListener(this.focusOut);
 		return this.element;
 	}
 

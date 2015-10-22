@@ -1,5 +1,69 @@
 SELECT.ELEMENTS.Element = function() {};
 
+SELECT.ELEMENTS.Element.prototype.attachOnMouseWheelEventListener = function(callback, useCapture) {
+    if (SELECT.UTILS.isEventSupported("mousewheel"))
+        return this.attachEventListener("mousewheel", callback);
+    if (SELECT.UTILS.isEventSupported("onmousewheel"))
+        return this.attachEventListener("onmousewheel", callback);
+    if (SELECT.UTILS.isEventSupported("DOMMouseScroll"))
+        return this.attachEventListener("DOMMouseScroll", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnTransitionEndEventListener = function(callback, useCapture) {
+    if (SELECT.UTILS.isEventSupported("webkitTransitionEnd"))
+        return this.attachEventListener("webkitTransitionEnd", callback);
+    if (SELECT.UTILS.isEventSupported("transitionend"))
+        return this.attachEventListener("transitionend", callback);
+    if (SELECT.UTILS.isEventSupported("oTransitionEnd"))
+        return this.attachEventListener("oTransitionEnd", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnClickEventListener = function(callback, useCapture) {
+    return this.attachEventListener("click", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnLoadEventListener = function(callback, useCapture) {
+    return this.attachEventListener("load", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnMouseOverEventListener = function(callback, useCapture) {
+    return this.attachEventListener("mouseover", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnBlurEventListener = function(callback, useCapture) {
+    return this.attachEventListener("blur", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnKeyUpEventListener = function(callback, useCapture) {
+    return this.attachEventListener("keyup", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnKeyDownEventListener = function(callback, useCapture) {
+    return this.attachEventListener("keydown", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnTouchMoveEventListener = function(callback, useCapture) {
+    return this.attachEventListener("touchmove", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnScrollEventListener = function(callback, useCapture) {
+    return this.attachEventListener("scroll", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnChangeEventListener = function(callback, useCapture) {
+    return this.attachEventListener("change", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachOnMouseLeaveEventListener = function(callback, useCapture) {
+    return this.attachEventListener("mouseleave", callback);
+};
+
+SELECT.ELEMENTS.Element.prototype.attachEventListener = function(name, callback, useCapture) {
+    if (SELECT.UTILS.isFunction(callback))
+        return this.element.addEventListener(name, callback, useCapture);
+    return false;
+};
+
 SELECT.ELEMENTS.Element.prototype.callFunction = function(obj, functionName, args) {
     return SELECT.UTILS.callFunc(obj, functionName, args);
 };

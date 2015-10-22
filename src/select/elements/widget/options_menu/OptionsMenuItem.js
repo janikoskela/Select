@@ -13,9 +13,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItem = function(Sandbox, nativeSe
 		this.itemValue = new SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenuItemValue(Sandbox, nativeSelectOption);
 		var childElem = this.itemValue.render();
     	this.element = SELECT.UTILS.createElement(this.type, this.className);
-    	this.element.addEventListener("click", onClick.bind(this));
-    	this.element.addEventListener("mouseover", onMouseOver.bind(this));
-    	this.element.addEventListener("keyup", onKeyUp.bind(this));
+    	this.attachOnClickEventListener(onClick.bind(this));
+    	this.attachOnMouseOverEventListener(onMouseOver.bind(this));
+    	this.attachOnKeyUpEventListener(onKeyUp.bind(this));
     	this.element.setDataAttribute("value", nativeSelectOption.getValue());
     	this.element.setDataAttribute("index", this.index);
 

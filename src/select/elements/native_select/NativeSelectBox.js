@@ -35,7 +35,7 @@ SELECT.ELEMENTS.NATIVE_SELECT.NativeSelectBox = function(Sandbox, el) {
 			this.mutationObserverReplacement = setInterval(this.observeForOptionMutations.bind(this), this.pollingInterval);
 		}
 		if (Sandbox.publish("Wrapper").responsiveFallback > 0 || Sandbox.publish("Wrapper").responsiveFallback == true)
-			this.element.addEventListener("change", onChange.bind(this));
+			this.attachOnChangeEventListener(onChange.bind(this));
 		return this.element;
 	}
 

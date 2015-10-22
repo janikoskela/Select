@@ -6,7 +6,7 @@ SELECT.ELEMENTS.WIDGET.VALUE_CONTAINER.ValueContainerImage = function(Sandbox) {
 
 	this.render = function() {
 		this.element = SELECT.UTILS.createElement(this.type);
-		this.element.addEventListener("load", this.onLoad.bind(this), false);
+		this.attachOnLoadEventListener(this.onLoad.bind(this), false);
 		return this.element;
 	}
 

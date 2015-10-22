@@ -1,3 +1,20 @@
+SELECT.UTILS.isEventSupported = function(eventName) {
+    var tagNames = {
+      'select':'input','change':'input',
+      'submit':'form','reset':'form',
+      'error':'img','load':'img','abort':'img'
+    }
+    var el = document.createElement(tagNames[eventName] || 'div');
+    eventName = 'on' + eventName;
+    var isSupported = (eventName in el);
+    if (!isSupported) {
+        el.setAttribute(eventName, 'return;');
+        isSupported = typeof el[eventName] == 'function';
+    }
+    el = null;
+    return isSupported;
+};
+
 SELECT.UTILS.createElement = function(type, classes) {
 	var elem = document.createElement(type);
 	if (typeof classes === "string")

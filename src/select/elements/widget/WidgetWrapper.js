@@ -26,7 +26,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
         this.element = SELECT.UTILS.createElement(this.type, this.className);
         this.element.setAttribute("tabindex", this.tabIndex);
         if (userDefinedSettings.closeWhenCursorOut === true) {
-            this.element.addEventListener("mouseleave", function(e) {
+            this.attachOnMouseLeaveEventListener(function(e) {
                 var toElem = e.toElement || e.relatedTarget || e.target;
                 var optionsMenuElem = Sandbox.publish("OptionsMenu:getElement");
                 if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
@@ -41,12 +41,12 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
                     Sandbox.publish("OptionsMenu:hide");
             });
         }
-        this.element.addEventListener("keyup", onKeyUp.bind(this));
-        this.element.addEventListener("keydown", onKeyDown.bind(this));
-        this.element.addEventListener("touchmove", touchScroll.bind(this));
-        this.element.addEventListener("scroll", touchScroll.bind(this));
+        this.attachOnKeyUpEventListener(onKeyUp.bind(this));
+        this.attachOnKeyDownEventListener(onKeyDown.bind(this));
+        this.attachOnTouchMoveEventListener(touchScroll.bind(this));
+        this.attachOnScrollEventListener(touchScroll.bind(this));
         if (this.openOptionMenuUponHover)
-            this.element.addEventListener("mouseover", mouseOver.bind(this));
+            this.attachOnMouseOverEventListener(mouseOver.bind(this));
         var widgetSubWrapper = Sandbox.subscribe("WidgetSubWrapper", new SELECT.ELEMENTS.WIDGET.SubWrapper(Sandbox));
         var widgetSubWrapperElem = widgetSubWrapper.render();
         this.element.appendChild(widgetSubWrapperElem);
