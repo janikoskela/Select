@@ -58,10 +58,8 @@ SELECT.ELEMENTS.Element.prototype.attachOnMouseLeaveEventListener = function(cal
     return this.attachEventListener("mouseleave", callback);
 };
 
-SELECT.ELEMENTS.Element.prototype.attachEventListener = function(name, callback, useCapture) {
-    if (SELECT.UTILS.isFunction(callback))
-        return this.element.addEventListener(name, callback, useCapture);
-    return false;
+SELECT.ELEMENTS.Element.prototype.attachEventListener = function(eventName, callback, useCapture) {
+    return SELECT.UTILS.attachEventListener(this.element, eventName, callback, useCapture);
 };
 
 SELECT.ELEMENTS.Element.prototype.callFunction = function(obj, functionName, args) {

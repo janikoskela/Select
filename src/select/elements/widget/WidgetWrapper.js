@@ -34,7 +34,7 @@ SELECT.ELEMENTS.WIDGET.Wrapper = function(Sandbox) {
             });
         }
         else {
-            document.addEventListener("click", function(e) {
+            SELECT.UTILS.attachEventListener(document, "click", function(e) {
                 var toElem = e.toElement || e.relatedTarget || e.target;
                 var optionsMenuElem = Sandbox.publish("Wrapper:getElement");
                 if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))

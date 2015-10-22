@@ -1,3 +1,10 @@
+SELECT.UTILS.attachEventListener = function(element, eventName, callback, useCapture) {
+    if (SELECT.UTILS.isFunction(callback) && SELECT.UTILS.isElement(element) && SELECT.UTILS.isEventSupported(eventName)) {
+        return element.addEventListener(eventName, callback, useCapture);
+    }
+    return false;
+};
+
 SELECT.UTILS.isEventSupported = function(eventName) {
     var tagNames = {
       'select':'input','change':'input',

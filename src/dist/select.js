@@ -194,10 +194,8 @@ SELECT.ELEMENTS.Element.prototype.attachOnMouseLeaveEventListener = function(cal
     return this.attachEventListener("mouseleave", callback);
 };
 
-SELECT.ELEMENTS.Element.prototype.attachEventListener = function(name, callback, useCapture) {
-    if (SELECT.UTILS.isFunction(callback))
-        return this.element.addEventListener(name, callback, useCapture);
-    return false;
+SELECT.ELEMENTS.Element.prototype.attachEventListener = function(eventName, callback, useCapture) {
+    return SELECT.UTILS.attachEventListener(this.element, eventName, callback, useCapture);
 };
 
 SELECT.ELEMENTS.Element.prototype.callFunction = function(obj, functionName, args) {
@@ -1995,7 +1993,7 @@ SELECT.ELEMENTS.WIDGET.SubWrapper.prototype = Object.create(SELECT.ELEMENTS.Elem
             });
         }
         else {
-            document.addEventListener("click", function(e) {
+            SELECT.UTILS.attachEventListener(document, "click", function(e) {
                 var toElem = e.toElement || e.relatedTarget || e.target;
                 var optionsMenuElem = Sandbox.publish("Wrapper:getElement");
                 if ((!SELECT.UTILS.isElement(toElem)) || (!SELECT.UTILS.isDescendant(optionsMenuElem, toElem) && toElem != optionsMenuElem))
@@ -2490,7 +2488,14 @@ Element.prototype.isDisabled = function() {
 		}
 		return this[name];
 	}
-};SELECT.UTILS.isEventSupported = function(eventName) {
+};SELECT.UTILS.attachEventListener = function(element, eventName, callback, useCapture) {
+    if (SELECT.UTILS.isFunction(callback) && SELECT.UTILS.isElement(element) && SELECT.UTILS.isEventSupported(eventName)) {
+        return element.addEventListener(eventName, callback, useCapture);
+    }
+    return false;
+};
+
+SELECT.UTILS.isEventSupported = function(eventName) {
     var tagNames = {
       'select':'input','change':'input',
       'submit':'form','reset':'form',
