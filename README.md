@@ -41,6 +41,7 @@ onSearch|Function|-|Gets called when users search query changes
 onOptionListReachedBottom|Function|-|Gets called when option list is scrolled bottom
 onOptionMenuCloses|Function|-|Gets called when option menu is closed
 clearSearchInputOnOptionMenuCloses|Boolean|True|Clear search input upon option menu gets closed
+focusSearchInput|Boolean|true|Focuses to search input by default
 
 API
 ===============

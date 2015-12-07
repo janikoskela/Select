@@ -702,6 +702,7 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 	this.width = userDefinedSettings.optionMenuWidth;
 	this.height = undefined;
 	this.locked = false;
+	this.focusSearchInput = (userDefinedSettings.focusSearchInput === undefined) ? true : userDefinedSettings.focusSearchInput;
 	this.useSearchInput = userDefinedSettings.useSearchInput || false;
 	this.closeWhenCursorOut = userDefinedSettings.closeWhenCursorOut || false;
 	this.animationSpeed = userDefinedSettings.animationSpeed || 150; //ms
@@ -850,7 +851,8 @@ SELECT.ELEMENTS.WIDGET.ARROW_CONTAINER.ArrowContainerContent.prototype = Object.
 		this.element.show();
 		Sandbox.publish("ArrowContainerContent").up();*/
 		Sandbox.publish("ArrowContainerContent").up();
-		if (this.useSearchInput === true) {
+		console.log(this.focusSearchInput, SELECT.UTILS.isEmpty(this.focusSearchInput))
+		if (this.useSearchInput === true && this.focusSearchInput === true) {
 			Sandbox.publish("OptionsMenuSearchInput:focus");
 		}
 		if (SELECT.UTILS.isElement(userDefinedSettings.appendOptionMenuTo)) {
