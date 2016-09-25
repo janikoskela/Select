@@ -443,6 +443,8 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		var tabIndex = Sandbox.publish("Wrapper:getTabIndex");
 		if (!SELECT.UTILS.isEmpty(tabIndex))
 			this.element.setAttribute("tabindex", tabIndex);
+		if (this.observer)
+			this.observer.disconnect();
 	}
 
 	this.triggerFocus = function() {
@@ -515,18 +517,11 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		that.observer = new MUTATION_OBSERVER(function(mutations, observer) {
 			if (mutations.length > 0) {
 				that.attach();
-				Sandbox.publish("OptionsMenuList:refresh");
-				Sandbox.publish("ValueContainer:refresh");
+				that.observeForChanges();
 			}
 		});
 		var config = { 
-			attributes: true, 
-			childList: true, 
-			characterData : false,  
-			subtree : false,
-			attributeOldValue: false,
-			attributeFilter: [],
-			characterDataOldValue: false,
+			attributes: true
 		};
 		that.observer.observe(that.element, config);
 	}
