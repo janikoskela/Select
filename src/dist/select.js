@@ -413,9 +413,13 @@ SELECT.ELEMENTS.Element.prototype.disableTabNavigation = function() {
 		}
 		else if (MUTATION_OBSERVER !== undefined && this.observer === undefined && this.useMutationObserver) {
 			attachDomObserver();
+			this.isElemHidden = this.isHidden();
+			this.isElemDisabled = this.isDisabled();
 		}
 		else if (MUTATION_OBSERVER === undefined && this.useMutationObserver) {
 			this.mutationObserverReplacement = setInterval(this.observeForOptionMutations.bind(this), this.pollingInterval);
+			this.isElemHidden = this.isHidden();
+			this.isElemDisabled = this.isDisabled();
 		}
 		if (Sandbox.publish("Wrapper").responsiveFallback > 0 || Sandbox.publish("Wrapper").responsiveFallback == true)
 			this.attachOnChangeEventListener(onChange.bind(this));
