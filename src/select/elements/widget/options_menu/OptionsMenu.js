@@ -95,8 +95,9 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 	}
 
 	this.hide = function() {
-		if (this.isHidden())
+		if (this.isHidden()) {
 			return;
+		}
 		if (this.useAnimations === true) {
 			this.slideUp(this.animationSpeed);
 
@@ -119,10 +120,11 @@ SELECT.ELEMENTS.WIDGET.OPTIONS_MENU.OptionsMenu = function(Sandbox) {
 			Sandbox.publish("OptionsMenuSearchInput:blur");
 			Sandbox.publish("OptionsMenuSearchNoResults:hide");
 			Sandbox.publish("OptionsMenuList:refresh");
-			Sandbox.publish("ArrowContainerContent").down();
 		}
-		if (SELECT.UTILS.isFunction(userDefinedSettings.onOptionMenuCloses))
+		Sandbox.publish("ArrowContainerContent").down();
+		if (SELECT.UTILS.isFunction(userDefinedSettings.onOptionMenuCloses)) {
 			userDefinedSettings.onOptionMenuCloses();
+		}
 	}
 
 	this.show = function() {
